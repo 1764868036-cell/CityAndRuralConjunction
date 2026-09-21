@@ -1,851 +1,138 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_01_Receive_Referral_Collaboration.bpmn" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.51.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0">
-  <bpmn:process id="Process_01_Receive_Referral_Collaboration.bpmn" name="Receive Referral" isExecutable="false">
+<?xml version='1.0' encoding='utf-8'?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_01_Receive_Referral.bpmn" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.51.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0">
+  <bpmn:process id="Process_01_Receive_Referral.bpmn" name="Receive Referral" isExecutable="false">
     <bpmn:laneSet id="LaneSet_Hospital">
       <bpmn:lane id="Lane_Secretaries" name="Medical Secretaries">
+        <bpmn:flowNodeRef>Start</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>ReceiveReferral</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>CheckPapers</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>DocsComplete</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>RecordMissing</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>RequestMissing</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>WaitPapers</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Start</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_Consultants" name="Consultants">
         <bpmn:flowNodeRef>RouteReview</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>SeniorReview</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>ReadyReview</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ReviewCase</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Ready</bpmn:flowNodeRef>
       </bpmn:lane>
     </bpmn:laneSet>
+    <bpmn:startEvent id="Start" name="Referral received" />
     <bpmn:receiveTask id="ReceiveReferral" name="Receive referral form" />
     <bpmn:userTask id="CheckPapers" name="Check supporting papers" />
     <bpmn:exclusiveGateway id="DocsComplete" name="All documents ready?" />
-    <bpmn:userTask id="RouteReview" name="Route to senior doctor">
-      <bpmn:documentation>Administrative routing only. Senior doctors make medical decisions.</bpmn:documentation>
-    </bpmn:userTask>
     <bpmn:userTask id="RecordMissing" name="Record missing documents" />
     <bpmn:sendTask id="RequestMissing" name="Request missing papers" />
     <bpmn:endEvent id="WaitPapers" name="Await papers" />
-    <bpmn:userTask id="SeniorReview" name="review case">
-      <bpmn:incoming>F5</bpmn:incoming>
-      <bpmn:outgoing>F6</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:endEvent id="ReadyReview" name="Ready" />
-    <bpmn:startEvent id="Start" name="Referral received" />
+    <bpmn:userTask id="RouteReview" name="Route to senior doctor" />
+    <bpmn:userTask id="ReviewCase" name="Review case" />
+    <bpmn:endEvent id="Ready" name="Ready" />
     <bpmn:sequenceFlow id="F1" sourceRef="Start" targetRef="ReceiveReferral" />
     <bpmn:sequenceFlow id="F2" sourceRef="ReceiveReferral" targetRef="CheckPapers" />
     <bpmn:sequenceFlow id="F3" sourceRef="CheckPapers" targetRef="DocsComplete" />
-    <bpmn:sequenceFlow id="F4" name="Yes" sourceRef="DocsComplete" targetRef="RouteReview" />
-    <bpmn:sequenceFlow id="F7" name="No" sourceRef="DocsComplete" targetRef="RecordMissing" />
-    <bpmn:sequenceFlow id="F5" sourceRef="RouteReview" targetRef="SeniorReview" />
-    <bpmn:sequenceFlow id="F8" sourceRef="RecordMissing" targetRef="RequestMissing" />
-    <bpmn:sequenceFlow id="F9" sourceRef="RequestMissing" targetRef="WaitPapers" />
-    <bpmn:sequenceFlow id="F6" sourceRef="SeniorReview" targetRef="ReadyReview" />
+    <bpmn:sequenceFlow id="F4" sourceRef="DocsComplete" targetRef="RecordMissing" name="No" />
+    <bpmn:sequenceFlow id="F5" sourceRef="RecordMissing" targetRef="RequestMissing" />
+    <bpmn:sequenceFlow id="F6" sourceRef="RequestMissing" targetRef="WaitPapers" />
+    <bpmn:sequenceFlow id="F7" sourceRef="DocsComplete" targetRef="RouteReview" name="Yes" />
+    <bpmn:sequenceFlow id="F8" sourceRef="RouteReview" targetRef="ReviewCase" />
+    <bpmn:sequenceFlow id="F9" sourceRef="ReviewCase" targetRef="Ready" />
   </bpmn:process>
-  <bpmn:collaboration id="Collaboration_01_Receive_Referral_Collaboration.bpmn">
-    <bpmn:participant id="Participant_Hospital" name="Hospital" processRef="Process_01_Receive_Referral_Collaboration.bpmn" />
+  <bpmn:collaboration id="Collaboration_01_Receive_Referral.bpmn">
+    <bpmn:participant id="Participant_Hospital" name="Hospital" processRef="Process_01_Receive_Referral.bpmn" />
     <bpmn:participant id="Participant_Referrer" name="General Practitioners and referring hospitals / organisations" />
-    <bpmn:participant id="Participant_0dfu7oz" name="Hospital" processRef="Process_02_Review_and_Referral_Collaboration.bpmn" />
-    <bpmn:participant id="Participant_Booking" name="Outpatient bookings process" />
-    <bpmn:participant id="Participant_12gbfxs" name="Referring organisation" />
-    <bpmn:participant id="Participant_Service" name="Suitable medical service" />
-    <bpmn:participant id="Participant_1gqu1vc" name="Hospital" processRef="Process_03_Arrange_Initial_Consultation_Collaboration.bpmn" />
-    <bpmn:participant id="Participant_1mmrwdy" name="External scheduling service" />
-    <bpmn:participant id="Participant_06ade36" name="External correspondence service" />
-    <bpmn:participant id="Participant_0pr65us" name="Correct work-team" />
-    <bpmn:participant id="Participant_1b4vooy" name="Patient" />
     <bpmn:messageFlow id="M1" sourceRef="Participant_Referrer" targetRef="ReceiveReferral" />
     <bpmn:messageFlow id="M2" sourceRef="RequestMissing" targetRef="Participant_Referrer" />
-    <bpmn:messageFlow id="Flow_1dxpmp5" sourceRef="SendBooking" targetRef="Participant_Booking" />
-    <bpmn:messageFlow id="Flow_08uagtq" sourceRef="RequestDocs" targetRef="Participant_12gbfxs" />
-    <bpmn:messageFlow id="M3" sourceRef="ForwardService" targetRef="Participant_Service" />
-    <bpmn:messageFlow id="Flow_0uilp0a" sourceRef="Activity_1uz22er" targetRef="Participant_06ade36" />
-    <bpmn:messageFlow id="Flow_1f688p1" sourceRef="Activity_1kpcllc" targetRef="Participant_0pr65us" />
-    <bpmn:messageFlow id="M4" sourceRef="Activity_1t94j7s" targetRef="Participant_1b4vooy" />
-    <bpmn:messageFlow id="Flow_0gzarhn" sourceRef="Activity_0xqoska" targetRef="Participant_1mmrwdy" />
   </bpmn:collaboration>
-  <bpmn:process id="Process_02_Review_and_Referral_Collaboration.bpmn" name="Review and Referral" isExecutable="false">
-    <bpmn:laneSet id="LaneSet_07m1eqc">
-      <bpmn:lane id="Lane_0bypuhm" name="Medical Secretaries">
-        <bpmn:flowNodeRef>Event_0lc9n65</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>PassReferral</bpmn:flowNodeRef>
-      </bpmn:lane>
-      <bpmn:lane id="Lane_008fnv5" name="Consultants">
-        <bpmn:flowNodeRef>AcceptDecision</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>RecordAccept</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>SendBooking</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>RejectDecision</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>RecordReject</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>RequestDocs</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>ReceiveChecked</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>ClinicalReview</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>DocsDecision</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>RecordTransfer</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>RecordDocs</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>ForwardService</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>TransferEnd</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>DocsEnd</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Accepted</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Rejected</bpmn:flowNodeRef>
-      </bpmn:lane>
-    </bpmn:laneSet>
-    <bpmn:exclusiveGateway id="AcceptDecision" name="Accept?">
-      <bpmn:incoming>Flow_0l7hgrv</bpmn:incoming>
-      <bpmn:outgoing>Flow_0r82odu</bpmn:outgoing>
-      <bpmn:outgoing>Flow_0dn1rn6</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:userTask id="RecordAccept" name="Record acceptance">
-      <bpmn:documentation>Record the reason and decision-maker.</bpmn:documentation>
-      <bpmn:incoming>Flow_0r82odu</bpmn:incoming>
-      <bpmn:outgoing>Flow_1xl7jmp</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:sendTask id="SendBooking" name="Send approved booking request">
-      <bpmn:incoming>Flow_1xl7jmp</bpmn:incoming>
-      <bpmn:outgoing>Flow_1iowx43</bpmn:outgoing>
-    </bpmn:sendTask>
-    <bpmn:exclusiveGateway id="RejectDecision" name="Reject?">
-      <bpmn:incoming>Flow_0dn1rn6</bpmn:incoming>
-      <bpmn:outgoing>Flow_1fe6oud</bpmn:outgoing>
-      <bpmn:outgoing>F11</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:userTask id="RecordReject" name="Record rejection">
-      <bpmn:documentation>Record the reason and decision-maker.</bpmn:documentation>
-      <bpmn:incoming>Flow_1fe6oud</bpmn:incoming>
-      <bpmn:outgoing>F10</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:sendTask id="RequestDocs" name="Request extra documents">
-      <bpmn:incoming>F13</bpmn:incoming>
-      <bpmn:outgoing>F14</bpmn:outgoing>
-    </bpmn:sendTask>
-    <bpmn:startEvent id="Event_0lc9n65" name="Checked referral">
-      <bpmn:outgoing>Flow_1eo4n91</bpmn:outgoing>
-    </bpmn:startEvent>
-    <bpmn:userTask id="PassReferral" name="Pass checked referral">
-      <bpmn:incoming>Flow_1eo4n91</bpmn:incoming>
-      <bpmn:outgoing>Flow_1g3nadl</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:receiveTask id="ReceiveChecked" name="Receive checked referral">
-      <bpmn:incoming>Flow_1g3nadl</bpmn:incoming>
-      <bpmn:outgoing>Flow_1w1h9l7</bpmn:outgoing>
-    </bpmn:receiveTask>
-    <bpmn:userTask id="ClinicalReview" name="Review referral clinically">
-      <bpmn:incoming>Flow_1w1h9l7</bpmn:incoming>
-      <bpmn:outgoing>Flow_0l7hgrv</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:exclusiveGateway id="DocsDecision" name="More papers?">
-      <bpmn:incoming>F11</bpmn:incoming>
-      <bpmn:outgoing>F12</bpmn:outgoing>
-      <bpmn:outgoing>F15</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:userTask id="RecordTransfer" name="Record transfer decision">
-      <bpmn:documentation>Record the reason and decision-maker.</bpmn:documentation>
-      <bpmn:incoming>F15</bpmn:incoming>
-      <bpmn:outgoing>F16</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:userTask id="RecordDocs" name="Record document request">
-      <bpmn:documentation>Record the reason and decision-maker.</bpmn:documentation>
-      <bpmn:incoming>F12</bpmn:incoming>
-      <bpmn:outgoing>F13</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:sendTask id="ForwardService" name="Forward case">
-      <bpmn:incoming>F16</bpmn:incoming>
-      <bpmn:outgoing>F17</bpmn:outgoing>
-    </bpmn:sendTask>
-    <bpmn:endEvent id="TransferEnd" name="Case transferred">
-      <bpmn:incoming>F17</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:endEvent id="DocsEnd" name="Await documents">
-      <bpmn:incoming>F14</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:endEvent id="Accepted" name="Booking started">
-      <bpmn:incoming>Flow_1iowx43</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:endEvent id="Rejected" name="Referral rejected">
-      <bpmn:incoming>F10</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:dataObjectReference id="BookingRequestRef" name="Approved booking request" dataObjectRef="DataObject_0z34gwo" />
-    <bpmn:dataObject id="DataObject_0z34gwo" />
-    <bpmn:sequenceFlow id="Flow_0l7hgrv" sourceRef="ClinicalReview" targetRef="AcceptDecision" />
-    <bpmn:sequenceFlow id="Flow_0r82odu" name="Yes" sourceRef="AcceptDecision" targetRef="RecordAccept" />
-    <bpmn:sequenceFlow id="Flow_0dn1rn6" name="No" sourceRef="AcceptDecision" targetRef="RejectDecision" />
-    <bpmn:sequenceFlow id="Flow_1xl7jmp" sourceRef="RecordAccept" targetRef="SendBooking" />
-    <bpmn:sequenceFlow id="Flow_1iowx43" sourceRef="SendBooking" targetRef="Accepted" />
-    <bpmn:sequenceFlow id="Flow_1fe6oud" name="Yes" sourceRef="RejectDecision" targetRef="RecordReject" />
-    <bpmn:sequenceFlow id="F11" name="No" sourceRef="RejectDecision" targetRef="DocsDecision" />
-    <bpmn:sequenceFlow id="F10" sourceRef="RecordReject" targetRef="Rejected" />
-    <bpmn:sequenceFlow id="F13" sourceRef="RecordDocs" targetRef="RequestDocs" />
-    <bpmn:sequenceFlow id="F14" sourceRef="RequestDocs" targetRef="DocsEnd" />
-    <bpmn:sequenceFlow id="Flow_1eo4n91" sourceRef="Event_0lc9n65" targetRef="PassReferral" />
-    <bpmn:sequenceFlow id="Flow_1g3nadl" sourceRef="PassReferral" targetRef="ReceiveChecked" />
-    <bpmn:sequenceFlow id="Flow_1w1h9l7" sourceRef="ReceiveChecked" targetRef="ClinicalReview" />
-    <bpmn:sequenceFlow id="F12" name="Yes" sourceRef="DocsDecision" targetRef="RecordDocs" />
-    <bpmn:sequenceFlow id="F15" name="No" sourceRef="DocsDecision" targetRef="RecordTransfer" />
-    <bpmn:sequenceFlow id="F16" sourceRef="RecordTransfer" targetRef="ForwardService" />
-    <bpmn:sequenceFlow id="F17" sourceRef="ForwardService" targetRef="TransferEnd" />
-    <bpmn:association id="Association_1" sourceRef="SendBooking" targetRef="BookingRequestRef" />
-  </bpmn:process>
-  <bpmn:process id="Process_03_Arrange_Initial_Consultation_Collaboration.bpmn" name="Arrange the Initial Consultation and Contact the Patient" isExecutable="false">
-    <bpmn:laneSet id="LaneSet_1ro2yff">
-      <bpmn:lane id="Lane_Bookings" name="Outpatient Bookings Team">
-        <bpmn:flowNodeRef>Event_1tqzcam</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_1i0bx9n</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_149cpyz</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_13s12iu</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Gateway_0hupj9h</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1uz22er</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_19q9iqg</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1kpcllc</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_1lkskrs</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_0r75bdo</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Gateway_07srbi1</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_0xqoska</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1evpbpb</bpmn:flowNodeRef>
-      </bpmn:lane>
-      <bpmn:lane id="Lane_Calls" name="Call Handling Team">
-        <bpmn:flowNodeRef>Activity_12gfbtf</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_1injo6z</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Gateway_1cyqjd7</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_12qcusm</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_0xtrd4h</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1t94j7s</bpmn:flowNodeRef>
-      </bpmn:lane>
-    </bpmn:laneSet>
-    <bpmn:endEvent id="Event_1tqzcam" name="Escalated">
-      <bpmn:incoming>Flow_04cedqr</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:startEvent id="Event_1i0bx9n" name="Time-change request">
-      <bpmn:outgoing>Flow_0xn1fj6</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1g8ziju" />
-    </bpmn:startEvent>
-    <bpmn:startEvent id="Event_149cpyz" name="Booking request">
-      <bpmn:outgoing>Flow_0o5dtxr</bpmn:outgoing>
-    </bpmn:startEvent>
-    <bpmn:userTask id="Activity_12gfbtf" name="Record result and arrange retry / another method">
-      <bpmn:incoming>Flow_1sahyuq</bpmn:incoming>
-      <bpmn:outgoing>Flow_0dbw8rb</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:endEvent id="Event_1injo6z" name="Follow-up arranged">
-      <bpmn:incoming>Flow_0dbw8rb</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:exclusiveGateway id="Gateway_1cyqjd7" name="Patient reached?">
-      <bpmn:incoming>Flow_10wq7cr</bpmn:incoming>
-      <bpmn:outgoing>Flow_1sahyuq</bpmn:outgoing>
-      <bpmn:outgoing>Flow_04lg6de</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:endEvent id="Event_12qcusm" name="Contact complete">
-      <bpmn:incoming>Flow_04lg6de</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:endEvent id="Event_13s12iu" name="Appointment confirmed">
-      <bpmn:incoming>Flow_0ohjwgf</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:exclusiveGateway id="Gateway_0hupj9h" name="Within two weeks?">
-      <bpmn:incoming>Flow_1mbf8rs</bpmn:incoming>
-      <bpmn:outgoing>Flow_0ohjwgf</bpmn:outgoing>
-      <bpmn:outgoing>Flow_0gc2fnk</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:sendTask id="Activity_1uz22er" name="Send appointment letter">
-      <bpmn:incoming>Flow_17psx4b</bpmn:incoming>
-      <bpmn:outgoing>Flow_1mbf8rs</bpmn:outgoing>
-    </bpmn:sendTask>
-    <bpmn:userTask id="Activity_19q9iqg" name="Book appointment and save record">
-      <bpmn:incoming>Flow_111mv0c</bpmn:incoming>
-      <bpmn:outgoing>Flow_17psx4b</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:sendTask id="Activity_1kpcllc" name="Escalate slot or urgent case">
-      <bpmn:documentation>Do not book outside the requested period.</bpmn:documentation>
-      <bpmn:incoming>Flow_0h7fc8j</bpmn:incoming>
-      <bpmn:outgoing>Flow_04cedqr</bpmn:outgoing>
-    </bpmn:sendTask>
-    <bpmn:userTask id="Activity_0xtrd4h" name="Record call attempt and result">
-      <bpmn:incoming>Flow_15o5ubf</bpmn:incoming>
-      <bpmn:outgoing>Flow_10wq7cr</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:sendTask id="Activity_1t94j7s" name="Phone patient">
-      <bpmn:incoming>Flow_0gc2fnk</bpmn:incoming>
-      <bpmn:outgoing>Flow_15o5ubf</bpmn:outgoing>
-    </bpmn:sendTask>
-    <bpmn:endEvent id="Event_1lkskrs" name="Rescheduling started">
-      <bpmn:incoming>Flow_0o12snz</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:userTask id="Activity_0r75bdo" name="Handle time-change request">
-      <bpmn:incoming>Flow_0xn1fj6</bpmn:incoming>
-      <bpmn:outgoing>Flow_0o12snz</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:exclusiveGateway id="Gateway_07srbi1" name="Slot found?">
-      <bpmn:incoming>Flow_12vwueu</bpmn:incoming>
-      <bpmn:outgoing>Flow_111mv0c</bpmn:outgoing>
-      <bpmn:outgoing>Flow_0h7fc8j</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="Activity_0xqoska" name="Find suitable slot">
-      <bpmn:incoming>Flow_17ji8dw</bpmn:incoming>
-      <bpmn:outgoing>Flow_12vwueu</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:receiveTask id="Activity_1evpbpb" name="Receive booking request">
-      <bpmn:documentation>Includes service, urgency, preferred time and special needs.</bpmn:documentation>
-      <bpmn:incoming>Flow_0o5dtxr</bpmn:incoming>
-      <bpmn:outgoing>Flow_17ji8dw</bpmn:outgoing>
-    </bpmn:receiveTask>
-    <bpmn:sequenceFlow id="Flow_04cedqr" sourceRef="Activity_1kpcllc" targetRef="Event_1tqzcam" />
-    <bpmn:sequenceFlow id="Flow_0xn1fj6" sourceRef="Event_1i0bx9n" targetRef="Activity_0r75bdo" />
-    <bpmn:sequenceFlow id="Flow_0o5dtxr" sourceRef="Event_149cpyz" targetRef="Activity_1evpbpb" />
-    <bpmn:sequenceFlow id="Flow_1sahyuq" name="no" sourceRef="Gateway_1cyqjd7" targetRef="Activity_12gfbtf" />
-    <bpmn:sequenceFlow id="Flow_0dbw8rb" sourceRef="Activity_12gfbtf" targetRef="Event_1injo6z" />
-    <bpmn:sequenceFlow id="Flow_10wq7cr" sourceRef="Activity_0xtrd4h" targetRef="Gateway_1cyqjd7" />
-    <bpmn:sequenceFlow id="Flow_04lg6de" name="Yes" sourceRef="Gateway_1cyqjd7" targetRef="Event_12qcusm" />
-    <bpmn:sequenceFlow id="Flow_0ohjwgf" name="No" sourceRef="Gateway_0hupj9h" targetRef="Event_13s12iu" />
-    <bpmn:sequenceFlow id="Flow_1mbf8rs" sourceRef="Activity_1uz22er" targetRef="Gateway_0hupj9h" />
-    <bpmn:sequenceFlow id="Flow_0gc2fnk" name="Yes" sourceRef="Gateway_0hupj9h" targetRef="Activity_1t94j7s" />
-    <bpmn:sequenceFlow id="Flow_17psx4b" sourceRef="Activity_19q9iqg" targetRef="Activity_1uz22er" />
-    <bpmn:sequenceFlow id="Flow_111mv0c" name="Yes" sourceRef="Gateway_07srbi1" targetRef="Activity_19q9iqg" />
-    <bpmn:sequenceFlow id="Flow_0h7fc8j" name="No / urgent" sourceRef="Gateway_07srbi1" targetRef="Activity_1kpcllc" />
-    <bpmn:sequenceFlow id="Flow_15o5ubf" sourceRef="Activity_1t94j7s" targetRef="Activity_0xtrd4h" />
-    <bpmn:sequenceFlow id="Flow_0o12snz" sourceRef="Activity_0r75bdo" targetRef="Event_1lkskrs" />
-    <bpmn:sequenceFlow id="Flow_12vwueu" sourceRef="Activity_0xqoska" targetRef="Gateway_07srbi1" />
-    <bpmn:sequenceFlow id="Flow_17ji8dw" sourceRef="Activity_1evpbpb" targetRef="Activity_0xqoska" />
-  </bpmn:process>
-  <bpmndi:BPMNDiagram id="Diagram_01_Receive_Referral_Collaboration.bpmn">
-    <bpmndi:BPMNPlane id="Plane_01_Receive_Referral_Collaboration.bpmn" bpmnElement="Collaboration_01_Receive_Referral_Collaboration.bpmn">
+  <bpmndi:BPMNDiagram id="Diagram_01_Receive_Referral.bpmn">
+    <bpmndi:BPMNPlane id="Plane_01_Receive_Referral.bpmn" bpmnElement="Collaboration_01_Receive_Referral.bpmn">
       <bpmndi:BPMNShape id="Participant_Hospital_di" bpmnElement="Participant_Hospital" isHorizontal="true">
-        <dc:Bounds x="290" y="270" width="1310" height="590" />
+        <dc:Bounds x="90" y="180" width="1430" height="590" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_Secretaries_di" bpmnElement="Lane_Secretaries" isHorizontal="true">
-        <dc:Bounds x="290" y="270" width="1310" height="300" />
+        <dc:Bounds x="90" y="180" width="1430" height="290" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_Consultants_di" bpmnElement="Lane_Consultants" isHorizontal="true">
-        <dc:Bounds x="290" y="570" width="1310" height="290" />
+        <dc:Bounds x="90" y="470" width="1430" height="300" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ReceiveReferral_di" bpmnElement="ReceiveReferral">
-        <dc:Bounds x="430" y="425" width="120" height="65" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="CheckPapers_di" bpmnElement="CheckPapers">
-        <dc:Bounds x="610" y="425" width="130" height="65" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DocsComplete_di" bpmnElement="DocsComplete" isMarkerVisible="true">
-        <dc:Bounds x="800" y="432" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="860" y="444" width="70" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="RouteReview_di" bpmnElement="RouteReview">
-        <dc:Bounds x="912" y="627" width="135" height="65" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="RecordMissing_di" bpmnElement="RecordMissing">
-        <dc:Bounds x="930" y="342" width="140" height="55" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="RequestMissing_di" bpmnElement="RequestMissing">
-        <dc:Bounds x="1155" y="342" width="130" height="55" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="WaitPapers_di" bpmnElement="WaitPapers">
-        <dc:Bounds x="1432" y="352" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1418" y="388" width="64" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_01ceq2h_di" bpmnElement="SeniorReview">
-        <dc:Bounds x="1140" y="629" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ReadyReview_di" bpmnElement="ReadyReview">
-        <dc:Bounds x="1432" y="642" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1434" y="678" width="32" height="14" />
-        </bpmndi:BPMNLabel>
+      <bpmndi:BPMNShape id="Participant_Referrer_di" bpmnElement="Participant_Referrer" isHorizontal="true">
+        <dc:Bounds x="250" y="40" width="950" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Start_di" bpmnElement="Start">
-        <dc:Bounds x="342" y="440" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="318" y="476" width="84" height="14" />
-        </bpmndi:BPMNLabel>
+        <dc:Bounds x="145" y="335" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveReferral_di" bpmnElement="ReceiveReferral">
+        <dc:Bounds x="220" y="305" width="125" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="CheckPapers_di" bpmnElement="CheckPapers">
+        <dc:Bounds x="405" y="305" width="135" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DocsComplete_di" bpmnElement="DocsComplete">
+        <dc:Bounds x="610" y="312" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="RecordMissing_di" bpmnElement="RecordMissing">
+        <dc:Bounds x="735" y="225" width="145" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="RequestMissing_di" bpmnElement="RequestMissing">
+        <dc:Bounds x="940" y="225" width="145" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="WaitPapers_di" bpmnElement="WaitPapers">
+        <dc:Bounds x="1160" y="237" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="RouteReview_di" bpmnElement="RouteReview">
+        <dc:Bounds x="715" y="545" width="145" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReviewCase_di" bpmnElement="ReviewCase">
+        <dc:Bounds x="930" y="535" width="125" height="75" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Ready_di" bpmnElement="Ready">
+        <dc:Bounds x="1160" y="552" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="F1_di" bpmnElement="F1">
-        <di:waypoint x="378" y="462" />
-        <di:waypoint x="409" y="462" />
-        <di:waypoint x="409" y="458" />
-        <di:waypoint x="430" y="458" />
+        <di:waypoint x="181" y="353.0" />
+        <di:waypoint x="220" y="337.5" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F2_di" bpmnElement="F2">
-        <di:waypoint x="550" y="457.5" />
-        <di:waypoint x="610" y="457.5" />
+        <di:waypoint x="345" y="337.5" />
+        <di:waypoint x="405" y="337.5" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F3_di" bpmnElement="F3">
-        <di:waypoint x="740" y="457.5" />
-        <di:waypoint x="800" y="457" />
+        <di:waypoint x="540" y="337.5" />
+        <di:waypoint x="610" y="337.0" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F4_di" bpmnElement="F4">
-        <di:waypoint x="825" y="482" />
-        <di:waypoint x="825" y="650" />
-        <di:waypoint x="912" y="650" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="863" y="625" width="18" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="F7_di" bpmnElement="F7">
-        <di:waypoint x="825" y="432" />
-        <di:waypoint x="825" y="370" />
-        <di:waypoint x="930" y="370" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="826" y="373" width="15" height="14" />
-        </bpmndi:BPMNLabel>
+        <di:waypoint x="660" y="337" />
+        <di:waypoint x="680" y="337" />
+        <di:waypoint x="680" y="255" />
+        <di:waypoint x="735" y="255" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F5_di" bpmnElement="F5">
-        <di:waypoint x="1047" y="659" />
-        <di:waypoint x="1140" y="659" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="F8_di" bpmnElement="F8">
-        <di:waypoint x="1070" y="370" />
-        <di:waypoint x="1155" y="370" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="F9_di" bpmnElement="F9">
-        <di:waypoint x="1285" y="369" />
-        <di:waypoint x="1359" y="369" />
-        <di:waypoint x="1359" y="370" />
-        <di:waypoint x="1432" y="370" />
+        <di:waypoint x="880" y="255.0" />
+        <di:waypoint x="940" y="255.0" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F6_di" bpmnElement="F6">
-        <di:waypoint x="1240" y="659" />
-        <di:waypoint x="1336" y="659" />
-        <di:waypoint x="1336" y="660" />
-        <di:waypoint x="1432" y="660" />
+        <di:waypoint x="1085" y="255.0" />
+        <di:waypoint x="1160" y="255.0" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Participant_Referrer_di" bpmnElement="Participant_Referrer" isHorizontal="true">
-        <dc:Bounds x="450" y="80" width="950" height="70" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0gmlg53" bpmnElement="Participant_0dfu7oz" isHorizontal="true">
-        <dc:Bounds x="290" y="950" width="1370" height="660" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0fkmvns" bpmnElement="Lane_0bypuhm" isHorizontal="true">
-        <dc:Bounds x="290" y="950" width="1370" height="110" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1ki3g2g" bpmnElement="Lane_008fnv5" isHorizontal="true">
-        <dc:Bounds x="290" y="1060" width="1370" height="550" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="AcceptDecision_di" bpmnElement="AcceptDecision" isMarkerVisible="true">
-        <dc:Bounds x="955" y="1075" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="896" y="1118" width="40" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="RecordAccept_di" bpmnElement="RecordAccept">
-        <dc:Bounds x="1070" y="1070" width="125" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendBooking_di" bpmnElement="SendBooking">
-        <dc:Bounds x="1240" y="1070" width="150" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="RejectDecision_di" bpmnElement="RejectDecision" isMarkerVisible="true">
-        <dc:Bounds x="960" y="1165" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="897" y="1233" width="38" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="RecordReject_di" bpmnElement="RecordReject">
-        <dc:Bounds x="1070" y="1160" width="125" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="RequestDocs_di" bpmnElement="RequestDocs">
-        <dc:Bounds x="1250" y="1250" width="140" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0b0pz0i" bpmnElement="Event_0lc9n65">
-        <dc:Bounds x="332" y="976" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="309" y="1012" width="82" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="PassReferral_di" bpmnElement="PassReferral">
-        <dc:Bounds x="445" y="970" width="130" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ReceiveChecked_di" bpmnElement="ReceiveChecked">
-        <dc:Bounds x="442" y="1170" width="135" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ClinicalReview_di" bpmnElement="ClinicalReview">
-        <dc:Bounds x="680" y="1170" width="140" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DocsDecision_di" bpmnElement="DocsDecision" isMarkerVisible="true">
-        <dc:Bounds x="960" y="1315" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="882" y="1333" width="68" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="RecordTransfer_di" bpmnElement="RecordTransfer">
-        <dc:Bounds x="1047" y="1400" width="145" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="RecordDocs_di" bpmnElement="RecordDocs">
-        <dc:Bounds x="1063" y="1310" width="140" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ForwardService_di" bpmnElement="ForwardService">
-        <dc:Bounds x="1260" y="1400" width="140" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TransferEnd_di" bpmnElement="TransferEnd">
-        <dc:Bounds x="1512" y="1412" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1489" y="1448" width="82" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DocsEnd_di" bpmnElement="DocsEnd">
-        <dc:Bounds x="1512" y="1262" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1488" y="1298" width="84" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Accepted_di" bpmnElement="Accepted">
-        <dc:Bounds x="1512" y="1082" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1492" y="1118" width="77" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Rejected_di" bpmnElement="Rejected">
-        <dc:Bounds x="1512" y="1172" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1489" y="1208" width="82" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BookingRequestRef_di" bpmnElement="BookingRequestRef">
-        <dc:Bounds x="1215" y="975" width="110" height="38" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1225" y="980" width="89" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Association_1_di" bpmnElement="Association_1">
-        <di:waypoint x="1302" y="1070" />
-        <di:waypoint x="1278" y="1013" />
+      <bpmndi:BPMNEdge id="F7_di" bpmnElement="F7">
+        <di:waypoint x="635" y="362" />
+        <di:waypoint x="635" y="575" />
+        <di:waypoint x="715" y="575" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_1v672ea" bpmnElement="Flow_0l7hgrv">
-        <di:waypoint x="750" y="1170" />
-        <di:waypoint x="750" y="1100" />
-        <di:waypoint x="955" y="1100" />
+      <bpmndi:BPMNEdge id="F8_di" bpmnElement="F8">
+        <di:waypoint x="860" y="575.0" />
+        <di:waypoint x="930" y="572.5" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_05l14hq" bpmnElement="Flow_0r82odu">
-        <di:waypoint x="1005" y="1100" />
-        <di:waypoint x="1070" y="1100" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1029" y="1075" width="18" height="14" />
-        </bpmndi:BPMNLabel>
+      <bpmndi:BPMNEdge id="F9_di" bpmnElement="F9">
+        <di:waypoint x="1055" y="572.5" />
+        <di:waypoint x="1160" y="570.0" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0snhfiu" bpmnElement="Flow_0dn1rn6">
-        <di:waypoint x="980" y="1125" />
-        <di:waypoint x="980" y="1165" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="988" y="1135" width="15" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0qb8zci" bpmnElement="Flow_1xl7jmp">
-        <di:waypoint x="1195" y="1100" />
-        <di:waypoint x="1240" y="1100" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_1p2k68k" bpmnElement="Flow_1iowx43">
-        <di:waypoint x="1390" y="1100" />
-        <di:waypoint x="1512" y="1100" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_124n62e" bpmnElement="Flow_1fe6oud">
-        <di:waypoint x="1010" y="1190" />
-        <di:waypoint x="1070" y="1190" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1031" y="1165" width="18" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="F11_di" bpmnElement="F11">
-        <di:waypoint x="985" y="1215" />
-        <di:waypoint x="985" y="1315" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="993" y="1251" width="15" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="F10_di" bpmnElement="F10">
-        <di:waypoint x="1195" y="1190" />
-        <di:waypoint x="1512" y="1190" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="F13_di" bpmnElement="F13">
-        <di:waypoint x="1203" y="1340" />
-        <di:waypoint x="1227" y="1340" />
-        <di:waypoint x="1227" y="1280" />
-        <di:waypoint x="1250" y="1280" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="F14_di" bpmnElement="F14">
-        <di:waypoint x="1390" y="1280" />
-        <di:waypoint x="1512" y="1280" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_1qdwzo9" bpmnElement="Flow_1eo4n91">
-        <di:waypoint x="368" y="996" />
-        <di:waypoint x="407" y="996" />
-        <di:waypoint x="407" y="994" />
-        <di:waypoint x="445" y="994" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_06xmdat" bpmnElement="Flow_1g3nadl">
-        <di:waypoint x="510" y="1030" />
-        <di:waypoint x="510" y="1170" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_1oi82wj" bpmnElement="Flow_1w1h9l7">
-        <di:waypoint x="577" y="1200" />
-        <di:waypoint x="680" y="1200" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="F12_di" bpmnElement="F12">
-        <di:waypoint x="1010" y="1340" />
-        <di:waypoint x="1063" y="1340" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1025" y="1317" width="18" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="F15_di" bpmnElement="F15">
-        <di:waypoint x="985" y="1365" />
-        <di:waypoint x="985" y="1430" />
-        <di:waypoint x="1047" y="1430" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="993" y="1388" width="15" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="F16_di" bpmnElement="F16">
-        <di:waypoint x="1192" y="1430" />
-        <di:waypoint x="1260" y="1430" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="F17_di" bpmnElement="F17">
-        <di:waypoint x="1400" y="1430" />
-        <di:waypoint x="1512" y="1430" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Participant_Booking_di" bpmnElement="Participant_Booking" isHorizontal="true">
-        <dc:Bounds x="1730" y="940" width="280" height="70" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1lyuwbz" bpmnElement="Participant_12gbfxs" isHorizontal="true">
-        <dc:Bounds x="1770" y="1200" width="280" height="70" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Participant_Service_di" bpmnElement="Participant_Service" isHorizontal="true">
-        <dc:Bounds x="1770" y="1530" width="280" height="70" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_04qajao" bpmnElement="Participant_1gqu1vc" isHorizontal="true">
-        <dc:Bounds x="160" y="1780" width="1720" height="620" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_Bookings_di" bpmnElement="Lane_Bookings" isHorizontal="true">
-        <dc:Bounds x="160" y="1780" width="1720" height="300" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_Calls_di" bpmnElement="Lane_Calls" isHorizontal="true">
-        <dc:Bounds x="160" y="2080" width="1720" height="320" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1r7g9nh" bpmnElement="Event_1tqzcam">
-        <dc:Bounds x="992" y="2002" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="986" y="2038" width="49" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_09z3x5d" bpmnElement="Event_1i0bx9n">
-        <dc:Bounds x="262" y="1962" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="248" y="2011" width="64" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1vikxvv" bpmnElement="Event_149cpyz">
-        <dc:Bounds x="220" y="1852" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="198" y="1888" width="80" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1vmi4ft" bpmnElement="Activity_12gfbtf">
-        <dc:Bounds x="1495" y="2230" width="190" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1n6iqkt" bpmnElement="Event_1injo6z">
-        <dc:Bounds x="1732" y="2242" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1726" y="2286" width="48" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0rceh69" bpmnElement="Gateway_1cyqjd7" isMarkerVisible="true">
-        <dc:Bounds x="1370" y="2235" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1276" y="2253" width="84" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0inozgv" bpmnElement="Event_12qcusm">
-        <dc:Bounds x="1482" y="2302" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1457" y="2338" width="86" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0izui8g" bpmnElement="Event_13s12iu">
-        <dc:Bounds x="1612" y="1857" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1599" y="1893" width="62" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0001sfe" bpmnElement="Gateway_0hupj9h" isMarkerVisible="true">
-        <dc:Bounds x="1185" y="1850" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1184" y="1813" width="51" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1uhyo8v" bpmnElement="Activity_1uz22er">
-        <dc:Bounds x="992" y="1845" width="135" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1dws7vq" bpmnElement="Activity_19q9iqg">
-        <dc:Bounds x="772" y="1845" width="155" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1ha6m8k" bpmnElement="Activity_1kpcllc">
-        <dc:Bounds x="760" y="1990" width="155" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0w5jrgl" bpmnElement="Activity_0xtrd4h">
-        <dc:Bounds x="1320" y="2130" width="150" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_15lafca" bpmnElement="Activity_1t94j7s">
-        <dc:Bounds x="1150" y="2130" width="120" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0xyraba" bpmnElement="Event_1lkskrs">
-        <dc:Bounds x="570" y="1962" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="555" y="1998" width="67" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1gruhsb" bpmnElement="Activity_0r75bdo">
-        <dc:Bounds x="355" y="1950" width="150" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_09eybi5" bpmnElement="Gateway_07srbi1" isMarkerVisible="true">
-        <dc:Bounds x="645" y="1850" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="642" y="1826" width="56" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0yz4tqz" bpmnElement="Activity_0xqoska">
-        <dc:Bounds x="470" y="1845" width="125" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_12tq63p" bpmnElement="Activity_1evpbpb">
-        <dc:Bounds x="290" y="1845" width="130" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="BPMNEdge_0mt3y0f" bpmnElement="Flow_04cedqr">
-        <di:waypoint x="915" y="2020" />
-        <di:waypoint x="992" y="2020" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0qkqeqz" bpmnElement="Flow_0xn1fj6">
-        <di:waypoint x="298" y="1980" />
-        <di:waypoint x="355" y="1980" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_1gmscfx" bpmnElement="Flow_0o5dtxr">
-        <di:waypoint x="255" y="1875" />
-        <di:waypoint x="290" y="1875" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_1429f06" bpmnElement="Flow_1sahyuq">
-        <di:waypoint x="1420" y="2260" />
-        <di:waypoint x="1495" y="2260" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1451" y="2242" width="13" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0mo0as9" bpmnElement="Flow_0dbw8rb">
-        <di:waypoint x="1685" y="2260" />
-        <di:waypoint x="1732" y="2260" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0kmlwa9" bpmnElement="Flow_10wq7cr">
-        <di:waypoint x="1395" y="2190" />
-        <di:waypoint x="1395" y="2235" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0gvsi7y" bpmnElement="Flow_04lg6de">
-        <di:waypoint x="1395" y="2285" />
-        <di:waypoint x="1395" y="2321" />
-        <di:waypoint x="1482" y="2321" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1397" y="2306" width="18" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_1hfy5i4" bpmnElement="Flow_0ohjwgf">
-        <di:waypoint x="1235" y="1875" />
-        <di:waypoint x="1612" y="1875" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1452" y="1852" width="15" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_1a63eq6" bpmnElement="Flow_1mbf8rs">
-        <di:waypoint x="1127" y="1875" />
-        <di:waypoint x="1185" y="1875" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_1vl9679" bpmnElement="Flow_0gc2fnk">
-        <di:waypoint x="1210" y="1900" />
-        <di:waypoint x="1210" y="2130" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1216" y="2006" width="18" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_1gqol65" bpmnElement="Flow_17psx4b">
-        <di:waypoint x="927" y="1875" />
-        <di:waypoint x="992" y="1875" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0jm25ri" bpmnElement="Flow_111mv0c">
-        <di:waypoint x="700" y="1875" />
-        <di:waypoint x="734" y="1875" />
-        <di:waypoint x="734" y="1851" />
-        <di:waypoint x="773" y="1851" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="748" y="1827" width="18" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0pymn3u" bpmnElement="Flow_0h7fc8j">
-        <di:waypoint x="670" y="1900" />
-        <di:waypoint x="670" y="2020" />
-        <di:waypoint x="760" y="2020" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="658" y="1950" width="55" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0okwhd4" bpmnElement="Flow_15o5ubf">
-        <di:waypoint x="1270" y="2160" />
-        <di:waypoint x="1320" y="2160" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0mkvjyp" bpmnElement="Flow_0o12snz">
-        <di:waypoint x="505" y="1980" />
-        <di:waypoint x="570" y="1980" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0jah63a" bpmnElement="Flow_12vwueu">
-        <di:waypoint x="595" y="1875" />
-        <di:waypoint x="645" y="1875" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0hzrvgj" bpmnElement="Flow_17ji8dw">
-        <di:waypoint x="420" y="1875" />
-        <di:waypoint x="470" y="1875" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="BPMNShape_1a2vl4b" bpmnElement="Participant_1mmrwdy" isHorizontal="true">
-        <dc:Bounds x="390" y="1670" width="280" height="70" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0f93pjc" bpmnElement="Participant_06ade36" isHorizontal="true">
-        <dc:Bounds x="890" y="1670" width="280" height="70" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0ruo2iv" bpmnElement="Participant_0pr65us" isHorizontal="true">
-        <dc:Bounds x="695" y="2440" width="280" height="70" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0x0qati" bpmnElement="Participant_1b4vooy" isHorizontal="true">
-        <dc:Bounds x="1090" y="2440" width="280" height="70" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="M1_di" bpmnElement="M1">
-        <di:waypoint x="490" y="150" />
-        <di:waypoint x="490" y="425" />
+        <di:waypoint x="300" y="120" />
+        <di:waypoint x="300" y="305" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="M2_di" bpmnElement="M2">
-        <di:waypoint x="1220" y="342" />
-        <di:waypoint x="1220" y="150" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_1sbig4l" bpmnElement="Flow_1dxpmp5">
-        <di:waypoint x="1360" y="1070" />
-        <di:waypoint x="1360" y="1040" />
-        <di:waypoint x="1870" y="1040" />
-        <di:waypoint x="1870" y="1010" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0gb3mkh" bpmnElement="Flow_08uagtq">
-        <di:waypoint x="1388" y="1254" />
-        <di:waypoint x="1770" y="1250" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="M3_di" bpmnElement="M3">
-        <di:waypoint x="1310" y="1460" />
-        <di:waypoint x="1310" y="1495" />
-        <di:waypoint x="1910" y="1495" />
-        <di:waypoint x="1910" y="1530" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0ws2dnw" bpmnElement="Flow_0uilp0a">
-        <di:waypoint x="1127" y="1875" />
-        <di:waypoint x="1490" y="1875" />
-        <di:waypoint x="1490" y="1705" />
-        <di:waypoint x="1170" y="1705" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0rc8whj" bpmnElement="Flow_1f688p1">
-        <di:waypoint x="837" y="2050" />
-        <di:waypoint x="837" y="2440" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="M4_di" bpmnElement="M4">
-        <di:waypoint x="1210" y="2190" />
-        <di:waypoint x="1210" y="2440" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0nmfpfk" bpmnElement="Flow_0gzarhn">
-        <di:waypoint x="532" y="1845" />
-        <di:waypoint x="532" y="1740" />
+        <di:waypoint x="1012" y="225" />
+        <di:waypoint x="1012" y="120" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
