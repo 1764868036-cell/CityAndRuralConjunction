@@ -2,6 +2,7 @@
 *.pptx -text -diff
 *.docx -text -diff
 *.bpmn text eol=lf
+1-17.bpmn -text -eol -diff
 *.form text eol=lf
 *.sh text eol=lf
 mvnw text eol=lf
