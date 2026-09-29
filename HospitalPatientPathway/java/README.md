@@ -279,8 +279,8 @@ a test JVM attach to the live database file otherwise.
 
 ## What was verified
 
-* `.\mvnw.cmd -B clean test` is green with a Camunda 8 cluster running: **26 tests** - 7 model/worker
-  coverage tests, 7 database tests, 6 worker-persistence tests, 2 corridor-message tests and 4
+* `.\mvnw.cmd -B clean test` is green with a Camunda 8 cluster running: **28 tests** - 7 model/worker
+  coverage tests, 7 database tests, 6 worker-persistence tests, 2 corridor-message tests and 6
   end-to-end tests that start a real instance and drive it through the pathway on the cluster.
   Without a cluster, `.\mvnw.cmd -B "-Dtest=!HospitalPathwayProcessTest" test` runs the 22 that need
   none. The process tests show the workers completing real jobs; e.g.

@@ -141,6 +141,68 @@ class HospitalPathwayProcessTest {
     }
 
     @Test
+    @DisplayName("denied access is audited without a permission grant")
+    void deniedAccessIsAuditedWithoutGrant() {
+        long instanceKey = startAtRouter();
+
+        publish(HospitalMessages.ACCESS_REQUEST, Map.of(
+                "targetStaffUserId", "STAFF-DENIED-1",
+                "requestType", "role change",
+                "requestedRole", "clinic administrator"));
+
+        CamundaAssert.assertThat(ProcessInstanceSelectors.byKey(instanceKey))
+                .hasActiveElements("P16_Task_Authenticate");
+
+        completeUserTask("P16_Task_Authenticate", instanceKey,
+                Map.of("targetStaffUserId", "STAFF-DENIED-1",
+                        "targetStaffName", "Synthetic Denied User",
+                        "requestType", "role change",
+                        "requestedRole", "clinic administrator",
+                        "verificationMethod", "line manager confirmation",
+                        "identityEvidenceReference", "ID-DENIED-1",
+                        "accessAuthorised", "no",
+                        "verificationNotes", "request denied by manager"));
+
+        // The denial branch bypasses P16_Task_Grant and joins the audit task.
+        // If a grant task is created, this instance will remain active instead of completing.
+        CamundaAssert.assertThat(ProcessInstanceSelectors.byKey(instanceKey))
+                .isCompleted()
+                .hasCompletedElements("P16_Task_Audit")
+                .hasVariable("accessAuthorised", "no");
+    }
+
+    @Test
+    @DisplayName("an unverified appointment change returns to identity correction")
+    void unverifiedAppointmentChangeCannotUpdateBooking() {
+        long instanceKey = startAtRouter();
+
+        publish(HospitalMessages.APPOINTMENT_CHANGE_REQUEST, Map.of(
+                "patientId", "PAT-IDENTITY-TEST",
+                "appointmentChangeType", "appointment"));
+
+        CamundaAssert.assertThat(ProcessInstanceSelectors.byKey(instanceKey))
+                .hasActiveElements("P17_Task_RecordRequest");
+
+        completeUserTask("P17_Task_RecordRequest", instanceKey,
+                Map.of("patientId", "PAT-IDENTITY-TEST",
+                        "appointmentChangeType", "appointment",
+                        "requestChannel", "telephone"));
+
+        CamundaAssert.assertThat(ProcessInstanceSelectors.byKey(instanceKey))
+                .hasActiveElements("P17_Task_VerifyIdentity");
+
+        completeUserTask("P17_Task_VerifyIdentity", instanceKey,
+                Map.of("identityVerified", "no",
+                        "identityEvidenceReference", "INSUFFICIENT",
+                        "verificationNotes", "caller cannot confirm identity"));
+
+        // The only no branch of P17_Gateway_IdentityVerified returns to recording/correction.
+        CamundaAssert.assertThat(ProcessInstanceSelectors.byKey(instanceKey))
+                .hasActiveElements("P17_Task_RecordRequest")
+                .hasVariable("identityVerified", "no");
+    }
+
+    @Test
     @DisplayName("missing documents are requested, answered and correlated back into the pathway")
     void missingDocumentsAreRequestedAndCorrelatedBack() {
         String referralId = "REF-MISSING-" + System.nanoTime();

@@ -42,8 +42,11 @@ The file timestamps and reports substantiate delivered work. They do not prove f
 | `evidence/runtime/deployment-v4-black-style.json` | One deployed hospital definition plus forms in the evidence environment. |
 | `evidence/runtime/*-status.json` | Final state, active tasks and incidents for specific simulated instances. |
 | `evidence/tests/*.txt` | Test command results and Maven summary. |
+| `evidence/tests/TEST-*.xml` and `maven-evidence-closure-2026-09-29.log` | Current method-level test results and the complete 28/28 run. |
+| `evidence/validation/feel-run-manifest.json` | Reproducible link between the BPMN SHA-256, 53 rule cases and their actual result. |
+| `EVIDENCE_CLOSURE_RECORD.md` | Dated decisions, actions, exit measures and remaining evidence needed; a current record, not a backdated planning meeting. |
 | `submission/PRODUCT_BACKLOG.csv` and `SPRINT_BACKLOGS.md` | Traceable current backlog and reconstructed sprint view. |
 
 ## Submission control
 
-The repository tag `hospital-pathway-final-2026-09-29` freezes this submission. If files change afterward, the new commit is outside that version until a new tag is issued. The linked public repository should remain readable without login.
+The repository tag `hospital-pathway-final-2026-09-29-r2` freezes this revised submission; the earlier `hospital-pathway-final-2026-09-29` tag remains an audit baseline. If files change afterward, the new commit is outside r2 until a new tag is issued. The linked public repository should remain readable without login.

@@ -19,6 +19,7 @@ An item is complete when its artefact exists in the published repository, an ass
 | 27 Sep 2026 | Model repair and Java worker baseline recorded | `WORK_REPORT.md`; Java test reports |
 | 28 Sep 2026 | Modeler and engine validation, form audit and full/branch runtime exercises recorded | `evidence/validation/`; `evidence/runtime/`; `_analysis` local narrative copied into `TEST_RESULTS.md` |
 | 29 Sep 2026 | Submission packaging and targeted regression tests run | `evidence/tests/`; Git commit and tag |
+| 29 Sep 2026, evidence closure | Two negative Camunda tests and 53 design-time FEEL cases run; open scenarios itemised | `EVIDENCE_CLOSURE_RECORD.md`; `evidence/tests/`; `evidence/validation/feel-run-manifest.json`; revision r2 tag |
 
 ## Next backlog refinement
 

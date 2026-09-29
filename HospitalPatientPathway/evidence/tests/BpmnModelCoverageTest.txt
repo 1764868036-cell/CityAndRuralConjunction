@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: io.camunda.demo.hospital.BpmnModelCoverageTest
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.797 s -- in io.camunda.demo.hospital.BpmnModelCoverageTest
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.739 s -- in io.camunda.demo.hospital.BpmnModelCoverageTest

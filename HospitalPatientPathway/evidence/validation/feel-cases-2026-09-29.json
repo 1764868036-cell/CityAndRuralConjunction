@@ -1,0 +1,667 @@
+[
+  {
+    "name": "Clinical action: stop / change",
+    "gatewayId": "P8_Gateway_Action",
+    "expectedFlow": "P8_Flow_Action_Stop",
+    "variables": {
+      "clinicalDecision": "stop",
+      "action": "change"
+    }
+  },
+  {
+    "name": "Clinical action: stop / postpone",
+    "gatewayId": "P8_Gateway_Action",
+    "expectedFlow": "P8_Flow_Action_Stop",
+    "variables": {
+      "clinicalDecision": "stop",
+      "action": "postpone"
+    }
+  },
+  {
+    "name": "Clinical action: change / stop",
+    "gatewayId": "P8_Gateway_Action",
+    "expectedFlow": "P8_Flow_Action_Stop",
+    "variables": {
+      "clinicalDecision": "change",
+      "action": "stop"
+    }
+  },
+  {
+    "name": "Clinical action: change / change",
+    "gatewayId": "P8_Gateway_Action",
+    "expectedFlow": "P8_Flow_Action_Change",
+    "variables": {
+      "clinicalDecision": "change",
+      "action": "change"
+    }
+  },
+  {
+    "name": "Clinical action: continue / change",
+    "gatewayId": "P8_Gateway_Action",
+    "expectedFlow": "P8_Flow_Action_Change",
+    "variables": {
+      "clinicalDecision": "continue",
+      "action": "change"
+    }
+  },
+  {
+    "name": "Clinical action: continue / postpone",
+    "gatewayId": "P8_Gateway_Action",
+    "expectedFlow": "P8_Flow_Action_Postpone",
+    "variables": {
+      "clinicalDecision": "continue",
+      "action": "postpone"
+    }
+  },
+  {
+    "name": "Submitted change cannot override earlier stop",
+    "gatewayId": "P8_Gateway_Action",
+    "expectedFlow": "P8_Flow_Action_Stop",
+    "variables": {
+      "clinicalDecision": "stop",
+      "taskData_P8_Task_DecideAction": {
+        "action": "change"
+      }
+    },
+    "outputTaskId": "P8_Task_DecideAction"
+  },
+  {
+    "name": "Fitness gate: yes / continue",
+    "gatewayId": "P8_Gateway_Fit",
+    "expectedFlow": "P8_Flow_GWFit_Next",
+    "variables": {
+      "fitToContinue": "yes",
+      "clinicalDecision": "continue"
+    }
+  },
+  {
+    "name": "Fitness gate: no / continue",
+    "gatewayId": "P8_Gateway_Fit",
+    "expectedFlow": "P8_Flow_GWFit_Decide",
+    "variables": {
+      "fitToContinue": "no",
+      "clinicalDecision": "continue"
+    }
+  },
+  {
+    "name": "Fitness gate: yes / stop",
+    "gatewayId": "P8_Gateway_Fit",
+    "expectedFlow": "P8_Flow_GWFit_Decide",
+    "variables": {
+      "fitToContinue": "yes",
+      "clinicalDecision": "stop"
+    }
+  },
+  {
+    "name": "Funding form payment choice yes",
+    "gatewayId": "R6_FundingReady",
+    "expectedFlow": "P6_Flow_Funding_Payment",
+    "variables": {
+      "taskData_R6_ClassifyFunding": {
+        "paymentRequiredChoice": "yes"
+      }
+    },
+    "outputTaskId": "R6_ClassifyFunding"
+  },
+  {
+    "name": "Funding form payment choice no",
+    "gatewayId": "R6_FundingReady",
+    "expectedFlow": "P6_Flow_Funding_NoPayment",
+    "variables": {
+      "taskData_R6_ClassifyFunding": {
+        "paymentRequiredChoice": "no"
+      }
+    },
+    "outputTaskId": "R6_ClassifyFunding"
+  },
+  {
+    "name": "Identity form yes",
+    "gatewayId": "P17_Gateway_IdentityVerified",
+    "expectedFlow": "P17_Flow_Identity_Yes",
+    "variables": {
+      "taskData_P17_Task_VerifyIdentity": {
+        "identityVerified": "yes"
+      }
+    },
+    "outputTaskId": "P17_Task_VerifyIdentity"
+  },
+  {
+    "name": "Clinical authorisation form yes",
+    "gatewayId": "P9_Gateway_ClinicalApproval",
+    "expectedFlow": "P9_Flow_ClinicalApproval_Yes",
+    "variables": {
+      "taskData_P9_Task_ConfirmClinicalApproval": {
+        "formalClinicalApproval": "yes"
+      }
+    },
+    "outputTaskId": "P9_Task_ConfirmClinicalApproval"
+  },
+  {
+    "name": "Refund authorisation yes",
+    "gatewayId": "Gateway_RefundAuthorized",
+    "expectedFlow": "P11_Flow_Eligibility_Send",
+    "variables": {
+      "taskData_Finance_RefundReview": {
+        "refundAuthorisedChoice": "yes"
+      }
+    },
+    "outputTaskId": "Finance_RefundReview"
+  },
+  {
+    "name": "Identity form no",
+    "gatewayId": "P17_Gateway_IdentityVerified",
+    "expectedFlow": "P17_Flow_Identity_No",
+    "variables": {
+      "taskData_P17_Task_VerifyIdentity": {
+        "identityVerified": "no"
+      }
+    },
+    "outputTaskId": "P17_Task_VerifyIdentity"
+  },
+  {
+    "name": "Clinical authorisation form no",
+    "gatewayId": "P9_Gateway_ClinicalApproval",
+    "expectedFlow": "P9_Flow_ClinicalApproval_No",
+    "variables": {
+      "taskData_P9_Task_ConfirmClinicalApproval": {
+        "formalClinicalApproval": "no"
+      }
+    },
+    "outputTaskId": "P9_Task_ConfirmClinicalApproval"
+  },
+  {
+    "name": "Refund authorisation no",
+    "gatewayId": "Gateway_RefundAuthorized",
+    "expectedFlow": "P11_Flow_Eligibility_No",
+    "variables": {
+      "taskData_Finance_RefundReview": {
+        "refundAuthorisedChoice": "no"
+      }
+    },
+    "outputTaskId": "Finance_RefundReview"
+  },
+  {
+    "name": "Missing identity must return for correction",
+    "gatewayId": "P17_Gateway_IdentityVerified",
+    "expectedFlow": "P17_Flow_Identity_No",
+    "variables": {
+      "identityVerified": null
+    }
+  },
+  {
+    "name": "Missing clinical authorisation must not approve",
+    "gatewayId": "P9_Gateway_ClinicalApproval",
+    "expectedFlow": "P9_Flow_ClinicalApproval_No",
+    "variables": {
+      "formalClinicalApproval": null
+    }
+  },
+  {
+    "name": "Appointment change route treatment-plan",
+    "gatewayId": "P17_Gateway_RouteType",
+    "expectedFlow": "P17_Flow_Route_Plan",
+    "variables": {
+      "taskData_P17_Task_RecordRequest": {
+        "appointmentChangeType": "treatment-plan"
+      }
+    },
+    "outputTaskId": "P17_Task_RecordRequest"
+  },
+  {
+    "name": "Appointment change route funding",
+    "gatewayId": "P17_Gateway_RouteType",
+    "expectedFlow": "P17_Flow_Route_Funding",
+    "variables": {
+      "taskData_P17_Task_RecordRequest": {
+        "appointmentChangeType": "funding"
+      }
+    },
+    "outputTaskId": "P17_Task_RecordRequest"
+  },
+  {
+    "name": "Appointment change route appointment",
+    "gatewayId": "P17_Gateway_RouteType",
+    "expectedFlow": "P17_Flow_Route_Appointment",
+    "variables": {
+      "taskData_P17_Task_RecordRequest": {
+        "appointmentChangeType": "appointment"
+      }
+    },
+    "outputTaskId": "P17_Task_RecordRequest"
+  },
+  {
+    "name": "Slot available=True, day 5, window 10",
+    "gatewayId": "P17_Gateway_SlotSuitable",
+    "expectedFlow": "P17_Flow_Slot_Yes",
+    "variables": {
+      "slotAvailable": true,
+      "availability": "unavailable"
+    },
+    "evaluatedVariables": {
+      "date_of_appointment": "= string(today() + duration(\"P5D\"))",
+      "requestedReviewBy": "= string(today() + duration(\"P10D\"))"
+    }
+  },
+  {
+    "name": "Slot available=False, day 5, window 10",
+    "gatewayId": "P17_Gateway_SlotSuitable",
+    "expectedFlow": "P17_Flow_Slot_No",
+    "variables": {
+      "slotAvailable": false,
+      "availability": "unavailable"
+    },
+    "evaluatedVariables": {
+      "date_of_appointment": "= string(today() + duration(\"P5D\"))",
+      "requestedReviewBy": "= string(today() + duration(\"P10D\"))"
+    }
+  },
+  {
+    "name": "Slot available=True, day -1, window 10",
+    "gatewayId": "P17_Gateway_SlotSuitable",
+    "expectedFlow": "P17_Flow_Slot_No",
+    "variables": {
+      "slotAvailable": true,
+      "availability": "unavailable"
+    },
+    "evaluatedVariables": {
+      "date_of_appointment": "= string(today() - duration(\"P1D\"))",
+      "requestedReviewBy": "= string(today() + duration(\"P10D\"))"
+    }
+  },
+  {
+    "name": "Slot available=True, day 11, window 10",
+    "gatewayId": "P17_Gateway_SlotSuitable",
+    "expectedFlow": "P17_Flow_Slot_No",
+    "variables": {
+      "slotAvailable": true,
+      "availability": "unavailable"
+    },
+    "evaluatedVariables": {
+      "date_of_appointment": "= string(today() + duration(\"P11D\"))",
+      "requestedReviewBy": "= string(today() + duration(\"P10D\"))"
+    }
+  },
+  {
+    "name": "Slot available=True, day 10, window 10",
+    "gatewayId": "P17_Gateway_SlotSuitable",
+    "expectedFlow": "P17_Flow_Slot_Yes",
+    "variables": {
+      "slotAvailable": true,
+      "availability": "unavailable"
+    },
+    "evaluatedVariables": {
+      "date_of_appointment": "= string(today() + duration(\"P10D\"))",
+      "requestedReviewBy": "= string(today() + duration(\"P10D\"))"
+    }
+  },
+  {
+    "name": "Missing slot date rejected",
+    "gatewayId": "P17_Gateway_SlotSuitable",
+    "expectedFlow": "P17_Flow_Slot_No",
+    "variables": {
+      "date_of_appointment": null,
+      "requestedReviewBy": null
+    }
+  },
+  {
+    "name": "Notification deadline day 0",
+    "gatewayId": "P17_Gateway_WithinTwoWeeks",
+    "expectedFlow": "P17_Flow_TwoWeeks_Yes",
+    "variables": {},
+    "evaluatedVariables": {
+      "date_of_appointment": "= string(today() + duration(\"P0D\"))"
+    }
+  },
+  {
+    "name": "Notification deadline day 14",
+    "gatewayId": "P17_Gateway_WithinTwoWeeks",
+    "expectedFlow": "P17_Flow_TwoWeeks_Yes",
+    "variables": {},
+    "evaluatedVariables": {
+      "date_of_appointment": "= string(today() + duration(\"P14D\"))"
+    }
+  },
+  {
+    "name": "Notification deadline day 15",
+    "gatewayId": "P17_Gateway_WithinTwoWeeks",
+    "expectedFlow": "P17_Flow_TwoWeeks_No",
+    "variables": {},
+    "evaluatedVariables": {
+      "date_of_appointment": "= string(today() + duration(\"P15D\"))"
+    }
+  },
+  {
+    "name": "Missing appointment date escalates notification",
+    "gatewayId": "P17_Gateway_WithinTwoWeeks",
+    "expectedFlow": "P17_Flow_TwoWeeks_Yes",
+    "variables": {
+      "date_of_appointment": null
+    }
+  },
+  {
+    "name": "Scheduling routine, retry P1D, window 2",
+    "gatewayId": "R3_Gateway_Escalate",
+    "expectedFlow": "R3_Flow_Escalate_No",
+    "variables": {
+      "referralPriority": "routine",
+      "schedulingRetryDelay": "P1D"
+    },
+    "evaluatedVariables": {
+      "requestedReviewBy": "= string(today() + duration(\"P2D\"))"
+    }
+  },
+  {
+    "name": "Scheduling routine, retry P3D, window 2",
+    "gatewayId": "R3_Gateway_Escalate",
+    "expectedFlow": "R3_Flow_Escalate_Yes",
+    "variables": {
+      "referralPriority": "routine",
+      "schedulingRetryDelay": "P3D"
+    },
+    "evaluatedVariables": {
+      "requestedReviewBy": "= string(today() + duration(\"P2D\"))"
+    }
+  },
+  {
+    "name": "Scheduling urgent, retry P1D, window 2",
+    "gatewayId": "R3_Gateway_Escalate",
+    "expectedFlow": "R3_Flow_Escalate_Yes",
+    "variables": {
+      "referralPriority": "urgent",
+      "schedulingRetryDelay": "P1D"
+    },
+    "evaluatedVariables": {
+      "requestedReviewBy": "= string(today() + duration(\"P2D\"))"
+    }
+  },
+  {
+    "name": "Missing requested clinical window escalates",
+    "gatewayId": "R3_Gateway_Escalate",
+    "expectedFlow": "R3_Flow_Escalate_Yes",
+    "variables": {
+      "referralPriority": "routine",
+      "requestedReviewBy": null
+    }
+  },
+  {
+    "name": "Suspected clinical error check yes",
+    "gatewayId": "P13_Gateway_1uxwgi9",
+    "expectedFlow": "P13_Flow_Approved_SendCorrespondence",
+    "variables": {
+      "taskData_P13_Activity_1yti6jj": {
+        "noSuspectedClinicalError": "yes"
+      }
+    },
+    "outputTaskId": "P13_Activity_1yti6jj"
+  },
+  {
+    "name": "Suspected clinical error check no",
+    "gatewayId": "P13_Gateway_1uxwgi9",
+    "expectedFlow": "P13_Flow_0u6u53u",
+    "variables": {
+      "taskData_P13_Activity_1yti6jj": {
+        "noSuspectedClinicalError": "no"
+      }
+    },
+    "outputTaskId": "P13_Activity_1yti6jj"
+  },
+  {
+    "name": "Typed slot choice yes",
+    "gatewayId": "P17_Gateway_SlotSuitable",
+    "expectedFlow": "P17_Flow_Slot_Yes",
+    "variables": {
+      "slotAvailable": "yes",
+      "availability": "unavailable"
+    },
+    "evaluatedVariables": {
+      "date_of_appointment": "= string(today() + duration(\"P5D\"))",
+      "requestedReviewBy": "= string(today() + duration(\"P10D\"))"
+    }
+  },
+  {
+    "name": "Typed slot choice no",
+    "gatewayId": "P17_Gateway_SlotSuitable",
+    "expectedFlow": "P17_Flow_Slot_No",
+    "variables": {
+      "slotAvailable": "no",
+      "availability": "unavailable"
+    },
+    "evaluatedVariables": {
+      "date_of_appointment": "= string(today() + duration(\"P5D\"))",
+      "requestedReviewBy": "= string(today() + duration(\"P10D\"))"
+    }
+  },
+  {
+    "name": "Typed slot choice None",
+    "gatewayId": "P17_Gateway_SlotSuitable",
+    "expectedFlow": "P17_Flow_Slot_No",
+    "variables": {
+      "slotAvailable": null,
+      "availability": "unavailable"
+    },
+    "evaluatedVariables": {
+      "date_of_appointment": "= string(today() + duration(\"P5D\"))",
+      "requestedReviewBy": "= string(today() + duration(\"P10D\"))"
+    }
+  },
+  {
+    "name": "Referral form gets nested document choice",
+    "expression": "= taskData_R1_RegisterCheck.documentsCompleteChoice",
+    "expected": "no",
+    "variables": {
+      "hospitalFormTask": null,
+      "referralId": "offline-check-001",
+      "patient_name": "Validation Sample",
+      "referrerName": null,
+      "patientContact": null,
+      "referralReceivedDate": null,
+      "referralReason": null,
+      "documentReferences": null,
+      "documentsCompleteChoice": "no",
+      "missingDocuments": null
+    },
+    "inputTaskId": "R1_RegisterCheck"
+  },
+  {
+    "name": "Funding form gets nested existing payer choice",
+    "expression": "= taskData_R6_ClassifyFunding.paymentRequiredChoice",
+    "expected": "no",
+    "variables": {
+      "hospitalFormTask": null,
+      "referralId": "offline-check-001",
+      "patient_name": "Validation Sample",
+      "payerType": null,
+      "payerName": null,
+      "policyReference": null,
+      "estimatedCost": null,
+      "patientShare": null,
+      "currency": null,
+      "externalAuthorisationRequiredChoice": null,
+      "paymentRequiredChoice": "no"
+    },
+    "inputTaskId": "R6_ClassifyFunding"
+  },
+  {
+    "name": "Clinical review default duration is inside form group",
+    "expression": "= taskData_R8_ClinicalReview.reassessmentDelay",
+    "expected": "P7D",
+    "variables": {
+      "hospitalFormTask": null,
+      "referralId": "offline-check-001",
+      "patient_name": "Validation Sample",
+      "cycleNumber": null,
+      "clinicalReviewFindings": null,
+      "bloodTestSummary": null,
+      "clinicalDecision": null,
+      "clinicalDecisionReason": null,
+      "revisedPlanReference": null,
+      "reassessmentDelay": null
+    },
+    "inputTaskId": "R8_ClinicalReview"
+  },
+  {
+    "name": "Existing review delay survives input mapping",
+    "expression": "= taskData_R8_ClinicalReview.reassessmentDelay",
+    "expected": "P3D",
+    "variables": {
+      "hospitalFormTask": null,
+      "referralId": "offline-check-001",
+      "patient_name": "Validation Sample",
+      "cycleNumber": null,
+      "clinicalReviewFindings": null,
+      "bloodTestSummary": null,
+      "clinicalDecision": null,
+      "clinicalDecisionReason": null,
+      "revisedPlanReference": null,
+      "reassessmentDelay": "P3D"
+    },
+    "inputTaskId": "R8_ClinicalReview"
+  },
+  {
+    "name": "Task-specific visibility variable populated",
+    "expression": "= hospitalFormTask",
+    "expected": "P17_Task_VerifyIdentity",
+    "variables": {
+      "hospitalFormTask": null,
+      "referralId": "offline-check-001",
+      "patient_name": "Validation Sample",
+      "identityVerified": null,
+      "identityVerificationEvidence": null,
+      "identityVerifiedBy": null,
+      "identityVerificationAt": null
+    },
+    "inputTaskId": "P17_Task_VerifyIdentity"
+  },
+  {
+    "name": "Changed nested form answer overrides stale identityVerified",
+    "gatewayId": "P17_Gateway_IdentityVerified",
+    "expectedFlow": "P17_Flow_Identity_No",
+    "variables": {
+      "hospitalFormTask": null,
+      "referralId": "offline-check-001",
+      "patient_name": "Validation Sample",
+      "identityVerified": "yes",
+      "identityVerificationEvidence": null,
+      "identityVerifiedBy": null,
+      "identityVerificationAt": null
+    },
+    "inputTaskId": "P17_Task_VerifyIdentity",
+    "submittedVariables": {
+      "taskData_P17_Task_VerifyIdentity.identityVerified": "no"
+    },
+    "outputTaskId": "P17_Task_VerifyIdentity"
+  },
+  {
+    "name": "Changed nested form answer overrides stale formalClinicalApproval",
+    "gatewayId": "P9_Gateway_ClinicalApproval",
+    "expectedFlow": "P9_Flow_ClinicalApproval_No",
+    "variables": {
+      "hospitalFormTask": null,
+      "referralId": "offline-check-001",
+      "patient_name": "Validation Sample",
+      "formalClinicalApproval": "yes",
+      "clinicalApprovalReference": null,
+      "authorisingClinician": null,
+      "approvalDate": null,
+      "clinicalRationale": null
+    },
+    "inputTaskId": "P9_Task_ConfirmClinicalApproval",
+    "submittedVariables": {
+      "taskData_P9_Task_ConfirmClinicalApproval.formalClinicalApproval": "no"
+    },
+    "outputTaskId": "P9_Task_ConfirmClinicalApproval"
+  },
+  {
+    "name": "Changed nested form answer overrides stale paymentRequiredChoice",
+    "gatewayId": "R6_FundingReady",
+    "expectedFlow": "P6_Flow_Funding_NoPayment",
+    "variables": {
+      "hospitalFormTask": null,
+      "referralId": "offline-check-001",
+      "patient_name": "Validation Sample",
+      "payerType": null,
+      "payerName": null,
+      "policyReference": null,
+      "estimatedCost": null,
+      "patientShare": null,
+      "currency": null,
+      "externalAuthorisationRequiredChoice": null,
+      "paymentRequiredChoice": "yes"
+    },
+    "inputTaskId": "R6_ClassifyFunding",
+    "submittedVariables": {
+      "taskData_R6_ClassifyFunding.paymentRequiredChoice": "no"
+    },
+    "outputTaskId": "R6_ClassifyFunding"
+  },
+  {
+    "name": "Changed nested form answer overrides stale noSuspectedClinicalError",
+    "gatewayId": "P13_Gateway_1uxwgi9",
+    "expectedFlow": "P13_Flow_0u6u53u",
+    "variables": {
+      "hospitalFormTask": null,
+      "referralId": "offline-check-001",
+      "patient_name": "Validation Sample",
+      "recipientListVerified": null,
+      "noSuspectedClinicalError": "yes",
+      "administrativeCorrections": null,
+      "distributionMethod": null,
+      "processingDate": null
+    },
+    "inputTaskId": "P13_Activity_1yti6jj",
+    "submittedVariables": {
+      "taskData_P13_Activity_1yti6jj.noSuspectedClinicalError": "no"
+    },
+    "outputTaskId": "P13_Activity_1yti6jj"
+  },
+  {
+    "name": "Nested clinical stop survives following change request",
+    "gatewayId": "P8_Gateway_Action",
+    "expectedFlow": "P8_Flow_Action_Stop",
+    "variables": {
+      "hospitalFormTask": null,
+      "referralId": "offline-check-001",
+      "patient_name": "Validation Sample",
+      "cycleNumber": null,
+      "clinicalReviewFindings": null,
+      "bloodTestSummary": null,
+      "clinicalDecision": "continue",
+      "clinicalDecisionReason": null,
+      "revisedPlanReference": null,
+      "reassessmentDelay": null,
+      "taskData_P8_Task_DecideAction": {
+        "action": "change"
+      }
+    },
+    "inputTaskId": "R8_ClinicalReview",
+    "submittedVariables": {
+      "taskData_R8_ClinicalReview.clinicalDecision": "stop"
+    },
+    "outputTaskIds": [
+      "R8_ClinicalReview",
+      "P8_Task_DecideAction"
+    ]
+  },
+  {
+    "name": "Referral nested completion choice becomes boolean",
+    "expression": "= documentsComplete",
+    "expected": false,
+    "variables": {
+      "hospitalFormTask": null,
+      "referralId": "offline-check-001",
+      "patient_name": "Validation Sample",
+      "referrerName": null,
+      "patientContact": null,
+      "referralReceivedDate": null,
+      "referralReason": null,
+      "documentReferences": null,
+      "documentsCompleteChoice": "yes",
+      "missingDocuments": null
+    },
+    "inputTaskId": "R1_RegisterCheck",
+    "submittedVariables": {
+      "taskData_R1_RegisterCheck.documentsCompleteChoice": "no"
+    },
+    "outputTaskId": "R1_RegisterCheck"
+  }
+]

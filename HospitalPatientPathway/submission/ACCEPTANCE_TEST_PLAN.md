@@ -1,6 +1,6 @@
 # AISD acceptance test plan
 
-Version: submission 2026-09-29. Environment for recorded results: local Camunda 8.9.19, Java 21 workers, synthetic data. The test cases below are repeatable acceptance scenarios. **Executed** means the cited evidence supports the stated scope; **planned** means no passing runtime claim is made. `TEST_RESULTS.md` is the result register.
+Version: submission 2026-09-29 r2. Environment for recorded results: local Camunda 8.9.19, Java 21 workers, synthetic data. The test cases below are repeatable acceptance scenarios. **Executed** means the cited evidence supports the stated scope; **planned** means no passing runtime claim is made. Design-time FEEL results are labelled separately from Camunda process execution. `TEST_RESULTS.md` is the result register.
 
 ## Requirement and business rule catalogue
 
@@ -72,7 +72,7 @@ The source of each FEEL rule is `1-17.bpmn`. The human meaning of "urgent", suit
 - **Actions:** Submit scheduling response, advance retry path where allowed, then inspect escalation route for the urgent/expired case.
 - **Expected/measurable:** A retry remains inside the requested window; urgent or out-of-window cases do not loop indefinitely and reach an escalation/human decision. Accepted available slot can progress to consultation.
 - **Pass/fail:** Pass only when each of the three outcomes follows its stated route with no incident; otherwise fail.
-- **Evidence state:** Planned boundary acceptance case. Main available-slot route appears in AT-02 evidence.
+- **Evidence state:** Main available-slot route appears in AT-02 evidence. Scheduling rule cases passed in design-time FEEL evaluation (`evidence/validation/feel-2026-09-29.json`); the no-slot token and escalation acceptance cases remain planned.
 
 ### AT-06 - Consent refusal blocks treatment
 
@@ -112,7 +112,7 @@ The source of each FEEL rule is `1-17.bpmn`. The human meaning of "urgent", suit
 - **Actions:** Submit each decision and inspect following elements.
 - **Expected/measurable:** A follows continuation. B follows stop/refund decision, with no treatment-change route despite `action="change"`.
 - **Pass/fail:** Pass when the mutually exclusive routes and stop priority are observed; otherwise fail.
-- **Evidence state:** Stop/refund route executed on the full path; continuation branch and contradictory boundary case remain planned. See AT-02 runtime trace.
+- **Evidence state:** Stop/refund route executed on the full path; contradictory stop/change rule passed in design-time FEEL evaluation. Continuation and contradictory token routes remain planned. See AT-02 runtime trace and `evidence/validation/feel-2026-09-29.json`.
 
 ### AT-10 - Formal treatment change and cost recheck
 
@@ -132,7 +132,7 @@ The source of each FEEL rule is `1-17.bpmn`. The human meaning of "urgent", suit
 - **Actions:** Submit each case in a new instance, inspect slot decision, contact task and notification.
 - **Expected/measurable:** Unverified request cannot change appointment; late slot is rejected; near-term change requires phone contact before ordinary notice; later valid slot follows normal notice.
 - **Pass/fail:** Pass only if all four route checks match the model with no incident; otherwise fail.
-- **Evidence state:** Model conditions and form audit verified; full four-case runtime acceptance remains planned.
+- **Evidence state:** The unverified-identity negative route passed in `HospitalPathwayProcessTest.unverifiedAppointmentChangeCannotUpdateBooking`; it returns to request correction without updating the booking. See `evidence/tests/TEST-io.camunda.demo.hospital.HospitalPathwayProcessTest.xml` and `negative-branch-integration-2026-09-29.log`. Date and 14-day boundary rules passed in design-time FEEL evaluation; the three verified-date/contact token cases remain planned.
 
 ### AT-12 - Cancellation, clinical review and no-show
 
@@ -152,7 +152,7 @@ The source of each FEEL rule is `1-17.bpmn`. The human meaning of "urgent", suit
 - **Actions:** Complete each decision and examine payment/refund and new-booking records.
 - **Expected/measurable:** A invokes the authorised refund route and records result; B records transfer without invoking refund. Both sampled instances finish without incident.
 - **Pass/fail:** Pass if each route and final status matches; fail for an unauthorised refund or crossed routes.
-- **Evidence state:** Executed sampled alternatives; `evidence/runtime/2251799813803956-status.json`, `2251799813811822-status.json` and matching traces. A separate unauthorised-refund negative case remains planned.
+- **Evidence state:** Executed sampled alternatives; `evidence/runtime/2251799813803956-status.json`, `2251799813811822-status.json` and matching traces. The unauthorised-refund rule passed in design-time FEEL evaluation; a separate Camunda negative case remains planned.
 
 ### AT-14 - Enquiry classification and letter controls
 
@@ -162,7 +162,7 @@ The source of each FEEL rule is `1-17.bpmn`. The human meaning of "urgent", suit
 - **Actions:** Submit enquiry and letter tasks; inspect routing, correspondence message and timer/reminder history.
 - **Expected/measurable:** Finance enquiry reaches finance route; approved safe letter is released; suspected-error letter is held/reviewed; outstanding letter reminds at model-defined intervals and a completed letter cancels further waiting.
 - **Pass/fail:** Pass only if each route and timing condition is observed; otherwise fail.
-- **Evidence state:** Finance enquiry and approved/completed letter sampled at runtime (`2251799813808280`, `2251799813799469`); suspected-error and full-duration timer cases remain planned.
+- **Evidence state:** Finance enquiry and approved/completed letter sampled at runtime (`2251799813808280`, `2251799813799469`). The suspected-error rule passed in design-time FEEL evaluation; its token route, full-duration timers and concurrent letters remain planned.
 
 ### AT-15 - Access and downtime recovery
 
@@ -172,7 +172,7 @@ The source of each FEEL rule is `1-17.bpmn`. The human meaning of "urgent", suit
 - **Actions:** Submit access decision; report interruption; record offline work; publish service-restored message with matching incident reference; reconcile.
 - **Expected/measurable:** Approved access follows authorised path; denied access cannot enter protected action; restoration correlates to the right instance and leaves no active incident/task after reconciliation.
 - **Pass/fail:** Pass if both access routes and recovery correlation match with final completed status; otherwise fail.
-- **Evidence state:** Approved access and downtime recovery sampled at runtime (`2251799813808708`, `2251799813809073`); denial negative case remains planned.
+- **Evidence state:** Approved access and downtime recovery sampled at runtime (`2251799813808708`, `2251799813809073`). The denial negative route passed in `HospitalPathwayProcessTest.deniedAccessIsAuditedWithoutGrant`; see `evidence/tests/TEST-io.camunda.demo.hospital.HospitalPathwayProcessTest.xml` and `negative-branch-integration-2026-09-29.log`.
 
 ### AT-16 - Form rendering and worker contract
 
@@ -186,4 +186,4 @@ The source of each FEEL rule is `1-17.bpmn`. The human meaning of "urgent", suit
 
 ## Acceptance decision
 
-The current evidence supports a **local prototype demonstration**, not unconditional production acceptance. The assessor should run the remaining AT-05 to AT-08 negative cases, AT-11 boundaries, the timer and concurrent-letter portions of AT-14, and the denial portion of AT-15 before marking every criterion passed. Record actual instance IDs and observed outcomes in `TEST_RESULTS.md` or a dated addendum; do not convert planned cases to pass based only on static model inspection.
+The current evidence supports a **local prototype demonstration**, not unconditional production acceptance. The assessor should run the remaining AT-05 to AT-08 negative cases, AT-11 verified-date/contact routes, the token-level suspected-error and timer/concurrent-letter portions of AT-14, plus the pending AT-09 and AT-13 negative routes before marking every criterion passed. Record actual instance IDs and observed outcomes in `TEST_RESULTS.md` or a dated addendum; do not convert planned cases to pass based only on FEEL evaluation or static model inspection.
