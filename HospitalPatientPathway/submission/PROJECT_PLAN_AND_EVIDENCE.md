@@ -46,9 +46,9 @@ The file timestamps and reports substantiate delivered work. They do not prove f
 | `evidence/validation/feel-run-manifest.json` | Reproducible link between the BPMN SHA-256, 53 rule cases and their actual result. |
 | `EVIDENCE_CLOSURE_RECORD.md` | Dated decisions, actions, exit measures and remaining evidence needed; a current record, not a backdated planning meeting. |
 | `BUSINESS_PROCESS_TEST_PLAN_EN.md` and its English Word deliverable | Project-specific test scope, priority, execution sequence, evidence capture and exit criteria; the PDF and Chinese V1.1 remain references. |
-| `ACCEPTANCE_TEST_PLAN.md` and its English Word deliverable | Sixteen measurable acceptance cases with prerequisites, data, actions, expected results, pass/fail conditions and evidence state. |
+| Supplied English acceptance-plan Word deliverable; `ACCEPTANCE_TEST_PLAN.md` is an earlier text reference | Sixteen measurable acceptance cases with prerequisites, data, actions, expected results, pass/fail conditions and evidence state. |
 | `submission/PRODUCT_BACKLOG.csv` and `SPRINT_BACKLOGS.md` | Traceable current backlog and reconstructed sprint view. |
 
 ## Submission control
 
-The repository tag `hospital-pathway-final-2026-09-29-r6` freezes this submission with both test plans in editable English Word format; r5, r4, r3, r2 and the original `hospital-pathway-final-2026-09-29` tag remain audit baselines. If files change afterward, the new commit is outside r6 until a new tag is issued. The linked public repository should remain readable without login.
+The repository tag `hospital-pathway-final-2026-09-29-r7` freezes this submission with the supplied acceptance-plan Word document; r6, r5, r4, r3, r2 and the original `hospital-pathway-final-2026-09-29` tag remain audit baselines. If files change afterward, the new commit is outside r7 until a new tag is issued. The linked public repository should remain readable without login.
