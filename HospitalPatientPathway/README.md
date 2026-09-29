@@ -119,17 +119,61 @@ is entered at process 1 (see row 7).
 
 At that historical repair stage, the other model areas were not changed. The current submission includes later form, gateway, message and layout work documented separately.
 
+## Repository layout
+
+The layout below is the layout of this folder exactly as it is committed. `java/target/`,
+`java/data/`, `java/.idea/` and `_analysis/` are excluded by `.gitignore` and never appear here.
+
+```text
+HospitalPatientPathway/
+├── .gitattributes                 line-ending rules for the binary and text artefacts
+├── .gitignore                     build output, H2 files and the development archive
+├── .process-application           Camunda Modeler marker: one Deploy sends model + forms
+├── 1-17.bpmn                      executable model, Process_Hospital_Integrated
+├── 01..14,16,17_*.form            16 deployment-bound Camunda Forms
+├── Form_Task_Mapping.csv          task-to-form index, 81 rows (one per user task)
+├── README.md / README.zh-CN.md    this file and its Chinese version
+├── WORK_REPORT.md                 change report: 18 work rounds, what changed and why (Chinese)
+├── MANUAL_TEST_GUIDE.md           manual walkthrough (+ .zh-CN.md)
+├── Process Review.html            exported model review page
+├── PROJECT_PLAN.md                product backlog, sprint backlogs, revision log
+├── TEST_RESULTS.md                result register: 28/28 automated, per acceptance case
+├── BUSINESS_PROCESS_TEST_PLAN_EN.md  execution strategy and evidence index
+├── deliverables/
+│   └── Hospital_Patient_Pathway_Acceptance_Test_Plan.docx
+├── evidence/
+│   ├── README.md                  how to read the three evidence folders
+│   ├── tests/                     Surefire summaries, XML reports, Maven logs
+│   ├── validation/                Modeler/engine validation, form audit, FEEL results
+│   └── runtime/                   deployment response + 13 instance groups (status/trace/jsonl)
+├── java/
+│   ├── pom.xml, mvnw, mvnw.cmd    Maven build with a bundled wrapper
+│   ├── application-example.properties   configuration template for the workers
+│   ├── RUNTIME_COMPATIBILITY.md   cluster and runtime version notes
+│   ├── README.md / README.zh-CN.md      worker design, job types, simulation switches
+│   ├── WORKER_MAP.md              model element to worker index
+│   ├── WORKER_GUIDE.zh-CN.md      worker guide (Chinese)
+│   └── src/main|test/java/io/camunda/demo/hospital/...
+└── presentation/
+    └── Hospital_Patient_Pathway_Presentation.pptx
+```
+
 ## Files
 
 | Path | Content |
 | --- | --- |
 | `1-17.bpmn` | merged pathway model (repaired, see above) |
 | `*.form` | 16 deployment-bound Camunda Forms |
-| `Form_Task_Mapping.csv` | task-to-form index |
+| `Form_Task_Mapping.csv` | task-to-form index, 81 rows |
 | `java/` | Spring Boot job workers for the automated steps |
+| `PROJECT_PLAN.md` | product backlog, sprint backlogs, planning evidence, revision log against the test results |
+| `TEST_RESULTS.md` | result register: 28/28 automated tests, status and evidence per acceptance case |
+| `BUSINESS_PROCESS_TEST_PLAN_EN.md` | execution strategy, test levels, evidence index, status vocabulary |
 | `WORK_REPORT.md` | change report: model repairs, worker design, verification evidence (Chinese) |
 | `MANUAL_TEST_GUIDE.md` | manual test walkthrough: entries, per-phase steps, branches, messages, troubleshooting |
 | `MANUAL_TEST_GUIDE.zh-CN.md` | Chinese version of the manual test walkthrough |
+| `Process Review.html` | exported model review page |
+| `presentation/` | submission deck: background and objectives, architecture, the 17 processes, demo flow, test results |
 | `README.zh-CN.md` | Chinese version of this README |
 | `deliverables/` | supplied Acceptance Test Plan Word document |
 | `evidence/` | curated test evidence; local `_analysis/` is a development archive and is not part of the tagged repository |

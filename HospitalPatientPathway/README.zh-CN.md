@@ -118,17 +118,61 @@ Problems 面板里还会列出关于 Modeler 自带连接器模板（AWS Bedrock
 
 在该历史修复阶段，模型其余部分未改动。当前提交包含后来完成的表单、网关、消息和布局调整。
 
+## 仓库目录结构
+
+下面的结构就是本文件夹被提交的真实结构。`java/target/`、`java/data/`、`java/.idea/` 与
+`_analysis/` 已被 `.gitignore` 排除，不会出现在其中。
+
+```text
+HospitalPatientPathway/
+├── .gitattributes                 二进制与文本产物的行尾规则
+├── .gitignore                     构建产物、H2 文件与开发档案
+├── .process-application           Camunda Modeler 标记：一次 Deploy 同时发送模型与表单
+├── 1-17.bpmn                      可执行模型 Process_Hospital_Integrated
+├── 01..14,16,17_*.form            16 个部署绑定的 Camunda 表单
+├── Form_Task_Mapping.csv          任务到表单的索引，81 行（每个用户任务一行）
+├── README.zh-CN.md / README.md    本文件及其英文版
+├── WORK_REPORT.md                 变更报告：18 轮工作，改了什么、为什么
+├── MANUAL_TEST_GUIDE.md           人工测试全流程（+ .zh-CN.md）
+├── Process Review.html            导出的模型评审页
+├── PROJECT_PLAN.md                产品待办、冲刺待办、计划证据、对照测试结果的修订记录
+├── TEST_RESULTS.md                结果登记表：28/28 自动化测试，逐验收用例状态
+├── BUSINESS_PROCESS_TEST_PLAN_EN.md  执行策略与证据索引
+├── deliverables/
+│   └── Hospital_Patient_Pathway_Acceptance_Test_Plan.docx
+├── evidence/
+│   ├── README.md                  三个证据目录的阅读方式
+│   ├── tests/                     Surefire 摘要、XML 报告、Maven 日志
+│   ├── validation/                Modeler/引擎校验、表单审计、FEEL 结果
+│   └── runtime/                   部署响应 + 13 组实例（status/trace/jsonl）
+├── java/
+│   ├── pom.xml, mvnw, mvnw.cmd    带内置 wrapper 的 Maven 构建
+│   ├── application-example.properties   worker 配置模板
+│   ├── RUNTIME_COMPATIBILITY.md   集群与运行时版本说明
+│   ├── README.md / README.zh-CN.md      worker 设计、job 类型、模拟开关
+│   ├── WORKER_MAP.md              模型元素到 worker 的索引
+│   ├── WORKER_GUIDE.zh-CN.md      worker 指南
+│   └── src/main|test/java/io/camunda/demo/hospital/...
+└── presentation/
+    └── Hospital_Patient_Pathway_Presentation.pptx
+```
+
 ## 文件清单
 
 | 路径 | 内容 |
 | --- | --- |
 | `1-17.bpmn` | 合并后的路径模型（已修复，见上） |
 | `*.form` | 16 个部署绑定的 Camunda 表单 |
-| `Form_Task_Mapping.csv` | 任务到表单的索引 |
+| `Form_Task_Mapping.csv` | 任务到表单的索引，81 行 |
 | `java/` | 覆盖各自动化步骤的 Spring Boot job worker |
+| `PROJECT_PLAN.md` | 产品待办、冲刺待办、计划证据，以及对照测试结果修订计划的记录 |
+| `TEST_RESULTS.md` | 结果登记表：28/28 自动化测试，逐验收用例的状态与证据 |
+| `BUSINESS_PROCESS_TEST_PLAN_EN.md` | 执行策略、测试层级、证据索引、状态用语 |
 | `WORK_REPORT.md` | 变更报告：模型修复、worker 设计、验证证据 |
 | `MANUAL_TEST_GUIDE.zh-CN.md` | 人工测试全流程：入口、逐阶段操作、分支、消息清单、排查 |
 | `MANUAL_TEST_GUIDE.md` | 人工测试全流程的英文版 |
+| `Process Review.html` | 导出的模型评审页 |
+| `presentation/` | 提交演示稿：背景与目标、架构、17 个流程、演示流程、测试结果 |
 | `deliverables/` | 用户提供的 Acceptance Test Plan Word 文件 |
 | `evidence/` | 筛选后的测试证据；本地 `_analysis/` 为开发档案，不进入标记版本 |
 | `README.md` | 本 README 的英文版 |
