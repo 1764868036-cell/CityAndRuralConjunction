@@ -45,9 +45,9 @@ The file timestamps and reports substantiate delivered work. They do not prove f
 | `evidence/tests/TEST-*.xml` and `maven-evidence-closure-2026-09-29.log` | Current method-level test results and the complete 28/28 run. |
 | `evidence/validation/feel-run-manifest.json` | Reproducible link between the BPMN SHA-256, 53 rule cases and their actual result. |
 | `EVIDENCE_CLOSURE_RECORD.md` | Dated decisions, actions, exit measures and remaining evidence needed; a current record, not a backdated planning meeting. |
-| `BUSINESS_PROCESS_TEST_PLAN_ZH.md` and its editable Word deliverable | Project-specific test scope, priority, execution sequence, evidence capture and exit criteria. |
+| `BUSINESS_PROCESS_TEST_PLAN_EN.md` and its English Word/PDF deliverables | Project-specific test scope, priority, execution sequence, evidence capture and exit criteria; the Chinese V1.1 remains a reference. |
 | `submission/PRODUCT_BACKLOG.csv` and `SPRINT_BACKLOGS.md` | Traceable current backlog and reconstructed sprint view. |
 
 ## Submission control
 
-The repository tag `hospital-pathway-final-2026-09-29-r4` freezes this submission with the optimized Chinese business process test plan; r3, r2 and the original `hospital-pathway-final-2026-09-29` tag remain audit baselines. If files change afterward, the new commit is outside r4 until a new tag is issued. The linked public repository should remain readable without login.
+The repository tag `hospital-pathway-final-2026-09-29-r5` freezes this submission with English Word and PDF test plans; r4, r3, r2 and the original `hospital-pathway-final-2026-09-29` tag remain audit baselines. If files change afterward, the new commit is outside r5 until a new tag is issued. The linked public repository should remain readable without login.

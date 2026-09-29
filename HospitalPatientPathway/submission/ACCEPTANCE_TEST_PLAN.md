@@ -1,6 +1,6 @@
 # AISD acceptance test plan
 
-Version: submission 2026-09-29 r2. Environment for recorded results: local Camunda 8.9.19, Java 21 workers, synthetic data. The test cases below are repeatable acceptance scenarios. **Executed** means the cited evidence supports the stated scope; **planned** means no passing runtime claim is made. Design-time FEEL results are labelled separately from Camunda process execution. `TEST_RESULTS.md` is the result register.
+Version: submission 2026-09-29 r5. Environment for recorded results: local Camunda 8.9.19, Java 21 workers, synthetic data. The test cases below are repeatable acceptance scenarios. **Executed** means the cited evidence supports the stated scope; **planned** means no passing runtime claim is made. Design-time FEEL results are labelled separately from Camunda process execution. `BUSINESS_PROCESS_TEST_PLAN_EN.md` gives the English execution strategy and evidence index; `TEST_RESULTS.md` is the result register.
 
 ## Requirement and business rule catalogue
 
