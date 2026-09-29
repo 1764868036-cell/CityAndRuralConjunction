@@ -1,6 +1,6 @@
 # 工作文档：医院流程模型的修复与 Camunda 8 Job Worker 实现
 
-> 本文记录早期修复阶段。最终提交的模型、16 个表单、50 个 job type、28/28 当前 Java 测试结果及仓库版本，以 [`submission/SUBMISSION_INDEX.md`](submission/SUBMISSION_INDEX.md) 和 [`submission/TEST_RESULTS.md`](submission/TEST_RESULTS.md) 为准。本文提到的 `_analysis/` 是本地开发档案，未全部纳入公开提交。
+> 本文记录早期修复阶段。当前模型、16 个表单和 Java worker 见本目录及 `java/`；测试原始证据见 [`evidence/`](evidence/README.md)。`submission/` 已从当前仓库版本删除。本文提到的 `_analysis/` 是本地开发档案，未全部纳入公开提交。
 
 这份文档记录我在这个文件夹里**改了什么、为什么改、怎么验证的**。所有结论都来自实际执行的命令输出，
 不是推测。文件位置：`Hospital_Patient_Pathway_Camunda_Forms_Bundle(1)/`。

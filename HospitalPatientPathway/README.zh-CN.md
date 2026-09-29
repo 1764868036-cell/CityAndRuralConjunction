@@ -2,7 +2,7 @@
 
 [English](README.md) | **简体中文**
 
-本文件夹包含 `1-17.bpmn` 综合模型以及 16 个 deployment-bound（部署绑定）的 Camunda 表单，覆盖流程阶段 1–17。项目规划、验收测试、结果、设计论证、PDF 和仓库版本见 [提交索引](submission/SUBMISSION_INDEX.md)。
+本文件夹包含 `1-17.bpmn` 综合模型以及 16 个 deployment-bound（部署绑定）的 Camunda 表单，覆盖流程阶段 1–17。`deliverables/` 现在仅保留用户提供的 [Acceptance Test Plan Word 文件](deliverables/Hospital_Patient_Pathway_Acceptance_Test_Plan.docx)。
 
 **模型已修复，现在可以真正部署并支持自动化** —— 详见下方[模型修复](#模型修复)。
 **承载各自动化步骤的 Java job worker 位于 [`java/`](java/README.zh-CN.md)。**
@@ -51,7 +51,7 @@
 （服务任务、发送任务以及 1 个消息抛出事件），并模拟所有外部参与方的回话
 （转诊机构、患者、排班服务、检验/治疗服务、保险公司、支付服务商）。
 
-已有运行证据使用本机 Camunda 8.9.19，端口为 26500 / 8080。请先启动兼容集群；部署步骤详见 [部署配置](submission/DEPLOYMENT.md)。
+已有运行证据使用本机 Camunda 8.9.19，端口为 26500 / 8080。请先启动兼容集群，再按下方命令部署。
 
 ```bash
 # Git Bash，在本目录执行
@@ -129,5 +129,6 @@ Problems 面板里还会列出关于 Modeler 自带连接器模板（AWS Bedrock
 | `WORK_REPORT.md` | 变更报告：模型修复、worker 设计、验证证据 |
 | `MANUAL_TEST_GUIDE.zh-CN.md` | 人工测试全流程：入口、逐阶段操作、分支、消息清单、排查 |
 | `MANUAL_TEST_GUIDE.md` | 人工测试全流程的英文版 |
-| `submission/` 和 `evidence/` | 最终规划、验收测试、设计论证、结果与筛选后的证据；本地 `_analysis/` 为开发档案，不进入标记版本 |
+| `deliverables/` | 用户提供的 Acceptance Test Plan Word 文件 |
+| `evidence/` | 筛选后的测试证据；本地 `_analysis/` 为开发档案，不进入标记版本 |
 | `README.md` | 本 README 的英文版 |

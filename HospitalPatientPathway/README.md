@@ -2,7 +2,7 @@
 
 **English** | [简体中文](README.zh-CN.md)
 
-This folder contains the integrated `1-17.bpmn` model and 16 deployment-bound Camunda Forms covering pathway stages 1-17. Start with the [submission index](submission/SUBMISSION_INDEX.md) for the project plan, acceptance tests, results, design decisions, PDFs and repository version.
+This folder contains the integrated `1-17.bpmn` model and 16 deployment-bound Camunda Forms covering pathway stages 1-17. The supplied [Acceptance Test Plan](deliverables/Hospital_Patient_Pathway_Acceptance_Test_Plan.docx) is the sole file in `deliverables/`.
 
 **The model was repaired so that it actually deploys and can be automated** - see
 [Model repairs](#model-repairs) below. **The Java job workers that run the automated steps live in
@@ -47,7 +47,7 @@ types covering 51 automated steps, plus the
 simulated answers of the external parties (referring organisation, patient, scheduling service,
 treatment/laboratory service, insurer, payment service provider).
 
-The recorded runtime evidence used a local Camunda 8.9.19 cluster on ports 26500 / 8080. Start a compatible cluster before the commands below; see [deployment configuration](submission/DEPLOYMENT.md).
+The recorded runtime evidence used a local Camunda 8.9.19 cluster on ports 26500 / 8080. Start a compatible cluster before the commands below.
 
 ```bash
 # Git Bash, from this folder
@@ -131,4 +131,5 @@ At that historical repair stage, the other model areas were not changed. The cur
 | `MANUAL_TEST_GUIDE.md` | manual test walkthrough: entries, per-phase steps, branches, messages, troubleshooting |
 | `MANUAL_TEST_GUIDE.zh-CN.md` | Chinese version of the manual test walkthrough |
 | `README.zh-CN.md` | Chinese version of this README |
-| `submission/` and `evidence/` | final plans, acceptance tests, design rationale, test results and curated evidence; local `_analysis/` is a development archive and is not part of the tagged repository |
+| `deliverables/` | supplied Acceptance Test Plan Word document |
+| `evidence/` | curated test evidence; local `_analysis/` is a development archive and is not part of the tagged repository |

@@ -8,4 +8,4 @@ The project uses synthetic identifiers and a local Camunda 8.9.19 cluster. The f
 | `validation/` | Modeler, engine, form mapping, form-js browser and FEEL results, plus a SHA-256 FEEL manifest | FEEL passed 53/53 design-time cases against the tagged BPMN; it does not prove Camunda token execution. Distinguish executable hospital deployment-scope findings from non-executable external-pool warnings. |
 | `runtime/` | Deployment response and 13 groups of status, event-log and element-trace files | Check an instance's status, then inspect its matching `.jsonl` and `-trace.json` to confirm the route. |
 
-The master interpretation and acceptance-status mapping are in `../submission/TEST_RESULTS.md`. Do not infer that a `COMPLETED` instance alone proves every path or live external integration.
+Inspect each runtime status, event log and element trace together. A `COMPLETED` instance alone does not prove every path or live external integration.
