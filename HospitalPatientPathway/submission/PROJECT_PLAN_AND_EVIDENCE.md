@@ -51,4 +51,4 @@ The file timestamps and reports substantiate delivered work. They do not prove f
 
 ## Submission control
 
-The repository tag `hospital-pathway-final-2026-09-29-r7` freezes this submission with the supplied acceptance-plan Word document; r6, r5, r4, r3, r2 and the original `hospital-pathway-final-2026-09-29` tag remain audit baselines. If files change afterward, the new commit is outside r7 until a new tag is issued. The linked public repository should remain readable without login.
+The repository tag `hospital-pathway-final-2026-09-29-r8` freezes this submission with the supplied acceptance-plan Word document as the sole file in `deliverables`. Other required files are retained in `submission/supporting-files`; r7, r6, r5, r4, r3, r2 and the original `hospital-pathway-final-2026-09-29` tag remain audit baselines. If files change afterward, the new commit is outside r8 until a new tag is issued. The linked public repository should remain readable without login.
