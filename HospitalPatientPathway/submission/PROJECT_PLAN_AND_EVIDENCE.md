@@ -50,4 +50,4 @@ The file timestamps and reports substantiate delivered work. They do not prove f
 
 ## Submission control
 
-The repository tag `hospital-pathway-final-2026-09-29-r3` freezes this submission with the Chinese business process test plan; r2 and the original `hospital-pathway-final-2026-09-29` tag remain audit baselines. If files change afterward, the new commit is outside r3 until a new tag is issued. The linked public repository should remain readable without login.
+The repository tag `hospital-pathway-final-2026-09-29-r4` freezes this submission with the optimized Chinese business process test plan; r3, r2 and the original `hospital-pathway-final-2026-09-29` tag remain audit baselines. If files change afterward, the new commit is outside r4 until a new tag is issued. The linked public repository should remain readable without login.
