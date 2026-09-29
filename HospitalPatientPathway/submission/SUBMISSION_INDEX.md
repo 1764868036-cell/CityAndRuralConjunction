@@ -16,7 +16,7 @@ Submission snapshot: 29 September 2026. The deployable process is `../1-17.bpmn`
 | AISD design justification | `DESIGN_DECISIONS.md` | Process structure, boundaries, allocation, gateways, interactions, exceptions and trade-offs. |
 | Readable BPMN PDF | `../deliverables/Hospital_Patient_Pathway_BPMN_Review.pdf` | 17 stage views with a key and source reference; editable source remains the BPMN. |
 | Presentation | `../deliverables/Hospital_Patient_Pathway_Test_Review_EN_20260930_v3.pptx` | 22-slide process and test review. |
-| Repository version | Git tag `hospital-pathway-submission-2026-09-29` | The tag identifies the exact published submission. |
+| Repository version | Git tag `hospital-pathway-final-2026-09-29` | The tag identifies the exact published submission. |
 
 The project is a **local, synthetic-data demonstration**. External services and people are represented by collaboration pools and simulation code; the evidence does not establish live hospital, insurer, payment or correspondence integration. The status of each acceptance scenario is in `TEST_RESULTS.md`.
 

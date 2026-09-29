@@ -46,4 +46,4 @@ The file timestamps and reports substantiate delivered work. They do not prove f
 
 ## Submission control
 
-The repository tag `hospital-pathway-submission-2026-09-29` freezes this submission. If files change afterward, the new commit is outside that version until a new tag is issued. The linked public repository should remain readable without login.
+The repository tag `hospital-pathway-final-2026-09-29` freezes this submission. If files change afterward, the new commit is outside that version until a new tag is issued. The linked public repository should remain readable without login.
