@@ -1,0 +1,334 @@
+{
+  "type": "default",
+  "id": "hospital_14_follow_up_appointments",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "Heading_hospital_14_follow_up_appointments",
+      "type": "text",
+      "text": "# Follow-up Appointment Handling"
+    },
+    {
+      "key": "referralId",
+      "label": "Referral / case ID",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_referralId",
+      "layout": {
+        "row": "Common_referralId",
+        "columns": null
+      }
+    },
+    {
+      "key": "patient_name",
+      "label": "Patient name",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_patient_name",
+      "layout": {
+        "row": "Common_patient_name",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P14_Task_Receive",
+      "type": "group",
+      "label": "Receive the follow-up request",
+      "path": "taskData_P14_Task_Receive",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Capture the clinician’s requested review window before checking appointment availability.",
+          "id": "P14_Task_Receive_Instructions"
+        },
+        {
+          "key": "requestingClinician",
+          "label": "Requesting clinician",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P14_Task_Receive_Field_requestingClinician",
+          "layout": {
+            "row": "P14_Task_Receive_Row_requestingClinician",
+            "columns": null
+          }
+        },
+        {
+          "key": "requestedReviewBy",
+          "label": "Requested review-by date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P14_Task_Receive_Field_requestedReviewBy",
+          "layout": {
+            "row": "P14_Task_Receive_Row_requestedReviewBy",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Requested review-by date"
+        },
+        {
+          "key": "clinicalPriority",
+          "label": "Clinical priority",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P14_Task_Receive_Field_clinicalPriority",
+          "layout": {
+            "row": "P14_Task_Receive_Row_clinicalPriority",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Routine",
+              "value": "routine"
+            },
+            {
+              "label": "Urgent",
+              "value": "urgent"
+            }
+          ]
+        },
+        {
+          "key": "followUpReason",
+          "label": "Reason and clinical requirements",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P14_Task_Receive_Field_followUpReason",
+          "layout": {
+            "row": "P14_Task_Receive_Row_followUpReason",
+            "columns": null
+          }
+        },
+        {
+          "key": "slotAvailable",
+          "label": "Suitable slot available within requested period?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P14_Task_Receive_Field_slotAvailable",
+          "layout": {
+            "row": "P14_Task_Receive_Row_slotAvailable",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P14_Task_Receive\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P14_Task_Receive",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P14_Task_Mark",
+      "type": "group",
+      "label": "Mark the issue for attention",
+      "path": "taskData_P14_Task_Mark",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record the requested timeframe and why no suitable slot was found.",
+          "id": "P14_Task_Mark_Instructions"
+        },
+        {
+          "key": "requestedReviewBy",
+          "label": "Requested review-by date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P14_Task_Mark_Field_requestedReviewBy",
+          "layout": {
+            "row": "P14_Task_Mark_Row_requestedReviewBy",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Requested review-by date"
+        },
+        {
+          "key": "earliestAvailableDate",
+          "label": "Earliest available date",
+          "type": "datetime",
+          "validate": {
+            "required": false
+          },
+          "id": "P14_Task_Mark_Field_earliestAvailableDate",
+          "layout": {
+            "row": "P14_Task_Mark_Row_earliestAvailableDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Earliest available date"
+        },
+        {
+          "key": "availabilityIssueReason",
+          "label": "Reason for unavailable slot",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P14_Task_Mark_Field_availabilityIssueReason",
+          "layout": {
+            "row": "P14_Task_Mark_Row_availabilityIssueReason",
+            "columns": null
+          }
+        },
+        {
+          "key": "priorityFlag",
+          "label": "Priority for pathway review",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P14_Task_Mark_Field_priorityFlag",
+          "layout": {
+            "row": "P14_Task_Mark_Row_priorityFlag",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Routine",
+              "value": "routine"
+            },
+            {
+              "label": "Urgent",
+              "value": "urgent"
+            }
+          ]
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P14_Task_Mark\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P14_Task_Mark",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P14_Task_Hand",
+      "type": "group",
+      "label": "Pass the case to the pathway team",
+      "path": "taskData_P14_Task_Hand",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record the handoff for a case that cannot be booked within the requested timeframe.",
+          "id": "P14_Task_Hand_Instructions"
+        },
+        {
+          "key": "pathwayTeam",
+          "label": "Receiving pathway team",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P14_Task_Hand_Field_pathwayTeam",
+          "layout": {
+            "row": "P14_Task_Hand_Row_pathwayTeam",
+            "columns": null
+          }
+        },
+        {
+          "key": "handoffReason",
+          "label": "Reason for escalation",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P14_Task_Hand_Field_handoffReason",
+          "layout": {
+            "row": "P14_Task_Hand_Row_handoffReason",
+            "columns": null
+          }
+        },
+        {
+          "key": "handoffDate",
+          "label": "Handoff date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P14_Task_Hand_Field_handoffDate",
+          "layout": {
+            "row": "P14_Task_Hand_Row_handoffDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Handoff date"
+        },
+        {
+          "key": "urgentFlag",
+          "label": "Urgent clinical review requested?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P14_Task_Hand_Field_urgentFlag",
+          "layout": {
+            "row": "P14_Task_Hand_Row_urgentFlag",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P14_Task_Hand\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P14_Task_Hand",
+        "columns": null
+      }
+    },
+    {
+      "id": "Complete_hospital_14_follow_up_appointments",
+      "type": "button",
+      "label": "Complete task",
+      "action": "submit",
+      "layout": {
+        "row": "Submit",
+        "columns": null
+      }
+    }
+  ]
+}

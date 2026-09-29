@@ -1,0 +1,455 @@
+{
+  "type": "default",
+  "id": "hospital_10_appointment_outcomes",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "Heading_hospital_10_appointment_outcomes",
+      "type": "text",
+      "text": "# Cancellation, Decline and No-show"
+    },
+    {
+      "key": "referralId",
+      "label": "Referral / case ID",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_referralId",
+      "layout": {
+        "row": "Common_referralId",
+        "columns": null
+      }
+    },
+    {
+      "key": "patient_name",
+      "label": "Patient name",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_patient_name",
+      "layout": {
+        "row": "Common_patient_name",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P10_Task_Record",
+      "type": "group",
+      "label": "Record the cancellation, refusal or no-show",
+      "path": "taskData_P10_Task_Record",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record what happened before choosing the next pathway action.",
+          "id": "P10_Task_Record_Instructions"
+        },
+        {
+          "key": "caseEventType",
+          "label": "Appointment outcome",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P10_Task_Record_Field_caseEventType",
+          "layout": {
+            "row": "P10_Task_Record_Row_caseEventType",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Cancelled",
+              "value": "cancelled"
+            },
+            {
+              "label": "Declined",
+              "value": "declined"
+            },
+            {
+              "label": "Did not attend",
+              "value": "no-show"
+            }
+          ]
+        },
+        {
+          "key": "eventDate",
+          "label": "Date of event",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P10_Task_Record_Field_eventDate",
+          "layout": {
+            "row": "P10_Task_Record_Row_eventDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Date of event"
+        },
+        {
+          "key": "caseDecision",
+          "label": "What should happen next?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P10_Task_Record_Field_caseDecision",
+          "layout": {
+            "row": "P10_Task_Record_Row_caseDecision",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Offer another appointment",
+              "value": "re-book"
+            },
+            {
+              "label": "Request clinical review",
+              "value": "clinical-review"
+            },
+            {
+              "label": "Notify the referring organisation",
+              "value": "notify-referrer"
+            }
+          ]
+        },
+        {
+          "key": "eventReason",
+          "label": "Reason or contact outcome",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P10_Task_Record_Field_eventReason",
+          "layout": {
+            "row": "P10_Task_Record_Row_eventReason",
+            "columns": null
+          }
+        },
+        {
+          "key": "paymentReceived",
+          "label": "Has payment already been received?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P10_Task_Record_Field_paymentReceived",
+          "layout": {
+            "row": "P10_Task_Record_Row_paymentReceived",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        },
+        {
+          "key": "patientNotified",
+          "label": "Patient communication completed?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P10_Task_Record_Field_patientNotified",
+          "layout": {
+            "row": "P10_Task_Record_Row_patientNotified",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P10_Task_Record\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P10_Task_Record",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P10_Task_Rebook",
+      "type": "group",
+      "label": "Offer another appointment",
+      "path": "taskData_P10_Task_Rebook",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record the replacement appointment and the patient communication outcome.",
+          "id": "P10_Task_Rebook_Instructions"
+        },
+        {
+          "key": "newAppointmentDate",
+          "label": "Proposed appointment date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P10_Task_Rebook_Field_newAppointmentDate",
+          "layout": {
+            "row": "P10_Task_Rebook_Row_newAppointmentDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Proposed appointment date"
+        },
+        {
+          "key": "bookingReference",
+          "label": "Scheduling reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P10_Task_Rebook_Field_bookingReference",
+          "layout": {
+            "row": "P10_Task_Rebook_Row_bookingReference",
+            "columns": null
+          }
+        },
+        {
+          "key": "contactMethod",
+          "label": "Patient contact method",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P10_Task_Rebook_Field_contactMethod",
+          "layout": {
+            "row": "P10_Task_Rebook_Row_contactMethod",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Letter",
+              "value": "letter"
+            },
+            {
+              "label": "Telephone",
+              "value": "telephone"
+            },
+            {
+              "label": "Digital",
+              "value": "digital"
+            }
+          ]
+        },
+        {
+          "key": "patientContactOutcome",
+          "label": "Contact outcome and patient preference",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P10_Task_Rebook_Field_patientContactOutcome",
+          "layout": {
+            "row": "P10_Task_Rebook_Row_patientContactOutcome",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P10_Task_Rebook\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P10_Task_Rebook",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P10_Task_ClinicalReview",
+      "type": "group",
+      "label": "Obtain a clinical pathway decision",
+      "path": "taskData_P10_Task_ClinicalReview",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Only an authorised clinical professional decides whether care continues, is delayed or ends.",
+          "id": "P10_Task_ClinicalReview_Instructions"
+        },
+        {
+          "key": "clinicalDisposition",
+          "label": "Clinical decision",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P10_Task_ClinicalReview_Field_clinicalDisposition",
+          "layout": {
+            "row": "P10_Task_ClinicalReview_Row_clinicalDisposition",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Continue pathway",
+              "value": "continue"
+            },
+            {
+              "label": "Delay and review",
+              "value": "delay"
+            },
+            {
+              "label": "Discharge",
+              "value": "discharge"
+            }
+          ]
+        },
+        {
+          "key": "clinicalReviewReason",
+          "label": "Clinical rationale and follow-up instructions",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P10_Task_ClinicalReview_Field_clinicalReviewReason",
+          "layout": {
+            "row": "P10_Task_ClinicalReview_Row_clinicalReviewReason",
+            "columns": null
+          }
+        },
+        {
+          "key": "authorisedClinician",
+          "label": "Authorised clinician",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P10_Task_ClinicalReview_Field_authorisedClinician",
+          "layout": {
+            "row": "P10_Task_ClinicalReview_Row_authorisedClinician",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P10_Task_ClinicalReview\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P10_Task_ClinicalReview",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P10_Task_Finance",
+      "type": "group",
+      "label": "Record the Finance decision for received payment",
+      "path": "taskData_P10_Task_Finance",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Finance decides whether payment is retained, transferred or refunded.",
+          "id": "P10_Task_Finance_Instructions"
+        },
+        {
+          "key": "paymentAction",
+          "label": "Financial action",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P10_Task_Finance_Field_paymentAction",
+          "layout": {
+            "row": "P10_Task_Finance_Row_paymentAction",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Retain",
+              "value": "retain"
+            },
+            {
+              "label": "Transfer to another appointment",
+              "value": "transfer"
+            },
+            {
+              "label": "Refund",
+              "value": "refund"
+            }
+          ]
+        },
+        {
+          "key": "paymentAmount",
+          "label": "Amount under review",
+          "type": "number",
+          "validate": {
+            "required": false,
+            "min": 0
+          },
+          "id": "P10_Task_Finance_Field_paymentAmount",
+          "layout": {
+            "row": "P10_Task_Finance_Row_paymentAmount",
+            "columns": null
+          },
+          "decimalDigits": 2
+        },
+        {
+          "key": "financialRationale",
+          "label": "Reason and supporting reference",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P10_Task_Finance_Field_financialRationale",
+          "layout": {
+            "row": "P10_Task_Finance_Row_financialRationale",
+            "columns": null
+          }
+        },
+        {
+          "key": "financeAuthoriser",
+          "label": "Authorised Finance staff member",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P10_Task_Finance_Field_financeAuthoriser",
+          "layout": {
+            "row": "P10_Task_Finance_Row_financeAuthoriser",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P10_Task_Finance\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P10_Task_Finance",
+        "columns": null
+      }
+    },
+    {
+      "id": "Complete_hospital_10_appointment_outcomes",
+      "type": "button",
+      "label": "Complete task",
+      "action": "submit",
+      "layout": {
+        "row": "Submit",
+        "columns": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "instance": {
+    "processDefinitionId": "Process_Hospital_Integrated",
+    "processDefinitionName": "Hospital Patient Pathway - Processes 1-17",
+    "processDefinitionVersion": 2,
+    "processDefinitionVersionTag": null,
+    "startDate": "2026-09-28T05:46:01.778Z",
+    "endDate": "2026-09-28T05:52:52.820Z",
+    "state": "COMPLETED",
+    "hasIncident": false,
+    "tenantId": "<default>",
+    "processInstanceKey": "2251799813787085",
+    "processDefinitionKey": "2251799813786948",
+    "parentProcessInstanceKey": null,
+    "parentElementInstanceKey": null,
+    "rootProcessInstanceKey": "2251799813787085",
+    "tags": [],
+    "businessId": null
+  },
+  "tasks": [],
+  "active": [],
+  "incidents": []
+}

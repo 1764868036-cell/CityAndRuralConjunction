@@ -1,0 +1,658 @@
+{
+  "type": "default",
+  "id": "hospital_08_continue_treatment",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "Heading_08_continue_treatment",
+      "type": "text",
+      "text": "# Treatment Continuation Review"
+    },
+    {
+      "key": "referralId",
+      "label": "Referral / case ID",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "description": "Use the reference assigned to this referral.",
+      "id": "Common_referralId",
+      "layout": {
+        "row": "Common_referralId",
+        "columns": null
+      }
+    },
+    {
+      "key": "patient_name",
+      "label": "Patient name",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_patient_name",
+      "layout": {
+        "row": "Common_patient_name",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R8_ClinicalReview",
+      "type": "group",
+      "label": "Clinical review and blood test determine next step",
+      "path": "taskData_R8_ClinicalReview",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "cycleNumber",
+          "label": "Cycle reviewed",
+          "type": "number",
+          "validate": {
+            "required": true,
+            "min": 0
+          },
+          "decimalDigits": 2,
+          "id": "R8_ClinicalReview_Field_3",
+          "layout": {
+            "row": "R8_ClinicalReview_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "clinicalReviewFindings",
+          "label": "Clinical review findings",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R8_ClinicalReview_Field_4",
+          "layout": {
+            "row": "R8_ClinicalReview_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "bloodTestSummary",
+          "label": "Blood test results and assessment",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R8_ClinicalReview_Field_5",
+          "layout": {
+            "row": "R8_ClinicalReview_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "clinicalDecision",
+          "label": "Clinical decision",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "Continue treatment",
+              "value": "continue"
+            },
+            {
+              "label": "Change treatment",
+              "value": "change"
+            },
+            {
+              "label": "Delay and reassess",
+              "value": "delay"
+            },
+            {
+              "label": "Stop treatment",
+              "value": "stop"
+            }
+          ],
+          "id": "R8_ClinicalReview_Field_6",
+          "layout": {
+            "row": "R8_ClinicalReview_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "clinicalDecisionReason",
+          "label": "Reason and authorised next steps",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R8_ClinicalReview_Field_7",
+          "layout": {
+            "row": "R8_ClinicalReview_Row_7",
+            "columns": null
+          }
+        },
+        {
+          "key": "revisedPlanReference",
+          "label": "Revised plan reference, when applicable",
+          "type": "textfield",
+          "validate": {
+            "required": false
+          },
+          "id": "R8_ClinicalReview_Field_8",
+          "layout": {
+            "row": "R8_ClinicalReview_Row_8",
+            "columns": null
+          }
+        },
+        {
+          "key": "reassessmentDelay",
+          "label": "Reassessment interval (ISO 8601)",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "defaultValue": "P7D",
+          "description": "Set the clinically authorised interval when delaying treatment.",
+          "id": "R8_ClinicalReview_Field_9",
+          "layout": {
+            "row": "R8_ClinicalReview_Row_9",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R8_ClinicalReview\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_R8_ClinicalReview",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P8_Task_Review",
+      "type": "group",
+      "label": "Carry out the clinical review and blood test",
+      "path": "taskData_P8_Task_Review",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record the assessment before deciding whether the next cycle can proceed.",
+          "id": "P8_Task_Review_Instructions"
+        },
+        {
+          "key": "cycleNumber",
+          "label": "Treatment cycle number",
+          "type": "number",
+          "validate": {
+            "required": true,
+            "min": 1
+          },
+          "id": "P8_Task_Review_Field_cycleNumber",
+          "layout": {
+            "row": "P8_Task_Review_Row_cycleNumber",
+            "columns": null
+          },
+          "decimalDigits": 0
+        },
+        {
+          "key": "reviewDate",
+          "label": "Clinical review date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_Review_Field_reviewDate",
+          "layout": {
+            "row": "P8_Task_Review_Row_reviewDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Clinical review date"
+        },
+        {
+          "key": "clinicalReviewFindings",
+          "label": "Clinical review findings",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_Review_Field_clinicalReviewFindings",
+          "layout": {
+            "row": "P8_Task_Review_Row_clinicalReviewFindings",
+            "columns": null
+          }
+        },
+        {
+          "key": "bloodTestSummary",
+          "label": "Blood test results and assessment",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_Review_Field_bloodTestSummary",
+          "layout": {
+            "row": "P8_Task_Review_Row_bloodTestSummary",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P8_Task_Review\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P8_Task_Review",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P8_Task_Evaluate",
+      "type": "group",
+      "label": "Decide whether the patient is fit to continue",
+      "path": "taskData_P8_Task_Evaluate",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Only an authorised clinical professional makes this decision.",
+          "id": "P8_Task_Evaluate_Instructions"
+        },
+        {
+          "key": "fitToContinue",
+          "label": "Is the patient medically fit to continue?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_Evaluate_Field_fitToContinue",
+          "layout": {
+            "row": "P8_Task_Evaluate_Row_fitToContinue",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        },
+        {
+          "key": "clinicalDecisionReason",
+          "label": "Clinical rationale and required action",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_Evaluate_Field_clinicalDecisionReason",
+          "layout": {
+            "row": "P8_Task_Evaluate_Row_clinicalDecisionReason",
+            "columns": null
+          }
+        },
+        {
+          "key": "reviewingClinician",
+          "label": "Reviewing clinician",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_Evaluate_Field_reviewingClinician",
+          "layout": {
+            "row": "P8_Task_Evaluate_Row_reviewingClinician",
+            "columns": null
+          },
+          "description": "Record the authorised clinical professional."
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P8_Task_Evaluate\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P8_Task_Evaluate",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P8_Task_DecideAction",
+      "type": "group",
+      "label": "Decide to postpone, change, or stop treatment",
+      "path": "taskData_P8_Task_DecideAction",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record the clinical decision and its effective date.",
+          "id": "P8_Task_DecideAction_Instructions"
+        },
+        {
+          "id": "P8_Task_DecideAction_StopDecision",
+          "type": "text",
+          "text": "The recorded clinical decision is to stop treatment. Record the reason and effective date; the stop decision will be preserved.",
+          "conditional": {
+            "hide": "= clinicalDecision != \"stop\""
+          }
+        },
+        {
+          "key": "action",
+          "label": "Action required",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_DecideAction_Field_action",
+          "layout": {
+            "row": "P8_Task_DecideAction_Row_action",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Postpone treatment",
+              "value": "postpone"
+            },
+            {
+              "label": "Change treatment plan",
+              "value": "change"
+            },
+            {
+              "label": "Stop treatment",
+              "value": "stop"
+            }
+          ],
+          "conditional": {
+            "hide": "= clinicalDecision = \"stop\""
+          }
+        },
+        {
+          "key": "actionReason",
+          "label": "Clinical reason and instructions",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_DecideAction_Field_actionReason",
+          "layout": {
+            "row": "P8_Task_DecideAction_Row_actionReason",
+            "columns": null
+          }
+        },
+        {
+          "key": "actionEffectiveDate",
+          "label": "Effective date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_DecideAction_Field_actionEffectiveDate",
+          "layout": {
+            "row": "P8_Task_DecideAction_Row_actionEffectiveDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Effective date"
+        },
+        {
+          "key": "urgentSafetyPostponement",
+          "label": "Was this an urgent patient-safety postponement?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_DecideAction_Field_urgentSafetyPostponement",
+          "layout": {
+            "row": "P8_Task_DecideAction_Row_urgentSafetyPostponement",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P8_Task_DecideAction\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P8_Task_DecideAction",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P8_Task_AssessPriority",
+      "type": "group",
+      "label": "Authorise the clinical response to a scheduling conflict",
+      "path": "taskData_P8_Task_AssessPriority",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "clinicalPriority",
+          "label": "Authorised clinical priority",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_AssessPriority_Field_clinicalPriority",
+          "layout": {
+            "row": "P8_Task_AssessPriority_Row_clinicalPriority",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Routine",
+              "value": "routine"
+            },
+            {
+              "label": "Urgent",
+              "value": "urgent"
+            }
+          ]
+        },
+        {
+          "key": "requestedReviewBy",
+          "label": "Latest clinically acceptable appointment date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_AssessPriority_Field_requestedReviewBy",
+          "layout": {
+            "row": "P8_Task_AssessPriority_Row_requestedReviewBy",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Latest clinically acceptable appointment date"
+        },
+        {
+          "key": "priorityDecision",
+          "label": "Clinical scheduling decision",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_AssessPriority_Field_priorityDecision",
+          "layout": {
+            "row": "P8_Task_AssessPriority_Row_priorityDecision",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Expedite within the clinical window",
+              "value": "expedite"
+            },
+            {
+              "label": "Keep the existing appointment",
+              "value": "keep-existing"
+            },
+            {
+              "label": "Authorise a revised review window",
+              "value": "revise-window"
+            }
+          ]
+        },
+        {
+          "key": "priorityDecisionReason",
+          "label": "Clinical rationale and instructions",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_AssessPriority_Field_priorityDecisionReason",
+          "layout": {
+            "row": "P8_Task_AssessPriority_Row_priorityDecisionReason",
+            "columns": null
+          }
+        },
+        {
+          "key": "priorityAuthorisingClinician",
+          "label": "Authorising Consultant",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_AssessPriority_Field_priorityAuthorisingClinician",
+          "layout": {
+            "row": "P8_Task_AssessPriority_Row_priorityAuthorisingClinician",
+            "columns": null
+          }
+        },
+        {
+          "key": "priorityDecisionReference",
+          "label": "Clinical decision reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_AssessPriority_Field_priorityDecisionReference",
+          "layout": {
+            "row": "P8_Task_AssessPriority_Row_priorityDecisionReference",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P8_Task_AssessPriority\")"
+      },
+      "layout": {
+        "row": "Section_P8_Task_AssessPriority",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P8_Task_AnswerClinicalInquiry",
+      "type": "group",
+      "label": "Prepare an authorised clinical enquiry response",
+      "path": "taskData_P8_Task_AnswerClinicalInquiry",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "The clinical professional records the advice; Call Handling may relay the authorised response.",
+          "id": "P8_Task_AnswerClinicalInquiry_Instructions"
+        },
+        {
+          "key": "clinicalEnquirySummary",
+          "label": "Clinical enquiry",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_AnswerClinicalInquiry_Field_clinicalEnquirySummary",
+          "layout": {
+            "row": "P8_Task_AnswerClinicalInquiry_Row_clinicalEnquirySummary",
+            "columns": null
+          }
+        },
+        {
+          "key": "clinicalEnquiryResponse",
+          "label": "Clinical response and next steps",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_AnswerClinicalInquiry_Field_clinicalEnquiryResponse",
+          "layout": {
+            "row": "P8_Task_AnswerClinicalInquiry_Row_clinicalEnquiryResponse",
+            "columns": null
+          }
+        },
+        {
+          "key": "clinicalEnquiryResolved",
+          "label": "Has this enquiry been resolved?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_AnswerClinicalInquiry_Field_clinicalEnquiryResolved",
+          "layout": {
+            "row": "P8_Task_AnswerClinicalInquiry_Row_clinicalEnquiryResolved",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        },
+        {
+          "key": "clinicalResponseBy",
+          "label": "Responding clinical professional",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_AnswerClinicalInquiry_Field_clinicalResponseBy",
+          "layout": {
+            "row": "P8_Task_AnswerClinicalInquiry_Row_clinicalResponseBy",
+            "columns": null
+          }
+        },
+        {
+          "key": "clinicalResponseReference",
+          "label": "Clinical response / record reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P8_Task_AnswerClinicalInquiry_Field_clinicalResponseReference",
+          "layout": {
+            "row": "P8_Task_AnswerClinicalInquiry_Row_clinicalResponseReference",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P8_Task_AnswerClinicalInquiry\")"
+      },
+      "layout": {
+        "row": "Section_P8_Task_AnswerClinicalInquiry",
+        "columns": null
+      }
+    },
+    {
+      "id": "Complete_08_continue_treatment",
+      "type": "button",
+      "label": "Complete task",
+      "action": "submit",
+      "layout": {
+        "row": "Submit",
+        "columns": null
+      }
+    }
+  ]
+}

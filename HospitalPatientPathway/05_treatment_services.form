@@ -1,0 +1,507 @@
+{
+  "type": "default",
+  "id": "hospital_05_treatment_services",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "Heading_05_treatment_services",
+      "type": "text",
+      "text": "# Treatment and External Services"
+    },
+    {
+      "key": "referralId",
+      "label": "Referral / case ID",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "description": "Use the reference assigned to this referral.",
+      "id": "Common_referralId",
+      "layout": {
+        "row": "Common_referralId",
+        "columns": null
+      }
+    },
+    {
+      "key": "patient_name",
+      "label": "Patient name",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_patient_name",
+      "layout": {
+        "row": "Common_patient_name",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R5_ReviewPlan",
+      "type": "group",
+      "label": "Review authorised treatment plan and resources",
+      "path": "taskData_R5_ReviewPlan",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "authorisedPlanReference",
+          "label": "Authorised treatment plan reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R5_ReviewPlan_Field_3",
+          "layout": {
+            "row": "R5_ReviewPlan_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "treatmentType",
+          "label": "Treatment / regimen",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R5_ReviewPlan_Field_4",
+          "layout": {
+            "row": "R5_ReviewPlan_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "cycleNumber",
+          "label": "Treatment cycle number",
+          "type": "number",
+          "validate": {
+            "required": true,
+            "min": 0
+          },
+          "decimalDigits": 2,
+          "id": "R5_ReviewPlan_Field_5",
+          "layout": {
+            "row": "R5_ReviewPlan_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "resourceRequirements",
+          "label": "Staff, equipment and facility requirements",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R5_ReviewPlan_Field_6",
+          "layout": {
+            "row": "R5_ReviewPlan_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "externalServiceRequirements",
+          "label": "Laboratory, imaging and other external services",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R5_ReviewPlan_Field_7",
+          "layout": {
+            "row": "R5_ReviewPlan_Row_7",
+            "columns": null
+          }
+        },
+        {
+          "key": "treatmentServiceRetryDelay",
+          "label": "Service retry interval (ISO 8601)",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "defaultValue": "P1D",
+          "description": "Confirm the interval under local service policy.",
+          "id": "R5_ReviewPlan_Field_8",
+          "layout": {
+            "row": "R5_ReviewPlan_Row_8",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R5_ReviewPlan\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_R5_ReviewPlan",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R5_ConfirmTreatment",
+      "type": "group",
+      "label": "Reserve provisional slots and record dependencies",
+      "path": "taskData_R5_ConfirmTreatment",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record provisional reservations. Final booking follows financial clearance.",
+          "id": "R5_ConfirmTreatment_Instructions_provisional_treatment_booking"
+        },
+        {
+          "key": "provisionalBookingReference",
+          "label": "Provisional booking reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R5_ConfirmTreatment_Field_3",
+          "layout": {
+            "row": "R5_ConfirmTreatment_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "provisionalTreatmentDate",
+          "label": "Provisional date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "subtype": "date",
+          "dateLabel": "Provisional date",
+          "id": "R5_ConfirmTreatment_Field_4",
+          "layout": {
+            "row": "R5_ConfirmTreatment_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "serviceReservationReferences",
+          "label": "Service reservation references",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R5_ConfirmTreatment_Field_5",
+          "layout": {
+            "row": "R5_ConfirmTreatment_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "bookingDependencies",
+          "label": "Dependencies and outstanding clearances",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R5_ConfirmTreatment_Field_6",
+          "layout": {
+            "row": "R5_ConfirmTreatment_Row_6",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R5_ConfirmTreatment\")"
+      },
+      "layout": {
+        "row": "Section_R5_ConfirmTreatment",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_Confirm_Treatment_Booking",
+      "type": "group",
+      "label": "Confirm treatment booking after financial clearance",
+      "path": "taskData_Confirm_Treatment_Booking",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "finalBookingReference",
+          "label": "Final booking reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Confirm_Treatment_Booking_Field_3",
+          "layout": {
+            "row": "Confirm_Treatment_Booking_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "finalTreatmentDate",
+          "label": "Confirmed treatment date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "subtype": "date",
+          "dateLabel": "Confirmed treatment date",
+          "id": "Confirm_Treatment_Booking_Field_4",
+          "layout": {
+            "row": "Confirm_Treatment_Booking_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "treatmentLocation",
+          "label": "Treatment location",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Confirm_Treatment_Booking_Field_5",
+          "layout": {
+            "row": "Confirm_Treatment_Booking_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "clearanceReference",
+          "label": "Financial clearance reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Confirm_Treatment_Booking_Field_6",
+          "layout": {
+            "row": "Confirm_Treatment_Booking_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "finalBookingInstructions",
+          "label": "Patient and service instructions",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "Confirm_Treatment_Booking_Field_7",
+          "layout": {
+            "row": "Confirm_Treatment_Booking_Row_7",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"Confirm_Treatment_Booking\")"
+      },
+      "layout": {
+        "row": "Section_Confirm_Treatment_Booking",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_Deliver_Treatment_Cycle",
+      "type": "group",
+      "label": "Provide authorised treatment cycle",
+      "path": "taskData_Deliver_Treatment_Cycle",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "authorisedPlanReference",
+          "label": "Authorised plan reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Deliver_Treatment_Cycle_Field_3",
+          "layout": {
+            "row": "Deliver_Treatment_Cycle_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "cycleNumber",
+          "label": "Cycle number",
+          "type": "number",
+          "validate": {
+            "required": true,
+            "min": 0
+          },
+          "decimalDigits": 2,
+          "id": "Deliver_Treatment_Cycle_Field_4",
+          "layout": {
+            "row": "Deliver_Treatment_Cycle_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "treatmentDate",
+          "label": "Date treatment provided",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "subtype": "date",
+          "dateLabel": "Date treatment provided",
+          "id": "Deliver_Treatment_Cycle_Field_5",
+          "layout": {
+            "row": "Deliver_Treatment_Cycle_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "treatmentProvidedBy",
+          "label": "Responsible clinician / team",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Deliver_Treatment_Cycle_Field_6",
+          "layout": {
+            "row": "Deliver_Treatment_Cycle_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "treatmentDelivered",
+          "label": "Treatment provided",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "Deliver_Treatment_Cycle_Field_7",
+          "layout": {
+            "row": "Deliver_Treatment_Cycle_Row_7",
+            "columns": null
+          }
+        },
+        {
+          "key": "treatmentObservations",
+          "label": "Observations and follow-up requirements",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "Deliver_Treatment_Cycle_Field_8",
+          "layout": {
+            "row": "Deliver_Treatment_Cycle_Row_8",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"Deliver_Treatment_Cycle\")"
+      },
+      "layout": {
+        "row": "Section_Deliver_Treatment_Cycle",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P5_Task_HoldTreatment",
+      "type": "group",
+      "label": "Record the treatment hold and responsible follow-up team",
+      "path": "taskData_P5_Task_HoldTreatment",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Keep the treatment reservation provisional until the required clearance is recorded.",
+          "id": "P5_Task_HoldTreatment_Instructions"
+        },
+        {
+          "key": "treatmentHoldReason",
+          "label": "Reason treatment remains on hold",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P5_Task_HoldTreatment_Field_treatmentHoldReason",
+          "layout": {
+            "row": "P5_Task_HoldTreatment_Row_treatmentHoldReason",
+            "columns": null
+          }
+        },
+        {
+          "key": "holdFollowUpType",
+          "label": "Follow-up required",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P5_Task_HoldTreatment_Field_holdFollowUpType",
+          "layout": {
+            "row": "P5_Task_HoldTreatment_Row_holdFollowUpType",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Funding approval",
+              "value": "funding"
+            },
+            {
+              "label": "Payment investigation / arrangement",
+              "value": "payment"
+            }
+          ]
+        },
+        {
+          "key": "holdFollowUpOwner",
+          "label": "Responsible follow-up staff member or team",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P5_Task_HoldTreatment_Field_holdFollowUpOwner",
+          "layout": {
+            "row": "P5_Task_HoldTreatment_Row_holdFollowUpOwner",
+            "columns": null
+          }
+        },
+        {
+          "key": "holdReviewBy",
+          "label": "Follow-up due date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P5_Task_HoldTreatment_Field_holdReviewBy",
+          "layout": {
+            "row": "P5_Task_HoldTreatment_Row_holdReviewBy",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Follow-up due date"
+        },
+        {
+          "key": "holdNotificationReference",
+          "label": "Notification / case note reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P5_Task_HoldTreatment_Field_holdNotificationReference",
+          "layout": {
+            "row": "P5_Task_HoldTreatment_Row_holdNotificationReference",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P5_Task_HoldTreatment\")"
+      },
+      "layout": {
+        "row": "Section_P5_Task_HoldTreatment",
+        "columns": null
+      }
+    },
+    {
+      "id": "Complete_05_treatment_services",
+      "type": "button",
+      "label": "Complete task",
+      "action": "submit",
+      "layout": {
+        "row": "Submit",
+        "columns": null
+      }
+    }
+  ]
+}

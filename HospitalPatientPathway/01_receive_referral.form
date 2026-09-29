@@ -1,0 +1,400 @@
+{
+  "type": "default",
+  "id": "hospital_01_receive_referral",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "Heading_01_receive_referral",
+      "type": "text",
+      "text": "# Referral Intake"
+    },
+    {
+      "key": "referralId",
+      "label": "Referral / case ID",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "description": "Use the reference assigned to this referral.",
+      "id": "Common_referralId",
+      "layout": {
+        "row": "Common_referralId",
+        "columns": null
+      }
+    },
+    {
+      "key": "patient_name",
+      "label": "Patient name",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_patient_name",
+      "layout": {
+        "row": "Common_patient_name",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R1_RegisterCheck",
+      "type": "group",
+      "label": "Register referral in PAS and check documents",
+      "path": "taskData_R1_RegisterCheck",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Register the referral and check the supporting information before clinical review.",
+          "id": "R1_RegisterCheck_Instructions_referral_registration"
+        },
+        {
+          "key": "referrerName",
+          "label": "Referring organisation / clinician",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R1_RegisterCheck_Field_3",
+          "layout": {
+            "row": "R1_RegisterCheck_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "patientContact",
+          "label": "Patient contact details",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R1_RegisterCheck_Field_4",
+          "layout": {
+            "row": "R1_RegisterCheck_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "referralReceivedDate",
+          "label": "Date received",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "subtype": "date",
+          "dateLabel": "Date received",
+          "id": "R1_RegisterCheck_Field_5",
+          "layout": {
+            "row": "R1_RegisterCheck_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "referralReason",
+          "label": "Reason for referral",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R1_RegisterCheck_Field_6",
+          "layout": {
+            "row": "R1_RegisterCheck_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "documentReferences",
+          "label": "Referral and investigation document references",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R1_RegisterCheck_Field_7",
+          "layout": {
+            "row": "R1_RegisterCheck_Row_7",
+            "columns": null
+          }
+        },
+        {
+          "key": "documentsCompleteChoice",
+          "label": "Are all required referral documents complete?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ],
+          "id": "R1_RegisterCheck_Field_8",
+          "layout": {
+            "row": "R1_RegisterCheck_Row_8",
+            "columns": null
+          }
+        },
+        {
+          "key": "missingDocuments",
+          "label": "Missing information or documents",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "R1_RegisterCheck_Field_9",
+          "layout": {
+            "row": "R1_RegisterCheck_Row_9",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R1_RegisterCheck\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_R1_RegisterCheck",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R1_UpdateReferral",
+      "type": "group",
+      "label": "Update record and recheck",
+      "path": "taskData_R1_UpdateReferral",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "receivedDocumentReferences",
+          "label": "Additional records received",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R1_UpdateReferral_Field_3",
+          "layout": {
+            "row": "R1_UpdateReferral_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "referralUpdateNotes",
+          "label": "Record updates",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R1_UpdateReferral_Field_4",
+          "layout": {
+            "row": "R1_UpdateReferral_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "documentsCompleteChoice",
+          "label": "Is the referral now complete?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ],
+          "id": "R1_UpdateReferral_Field_5",
+          "layout": {
+            "row": "R1_UpdateReferral_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "missingDocuments",
+          "label": "Outstanding information",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "R1_UpdateReferral_Field_6",
+          "layout": {
+            "row": "R1_UpdateReferral_Row_6",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R1_UpdateReferral\")"
+      },
+      "layout": {
+        "row": "Section_R1_UpdateReferral",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_Referrer_PrepareReferral",
+      "type": "group",
+      "label": "Prepare referral package",
+      "path": "taskData_Referrer_PrepareReferral",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Assign a unique referral ID and send it with the referral payload.",
+          "id": "Referrer_PrepareReferral_Instructions_referrer_referral_package"
+        },
+        {
+          "key": "referrerName",
+          "label": "Referring organisation / clinician",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Referrer_PrepareReferral_Field_3",
+          "layout": {
+            "row": "Referrer_PrepareReferral_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "patientContact",
+          "label": "Patient contact details",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Referrer_PrepareReferral_Field_4",
+          "layout": {
+            "row": "Referrer_PrepareReferral_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "referralReason",
+          "label": "Reason for referral",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "Referrer_PrepareReferral_Field_5",
+          "layout": {
+            "row": "Referrer_PrepareReferral_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "documentReferences",
+          "label": "Document and investigation references",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "Referrer_PrepareReferral_Field_6",
+          "layout": {
+            "row": "Referrer_PrepareReferral_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "referralDate",
+          "label": "Referral date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "subtype": "date",
+          "dateLabel": "Referral date",
+          "id": "Referrer_PrepareReferral_Field_7",
+          "layout": {
+            "row": "Referrer_PrepareReferral_Row_7",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"Referrer_PrepareReferral\")"
+      },
+      "layout": {
+        "row": "Section_Referrer_PrepareReferral",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_Referrer_CollectDocs",
+      "type": "group",
+      "label": "Collect and check requested records",
+      "path": "taskData_Referrer_CollectDocs",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "requestedDocuments",
+          "label": "Requested documents",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "Referrer_CollectDocs_Field_3",
+          "layout": {
+            "row": "Referrer_CollectDocs_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "receivedDocumentReferences",
+          "label": "Records supplied",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "Referrer_CollectDocs_Field_4",
+          "layout": {
+            "row": "Referrer_CollectDocs_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "referrerDocumentNotes",
+          "label": "Additional information",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "Referrer_CollectDocs_Field_5",
+          "layout": {
+            "row": "Referrer_CollectDocs_Row_5",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"Referrer_CollectDocs\")"
+      },
+      "layout": {
+        "row": "Section_Referrer_CollectDocs",
+        "columns": null
+      }
+    },
+    {
+      "id": "Complete_01_receive_referral",
+      "type": "button",
+      "label": "Complete task",
+      "action": "submit",
+      "layout": {
+        "row": "Submit",
+        "columns": null
+      }
+    }
+  ]
+}

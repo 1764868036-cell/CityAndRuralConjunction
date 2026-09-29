@@ -1,0 +1,241 @@
+{
+  "type": "default",
+  "id": "hospital_11_refund_decisions",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "Heading_hospital_11_refund_decisions",
+      "type": "text",
+      "text": "# Refund and Transfer Decision"
+    },
+    {
+      "key": "referralId",
+      "label": "Referral / case ID",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_referralId",
+      "layout": {
+        "row": "Common_referralId",
+        "columns": null
+      }
+    },
+    {
+      "key": "patient_name",
+      "label": "Patient name",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_patient_name",
+      "layout": {
+        "row": "Common_patient_name",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P11_Task_Decide",
+      "type": "group",
+      "label": "Decide whether to refund or transfer funds",
+      "path": "taskData_P11_Task_Decide",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Finance records the authorised outcome and financial rationale.",
+          "id": "P11_Task_Decide_Instructions"
+        },
+        {
+          "key": "refundOutcome",
+          "label": "Decision outcome",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P11_Task_Decide_Field_refundOutcome",
+          "layout": {
+            "row": "P11_Task_Decide_Row_refundOutcome",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Approve refund",
+              "value": "refund"
+            },
+            {
+              "label": "Transfer to another booking",
+              "value": "transfer"
+            },
+            {
+              "label": "Reject refund",
+              "value": "reject"
+            }
+          ]
+        },
+        {
+          "key": "approvedRefundAmount",
+          "label": "Approved refund amount",
+          "type": "number",
+          "validate": {
+            "required": false,
+            "min": 0
+          },
+          "id": "P11_Task_Decide_Field_approvedRefundAmount",
+          "layout": {
+            "row": "P11_Task_Decide_Row_approvedRefundAmount",
+            "columns": null
+          },
+          "decimalDigits": 2
+        },
+        {
+          "key": "transferBookingReference",
+          "label": "New booking reference for a transfer",
+          "type": "textfield",
+          "validate": {
+            "required": false
+          },
+          "id": "P11_Task_Decide_Field_transferBookingReference",
+          "layout": {
+            "row": "P11_Task_Decide_Row_transferBookingReference",
+            "columns": null
+          }
+        },
+        {
+          "key": "decisionReason",
+          "label": "Decision rationale",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P11_Task_Decide_Field_decisionReason",
+          "layout": {
+            "row": "P11_Task_Decide_Row_decisionReason",
+            "columns": null
+          }
+        },
+        {
+          "key": "financeApprover",
+          "label": "Finance approver",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P11_Task_Decide_Field_financeApprover",
+          "layout": {
+            "row": "P11_Task_Decide_Row_financeApprover",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P11_Task_Decide\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P11_Task_Decide",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P11_Task_RecordDecision",
+      "type": "group",
+      "label": "Record the refusal decision",
+      "path": "taskData_P11_Task_RecordDecision",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record why a refund was refused and the notification reference.",
+          "id": "P11_Task_RecordDecision_Instructions"
+        },
+        {
+          "key": "refusalReason",
+          "label": "Reason for refusal",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P11_Task_RecordDecision_Field_refusalReason",
+          "layout": {
+            "row": "P11_Task_RecordDecision_Row_refusalReason",
+            "columns": null
+          }
+        },
+        {
+          "key": "decisionDate",
+          "label": "Decision date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P11_Task_RecordDecision_Field_decisionDate",
+          "layout": {
+            "row": "P11_Task_RecordDecision_Row_decisionDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Decision date"
+        },
+        {
+          "key": "decisionReference",
+          "label": "Decision or communication reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P11_Task_RecordDecision_Field_decisionReference",
+          "layout": {
+            "row": "P11_Task_RecordDecision_Row_decisionReference",
+            "columns": null
+          }
+        },
+        {
+          "key": "patientNotified",
+          "label": "Patient notified of the decision?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P11_Task_RecordDecision_Field_patientNotified",
+          "layout": {
+            "row": "P11_Task_RecordDecision_Row_patientNotified",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P11_Task_RecordDecision\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P11_Task_RecordDecision",
+        "columns": null
+      }
+    },
+    {
+      "id": "Complete_hospital_11_refund_decisions",
+      "type": "button",
+      "label": "Complete task",
+      "action": "submit",
+      "layout": {
+        "row": "Submit",
+        "columns": null
+      }
+    }
+  ]
+}

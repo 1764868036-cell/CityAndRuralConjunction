@@ -1,0 +1,6 @@
+java/target/
+java/data/
+java/.idea/
+_analysis/
+*.lock.db
+*.mv.db

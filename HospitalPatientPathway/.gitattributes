@@ -1,0 +1,9 @@
+*.pdf -text -diff
+*.pptx -text -diff
+*.docx -text -diff
+*.bpmn text eol=lf
+*.form text eol=lf
+*.sh text eol=lf
+mvnw text eol=lf
+mvnw.cmd text eol=crlf
+evidence/tests/*.log -text -diff

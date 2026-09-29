@@ -1,0 +1,545 @@
+{
+  "type": "default",
+  "id": "hospital_09_treatment_changes",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "Heading_hospital_09_treatment_changes",
+      "type": "text",
+      "text": "# Treatment Modification Requests"
+    },
+    {
+      "key": "referralId",
+      "label": "Referral / case ID",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_referralId",
+      "layout": {
+        "row": "Common_referralId",
+        "columns": null
+      }
+    },
+    {
+      "key": "patient_name",
+      "label": "Patient name",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_patient_name",
+      "layout": {
+        "row": "Common_patient_name",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P9_Task_DoNotProcess",
+      "type": "group",
+      "label": "Do not process the informal request",
+      "path": "taskData_P9_Task_DoNotProcess",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record the informal request and why it cannot be actioned.",
+          "id": "P9_Task_DoNotProcess_Instructions"
+        },
+        {
+          "key": "requestChannel",
+          "label": "Request channel",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_DoNotProcess_Field_requestChannel",
+          "layout": {
+            "row": "P9_Task_DoNotProcess_Row_requestChannel",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Email",
+              "value": "email"
+            },
+            {
+              "label": "Telephone",
+              "value": "telephone"
+            },
+            {
+              "label": "Other informal contact",
+              "value": "other"
+            }
+          ]
+        },
+        {
+          "key": "requestReceivedDate",
+          "label": "Date received",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_DoNotProcess_Field_requestReceivedDate",
+          "layout": {
+            "row": "P9_Task_DoNotProcess_Row_requestReceivedDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Date received"
+        },
+        {
+          "key": "notProcessedReason",
+          "label": "Reason the request was not processed",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_DoNotProcess_Field_notProcessedReason",
+          "layout": {
+            "row": "P9_Task_DoNotProcess_Row_notProcessedReason",
+            "columns": null
+          }
+        },
+        {
+          "key": "requesterNotified",
+          "label": "Was the requester told to submit an authorised request?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_DoNotProcess_Field_requesterNotified",
+          "layout": {
+            "row": "P9_Task_DoNotProcess_Row_requesterNotified",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P9_Task_DoNotProcess\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P9_Task_DoNotProcess",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P9_Task_RecordApproval",
+      "type": "group",
+      "label": "Record the clinician-approved postponement",
+      "path": "taskData_P9_Task_RecordApproval",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record the responsible clinician approval before changing the schedule.",
+          "id": "P9_Task_RecordApproval_Instructions"
+        },
+        {
+          "key": "requestStatus",
+          "label": "Authorised request type",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_RecordApproval_Field_requestStatus",
+          "layout": {
+            "row": "P9_Task_RecordApproval_Row_requestStatus",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Approved modification",
+              "value": "approved"
+            },
+            {
+              "label": "Urgent safety postponement",
+              "value": "urgent"
+            }
+          ]
+        },
+        {
+          "key": "authorisingClinician",
+          "label": "Authorising clinician",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_RecordApproval_Field_authorisingClinician",
+          "layout": {
+            "row": "P9_Task_RecordApproval_Row_authorisingClinician",
+            "columns": null
+          }
+        },
+        {
+          "key": "approvalDate",
+          "label": "Approval date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_RecordApproval_Field_approvalDate",
+          "layout": {
+            "row": "P9_Task_RecordApproval_Row_approvalDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Approval date"
+        },
+        {
+          "key": "clinicalRationale",
+          "label": "Clinical rationale and instructions",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_RecordApproval_Field_clinicalRationale",
+          "layout": {
+            "row": "P9_Task_RecordApproval_Row_clinicalRationale",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P9_Task_RecordApproval\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P9_Task_RecordApproval",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P9_Task_AdjustSchedule",
+      "type": "group",
+      "label": "Adjust the treatment plan and schedule",
+      "path": "taskData_P9_Task_AdjustSchedule",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Apply only the formally authorised treatment change.",
+          "id": "P9_Task_AdjustSchedule_Instructions"
+        },
+        {
+          "key": "previousSchedule",
+          "label": "Current schedule or plan reference",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_AdjustSchedule_Field_previousSchedule",
+          "layout": {
+            "row": "P9_Task_AdjustSchedule_Row_previousSchedule",
+            "columns": null
+          }
+        },
+        {
+          "key": "revisedSchedule",
+          "label": "Approved revised schedule",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_AdjustSchedule_Field_revisedSchedule",
+          "layout": {
+            "row": "P9_Task_AdjustSchedule_Row_revisedSchedule",
+            "columns": null
+          }
+        },
+        {
+          "key": "modificationEffectiveDate",
+          "label": "Effective date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_AdjustSchedule_Field_modificationEffectiveDate",
+          "layout": {
+            "row": "P9_Task_AdjustSchedule_Row_modificationEffectiveDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Effective date"
+        },
+        {
+          "key": "affectsChargeOrFunding",
+          "label": "Does this change affect an existing charge or funding approval?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_AdjustSchedule_Field_affectsChargeOrFunding",
+          "layout": {
+            "row": "P9_Task_AdjustSchedule_Row_affectsChargeOrFunding",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        },
+        {
+          "key": "affectedBookingReference",
+          "label": "Affected booking reference",
+          "type": "textfield",
+          "validate": {
+            "required": false
+          },
+          "id": "P9_Task_AdjustSchedule_Field_affectedBookingReference",
+          "layout": {
+            "row": "P9_Task_AdjustSchedule_Row_affectedBookingReference",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P9_Task_AdjustSchedule\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P9_Task_AdjustSchedule",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P9_Task_FinanceReview",
+      "type": "group",
+      "label": "Review the financial implications",
+      "path": "taskData_P9_Task_FinanceReview",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Finance reviews charge, funding and payment effects; this form does not authorise clinical care.",
+          "id": "P9_Task_FinanceReview_Instructions"
+        },
+        {
+          "key": "fundingApprovalImpact",
+          "label": "Effect on funding approval",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_FinanceReview_Field_fundingApprovalImpact",
+          "layout": {
+            "row": "P9_Task_FinanceReview_Row_fundingApprovalImpact",
+            "columns": null
+          }
+        },
+        {
+          "key": "chargeImpact",
+          "label": "Charge impact (amount, if known)",
+          "type": "number",
+          "validate": {
+            "required": false,
+            "min": 0
+          },
+          "id": "P9_Task_FinanceReview_Field_chargeImpact",
+          "layout": {
+            "row": "P9_Task_FinanceReview_Row_chargeImpact",
+            "columns": null
+          },
+          "decimalDigits": 2
+        },
+        {
+          "key": "financeDecision",
+          "label": "Finance review outcome",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_FinanceReview_Field_financeDecision",
+          "layout": {
+            "row": "P9_Task_FinanceReview_Row_financeDecision",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "No change required",
+              "value": "no-change"
+            },
+            {
+              "label": "Adjustment required",
+              "value": "adjustment-required"
+            },
+            {
+              "label": "Further review required",
+              "value": "further-review"
+            }
+          ]
+        },
+        {
+          "key": "financialReviewNotes",
+          "label": "Review notes and next steps",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_FinanceReview_Field_financialReviewNotes",
+          "layout": {
+            "row": "P9_Task_FinanceReview_Row_financialReviewNotes",
+            "columns": null
+          }
+        },
+        {
+          "key": "financeReviewer",
+          "label": "Finance reviewer",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_FinanceReview_Field_financeReviewer",
+          "layout": {
+            "row": "P9_Task_FinanceReview_Row_financeReviewer",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P9_Task_FinanceReview\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P9_Task_FinanceReview",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P9_Task_ConfirmClinicalApproval",
+      "type": "group",
+      "label": "Verify formal clinical authorisation before modifying treatment",
+      "path": "taskData_P9_Task_ConfirmClinicalApproval",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "An unverified request must be returned for authorisation. Do not amend the treatment plan on informal instructions.",
+          "id": "P9_Task_ConfirmClinicalApproval_Instructions"
+        },
+        {
+          "key": "formalClinicalApproval",
+          "label": "Is formal clinical authorisation verified?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_ConfirmClinicalApproval_Field_formalClinicalApproval",
+          "layout": {
+            "row": "P9_Task_ConfirmClinicalApproval_Row_formalClinicalApproval",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        },
+        {
+          "key": "clinicalApprovalReference",
+          "label": "Formal approval reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_ConfirmClinicalApproval_Field_clinicalApprovalReference",
+          "layout": {
+            "row": "P9_Task_ConfirmClinicalApproval_Row_clinicalApprovalReference",
+            "columns": null
+          },
+          "conditional": {
+            "hide": "= taskData_P9_Task_ConfirmClinicalApproval.formalClinicalApproval != \"yes\""
+          }
+        },
+        {
+          "key": "authorisingClinician",
+          "label": "Authorising clinician",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_ConfirmClinicalApproval_Field_authorisingClinician",
+          "layout": {
+            "row": "P9_Task_ConfirmClinicalApproval_Row_authorisingClinician",
+            "columns": null
+          },
+          "conditional": {
+            "hide": "= taskData_P9_Task_ConfirmClinicalApproval.formalClinicalApproval != \"yes\""
+          }
+        },
+        {
+          "key": "approvalDate",
+          "label": "Approval date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_ConfirmClinicalApproval_Field_approvalDate",
+          "layout": {
+            "row": "P9_Task_ConfirmClinicalApproval_Row_approvalDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Approval date",
+          "conditional": {
+            "hide": "= taskData_P9_Task_ConfirmClinicalApproval.formalClinicalApproval != \"yes\""
+          }
+        },
+        {
+          "key": "clinicalRationale",
+          "label": "Authorised change or reason approval is not verified",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P9_Task_ConfirmClinicalApproval_Field_clinicalRationale",
+          "layout": {
+            "row": "P9_Task_ConfirmClinicalApproval_Row_clinicalRationale",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P9_Task_ConfirmClinicalApproval\")"
+      },
+      "layout": {
+        "row": "Section_P9_Task_ConfirmClinicalApproval",
+        "columns": null
+      }
+    },
+    {
+      "id": "Complete_hospital_09_treatment_changes",
+      "type": "button",
+      "label": "Complete task",
+      "action": "submit",
+      "layout": {
+        "row": "Submit",
+        "columns": null
+      }
+    }
+  ]
+}

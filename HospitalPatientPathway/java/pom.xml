@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>4.0.5</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>io.camunda.demo</groupId>
+	<artifactId>hospital-pathway-workers</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Hospital Pathway Workers</name>
+	<description>Job workers for the hospital patient pathway (Camunda 8)</description>
+	<properties>
+		<java.version>21</java.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.camunda</groupId>
+			<artifactId>camunda-spring-boot-starter</artifactId>
+			<version>8.9.0</version>
+		</dependency>
+
+		<!-- System of record of the pathway: the workers read and write the pathway's business
+		     objects through io.camunda.demo.hospital.persistence. Plain JDBC (JdbcClient) instead
+		     of JPA, so the statements stay visible and deterministic and the layer needs no
+		     mapping framework; H2 stores the data in a file under java/data/. Neither dependency
+		     pins a version - spring-boot-dependencies, reached through the parent, manages both. -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.camunda</groupId>
+			<artifactId>camunda-process-test-spring</artifactId>
+			<version>8.9.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- JUnit 5 -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>6.0.3</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- The tests read the model and the forms straight from the bundle folder one level up
+			     (see io.camunda.demo.hospital.support.Bundle), so there is no second copy that could
+			     go stale and no file name to keep in sync. -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

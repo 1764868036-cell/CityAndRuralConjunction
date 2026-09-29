@@ -1,0 +1,392 @@
+{
+  "type": "default",
+  "id": "hospital_03_initial_consultation",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "Heading_03_initial_consultation",
+      "type": "text",
+      "text": "# Initial Consultation"
+    },
+    {
+      "key": "referralId",
+      "label": "Referral / case ID",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "description": "Use the reference assigned to this referral.",
+      "id": "Common_referralId",
+      "layout": {
+        "row": "Common_referralId",
+        "columns": null
+      }
+    },
+    {
+      "key": "patient_name",
+      "label": "Patient name",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_patient_name",
+      "layout": {
+        "row": "Common_patient_name",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R3_RecordAvailability",
+      "type": "group",
+      "label": "Bookings team confirms availability",
+      "path": "taskData_R3_RecordAvailability",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "requestedReviewBy",
+          "label": "Clinician-requested review deadline",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "R3_RecordAvailability_Field_requestedReviewBy",
+          "layout": {
+            "row": "R3_RecordAvailability_Row_requestedReviewBy",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Clinician-requested review deadline",
+          "description": "Use the latest acceptable date in the authorised clinical booking request."
+        },
+        {
+          "key": "clinicianId",
+          "label": "Clinician",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R3_RecordAvailability_Field_3",
+          "layout": {
+            "row": "R3_RecordAvailability_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "date_of_appointment",
+          "label": "Proposed consultation date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "subtype": "date",
+          "dateLabel": "Proposed consultation date",
+          "id": "R3_RecordAvailability_Field_4",
+          "layout": {
+            "row": "R3_RecordAvailability_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "appointmentTime",
+          "label": "Proposed time",
+          "type": "textfield",
+          "validate": {
+            "required": false
+          },
+          "id": "R3_RecordAvailability_Field_5",
+          "layout": {
+            "row": "R3_RecordAvailability_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "availability",
+          "label": "Requested appointment",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "Available",
+              "value": "available"
+            },
+            {
+              "label": "Not available",
+              "value": "not_available"
+            }
+          ],
+          "id": "R3_RecordAvailability_Field_6",
+          "layout": {
+            "row": "R3_RecordAvailability_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "clinic_notes",
+          "label": "Clinic notes",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "R3_RecordAvailability_Field_7",
+          "layout": {
+            "row": "R3_RecordAvailability_Row_7",
+            "columns": null
+          }
+        },
+        {
+          "key": "schedulingRetryDelay",
+          "label": "Retry interval (ISO 8601)",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "defaultValue": "P1D",
+          "description": "For example P1D. Confirm the interval under local booking policy.",
+          "id": "R3_RecordAvailability_Field_8",
+          "layout": {
+            "row": "R3_RecordAvailability_Row_8",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R3_RecordAvailability\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_R3_RecordAvailability",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_Patient_RequestPreference",
+      "type": "group",
+      "label": "Request preferred clinician and date",
+      "path": "taskData_Patient_RequestPreference",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "clinicianId",
+          "label": "Preferred clinician / clinic",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Patient_RequestPreference_Field_3",
+          "layout": {
+            "row": "Patient_RequestPreference_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "date_of_appointment",
+          "label": "Preferred date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "subtype": "date",
+          "dateLabel": "Preferred date",
+          "id": "Patient_RequestPreference_Field_4",
+          "layout": {
+            "row": "Patient_RequestPreference_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "patientContact",
+          "label": "Contact details",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Patient_RequestPreference_Field_5",
+          "layout": {
+            "row": "Patient_RequestPreference_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "appointmentPreferences",
+          "label": "Availability and accessibility requirements",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "Patient_RequestPreference_Field_6",
+          "layout": {
+            "row": "Patient_RequestPreference_Row_6",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"Patient_RequestPreference\")"
+      },
+      "layout": {
+        "row": "Section_Patient_RequestPreference",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_Patient_ReviewOffer",
+      "type": "group",
+      "label": "Review proposed appointment",
+      "path": "taskData_Patient_ReviewOffer",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "clinicianId",
+          "label": "Proposed clinician",
+          "type": "textfield",
+          "validate": {
+            "required": false
+          },
+          "readonly": true,
+          "id": "Patient_ReviewOffer_Field_3",
+          "layout": {
+            "row": "Patient_ReviewOffer_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "date_of_appointment",
+          "label": "Proposed date",
+          "type": "datetime",
+          "validate": {
+            "required": false
+          },
+          "subtype": "date",
+          "dateLabel": "Proposed date",
+          "readonly": true,
+          "id": "Patient_ReviewOffer_Field_4",
+          "layout": {
+            "row": "Patient_ReviewOffer_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "appointmentDecision",
+          "label": "Your response",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "Accept appointment",
+              "value": "accept"
+            },
+            {
+              "label": "Request another date",
+              "value": "change"
+            },
+            {
+              "label": "Decline consultation",
+              "value": "decline"
+            }
+          ],
+          "id": "Patient_ReviewOffer_Field_5",
+          "layout": {
+            "row": "Patient_ReviewOffer_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "appointmentResponseNotes",
+          "label": "Response notes",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "Patient_ReviewOffer_Field_6",
+          "layout": {
+            "row": "Patient_ReviewOffer_Row_6",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"Patient_ReviewOffer\")"
+      },
+      "layout": {
+        "row": "Section_Patient_ReviewOffer",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_Patient_EnterAlternativeDate",
+      "type": "group",
+      "label": "Enter alternative date",
+      "path": "taskData_Patient_EnterAlternativeDate",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "date_of_appointment",
+          "label": "Alternative preferred date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "subtype": "date",
+          "dateLabel": "Alternative preferred date",
+          "id": "Patient_EnterAlternativeDate_Field_3",
+          "layout": {
+            "row": "Patient_EnterAlternativeDate_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "patientContact",
+          "label": "Contact details",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Patient_EnterAlternativeDate_Field_4",
+          "layout": {
+            "row": "Patient_EnterAlternativeDate_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "appointmentPreferences",
+          "label": "Alternative availability",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "Patient_EnterAlternativeDate_Field_5",
+          "layout": {
+            "row": "Patient_EnterAlternativeDate_Row_5",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"Patient_EnterAlternativeDate\")"
+      },
+      "layout": {
+        "row": "Section_Patient_EnterAlternativeDate",
+        "columns": null
+      }
+    },
+    {
+      "id": "Complete_03_initial_consultation",
+      "type": "button",
+      "label": "Complete task",
+      "action": "submit",
+      "layout": {
+        "row": "Submit",
+        "columns": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,200 @@
+{
+  "type": "default",
+  "id": "hospital_02_review_referral",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "Heading_02_review_referral",
+      "type": "text",
+      "text": "# Referral Review"
+    },
+    {
+      "key": "referralId",
+      "label": "Referral / case ID",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "description": "Use the reference assigned to this referral.",
+      "id": "Common_referralId",
+      "layout": {
+        "row": "Common_referralId",
+        "columns": null
+      }
+    },
+    {
+      "key": "patient_name",
+      "label": "Patient name",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_patient_name",
+      "layout": {
+        "row": "Common_patient_name",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R2_Review",
+      "type": "group",
+      "label": "Consultant reviews clinical referral",
+      "path": "taskData_R2_Review",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "clinicalReferralFindings",
+          "label": "Clinical review findings",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R2_Review_Field_3",
+          "layout": {
+            "row": "R2_Review_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "referralSuitableChoice",
+          "label": "Is the referral clinically suitable to accept? (not urgency)",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "description": "这里仅判断临床上是否适合接收，不判断紧急程度。适合但不紧急仍选 Yes，下一步选 Routine。只有临床确实不适合时才选 No（将拒收转诊）。 / This is suitability, not urgency: a suitable routine referral is still Yes; choose Routine on the next task. Select No only when clinically unsuitable.",
+          "values": [
+            {
+              "label": "Yes — clinically suitable (urgent or routine)",
+              "value": "yes"
+            },
+            {
+              "label": "No — clinically unsuitable; decline referral",
+              "value": "no"
+            }
+          ],
+          "id": "R2_Review_Field_4",
+          "layout": {
+            "row": "R2_Review_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "referralDecisionReason",
+          "label": "Reason for acceptance or rejection",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R2_Review_Field_5",
+          "layout": {
+            "row": "R2_Review_Row_5",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R2_Review\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_R2_Review",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R2_Route",
+      "type": "group",
+      "label": "Set priority and select service",
+      "path": "taskData_R2_Route",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "referralPriority",
+          "label": "Referral urgency / clinical priority",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "description": "常规 / 非紧急也选 Routine；Routine 会继续后续流程，不会结束转诊。 / Choose Routine for a non-urgent referral; it continues to the next stages.",
+          "values": [
+            {
+              "label": "Urgent — expedite",
+              "value": "urgent"
+            },
+            {
+              "label": "Routine — non-urgent, continue pathway",
+              "value": "routine"
+            }
+          ],
+          "id": "R2_Route_Field_3",
+          "layout": {
+            "row": "R2_Route_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "clinicianId",
+          "label": "Responsible clinician",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R2_Route_Field_4",
+          "layout": {
+            "row": "R2_Route_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "selectedService",
+          "label": "Selected clinic / service",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R2_Route_Field_5",
+          "layout": {
+            "row": "R2_Route_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "routingNotes",
+          "label": "Routing instructions",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "R2_Route_Field_6",
+          "layout": {
+            "row": "R2_Route_Row_6",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R2_Route\")"
+      },
+      "layout": {
+        "row": "Section_R2_Route",
+        "columns": null
+      }
+    },
+    {
+      "id": "Complete_02_review_referral",
+      "type": "button",
+      "label": "Complete task",
+      "action": "submit",
+      "layout": {
+        "row": "Submit",
+        "columns": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,871 @@
+{
+  "type": "default",
+  "id": "hospital_07_payment_result",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "Heading_07_payment_result",
+      "type": "text",
+      "text": "# Payment and Refunds"
+    },
+    {
+      "key": "referralId",
+      "label": "Referral / case ID",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "description": "Use the reference assigned to this referral.",
+      "id": "Common_referralId",
+      "layout": {
+        "row": "Common_referralId",
+        "columns": null
+      }
+    },
+    {
+      "key": "patient_name",
+      "label": "Patient name",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_patient_name",
+      "layout": {
+        "row": "Common_patient_name",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R7_CalculateCharge",
+      "type": "group",
+      "label": "Calculate charge and prepare payment request",
+      "path": "taskData_R7_CalculateCharge",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "invoiceReference",
+          "label": "Invoice / charge reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R7_CalculateCharge_Field_3",
+          "layout": {
+            "row": "R7_CalculateCharge_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "chargeAmount",
+          "label": "Amount to collect",
+          "type": "number",
+          "validate": {
+            "required": true,
+            "min": 0
+          },
+          "decimalDigits": 2,
+          "id": "R7_CalculateCharge_Field_4",
+          "layout": {
+            "row": "R7_CalculateCharge_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "currency",
+          "label": "Currency",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "GBP",
+              "value": "GBP"
+            },
+            {
+              "label": "EUR",
+              "value": "EUR"
+            },
+            {
+              "label": "USD",
+              "value": "USD"
+            }
+          ],
+          "id": "R7_CalculateCharge_Field_5",
+          "layout": {
+            "row": "R7_CalculateCharge_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "chargeBreakdown",
+          "label": "Charge breakdown",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R7_CalculateCharge_Field_6",
+          "layout": {
+            "row": "R7_CalculateCharge_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "paymentRequestReference",
+          "label": "Unique payment request reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R7_CalculateCharge_Field_7",
+          "layout": {
+            "row": "R7_CalculateCharge_Row_7",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R7_CalculateCharge\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_R7_CalculateCharge",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R7_RecordPayment",
+      "type": "group",
+      "label": "Record status, reference, date and amount",
+      "path": "taskData_R7_RecordPayment",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record a payment only after the provider result or reconciliation confirms it.",
+          "id": "R7_RecordPayment_Instructions_payment_result_record"
+        },
+        {
+          "key": "paymentReference",
+          "label": "Provider transaction reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R7_RecordPayment_Field_3",
+          "layout": {
+            "row": "R7_RecordPayment_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "paidAmount",
+          "label": "Amount paid",
+          "type": "number",
+          "validate": {
+            "required": true,
+            "min": 0
+          },
+          "decimalDigits": 2,
+          "id": "R7_RecordPayment_Field_4",
+          "layout": {
+            "row": "R7_RecordPayment_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "currency",
+          "label": "Currency",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "GBP",
+              "value": "GBP"
+            },
+            {
+              "label": "EUR",
+              "value": "EUR"
+            },
+            {
+              "label": "USD",
+              "value": "USD"
+            }
+          ],
+          "id": "R7_RecordPayment_Field_5",
+          "layout": {
+            "row": "R7_RecordPayment_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "paymentDate",
+          "label": "Payment date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "subtype": "date",
+          "dateLabel": "Payment date",
+          "id": "R7_RecordPayment_Field_6",
+          "layout": {
+            "row": "R7_RecordPayment_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "paymentRecordingNotes",
+          "label": "Recording notes",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "R7_RecordPayment_Field_7",
+          "layout": {
+            "row": "R7_RecordPayment_Row_7",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R7_RecordPayment\")"
+      },
+      "layout": {
+        "row": "Section_R7_RecordPayment",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R7_NotifyRetry",
+      "type": "group",
+      "label": "Notify patient/admin; check status before retry",
+      "path": "taskData_R7_NotifyRetry",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "The subsequent transaction check must establish that no prior charge exists before another payment request.",
+          "id": "R7_NotifyRetry_Instructions_payment_retry_review"
+        },
+        {
+          "key": "paymentIssue",
+          "label": "Payment issue / uncertainty",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R7_NotifyRetry_Field_3",
+          "layout": {
+            "row": "R7_NotifyRetry_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "paymentContactInstructions",
+          "label": "Instructions communicated to patient / administrator",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R7_NotifyRetry_Field_4",
+          "layout": {
+            "row": "R7_NotifyRetry_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "retryApprovedChoice",
+          "label": "Is a retry authorised after checking the current status?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ],
+          "id": "R7_NotifyRetry_Field_5",
+          "layout": {
+            "row": "R7_NotifyRetry_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "retryDecisionReason",
+          "label": "Reason for retry decision",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R7_NotifyRetry_Field_6",
+          "layout": {
+            "row": "R7_NotifyRetry_Row_6",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R7_NotifyRetry\")"
+      },
+      "layout": {
+        "row": "Section_R7_NotifyRetry",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R7_ReconcilePayment",
+      "type": "group",
+      "label": "Finance reconciles status with provider",
+      "path": "taskData_R7_ReconcilePayment",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "providerInvestigationReference",
+          "label": "Provider investigation reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R7_ReconcilePayment_Field_3",
+          "layout": {
+            "row": "R7_ReconcilePayment_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "providerConfirmsPaidChoice",
+          "label": "Does the provider confirm payment?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ],
+          "id": "R7_ReconcilePayment_Field_4",
+          "layout": {
+            "row": "R7_ReconcilePayment_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "paymentReference",
+          "label": "Provider transaction reference",
+          "type": "textfield",
+          "validate": {
+            "required": false
+          },
+          "id": "R7_ReconcilePayment_Field_5",
+          "layout": {
+            "row": "R7_ReconcilePayment_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "reconciledAmount",
+          "label": "Reconciled amount",
+          "type": "number",
+          "validate": {
+            "required": false,
+            "min": 0
+          },
+          "decimalDigits": 2,
+          "id": "R7_ReconcilePayment_Field_6",
+          "layout": {
+            "row": "R7_ReconcilePayment_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "reconciliationEvidence",
+          "label": "Reconciliation evidence and outcome",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R7_ReconcilePayment_Field_7",
+          "layout": {
+            "row": "R7_ReconcilePayment_Row_7",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R7_ReconcilePayment\")"
+      },
+      "layout": {
+        "row": "Section_R7_ReconcilePayment",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_Finance_RefundReview",
+      "type": "group",
+      "label": "Finance reviews refund eligibility after clinical stop/change",
+      "path": "taskData_Finance_RefundReview",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Finance reviews the financial consequences of the recorded clinical decision.",
+          "id": "Finance_RefundReview_Instructions_refund_authorisation"
+        },
+        {
+          "key": "refundAuthorisedChoice",
+          "label": "Is a refund authorised?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ],
+          "id": "Finance_RefundReview_Field_3",
+          "layout": {
+            "row": "Finance_RefundReview_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "refundType",
+          "label": "Refund decision",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "Full refund",
+              "value": "full"
+            },
+            {
+              "label": "Partial refund",
+              "value": "partial"
+            },
+            {
+              "label": "No refund due",
+              "value": "none"
+            }
+          ],
+          "id": "Finance_RefundReview_Field_4",
+          "layout": {
+            "row": "Finance_RefundReview_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "refundAmount",
+          "label": "Authorised refund amount",
+          "type": "number",
+          "validate": {
+            "required": true,
+            "min": 0
+          },
+          "decimalDigits": 2,
+          "id": "Finance_RefundReview_Field_5",
+          "layout": {
+            "row": "Finance_RefundReview_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "currency",
+          "label": "Currency",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "GBP",
+              "value": "GBP"
+            },
+            {
+              "label": "EUR",
+              "value": "EUR"
+            },
+            {
+              "label": "USD",
+              "value": "USD"
+            }
+          ],
+          "id": "Finance_RefundReview_Field_6",
+          "layout": {
+            "row": "Finance_RefundReview_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "originalPaymentReference",
+          "label": "Original provider payment reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Finance_RefundReview_Field_7",
+          "layout": {
+            "row": "Finance_RefundReview_Row_7",
+            "columns": null
+          }
+        },
+        {
+          "key": "refundDecisionReason",
+          "label": "Financial decision and authority",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "Finance_RefundReview_Field_8",
+          "layout": {
+            "row": "Finance_RefundReview_Row_8",
+            "columns": null
+          }
+        },
+        {
+          "key": "refundAuthorisedBy",
+          "label": "Reviewer / authoriser",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Finance_RefundReview_Field_9",
+          "layout": {
+            "row": "Finance_RefundReview_Row_9",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"Finance_RefundReview\")"
+      },
+      "layout": {
+        "row": "Section_Finance_RefundReview",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_Finance_RecordRefund",
+      "type": "group",
+      "label": "Record refund status and amount",
+      "path": "taskData_Finance_RecordRefund",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "refundStatus",
+          "label": "Provider refund status",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "Completed",
+              "value": "completed"
+            },
+            {
+              "label": "Pending",
+              "value": "pending"
+            },
+            {
+              "label": "Failed",
+              "value": "failed"
+            }
+          ],
+          "id": "Finance_RecordRefund_Field_3",
+          "layout": {
+            "row": "Finance_RecordRefund_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "refundReference",
+          "label": "Provider refund reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Finance_RecordRefund_Field_4",
+          "layout": {
+            "row": "Finance_RecordRefund_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "refundedAmount",
+          "label": "Amount refunded",
+          "type": "number",
+          "validate": {
+            "required": true,
+            "min": 0
+          },
+          "decimalDigits": 2,
+          "id": "Finance_RecordRefund_Field_5",
+          "layout": {
+            "row": "Finance_RecordRefund_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "currency",
+          "label": "Currency",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "GBP",
+              "value": "GBP"
+            },
+            {
+              "label": "EUR",
+              "value": "EUR"
+            },
+            {
+              "label": "USD",
+              "value": "USD"
+            }
+          ],
+          "id": "Finance_RecordRefund_Field_6",
+          "layout": {
+            "row": "Finance_RecordRefund_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "refundRecordedDate",
+          "label": "Date recorded",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "subtype": "date",
+          "dateLabel": "Date recorded",
+          "id": "Finance_RecordRefund_Field_7",
+          "layout": {
+            "row": "Finance_RecordRefund_Row_7",
+            "columns": null
+          }
+        },
+        {
+          "key": "refundFollowUp",
+          "label": "Follow-up if pending or failed",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "Finance_RecordRefund_Field_8",
+          "layout": {
+            "row": "Finance_RecordRefund_Row_8",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"Finance_RecordRefund\")"
+      },
+      "layout": {
+        "row": "Section_Finance_RecordRefund",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_Patient_ReviewPaymentIssue",
+      "type": "group",
+      "label": "Review payment options and contact instructions",
+      "path": "taskData_Patient_ReviewPaymentIssue",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "paymentIssue",
+          "label": "Reported payment issue",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "readonly": true,
+          "id": "Patient_ReviewPaymentIssue_Field_3",
+          "layout": {
+            "row": "Patient_ReviewPaymentIssue_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "paymentContactInstructions",
+          "label": "Contact instructions",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "readonly": true,
+          "id": "Patient_ReviewPaymentIssue_Field_4",
+          "layout": {
+            "row": "Patient_ReviewPaymentIssue_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "patientPaymentResponse",
+          "label": "Patient response / follow-up details",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "Patient_ReviewPaymentIssue_Field_5",
+          "layout": {
+            "row": "Patient_ReviewPaymentIssue_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "patientContact",
+          "label": "Contact details",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Patient_ReviewPaymentIssue_Field_6",
+          "layout": {
+            "row": "Patient_ReviewPaymentIssue_Row_6",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"Patient_ReviewPaymentIssue\")"
+      },
+      "layout": {
+        "row": "Section_Patient_ReviewPaymentIssue",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_Patient_PaySecurely",
+      "type": "group",
+      "label": "Pay through the PSP secure channel",
+      "path": "taskData_Patient_PaySecurely",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Use the provider secure channel for card entry. Record only the provider reference here; the provider callback determines payment success.",
+          "id": "Patient_PaySecurely_Instructions_patient_secure_payment"
+        },
+        {
+          "key": "paymentLink",
+          "label": "Provider secure payment link",
+          "type": "textfield",
+          "validate": {
+            "required": false
+          },
+          "readonly": true,
+          "id": "Patient_PaySecurely_Field_3",
+          "layout": {
+            "row": "Patient_PaySecurely_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "chargeAmount",
+          "label": "Amount requested",
+          "type": "number",
+          "validate": {
+            "required": false,
+            "min": 0
+          },
+          "readonly": true,
+          "decimalDigits": 2,
+          "id": "Patient_PaySecurely_Field_4",
+          "layout": {
+            "row": "Patient_PaySecurely_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "currency",
+          "label": "Currency",
+          "type": "textfield",
+          "validate": {
+            "required": false
+          },
+          "readonly": true,
+          "id": "Patient_PaySecurely_Field_5",
+          "layout": {
+            "row": "Patient_PaySecurely_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "paymentSubmissionReference",
+          "label": "Provider submission / confirmation reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Patient_PaySecurely_Field_6",
+          "layout": {
+            "row": "Patient_PaySecurely_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "paymentSubmissionNotes",
+          "label": "Payment submission notes",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "Patient_PaySecurely_Field_7",
+          "layout": {
+            "row": "Patient_PaySecurely_Row_7",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"Patient_PaySecurely\")"
+      },
+      "layout": {
+        "row": "Section_Patient_PaySecurely",
+        "columns": null
+      }
+    },
+    {
+      "id": "Complete_07_payment_result",
+      "type": "button",
+      "label": "Complete task",
+      "action": "submit",
+      "layout": {
+        "row": "Submit",
+        "columns": null
+      }
+    }
+  ]
+}

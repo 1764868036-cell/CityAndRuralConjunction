@@ -1,0 +1,904 @@
+{
+  "type": "default",
+  "id": "hospital_17_appointment_changes",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "Heading_17_appointment_changes",
+      "type": "text",
+      "text": "# Appointment Changes and Scheduling Conflicts"
+    },
+    {
+      "key": "referralId",
+      "label": "Referral / case ID",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "description": "Use the reference assigned to this referral.",
+      "id": "Common_referralId",
+      "layout": {
+        "row": "Common_referralId",
+        "columns": null
+      }
+    },
+    {
+      "key": "patient_name",
+      "label": "Patient name",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_patient_name",
+      "layout": {
+        "row": "Common_patient_name",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P17_Task_RecordRequest",
+      "type": "group",
+      "label": "Record the request and the required appointment window",
+      "path": "taskData_P17_Task_RecordRequest",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record the clinical deadline from the authorised request. If it is missing, obtain it from the clinical team before booking.",
+          "id": "P17_Task_RecordRequest_Instructions"
+        },
+        {
+          "key": "appointmentChangeType",
+          "label": "What does the request concern?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_RecordRequest_Field_appointmentChangeType",
+          "layout": {
+            "row": "P17_Task_RecordRequest_Row_appointmentChangeType",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Treatment-plan change",
+              "value": "treatment-plan"
+            },
+            {
+              "label": "Funding / payment change",
+              "value": "funding"
+            },
+            {
+              "label": "Appointment date only",
+              "value": "appointment"
+            }
+          ]
+        },
+        {
+          "key": "appointmentChangeReceivedAt",
+          "label": "Request received at",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_RecordRequest_Field_appointmentChangeReceivedAt",
+          "layout": {
+            "row": "P17_Task_RecordRequest_Row_appointmentChangeReceivedAt",
+            "columns": null
+          },
+          "description": "Enter the date and time with timezone, for example 2026-09-28T14:30:00+08:00."
+        },
+        {
+          "key": "appointmentChangeChannel",
+          "label": "Request channel",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_RecordRequest_Field_appointmentChangeChannel",
+          "layout": {
+            "row": "P17_Task_RecordRequest_Row_appointmentChangeChannel",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Telephone",
+              "value": "telephone"
+            },
+            {
+              "label": "Letter",
+              "value": "letter"
+            },
+            {
+              "label": "Secure digital message",
+              "value": "digital"
+            },
+            {
+              "label": "Internal referral",
+              "value": "internal"
+            },
+            {
+              "label": "Other",
+              "value": "other"
+            }
+          ]
+        },
+        {
+          "key": "appointmentChangeRequester",
+          "label": "Requester and relationship to the patient",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_RecordRequest_Field_appointmentChangeRequester",
+          "layout": {
+            "row": "P17_Task_RecordRequest_Row_appointmentChangeRequester",
+            "columns": null
+          }
+        },
+        {
+          "key": "appointmentChangeDetails",
+          "label": "Requested change and reason",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_RecordRequest_Field_appointmentChangeDetails",
+          "layout": {
+            "row": "P17_Task_RecordRequest_Row_appointmentChangeDetails",
+            "columns": null
+          }
+        },
+        {
+          "key": "requestedReviewBy",
+          "label": "Clinician-requested review deadline",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_RecordRequest_Field_requestedReviewBy",
+          "layout": {
+            "row": "P17_Task_RecordRequest_Row_requestedReviewBy",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Clinician-requested review deadline"
+        },
+        {
+          "key": "existingBookingReference",
+          "label": "Existing booking reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_RecordRequest_Field_existingBookingReference",
+          "layout": {
+            "row": "P17_Task_RecordRequest_Row_existingBookingReference",
+            "columns": null
+          }
+        },
+        {
+          "key": "existingAppointmentDate",
+          "label": "Existing appointment date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_RecordRequest_Field_existingAppointmentDate",
+          "layout": {
+            "row": "P17_Task_RecordRequest_Row_existingAppointmentDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Existing appointment date"
+        },
+        {
+          "key": "patientContact",
+          "label": "Patient contact details",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_RecordRequest_Field_patientContact",
+          "layout": {
+            "row": "P17_Task_RecordRequest_Row_patientContact",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P17_Task_RecordRequest\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P17_Task_RecordRequest",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P17_Task_VerifyIdentity",
+      "type": "group",
+      "label": "Verify identity before changing the booking",
+      "path": "taskData_P17_Task_VerifyIdentity",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "A failed or incomplete identity check returns the request for correction before any appointment data is changed.",
+          "id": "P17_Task_VerifyIdentity_Instructions"
+        },
+        {
+          "key": "identityVerified",
+          "label": "Has the patient identity been verified?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_VerifyIdentity_Field_identityVerified",
+          "layout": {
+            "row": "P17_Task_VerifyIdentity_Row_identityVerified",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        },
+        {
+          "key": "identityVerificationEvidence",
+          "label": "Checks performed and their result",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_VerifyIdentity_Field_identityVerificationEvidence",
+          "layout": {
+            "row": "P17_Task_VerifyIdentity_Row_identityVerificationEvidence",
+            "columns": null
+          },
+          "description": "Record the approved checks and outcome; do not copy unnecessary identity documents or full credentials."
+        },
+        {
+          "key": "identityVerifiedBy",
+          "label": "Verifying staff member",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_VerifyIdentity_Field_identityVerifiedBy",
+          "layout": {
+            "row": "P17_Task_VerifyIdentity_Row_identityVerifiedBy",
+            "columns": null
+          }
+        },
+        {
+          "key": "identityVerificationAt",
+          "label": "Verification recorded at",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_VerifyIdentity_Field_identityVerificationAt",
+          "layout": {
+            "row": "P17_Task_VerifyIdentity_Row_identityVerificationAt",
+            "columns": null
+          },
+          "description": "Enter the date and time with timezone, for example 2026-09-28T14:30:00+08:00."
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P17_Task_VerifyIdentity\")"
+      },
+      "layout": {
+        "row": "Section_P17_Task_VerifyIdentity",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P17_Task_UpdateBooking",
+      "type": "group",
+      "label": "Update the booking and record the old and new appointments",
+      "path": "taskData_P17_Task_UpdateBooking",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record a confirmed suitable slot within the authorised clinical window. Keep an audit reference linking both bookings.",
+          "id": "P17_Task_UpdateBooking_Instructions"
+        },
+        {
+          "key": "existingBookingReference",
+          "label": "Old booking reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_UpdateBooking_Field_existingBookingReference",
+          "layout": {
+            "row": "P17_Task_UpdateBooking_Row_existingBookingReference",
+            "columns": null
+          }
+        },
+        {
+          "key": "existingAppointmentDate",
+          "label": "Old appointment date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_UpdateBooking_Field_existingAppointmentDate",
+          "layout": {
+            "row": "P17_Task_UpdateBooking_Row_existingAppointmentDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Old appointment date"
+        },
+        {
+          "key": "bookingReference",
+          "label": "New booking reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_UpdateBooking_Field_bookingReference",
+          "layout": {
+            "row": "P17_Task_UpdateBooking_Row_bookingReference",
+            "columns": null
+          }
+        },
+        {
+          "key": "date_of_appointment",
+          "label": "New appointment date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_UpdateBooking_Field_date_of_appointment",
+          "layout": {
+            "row": "P17_Task_UpdateBooking_Row_date_of_appointment",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "New appointment date"
+        },
+        {
+          "key": "appointmentTime",
+          "label": "New appointment time",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_UpdateBooking_Field_appointmentTime",
+          "layout": {
+            "row": "P17_Task_UpdateBooking_Row_appointmentTime",
+            "columns": null
+          }
+        },
+        {
+          "key": "oldSlotReleased",
+          "label": "I confirm the old appointment slot has been released",
+          "type": "checkbox",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_UpdateBooking_Field_oldSlotReleased",
+          "layout": {
+            "row": "P17_Task_UpdateBooking_Row_oldSlotReleased",
+            "columns": null
+          }
+        },
+        {
+          "key": "bookingUpdateReference",
+          "label": "Scheduling update / audit reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_UpdateBooking_Field_bookingUpdateReference",
+          "layout": {
+            "row": "P17_Task_UpdateBooking_Row_bookingUpdateReference",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P17_Task_UpdateBooking\")"
+      },
+      "layout": {
+        "row": "Section_P17_Task_UpdateBooking",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P17_Task_TelephonePatient",
+      "type": "group",
+      "label": "Record the telephone contact attempt",
+      "path": "taskData_P17_Task_TelephonePatient",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record unsuccessful attempts as well as completed calls. The normal written appointment notification is still required.",
+          "id": "P17_Task_TelephonePatient_Instructions"
+        },
+        {
+          "key": "patientContact",
+          "label": "Telephone number used",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_TelephonePatient_Field_patientContact",
+          "layout": {
+            "row": "P17_Task_TelephonePatient_Row_patientContact",
+            "columns": null
+          }
+        },
+        {
+          "key": "telephoneAttemptAt",
+          "label": "Telephone attempt made at",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_TelephonePatient_Field_telephoneAttemptAt",
+          "layout": {
+            "row": "P17_Task_TelephonePatient_Row_telephoneAttemptAt",
+            "columns": null
+          },
+          "description": "Enter the date and time with timezone, for example 2026-09-28T14:30:00+08:00."
+        },
+        {
+          "key": "telephoneContactOutcome",
+          "label": "Contact outcome",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_TelephonePatient_Field_telephoneContactOutcome",
+          "layout": {
+            "row": "P17_Task_TelephonePatient_Row_telephoneContactOutcome",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Spoke with the patient",
+              "value": "reached"
+            },
+            {
+              "label": "No answer",
+              "value": "no-answer"
+            },
+            {
+              "label": "Incorrect contact number",
+              "value": "incorrect-number"
+            },
+            {
+              "label": "Patient requests another date",
+              "value": "alternative-requested"
+            }
+          ]
+        },
+        {
+          "key": "telephoneContactNotes",
+          "label": "Information given and follow-up required",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_TelephonePatient_Field_telephoneContactNotes",
+          "layout": {
+            "row": "P17_Task_TelephonePatient_Row_telephoneContactNotes",
+            "columns": null
+          }
+        },
+        {
+          "key": "telephoneContactBy",
+          "label": "Staff member who made the attempt",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_TelephonePatient_Field_telephoneContactBy",
+          "layout": {
+            "row": "P17_Task_TelephonePatient_Row_telephoneContactBy",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P17_Task_TelephonePatient\")"
+      },
+      "layout": {
+        "row": "Section_P17_Task_TelephonePatient",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P17_Task_KeepExisting",
+      "type": "group",
+      "label": "Keep the existing booking while a suitable option is sought",
+      "path": "taskData_P17_Task_KeepExisting",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Retain the existing booking and refer the scheduling conflict for a clinical priority decision.",
+          "id": "P17_Task_KeepExisting_Instructions"
+        },
+        {
+          "key": "existingBookingReference",
+          "label": "Booking retained",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_KeepExisting_Field_existingBookingReference",
+          "layout": {
+            "row": "P17_Task_KeepExisting_Row_existingBookingReference",
+            "columns": null
+          }
+        },
+        {
+          "key": "existingAppointmentDate",
+          "label": "Existing appointment date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_KeepExisting_Field_existingAppointmentDate",
+          "layout": {
+            "row": "P17_Task_KeepExisting_Row_existingAppointmentDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Existing appointment date"
+        },
+        {
+          "key": "requestedReviewBy",
+          "label": "Clinically requested review deadline",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_KeepExisting_Field_requestedReviewBy",
+          "layout": {
+            "row": "P17_Task_KeepExisting_Row_requestedReviewBy",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Clinically requested review deadline"
+        },
+        {
+          "key": "appointmentRetentionReason",
+          "label": "Why a suitable replacement cannot be booked",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_KeepExisting_Field_appointmentRetentionReason",
+          "layout": {
+            "row": "P17_Task_KeepExisting_Row_appointmentRetentionReason",
+            "columns": null
+          }
+        },
+        {
+          "key": "appointmentRetentionRecordedBy",
+          "label": "Recording staff member",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_KeepExisting_Field_appointmentRetentionRecordedBy",
+          "layout": {
+            "row": "P17_Task_KeepExisting_Row_appointmentRetentionRecordedBy",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P17_Task_KeepExisting\")"
+      },
+      "layout": {
+        "row": "Section_P17_Task_KeepExisting",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P17_Task_EscalatePathway",
+      "type": "group",
+      "label": "Record the handoff to the pathway team",
+      "path": "taskData_P17_Task_EscalatePathway",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "pathwayEscalationRecipient",
+          "label": "Receiving pathway coordinator / team",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_EscalatePathway_Field_pathwayEscalationRecipient",
+          "layout": {
+            "row": "P17_Task_EscalatePathway_Row_pathwayEscalationRecipient",
+            "columns": null
+          }
+        },
+        {
+          "key": "pathwayEscalatedAt",
+          "label": "Escalation sent at",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_EscalatePathway_Field_pathwayEscalatedAt",
+          "layout": {
+            "row": "P17_Task_EscalatePathway_Row_pathwayEscalatedAt",
+            "columns": null
+          },
+          "description": "Enter the date and time with timezone, for example 2026-09-28T14:30:00+08:00."
+        },
+        {
+          "key": "pathwayEscalationReason",
+          "label": "Clinical window / scheduling conflict",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_EscalatePathway_Field_pathwayEscalationReason",
+          "layout": {
+            "row": "P17_Task_EscalatePathway_Row_pathwayEscalationReason",
+            "columns": null
+          }
+        },
+        {
+          "key": "pathwayEscalationReference",
+          "label": "Handoff / case reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_EscalatePathway_Field_pathwayEscalationReference",
+          "layout": {
+            "row": "P17_Task_EscalatePathway_Row_pathwayEscalationReference",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P17_Task_EscalatePathway\")"
+      },
+      "layout": {
+        "row": "Section_P17_Task_EscalatePathway",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P17_Task_RecordPriorityDecision",
+      "type": "group",
+      "label": "Record the Consultant decision and the agreed handoff",
+      "path": "taskData_P17_Task_RecordPriorityDecision",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record the decision returned by the Consultant and the person responsible for following it up.",
+          "id": "P17_Task_RecordPriorityDecision_Instructions"
+        },
+        {
+          "key": "priorityDecisionReference",
+          "label": "Consultant decision reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_RecordPriorityDecision_Field_priorityDecisionReference",
+          "layout": {
+            "row": "P17_Task_RecordPriorityDecision_Row_priorityDecisionReference",
+            "columns": null
+          }
+        },
+        {
+          "key": "priorityAuthorisingClinician",
+          "label": "Authorising Consultant",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_RecordPriorityDecision_Field_priorityAuthorisingClinician",
+          "layout": {
+            "row": "P17_Task_RecordPriorityDecision_Row_priorityAuthorisingClinician",
+            "columns": null
+          }
+        },
+        {
+          "key": "priorityDecision",
+          "label": "Authorised scheduling decision",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_RecordPriorityDecision_Field_priorityDecision",
+          "layout": {
+            "row": "P17_Task_RecordPriorityDecision_Row_priorityDecision",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Expedite within the clinical window",
+              "value": "expedite"
+            },
+            {
+              "label": "Keep the existing appointment",
+              "value": "keep-existing"
+            },
+            {
+              "label": "Authorise a revised review window",
+              "value": "revise-window"
+            }
+          ]
+        },
+        {
+          "key": "requestedReviewBy",
+          "label": "Authorised review deadline",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_RecordPriorityDecision_Field_requestedReviewBy",
+          "layout": {
+            "row": "P17_Task_RecordPriorityDecision_Row_requestedReviewBy",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Authorised review deadline"
+        },
+        {
+          "key": "priorityHandoffOutcome",
+          "label": "Recorded outcome and agreed next action",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_RecordPriorityDecision_Field_priorityHandoffOutcome",
+          "layout": {
+            "row": "P17_Task_RecordPriorityDecision_Row_priorityHandoffOutcome",
+            "columns": null
+          }
+        },
+        {
+          "key": "priorityHandoffOwner",
+          "label": "Responsible person / team",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P17_Task_RecordPriorityDecision_Field_priorityHandoffOwner",
+          "layout": {
+            "row": "P17_Task_RecordPriorityDecision_Row_priorityHandoffOwner",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P17_Task_RecordPriorityDecision\")"
+      },
+      "layout": {
+        "row": "Section_P17_Task_RecordPriorityDecision",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_Patient_RequestAppointmentChange",
+      "type": "group",
+      "label": "Request a change to an existing appointment",
+      "path": "taskData_Patient_RequestAppointmentChange",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "The hospital will review your request and confirm any agreed change. Your current appointment remains in place until that confirmation.",
+          "id": "Patient_RequestAppointmentChange_Instructions"
+        },
+        {
+          "key": "existingBookingReference",
+          "label": "Appointment / booking reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Patient_RequestAppointmentChange_Field_existingBookingReference",
+          "layout": {
+            "row": "Patient_RequestAppointmentChange_Row_existingBookingReference",
+            "columns": null
+          }
+        },
+        {
+          "key": "existingAppointmentDate",
+          "label": "Current appointment date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "Patient_RequestAppointmentChange_Field_existingAppointmentDate",
+          "layout": {
+            "row": "Patient_RequestAppointmentChange_Row_existingAppointmentDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Current appointment date"
+        },
+        {
+          "key": "preferredAppointmentDate",
+          "label": "Preferred new date",
+          "type": "datetime",
+          "validate": {
+            "required": false
+          },
+          "id": "Patient_RequestAppointmentChange_Field_preferredAppointmentDate",
+          "layout": {
+            "row": "Patient_RequestAppointmentChange_Row_preferredAppointmentDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Preferred new date"
+        },
+        {
+          "key": "appointmentChangeDetails",
+          "label": "Requested change and reason",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "Patient_RequestAppointmentChange_Field_appointmentChangeDetails",
+          "layout": {
+            "row": "Patient_RequestAppointmentChange_Row_appointmentChangeDetails",
+            "columns": null
+          }
+        },
+        {
+          "key": "patientContact",
+          "label": "How the hospital can contact you",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Patient_RequestAppointmentChange_Field_patientContact",
+          "layout": {
+            "row": "Patient_RequestAppointmentChange_Row_patientContact",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"Patient_RequestAppointmentChange\")"
+      },
+      "layout": {
+        "row": "Section_Patient_RequestAppointmentChange",
+        "columns": null
+      }
+    },
+    {
+      "id": "Complete_17_appointment_changes",
+      "type": "button",
+      "label": "Complete task",
+      "action": "submit",
+      "layout": {
+        "row": "Submit",
+        "columns": null
+      }
+    }
+  ]
+}

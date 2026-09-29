@@ -1,0 +1,657 @@
+{
+  "type": "default",
+  "id": "hospital_06_cost_allocation",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "Heading_06_cost_allocation",
+      "type": "text",
+      "text": "# Cost Allocation"
+    },
+    {
+      "key": "referralId",
+      "label": "Referral / case ID",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "description": "Use the reference assigned to this referral.",
+      "id": "Common_referralId",
+      "layout": {
+        "row": "Common_referralId",
+        "columns": null
+      }
+    },
+    {
+      "key": "patient_name",
+      "label": "Patient name",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_patient_name",
+      "layout": {
+        "row": "Common_patient_name",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R6_ClassifyFunding",
+      "type": "group",
+      "label": "Finance classifies payer and patient share",
+      "path": "taskData_R6_ClassifyFunding",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "payerType",
+          "label": "Cost allocation method",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "Insurer",
+              "value": "insurer"
+            },
+            {
+              "label": "Public / other funder",
+              "value": "funder"
+            },
+            {
+              "label": "Self-pay",
+              "value": "self_pay"
+            },
+            {
+              "label": "Mixed funding",
+              "value": "mixed"
+            }
+          ],
+          "id": "R6_ClassifyFunding_Field_3",
+          "layout": {
+            "row": "R6_ClassifyFunding_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "payerName",
+          "label": "Payer / funding organisation",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R6_ClassifyFunding_Field_4",
+          "layout": {
+            "row": "R6_ClassifyFunding_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "policyReference",
+          "label": "Policy / funding reference",
+          "type": "textfield",
+          "validate": {
+            "required": false
+          },
+          "id": "R6_ClassifyFunding_Field_5",
+          "layout": {
+            "row": "R6_ClassifyFunding_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "estimatedCost",
+          "label": "Estimated total cost",
+          "type": "number",
+          "validate": {
+            "required": true,
+            "min": 0
+          },
+          "decimalDigits": 2,
+          "id": "R6_ClassifyFunding_Field_6",
+          "layout": {
+            "row": "R6_ClassifyFunding_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "patientShare",
+          "label": "Patient share",
+          "type": "number",
+          "validate": {
+            "required": true,
+            "min": 0
+          },
+          "decimalDigits": 2,
+          "id": "R6_ClassifyFunding_Field_7",
+          "layout": {
+            "row": "R6_ClassifyFunding_Row_7",
+            "columns": null
+          }
+        },
+        {
+          "key": "currency",
+          "label": "Currency",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "GBP",
+              "value": "GBP"
+            },
+            {
+              "label": "EUR",
+              "value": "EUR"
+            },
+            {
+              "label": "USD",
+              "value": "USD"
+            }
+          ],
+          "id": "R6_ClassifyFunding_Field_8",
+          "layout": {
+            "row": "R6_ClassifyFunding_Row_8",
+            "columns": null
+          }
+        },
+        {
+          "key": "externalAuthorisationRequiredChoice",
+          "label": "Is external funding authorisation required?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ],
+          "id": "R6_ClassifyFunding_Field_9",
+          "layout": {
+            "row": "R6_ClassifyFunding_Row_9",
+            "columns": null
+          }
+        },
+        {
+          "key": "paymentRequiredChoice",
+          "label": "Is advance patient payment required?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ],
+          "id": "R6_ClassifyFunding_Field_10",
+          "layout": {
+            "row": "R6_ClassifyFunding_Row_10",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R6_ClassifyFunding\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_R6_ClassifyFunding",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R6_RecordAllocation",
+      "type": "group",
+      "label": "Record payer, reference, amount and limits",
+      "path": "taskData_R6_RecordAllocation",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "fundingReference",
+          "label": "Authorisation / allocation reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R6_RecordAllocation_Field_3",
+          "layout": {
+            "row": "R6_RecordAllocation_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "approvedFundingAmount",
+          "label": "Approved funding amount",
+          "type": "number",
+          "validate": {
+            "required": true,
+            "min": 0
+          },
+          "decimalDigits": 2,
+          "id": "R6_RecordAllocation_Field_4",
+          "layout": {
+            "row": "R6_RecordAllocation_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "patientShare",
+          "label": "Patient share",
+          "type": "number",
+          "validate": {
+            "required": true,
+            "min": 0
+          },
+          "decimalDigits": 2,
+          "id": "R6_RecordAllocation_Field_5",
+          "layout": {
+            "row": "R6_RecordAllocation_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "currency",
+          "label": "Currency",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "GBP",
+              "value": "GBP"
+            },
+            {
+              "label": "EUR",
+              "value": "EUR"
+            },
+            {
+              "label": "USD",
+              "value": "USD"
+            }
+          ],
+          "id": "R6_RecordAllocation_Field_6",
+          "layout": {
+            "row": "R6_RecordAllocation_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "fundingLimits",
+          "label": "Coverage limits and conditions",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R6_RecordAllocation_Field_7",
+          "layout": {
+            "row": "R6_RecordAllocation_Row_7",
+            "columns": null
+          }
+        },
+        {
+          "key": "fundingApprovedChoice",
+          "label": "Has the funding allocation been verified and approved?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ],
+          "id": "R6_RecordAllocation_Field_8",
+          "layout": {
+            "row": "R6_RecordAllocation_Row_8",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R6_RecordAllocation\")"
+      },
+      "layout": {
+        "row": "Section_R6_RecordAllocation",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R6_ResolveGap",
+      "type": "group",
+      "label": "Resolve funding gap or hold treatment",
+      "path": "taskData_R6_ResolveGap",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record the unresolved issue. This path keeps treatment on hold.",
+          "id": "R6_ResolveGap_Instructions_funding_gap_resolution"
+        },
+        {
+          "key": "fundingGapReason",
+          "label": "Unresolved funding issue",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R6_ResolveGap_Field_3",
+          "layout": {
+            "row": "R6_ResolveGap_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "fundingNextActions",
+          "label": "Required follow-up",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R6_ResolveGap_Field_4",
+          "layout": {
+            "row": "R6_ResolveGap_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "fundingFollowUpOwner",
+          "label": "Follow-up owner",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R6_ResolveGap_Field_5",
+          "layout": {
+            "row": "R6_ResolveGap_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "fundingFollowUpDate",
+          "label": "Review date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "subtype": "date",
+          "dateLabel": "Review date",
+          "id": "R6_ResolveGap_Field_6",
+          "layout": {
+            "row": "R6_ResolveGap_Row_6",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R6_ResolveGap\")"
+      },
+      "layout": {
+        "row": "Section_R6_ResolveGap",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_Funder_CheckCoverage",
+      "type": "group",
+      "label": "Check coverage and contractual limits",
+      "path": "taskData_Funder_CheckCoverage",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "policyReference",
+          "label": "Policy / funding reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Funder_CheckCoverage_Field_3",
+          "layout": {
+            "row": "Funder_CheckCoverage_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "fundingAuthorisedChoice",
+          "label": "Is the requested funding authorised?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ],
+          "id": "Funder_CheckCoverage_Field_4",
+          "layout": {
+            "row": "Funder_CheckCoverage_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "approvedFundingAmount",
+          "label": "Approved amount",
+          "type": "number",
+          "validate": {
+            "required": true,
+            "min": 0
+          },
+          "decimalDigits": 2,
+          "id": "Funder_CheckCoverage_Field_5",
+          "layout": {
+            "row": "Funder_CheckCoverage_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "currency",
+          "label": "Currency",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "GBP",
+              "value": "GBP"
+            },
+            {
+              "label": "EUR",
+              "value": "EUR"
+            },
+            {
+              "label": "USD",
+              "value": "USD"
+            }
+          ],
+          "id": "Funder_CheckCoverage_Field_6",
+          "layout": {
+            "row": "Funder_CheckCoverage_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "fundingLimits",
+          "label": "Coverage limits / exclusions",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "Funder_CheckCoverage_Field_7",
+          "layout": {
+            "row": "Funder_CheckCoverage_Row_7",
+            "columns": null
+          }
+        },
+        {
+          "key": "fundingReference",
+          "label": "Decision reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Funder_CheckCoverage_Field_8",
+          "layout": {
+            "row": "Funder_CheckCoverage_Row_8",
+            "columns": null
+          }
+        },
+        {
+          "key": "fundingDecisionReason",
+          "label": "Reason for approval / rejection",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "Funder_CheckCoverage_Field_9",
+          "layout": {
+            "row": "Funder_CheckCoverage_Row_9",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"Funder_CheckCoverage\")"
+      },
+      "layout": {
+        "row": "Section_Funder_CheckCoverage",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P6_Task_RespondFinanceInquiry",
+      "type": "group",
+      "label": "Review and answer a payment or funding enquiry",
+      "path": "taskData_P6_Task_RespondFinanceInquiry",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record the financial answer and refer any clinical question to the clinical team.",
+          "id": "P6_Task_RespondFinanceInquiry_Instructions"
+        },
+        {
+          "key": "financeEnquirySummary",
+          "label": "Payment or funding question",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P6_Task_RespondFinanceInquiry_Field_financeEnquirySummary",
+          "layout": {
+            "row": "P6_Task_RespondFinanceInquiry_Row_financeEnquirySummary",
+            "columns": null
+          }
+        },
+        {
+          "key": "financeEnquiryResponse",
+          "label": "Authorised Finance response",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P6_Task_RespondFinanceInquiry_Field_financeEnquiryResponse",
+          "layout": {
+            "row": "P6_Task_RespondFinanceInquiry_Row_financeEnquiryResponse",
+            "columns": null
+          }
+        },
+        {
+          "key": "financeEnquiryResolved",
+          "label": "Has the financial question been resolved?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P6_Task_RespondFinanceInquiry_Field_financeEnquiryResolved",
+          "layout": {
+            "row": "P6_Task_RespondFinanceInquiry_Row_financeEnquiryResolved",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        },
+        {
+          "key": "financeResponseBy",
+          "label": "Responding Finance staff member",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P6_Task_RespondFinanceInquiry_Field_financeResponseBy",
+          "layout": {
+            "row": "P6_Task_RespondFinanceInquiry_Row_financeResponseBy",
+            "columns": null
+          }
+        },
+        {
+          "key": "financeResponseReference",
+          "label": "Account / enquiry response reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P6_Task_RespondFinanceInquiry_Field_financeResponseReference",
+          "layout": {
+            "row": "P6_Task_RespondFinanceInquiry_Row_financeResponseReference",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P6_Task_RespondFinanceInquiry\")"
+      },
+      "layout": {
+        "row": "Section_P6_Task_RespondFinanceInquiry",
+        "columns": null
+      }
+    },
+    {
+      "id": "Complete_06_cost_allocation",
+      "type": "button",
+      "label": "Complete task",
+      "action": "submit",
+      "layout": {
+        "row": "Submit",
+        "columns": null
+      }
+    }
+  ]
+}

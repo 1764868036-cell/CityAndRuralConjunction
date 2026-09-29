@@ -1,0 +1,603 @@
+{
+  "type": "default",
+  "id": "hospital_12_patient_enquiries",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "Heading_hospital_12_patient_enquiries",
+      "type": "text",
+      "text": "# Patient Enquiry Handling"
+    },
+    {
+      "key": "referralId",
+      "label": "Referral / case ID",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_referralId",
+      "layout": {
+        "row": "Common_referralId",
+        "columns": null
+      }
+    },
+    {
+      "key": "patient_name",
+      "label": "Patient name",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_patient_name",
+      "layout": {
+        "row": "Common_patient_name",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P12_Activity_13m3bda",
+      "type": "group",
+      "label": "Record the enquiry and handler",
+      "path": "taskData_P12_Activity_13m3bda",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record receipt and ownership; do not enter clinical interpretation.",
+          "id": "P12_Activity_13m3bda_Instructions"
+        },
+        {
+          "key": "enquiryReceivedAt",
+          "label": "Date received",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_13m3bda_Field_enquiryReceivedAt",
+          "layout": {
+            "row": "P12_Activity_13m3bda_Row_enquiryReceivedAt",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Date received"
+        },
+        {
+          "key": "callHandler",
+          "label": "Call handler",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_13m3bda_Field_callHandler",
+          "layout": {
+            "row": "P12_Activity_13m3bda_Row_callHandler",
+            "columns": null
+          }
+        },
+        {
+          "key": "contactChannel",
+          "label": "Contact channel",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_13m3bda_Field_contactChannel",
+          "layout": {
+            "row": "P12_Activity_13m3bda_Row_contactChannel",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Telephone",
+              "value": "telephone"
+            },
+            {
+              "label": "Email",
+              "value": "email"
+            },
+            {
+              "label": "Other",
+              "value": "other"
+            }
+          ]
+        },
+        {
+          "key": "enquirySummary",
+          "label": "Enquiry summary in the caller’s words",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_13m3bda_Field_enquirySummary",
+          "layout": {
+            "row": "P12_Activity_13m3bda_Row_enquirySummary",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P12_Activity_13m3bda\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P12_Activity_13m3bda",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P12_Activity_0qe6qfi",
+      "type": "group",
+      "label": "Assign a call handler",
+      "path": "taskData_P12_Activity_0qe6qfi",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Identify the person responsible for handling this contact.",
+          "id": "P12_Activity_0qe6qfi_Instructions"
+        },
+        {
+          "key": "callHandler",
+          "label": "Assigned call handler",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_0qe6qfi_Field_callHandler",
+          "layout": {
+            "row": "P12_Activity_0qe6qfi_Row_callHandler",
+            "columns": null
+          }
+        },
+        {
+          "key": "handlerTeam",
+          "label": "Call handling team",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_0qe6qfi_Field_handlerTeam",
+          "layout": {
+            "row": "P12_Activity_0qe6qfi_Row_handlerTeam",
+            "columns": null
+          }
+        },
+        {
+          "key": "assignmentReason",
+          "label": "Assignment note",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "P12_Activity_0qe6qfi_Field_assignmentReason",
+          "layout": {
+            "row": "P12_Activity_0qe6qfi_Row_assignmentReason",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P12_Activity_0qe6qfi\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P12_Activity_0qe6qfi",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P12_Activity_1gk0gd9",
+      "type": "group",
+      "label": "Check urgency and priority",
+      "path": "taskData_P12_Activity_1gk0gd9",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Use the hospital-approved urgency criteria; the case study says these criteria still need stakeholder agreement.",
+          "id": "P12_Activity_1gk0gd9_Instructions"
+        },
+        {
+          "key": "urgentConcern",
+          "label": "Is the concern urgent or time-sensitive?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_1gk0gd9_Field_urgentConcern",
+          "layout": {
+            "row": "P12_Activity_1gk0gd9_Row_urgentConcern",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        },
+        {
+          "key": "urgencyReason",
+          "label": "Reason and criteria used",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "P12_Activity_1gk0gd9_Field_urgencyReason",
+          "layout": {
+            "row": "P12_Activity_1gk0gd9_Row_urgencyReason",
+            "columns": null
+          }
+        },
+        {
+          "key": "urgencyCheckedBy",
+          "label": "Staff member checking urgency",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_1gk0gd9_Field_urgencyCheckedBy",
+          "layout": {
+            "row": "P12_Activity_1gk0gd9_Row_urgencyCheckedBy",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P12_Activity_1gk0gd9\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P12_Activity_1gk0gd9",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P12_Activity_1llzkmw",
+      "type": "group",
+      "label": "Flag urgent concern immediately",
+      "path": "taskData_P12_Activity_1llzkmw",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Confirm the high-priority flag and immediate handoff details.",
+          "id": "P12_Activity_1llzkmw_Instructions"
+        },
+        {
+          "key": "urgentFlagRecorded",
+          "label": "High-priority flag recorded?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_1llzkmw_Field_urgentFlagRecorded",
+          "layout": {
+            "row": "P12_Activity_1llzkmw_Row_urgentFlagRecorded",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        },
+        {
+          "key": "urgentFlagReason",
+          "label": "Reason for urgent flag",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_1llzkmw_Field_urgentFlagReason",
+          "layout": {
+            "row": "P12_Activity_1llzkmw_Row_urgentFlagReason",
+            "columns": null
+          }
+        },
+        {
+          "key": "flaggedAt",
+          "label": "Flag date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_1llzkmw_Field_flaggedAt",
+          "layout": {
+            "row": "P12_Activity_1llzkmw_Row_flaggedAt",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Flag date"
+        },
+        {
+          "key": "clinicalContactTeam",
+          "label": "Clinical team notified",
+          "type": "textfield",
+          "validate": {
+            "required": false
+          },
+          "id": "P12_Activity_1llzkmw_Field_clinicalContactTeam",
+          "layout": {
+            "row": "P12_Activity_1llzkmw_Row_clinicalContactTeam",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P12_Activity_1llzkmw\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P12_Activity_1llzkmw",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P12_Activity_0z9svo5",
+      "type": "group",
+      "label": "Classify the enquiry",
+      "path": "taskData_P12_Activity_0z9svo5",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Choose one route. Call handlers must not diagnose, interpret test results or recommend treatment.",
+          "id": "P12_Activity_0z9svo5_Instructions"
+        },
+        {
+          "key": "enquiryCategory",
+          "label": "Enquiry category",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_0z9svo5_Field_enquiryCategory",
+          "layout": {
+            "row": "P12_Activity_0z9svo5_Row_enquiryCategory",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Straightforward administrative",
+              "value": "admin-simple"
+            },
+            {
+              "label": "Other administrative",
+              "value": "admin-other"
+            },
+            {
+              "label": "Payment or funding",
+              "value": "finance"
+            },
+            {
+              "label": "Clinical",
+              "value": "clinical"
+            }
+          ]
+        },
+        {
+          "key": "enquiryPriority",
+          "label": "Priority",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_0z9svo5_Field_enquiryPriority",
+          "layout": {
+            "row": "P12_Activity_0z9svo5_Row_enquiryPriority",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Routine",
+              "value": "routine"
+            },
+            {
+              "label": "High priority",
+              "value": "high"
+            }
+          ]
+        },
+        {
+          "key": "classificationNotes",
+          "label": "Classification note",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "P12_Activity_0z9svo5_Field_classificationNotes",
+          "layout": {
+            "row": "P12_Activity_0z9svo5_Row_classificationNotes",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P12_Activity_0z9svo5\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P12_Activity_0z9svo5",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P12_Activity_1rzh2hz",
+      "type": "group",
+      "label": "Transfer enquiry to the responsible administrative team",
+      "path": "taskData_P12_Activity_1rzh2hz",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record the handoff and receiving team.",
+          "id": "P12_Activity_1rzh2hz_Instructions"
+        },
+        {
+          "key": "assignedTeam",
+          "label": "Receiving administrative team",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_1rzh2hz_Field_assignedTeam",
+          "layout": {
+            "row": "P12_Activity_1rzh2hz_Row_assignedTeam",
+            "columns": null
+          }
+        },
+        {
+          "key": "transferReason",
+          "label": "Reason for transfer",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_1rzh2hz_Field_transferReason",
+          "layout": {
+            "row": "P12_Activity_1rzh2hz_Row_transferReason",
+            "columns": null
+          }
+        },
+        {
+          "key": "transferDate",
+          "label": "Transfer date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_1rzh2hz_Field_transferDate",
+          "layout": {
+            "row": "P12_Activity_1rzh2hz_Row_transferDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Transfer date"
+        },
+        {
+          "key": "enquiryResolved",
+          "label": "Resolved at handoff?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_1rzh2hz_Field_enquiryResolved",
+          "layout": {
+            "row": "P12_Activity_1rzh2hz_Row_enquiryResolved",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P12_Activity_1rzh2hz\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P12_Activity_1rzh2hz",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P12_Activity_16idm3v",
+      "type": "group",
+      "label": "Answer the straightforward administrative enquiry",
+      "path": "taskData_P12_Activity_16idm3v",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record the authorised response and whether the matter is resolved.",
+          "id": "P12_Activity_16idm3v_Instructions"
+        },
+        {
+          "key": "responseSummary",
+          "label": "Response provided",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_16idm3v_Field_responseSummary",
+          "layout": {
+            "row": "P12_Activity_16idm3v_Row_responseSummary",
+            "columns": null
+          }
+        },
+        {
+          "key": "enquiryResolved",
+          "label": "Is the enquiry resolved?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_16idm3v_Field_enquiryResolved",
+          "layout": {
+            "row": "P12_Activity_16idm3v_Row_enquiryResolved",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        },
+        {
+          "key": "resolutionDate",
+          "label": "Response date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P12_Activity_16idm3v_Field_resolutionDate",
+          "layout": {
+            "row": "P12_Activity_16idm3v_Row_resolutionDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Response date"
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P12_Activity_16idm3v\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P12_Activity_16idm3v",
+        "columns": null
+      }
+    },
+    {
+      "id": "Complete_hospital_12_patient_enquiries",
+      "type": "button",
+      "label": "Complete task",
+      "action": "submit",
+      "layout": {
+        "row": "Submit",
+        "columns": null
+      }
+    }
+  ]
+}

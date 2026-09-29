@@ -1,0 +1,550 @@
+{
+  "type": "default",
+  "id": "hospital_16_identity_interruptions",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "Heading_hospital_16_identity_interruptions",
+      "type": "text",
+      "text": "# Identity, Access and Downtime"
+    },
+    {
+      "key": "staffUserId",
+      "label": "Staff user ID",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_staffUserId",
+      "layout": {
+        "row": "Common_staffUserId",
+        "columns": null
+      }
+    },
+    {
+      "key": "staffName",
+      "label": "Staff member name",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_staffName",
+      "layout": {
+        "row": "Common_staffName",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P16_Task_Authenticate",
+      "type": "group",
+      "label": "Authenticate the user and verify the requested role",
+      "path": "taskData_P16_Task_Authenticate",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Verify identity and requested access before making an authorisation decision.",
+          "id": "P16_Task_Authenticate_Instructions"
+        },
+        {
+          "key": "targetStaffUserId",
+          "label": "Staff account requested",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Authenticate_Field_targetStaffUserId",
+          "layout": {
+            "row": "P16_Task_Authenticate_Row_targetStaffUserId",
+            "columns": null
+          }
+        },
+        {
+          "key": "targetStaffName",
+          "label": "Staff member name",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Authenticate_Field_targetStaffName",
+          "layout": {
+            "row": "P16_Task_Authenticate_Row_targetStaffName",
+            "columns": null
+          }
+        },
+        {
+          "key": "requestType",
+          "label": "Request type",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Authenticate_Field_requestType",
+          "layout": {
+            "row": "P16_Task_Authenticate_Row_requestType",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Create access",
+              "value": "create"
+            },
+            {
+              "label": "Change access",
+              "value": "change"
+            },
+            {
+              "label": "Remove access",
+              "value": "remove"
+            }
+          ]
+        },
+        {
+          "key": "requestedRole",
+          "label": "Requested role",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Authenticate_Field_requestedRole",
+          "layout": {
+            "row": "P16_Task_Authenticate_Row_requestedRole",
+            "columns": null
+          },
+          "description": "Select only a role appropriate to the staff member’s duties."
+        },
+        {
+          "key": "verificationMethod",
+          "label": "Identity verification method",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Authenticate_Field_verificationMethod",
+          "layout": {
+            "row": "P16_Task_Authenticate_Row_verificationMethod",
+            "columns": null
+          }
+        },
+        {
+          "key": "identityEvidenceReference",
+          "label": "Evidence or request reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Authenticate_Field_identityEvidenceReference",
+          "layout": {
+            "row": "P16_Task_Authenticate_Row_identityEvidenceReference",
+            "columns": null
+          }
+        },
+        {
+          "key": "accessAuthorised",
+          "label": "Is the identity and role request authorised?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Authenticate_Field_accessAuthorised",
+          "layout": {
+            "row": "P16_Task_Authenticate_Row_accessAuthorised",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        },
+        {
+          "key": "verificationNotes",
+          "label": "Verification notes",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Authenticate_Field_verificationNotes",
+          "layout": {
+            "row": "P16_Task_Authenticate_Row_verificationNotes",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P16_Task_Authenticate\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P16_Task_Authenticate",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P16_Task_Grant",
+      "type": "group",
+      "label": "Grant only the permissions required for the role",
+      "path": "taskData_P16_Task_Grant",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Apply minimum necessary access and record who authorised it.",
+          "id": "P16_Task_Grant_Instructions"
+        },
+        {
+          "key": "approvedRole",
+          "label": "Approved role",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Grant_Field_approvedRole",
+          "layout": {
+            "row": "P16_Task_Grant_Row_approvedRole",
+            "columns": null
+          }
+        },
+        {
+          "key": "grantedPermissions",
+          "label": "Permissions granted",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Grant_Field_grantedPermissions",
+          "layout": {
+            "row": "P16_Task_Grant_Row_grantedPermissions",
+            "columns": null
+          }
+        },
+        {
+          "key": "accessScope",
+          "label": "Access scope and restrictions",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Grant_Field_accessScope",
+          "layout": {
+            "row": "P16_Task_Grant_Row_accessScope",
+            "columns": null
+          }
+        },
+        {
+          "key": "permissionRationale",
+          "label": "Why these permissions are required",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Grant_Field_permissionRationale",
+          "layout": {
+            "row": "P16_Task_Grant_Row_permissionRationale",
+            "columns": null
+          }
+        },
+        {
+          "key": "authorisingAdministrator",
+          "label": "Authorising administrator",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Grant_Field_authorisingAdministrator",
+          "layout": {
+            "row": "P16_Task_Grant_Row_authorisingAdministrator",
+            "columns": null
+          }
+        },
+        {
+          "key": "accessReviewDate",
+          "label": "Next access review date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Grant_Field_accessReviewDate",
+          "layout": {
+            "row": "P16_Task_Grant_Row_accessReviewDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Next access review date"
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P16_Task_Grant\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P16_Task_Grant",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P16_Task_RecordInterruption",
+      "type": "group",
+      "label": "Record the affected service and notify responsible teams",
+      "path": "taskData_P16_Task_RecordInterruption",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Create an incident record and notify teams responsible for recovery.",
+          "id": "P16_Task_RecordInterruption_Instructions"
+        },
+        {
+          "key": "incidentReference",
+          "label": "Incident reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_RecordInterruption_Field_incidentReference",
+          "layout": {
+            "row": "P16_Task_RecordInterruption_Row_incidentReference",
+            "columns": null
+          }
+        },
+        {
+          "key": "affectedService",
+          "label": "Unavailable system or external service",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_RecordInterruption_Field_affectedService",
+          "layout": {
+            "row": "P16_Task_RecordInterruption_Row_affectedService",
+            "columns": null
+          }
+        },
+        {
+          "key": "interruptionStartDate",
+          "label": "Interruption start date and time",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_RecordInterruption_Field_interruptionStartDate",
+          "layout": {
+            "row": "P16_Task_RecordInterruption_Row_interruptionStartDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Interruption start date and time"
+        },
+        {
+          "key": "impactSummary",
+          "label": "Affected work and operational impact",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_RecordInterruption_Field_impactSummary",
+          "layout": {
+            "row": "P16_Task_RecordInterruption_Row_impactSummary",
+            "columns": null
+          }
+        },
+        {
+          "key": "teamsNotified",
+          "label": "Responsible teams notified",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_RecordInterruption_Field_teamsNotified",
+          "layout": {
+            "row": "P16_Task_RecordInterruption_Row_teamsNotified",
+            "columns": null
+          }
+        },
+        {
+          "key": "notificationDate",
+          "label": "Notification date and time",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_RecordInterruption_Field_notificationDate",
+          "layout": {
+            "row": "P16_Task_RecordInterruption_Row_notificationDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Notification date and time"
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P16_Task_RecordInterruption\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P16_Task_RecordInterruption",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P16_Task_Downtime",
+      "type": "group",
+      "label": "Use the downtime procedure to record work completed",
+      "path": "taskData_P16_Task_Downtime",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record offline actions so they can be reconciled after service restoration.",
+          "id": "P16_Task_Downtime_Instructions"
+        },
+        {
+          "key": "offlineRecordReference",
+          "label": "Offline record reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Downtime_Field_offlineRecordReference",
+          "layout": {
+            "row": "P16_Task_Downtime_Row_offlineRecordReference",
+            "columns": null
+          }
+        },
+        {
+          "key": "patientOrProcessReference",
+          "label": "Patient or process reference",
+          "type": "textfield",
+          "validate": {
+            "required": false
+          },
+          "id": "P16_Task_Downtime_Field_patientOrProcessReference",
+          "layout": {
+            "row": "P16_Task_Downtime_Row_patientOrProcessReference",
+            "columns": null
+          }
+        },
+        {
+          "key": "activityType",
+          "label": "Offline activity type",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Downtime_Field_activityType",
+          "layout": {
+            "row": "P16_Task_Downtime_Row_activityType",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Clinical",
+              "value": "clinical"
+            },
+            {
+              "label": "Administrative",
+              "value": "administrative"
+            },
+            {
+              "label": "Financial",
+              "value": "financial"
+            },
+            {
+              "label": "External-service booking",
+              "value": "external-service"
+            }
+          ]
+        },
+        {
+          "key": "activityDescription",
+          "label": "Action completed and outcome",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Downtime_Field_activityDescription",
+          "layout": {
+            "row": "P16_Task_Downtime_Row_activityDescription",
+            "columns": null
+          }
+        },
+        {
+          "key": "completedBy",
+          "label": "Staff member completing the action",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Downtime_Field_completedBy",
+          "layout": {
+            "row": "P16_Task_Downtime_Row_completedBy",
+            "columns": null
+          }
+        },
+        {
+          "key": "actionDate",
+          "label": "Action date and time",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Downtime_Field_actionDate",
+          "layout": {
+            "row": "P16_Task_Downtime_Row_actionDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Action date and time"
+        },
+        {
+          "key": "reconciliationStatus",
+          "label": "Reconciliation status",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P16_Task_Downtime_Field_reconciliationStatus",
+          "layout": {
+            "row": "P16_Task_Downtime_Row_reconciliationStatus",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Pending",
+              "value": "pending"
+            },
+            {
+              "label": "Ready for reconciliation",
+              "value": "ready"
+            }
+          ]
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P16_Task_Downtime\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P16_Task_Downtime",
+        "columns": null
+      }
+    },
+    {
+      "id": "Complete_hospital_16_identity_interruptions",
+      "type": "button",
+      "label": "Complete task",
+      "action": "submit",
+      "layout": {
+        "row": "Submit",
+        "columns": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,805 @@
+{
+  "type": "default",
+  "id": "hospital_13_clinic_letters",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "Heading_hospital_13_clinic_letters",
+      "type": "text",
+      "text": "# Clinic Letter and Delay Management"
+    },
+    {
+      "key": "referralId",
+      "label": "Referral / case ID",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_referralId",
+      "layout": {
+        "row": "Common_referralId",
+        "columns": null
+      }
+    },
+    {
+      "key": "patient_name",
+      "label": "Patient name",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_patient_name",
+      "layout": {
+        "row": "Common_patient_name",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P13_Activity_0az5u78",
+      "type": "group",
+      "label": "Draft the clinic letter",
+      "path": "taskData_P13_Activity_0az5u78",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "The Consultant owns all clinical content and identifies intended recipients.",
+          "id": "P13_Activity_0az5u78_Instructions"
+        },
+        {
+          "key": "appointmentDate",
+          "label": "Appointment date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_0az5u78_Field_appointmentDate",
+          "layout": {
+            "row": "P13_Activity_0az5u78_Row_appointmentDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Appointment date"
+        },
+        {
+          "key": "letterStartDate",
+          "label": "Date drafting started",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_0az5u78_Field_letterStartDate",
+          "layout": {
+            "row": "P13_Activity_0az5u78_Row_letterStartDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Date drafting started"
+        },
+        {
+          "key": "letterRecipients",
+          "label": "Intended recipients",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_0az5u78_Field_letterRecipients",
+          "layout": {
+            "row": "P13_Activity_0az5u78_Row_letterRecipients",
+            "columns": null
+          }
+        },
+        {
+          "key": "diagnosis",
+          "label": "Diagnosis and relevant clinical findings",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_0az5u78_Field_diagnosis",
+          "layout": {
+            "row": "P13_Activity_0az5u78_Row_diagnosis",
+            "columns": null
+          }
+        },
+        {
+          "key": "treatmentPlan",
+          "label": "Treatment decisions and follow-up plan",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_0az5u78_Field_treatmentPlan",
+          "layout": {
+            "row": "P13_Activity_0az5u78_Row_treatmentPlan",
+            "columns": null
+          }
+        },
+        {
+          "key": "patientInstructions",
+          "label": "Instructions for the patient and other recipients",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_0az5u78_Field_patientInstructions",
+          "layout": {
+            "row": "P13_Activity_0az5u78_Row_patientInstructions",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P13_Activity_0az5u78\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P13_Activity_0az5u78",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P13_Activity_1xgw427",
+      "type": "group",
+      "label": "Review the clinical content",
+      "path": "taskData_P13_Activity_1xgw427",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "The Consultant approves or returns the letter for correction.",
+          "id": "P13_Activity_1xgw427_Instructions"
+        },
+        {
+          "key": "clinicalReviewFindings",
+          "label": "Review findings",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_1xgw427_Field_clinicalReviewFindings",
+          "layout": {
+            "row": "P13_Activity_1xgw427_Row_clinicalReviewFindings",
+            "columns": null
+          }
+        },
+        {
+          "key": "consultantApproved",
+          "label": "Approve the clinical content?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_1xgw427_Field_consultantApproved",
+          "layout": {
+            "row": "P13_Activity_1xgw427_Row_consultantApproved",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        },
+        {
+          "key": "requestedCorrections",
+          "label": "Required clinical corrections",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "P13_Activity_1xgw427_Field_requestedCorrections",
+          "layout": {
+            "row": "P13_Activity_1xgw427_Row_requestedCorrections",
+            "columns": null
+          }
+        },
+        {
+          "key": "reviewDate",
+          "label": "Review date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_1xgw427_Field_reviewDate",
+          "layout": {
+            "row": "P13_Activity_1xgw427_Row_reviewDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Review date"
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P13_Activity_1xgw427\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P13_Activity_1xgw427",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P13_Activity_1yti6jj",
+      "type": "group",
+      "label": "Check recipients and administrative details",
+      "path": "taskData_P13_Activity_1yti6jj",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Medical Secretaries may correct formatting and administrative errors, but must not change clinical meaning.",
+          "id": "P13_Activity_1yti6jj_Instructions"
+        },
+        {
+          "key": "recipientListVerified",
+          "label": "Recipients verified?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_1yti6jj_Field_recipientListVerified",
+          "layout": {
+            "row": "P13_Activity_1yti6jj_Row_recipientListVerified",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        },
+        {
+          "key": "noSuspectedClinicalError",
+          "label": "No suspected clinical error?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_1yti6jj_Field_noSuspectedClinicalError",
+          "layout": {
+            "row": "P13_Activity_1yti6jj_Row_noSuspectedClinicalError",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        },
+        {
+          "key": "administrativeCorrections",
+          "label": "Formatting or administrative corrections made",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "P13_Activity_1yti6jj_Field_administrativeCorrections",
+          "layout": {
+            "row": "P13_Activity_1yti6jj_Row_administrativeCorrections",
+            "columns": null
+          }
+        },
+        {
+          "key": "distributionMethod",
+          "label": "Approved distribution method",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_1yti6jj_Field_distributionMethod",
+          "layout": {
+            "row": "P13_Activity_1yti6jj_Row_distributionMethod",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Postal",
+              "value": "postal"
+            },
+            {
+              "label": "Digital",
+              "value": "digital"
+            },
+            {
+              "label": "Other approved channel",
+              "value": "other"
+            }
+          ]
+        },
+        {
+          "key": "processingDate",
+          "label": "Processing date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_1yti6jj_Field_processingDate",
+          "layout": {
+            "row": "P13_Activity_1yti6jj_Row_processingDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Processing date"
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P13_Activity_1yti6jj\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P13_Activity_1yti6jj",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P13_Activity_0nwm6rp",
+      "type": "group",
+      "label": "Record overdue letter",
+      "path": "taskData_P13_Activity_0nwm6rp",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Patient Pathway Coordinators record delay status and valid reasons for monitoring.",
+          "id": "P13_Activity_0nwm6rp_Instructions"
+        },
+        {
+          "key": "appointmentDate",
+          "label": "Appointment date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_0nwm6rp_Field_appointmentDate",
+          "layout": {
+            "row": "P13_Activity_0nwm6rp_Row_appointmentDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Appointment date"
+        },
+        {
+          "key": "delayRecordedDate",
+          "label": "Date entered in delay tracker",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_0nwm6rp_Field_delayRecordedDate",
+          "layout": {
+            "row": "P13_Activity_0nwm6rp_Row_delayRecordedDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Date entered in delay tracker"
+        },
+        {
+          "key": "letterStatus",
+          "label": "Current letter status",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_0nwm6rp_Field_letterStatus",
+          "layout": {
+            "row": "P13_Activity_0nwm6rp_Row_letterStatus",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Incomplete",
+              "value": "incomplete"
+            },
+            {
+              "label": "Awaiting Consultant approval",
+              "value": "awaiting-approval"
+            },
+            {
+              "label": "Awaiting administrative processing",
+              "value": "awaiting-processing"
+            }
+          ]
+        },
+        {
+          "key": "delayReason",
+          "label": "Reason for delay, if known",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "P13_Activity_0nwm6rp_Field_delayReason",
+          "layout": {
+            "row": "P13_Activity_0nwm6rp_Row_delayReason",
+            "columns": null
+          }
+        },
+        {
+          "key": "delayReasonValidated",
+          "label": "Reason confirmed by an authorised staff member?",
+          "type": "radio",
+          "validate": {
+            "required": false
+          },
+          "id": "P13_Activity_0nwm6rp_Field_delayReasonValidated",
+          "layout": {
+            "row": "P13_Activity_0nwm6rp_Row_delayReasonValidated",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P13_Activity_0nwm6rp\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P13_Activity_0nwm6rp",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P13_Activity_0ba3vii",
+      "type": "group",
+      "label": "Escalate to senior management",
+      "path": "taskData_P13_Activity_0ba3vii",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Summarise the delay and prior reminders for senior management.",
+          "id": "P13_Activity_0ba3vii_Instructions"
+        },
+        {
+          "key": "escalationDate",
+          "label": "Escalation date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_0ba3vii_Field_escalationDate",
+          "layout": {
+            "row": "P13_Activity_0ba3vii_Row_escalationDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Escalation date"
+        },
+        {
+          "key": "escalationSummary",
+          "label": "Reason and history of escalation",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_0ba3vii_Field_escalationSummary",
+          "layout": {
+            "row": "P13_Activity_0ba3vii_Row_escalationSummary",
+            "columns": null
+          }
+        },
+        {
+          "key": "remindersSentCount",
+          "label": "Number of reminders sent",
+          "type": "number",
+          "validate": {
+            "required": true,
+            "min": 0
+          },
+          "id": "P13_Activity_0ba3vii_Field_remindersSentCount",
+          "layout": {
+            "row": "P13_Activity_0ba3vii_Row_remindersSentCount",
+            "columns": null
+          },
+          "decimalDigits": 0
+        },
+        {
+          "key": "validDelayReason",
+          "label": "Valid reason for delay recorded?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_0ba3vii_Field_validDelayReason",
+          "layout": {
+            "row": "P13_Activity_0ba3vii_Row_validDelayReason",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P13_Activity_0ba3vii\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P13_Activity_0ba3vii",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P13_Activity_0oe33ui",
+      "type": "group",
+      "label": "Stop reminders when complete",
+      "path": "taskData_P13_Activity_0oe33ui",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Verify completion and record when recurring reminders were stopped.",
+          "id": "P13_Activity_0oe33ui_Instructions"
+        },
+        {
+          "key": "completionVerified",
+          "label": "Letter completion verified?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_0oe33ui_Field_completionVerified",
+          "layout": {
+            "row": "P13_Activity_0oe33ui_Row_completionVerified",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        },
+        {
+          "key": "completionDate",
+          "label": "Completion date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_0oe33ui_Field_completionDate",
+          "layout": {
+            "row": "P13_Activity_0oe33ui_Row_completionDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Completion date"
+        },
+        {
+          "key": "remindersStoppedAt",
+          "label": "Reminders stopped on",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_0oe33ui_Field_remindersStoppedAt",
+          "layout": {
+            "row": "P13_Activity_0oe33ui_Row_remindersStoppedAt",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Reminders stopped on"
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P13_Activity_0oe33ui\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P13_Activity_0oe33ui",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P13_Activity_0wt7ysb",
+      "type": "group",
+      "label": "Retain reminder and escalation history",
+      "path": "taskData_P13_Activity_0wt7ysb",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Retain a traceable history of reminders, responses, valid delay reasons and escalations.",
+          "id": "P13_Activity_0wt7ysb_Instructions"
+        },
+        {
+          "key": "historyReference",
+          "label": "History or audit reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_0wt7ysb_Field_historyReference",
+          "layout": {
+            "row": "P13_Activity_0wt7ysb_Row_historyReference",
+            "columns": null
+          }
+        },
+        {
+          "key": "reminderCount",
+          "label": "Total reminders retained",
+          "type": "number",
+          "validate": {
+            "required": true,
+            "min": 0
+          },
+          "id": "P13_Activity_0wt7ysb_Field_reminderCount",
+          "layout": {
+            "row": "P13_Activity_0wt7ysb_Row_reminderCount",
+            "columns": null
+          },
+          "decimalDigits": 0
+        },
+        {
+          "key": "responseAndEscalationSummary",
+          "label": "Response and escalation summary",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_0wt7ysb_Field_responseAndEscalationSummary",
+          "layout": {
+            "row": "P13_Activity_0wt7ysb_Row_responseAndEscalationSummary",
+            "columns": null
+          }
+        },
+        {
+          "key": "retainedAt",
+          "label": "Retention date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Activity_0wt7ysb_Field_retainedAt",
+          "layout": {
+            "row": "P13_Activity_0wt7ysb_Row_retainedAt",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Retention date"
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P13_Activity_0wt7ysb\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P13_Activity_0wt7ysb",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_P13_Task_SeniorReview",
+      "type": "group",
+      "label": "Review escalation and decide action",
+      "path": "taskData_P13_Task_SeniorReview",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record the senior-management decision and its owner.",
+          "id": "P13_Task_SeniorReview_Instructions"
+        },
+        {
+          "key": "seniorReviewDecision",
+          "label": "Decision",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Task_SeniorReview_Field_seniorReviewDecision",
+          "layout": {
+            "row": "P13_Task_SeniorReview_Row_seniorReviewDecision",
+            "columns": null
+          },
+          "values": [
+            {
+              "label": "Accept current plan",
+              "value": "accept"
+            },
+            {
+              "label": "Request immediate follow-up",
+              "value": "follow-up"
+            },
+            {
+              "label": "Escalate further",
+              "value": "further-escalation"
+            }
+          ]
+        },
+        {
+          "key": "decisionNotes",
+          "label": "Decision rationale and actions",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Task_SeniorReview_Field_decisionNotes",
+          "layout": {
+            "row": "P13_Task_SeniorReview_Row_decisionNotes",
+            "columns": null
+          }
+        },
+        {
+          "key": "actionOwner",
+          "label": "Action owner",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Task_SeniorReview_Field_actionOwner",
+          "layout": {
+            "row": "P13_Task_SeniorReview_Row_actionOwner",
+            "columns": null
+          }
+        },
+        {
+          "key": "actionDueDate",
+          "label": "Action due date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "id": "P13_Task_SeniorReview_Field_actionDueDate",
+          "layout": {
+            "row": "P13_Task_SeniorReview_Row_actionDueDate",
+            "columns": null
+          },
+          "subtype": "date",
+          "dateLabel": "Action due date"
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"P13_Task_SeniorReview\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_P13_Task_SeniorReview",
+        "columns": null
+      }
+    },
+    {
+      "id": "Complete_hospital_13_clinic_letters",
+      "type": "button",
+      "label": "Complete task",
+      "action": "submit",
+      "layout": {
+        "row": "Submit",
+        "columns": null
+      }
+    }
+  ]
+}

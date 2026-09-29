@@ -1,0 +1,547 @@
+{
+  "type": "default",
+  "id": "hospital_04_diagnosis_consent",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "Heading_04_diagnosis_consent",
+      "type": "text",
+      "text": "# Diagnosis and Informed Consent"
+    },
+    {
+      "key": "referralId",
+      "label": "Referral / case ID",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "description": "Use the reference assigned to this referral.",
+      "id": "Common_referralId",
+      "layout": {
+        "row": "Common_referralId",
+        "columns": null
+      }
+    },
+    {
+      "key": "patient_name",
+      "label": "Patient name",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      },
+      "id": "Common_patient_name",
+      "layout": {
+        "row": "Common_patient_name",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R4_Assess",
+      "type": "group",
+      "label": "Consultant examines Patient and reviews investigations",
+      "path": "taskData_R4_Assess",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "assessmentDate",
+          "label": "Assessment date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "subtype": "date",
+          "dateLabel": "Assessment date",
+          "id": "R4_Assess_Field_3",
+          "layout": {
+            "row": "R4_Assess_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "clinicalAssessment",
+          "label": "Examination and clinical assessment",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R4_Assess_Field_4",
+          "layout": {
+            "row": "R4_Assess_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "investigationSummary",
+          "label": "Investigation results",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R4_Assess_Field_5",
+          "layout": {
+            "row": "R4_Assess_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "diagnosis",
+          "label": "Diagnosis",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R4_Assess_Field_6",
+          "layout": {
+            "row": "R4_Assess_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "treatmentPlanReference",
+          "label": "Proposed treatment plan reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R4_Assess_Field_7",
+          "layout": {
+            "row": "R4_Assess_Row_7",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R4_Assess\" or hospitalFormTask = null)"
+      },
+      "layout": {
+        "row": "Section_R4_Assess",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R4_Explain",
+      "type": "group",
+      "label": "Explain diagnosis, treatment risks and alternatives",
+      "path": "taskData_R4_Explain",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "treatmentBenefits",
+          "label": "Expected benefits",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R4_Explain_Field_3",
+          "layout": {
+            "row": "R4_Explain_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "treatmentRisks",
+          "label": "Material risks and side effects",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R4_Explain_Field_4",
+          "layout": {
+            "row": "R4_Explain_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "treatmentAlternatives",
+          "label": "Reasonable alternatives, including declining treatment",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R4_Explain_Field_5",
+          "layout": {
+            "row": "R4_Explain_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "patientQuestions",
+          "label": "Patient questions and answers",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "R4_Explain_Field_6",
+          "layout": {
+            "row": "R4_Explain_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "explainingClinician",
+          "label": "Clinician providing the explanation",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R4_Explain_Field_7",
+          "layout": {
+            "row": "R4_Explain_Row_7",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R4_Explain\")"
+      },
+      "layout": {
+        "row": "Section_R4_Explain",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R4_RecordConsent",
+      "type": "group",
+      "label": "Record signed informed consent",
+      "path": "taskData_R4_RecordConsent",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record the evidence of consent after receiving the patient decision; this form references the signed document.",
+          "id": "R4_RecordConsent_Instructions_informed_consent_record"
+        },
+        {
+          "key": "consentDocumentReference",
+          "label": "Signed consent document reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R4_RecordConsent_Field_3",
+          "layout": {
+            "row": "R4_RecordConsent_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "consentDate",
+          "label": "Consent date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "subtype": "date",
+          "dateLabel": "Consent date",
+          "id": "R4_RecordConsent_Field_4",
+          "layout": {
+            "row": "R4_RecordConsent_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "consentRecordedBy",
+          "label": "Recorded by",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R4_RecordConsent_Field_5",
+          "layout": {
+            "row": "R4_RecordConsent_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "consentedPlanReference",
+          "label": "Treatment plan covered by consent",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R4_RecordConsent_Field_6",
+          "layout": {
+            "row": "R4_RecordConsent_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "consentNotes",
+          "label": "Consent notes",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "R4_RecordConsent_Field_7",
+          "layout": {
+            "row": "R4_RecordConsent_Row_7",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R4_RecordConsent\")"
+      },
+      "layout": {
+        "row": "Section_R4_RecordConsent",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_R4_RecordRefusal",
+      "type": "group",
+      "label": "Record refusal and discuss alternatives",
+      "path": "taskData_R4_RecordRefusal",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "refusalReason",
+          "label": "Patient refusal or concerns",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R4_RecordRefusal_Field_3",
+          "layout": {
+            "row": "R4_RecordRefusal_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "alternativeCarePlan",
+          "label": "Alternatives and follow-up plan",
+          "type": "textarea",
+          "validate": {
+            "required": true
+          },
+          "id": "R4_RecordRefusal_Field_4",
+          "layout": {
+            "row": "R4_RecordRefusal_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "refusalRecordedBy",
+          "label": "Recorded by",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "R4_RecordRefusal_Field_5",
+          "layout": {
+            "row": "R4_RecordRefusal_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "refusalDate",
+          "label": "Date recorded",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "subtype": "date",
+          "dateLabel": "Date recorded",
+          "id": "R4_RecordRefusal_Field_6",
+          "layout": {
+            "row": "R4_RecordRefusal_Row_6",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"R4_RecordRefusal\")"
+      },
+      "layout": {
+        "row": "Section_R4_RecordRefusal",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_Patient_ReviewTreatmentOptions",
+      "type": "group",
+      "label": "Review benefits, risks and alternatives",
+      "path": "taskData_Patient_ReviewTreatmentOptions",
+      "showOutline": false,
+      "components": [
+        {
+          "key": "diagnosis",
+          "label": "Diagnosis",
+          "type": "textfield",
+          "validate": {
+            "required": false
+          },
+          "readonly": true,
+          "id": "Patient_ReviewTreatmentOptions_Field_3",
+          "layout": {
+            "row": "Patient_ReviewTreatmentOptions_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "treatmentBenefits",
+          "label": "Expected benefits",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "readonly": true,
+          "id": "Patient_ReviewTreatmentOptions_Field_4",
+          "layout": {
+            "row": "Patient_ReviewTreatmentOptions_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "treatmentRisks",
+          "label": "Risks",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "readonly": true,
+          "id": "Patient_ReviewTreatmentOptions_Field_5",
+          "layout": {
+            "row": "Patient_ReviewTreatmentOptions_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "treatmentAlternatives",
+          "label": "Alternatives",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "readonly": true,
+          "id": "Patient_ReviewTreatmentOptions_Field_6",
+          "layout": {
+            "row": "Patient_ReviewTreatmentOptions_Row_6",
+            "columns": null
+          }
+        },
+        {
+          "key": "patientQuestions",
+          "label": "Questions for the clinical team",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "Patient_ReviewTreatmentOptions_Field_7",
+          "layout": {
+            "row": "Patient_ReviewTreatmentOptions_Row_7",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"Patient_ReviewTreatmentOptions\")"
+      },
+      "layout": {
+        "row": "Section_Patient_ReviewTreatmentOptions",
+        "columns": null
+      }
+    },
+    {
+      "id": "Section_Patient_DecideConsent",
+      "type": "group",
+      "label": "Decide whether to consent",
+      "path": "taskData_Patient_DecideConsent",
+      "showOutline": false,
+      "components": [
+        {
+          "type": "text",
+          "text": "Record the patient decision after discussion with the clinical team. Signed consent evidence is recorded in the Hospital process.",
+          "id": "Patient_DecideConsent_Instructions_patient_consent_decision"
+        },
+        {
+          "key": "informedConsentChoice",
+          "label": "Do you consent to the explained treatment plan?",
+          "type": "radio",
+          "validate": {
+            "required": true
+          },
+          "values": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ],
+          "id": "Patient_DecideConsent_Field_3",
+          "layout": {
+            "row": "Patient_DecideConsent_Row_3",
+            "columns": null
+          }
+        },
+        {
+          "key": "consentedPlanReference",
+          "label": "Treatment plan reference",
+          "type": "textfield",
+          "validate": {
+            "required": true
+          },
+          "id": "Patient_DecideConsent_Field_4",
+          "layout": {
+            "row": "Patient_DecideConsent_Row_4",
+            "columns": null
+          }
+        },
+        {
+          "key": "patientConsentComments",
+          "label": "Comments or concerns",
+          "type": "textarea",
+          "validate": {
+            "required": false
+          },
+          "id": "Patient_DecideConsent_Field_5",
+          "layout": {
+            "row": "Patient_DecideConsent_Row_5",
+            "columns": null
+          }
+        },
+        {
+          "key": "patientDecisionDate",
+          "label": "Decision date",
+          "type": "datetime",
+          "validate": {
+            "required": true
+          },
+          "subtype": "date",
+          "dateLabel": "Decision date",
+          "id": "Patient_DecideConsent_Field_6",
+          "layout": {
+            "row": "Patient_DecideConsent_Row_6",
+            "columns": null
+          }
+        }
+      ],
+      "conditional": {
+        "hide": "= not (hospitalFormTask = \"Patient_DecideConsent\")"
+      },
+      "layout": {
+        "row": "Section_Patient_DecideConsent",
+        "columns": null
+      }
+    },
+    {
+      "id": "Complete_04_diagnosis_consent",
+      "type": "button",
+      "label": "Complete task",
+      "action": "submit",
+      "layout": {
+        "row": "Submit",
+        "columns": null
+      }
+    }
+  ]
+}
