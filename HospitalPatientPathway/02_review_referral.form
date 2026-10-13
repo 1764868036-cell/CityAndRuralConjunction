@@ -19,7 +19,9 @@
       "label": "Referral / case ID",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 64,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "description": "Use the reference assigned to this referral.",
       "id": "Common_referralId",
@@ -33,7 +35,9 @@
       "label": "Patient name",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 128,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_patient_name",
       "layout": {
@@ -53,7 +57,9 @@
           "label": "Clinical review findings",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R2_Review_Field_3",
           "layout": {
@@ -90,7 +96,9 @@
           "label": "Reason for acceptance or rejection",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R2_Review_Field_5",
           "layout": {
@@ -143,7 +151,9 @@
           "label": "Responsible clinician",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R2_Route_Field_4",
           "layout": {
@@ -156,7 +166,9 @@
           "label": "Selected clinic / service",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R2_Route_Field_5",
           "layout": {
@@ -169,7 +181,8 @@
           "label": "Routing instructions",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "id": "R2_Route_Field_6",
           "layout": {

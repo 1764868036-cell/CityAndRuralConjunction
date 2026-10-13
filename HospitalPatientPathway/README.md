@@ -11,6 +11,10 @@ is in [`WORK_REPORT.md`](WORK_REPORT.md) - 中文工作文档，逐条说明改�
 
 ## Use in Camunda Modeler
 
+**Roles and validation:** all 70 executable user tasks now use lane-based Camunda candidate
+groups and server-side completion validation. Before running the revised model, configure
+the cluster roles and rebuild the workers using [the setup and verification guide](security/README.md).
+
 Open `1-17.bpmn` in Camunda Modeler and keep the `.form` files in this folder. The BPMN uses deployment binding, so deploy the BPMN and all referenced forms together. Each shared form uses `hospitalFormTask` to show only the section for the current user task. Form fields bind to same-name task-local variables, with explicit input and output mappings to and from process variables. Only the active task fields are propagated on submission. The mapping file lists every bound task and form.
 
 ## Shared forms

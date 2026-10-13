@@ -19,7 +19,9 @@
       "label": "Referral / case ID",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 64,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_referralId",
       "layout": {
@@ -32,7 +34,9 @@
       "label": "Patient name",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 128,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_patient_name",
       "layout": {
@@ -87,7 +91,9 @@
           "label": "Intended recipients",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P13_Activity_0az5u78_Field_letterRecipients",
           "layout": {
@@ -100,7 +106,9 @@
           "label": "Diagnosis and relevant clinical findings",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P13_Activity_0az5u78_Field_diagnosis",
           "layout": {
@@ -113,7 +121,9 @@
           "label": "Treatment decisions and follow-up plan",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P13_Activity_0az5u78_Field_treatmentPlan",
           "layout": {
@@ -126,7 +136,9 @@
           "label": "Instructions for the patient and other recipients",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P13_Activity_0az5u78_Field_patientInstructions",
           "layout": {
@@ -160,7 +172,9 @@
           "label": "Review findings",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P13_Activity_1xgw427_Field_clinicalReviewFindings",
           "layout": {
@@ -196,7 +210,8 @@
           "label": "Required clinical corrections",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "id": "P13_Activity_1xgw427_Field_requestedCorrections",
           "layout": {
@@ -291,7 +306,8 @@
           "label": "Formatting or administrative corrections made",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "id": "P13_Activity_1yti6jj_Field_administrativeCorrections",
           "layout": {
@@ -424,7 +440,8 @@
           "label": "Reason for delay, if known",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "id": "P13_Activity_0nwm6rp_Field_delayReason",
           "layout": {
@@ -496,7 +513,9 @@
           "label": "Reason and history of escalation",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P13_Activity_0ba3vii_Field_escalationSummary",
           "layout": {
@@ -510,7 +529,8 @@
           "type": "number",
           "validate": {
             "required": true,
-            "min": 0
+            "min": 0,
+            "max": 2147483647
           },
           "id": "P13_Activity_0ba3vii_Field_remindersSentCount",
           "layout": {
@@ -642,7 +662,9 @@
           "label": "History or audit reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P13_Activity_0wt7ysb_Field_historyReference",
           "layout": {
@@ -656,7 +678,8 @@
           "type": "number",
           "validate": {
             "required": true,
-            "min": 0
+            "min": 0,
+            "max": 2147483647
           },
           "id": "P13_Activity_0wt7ysb_Field_reminderCount",
           "layout": {
@@ -670,7 +693,9 @@
           "label": "Response and escalation summary",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P13_Activity_0wt7ysb_Field_responseAndEscalationSummary",
           "layout": {
@@ -746,7 +771,9 @@
           "label": "Decision rationale and actions",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P13_Task_SeniorReview_Field_decisionNotes",
           "layout": {
@@ -759,7 +786,9 @@
           "label": "Action owner",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P13_Task_SeniorReview_Field_actionOwner",
           "layout": {

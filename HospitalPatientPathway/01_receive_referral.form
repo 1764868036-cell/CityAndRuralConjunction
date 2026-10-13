@@ -19,7 +19,9 @@
       "label": "Referral / case ID",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 64,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "description": "Use the reference assigned to this referral.",
       "id": "Common_referralId",
@@ -33,7 +35,9 @@
       "label": "Patient name",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 128,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_patient_name",
       "layout": {
@@ -58,7 +62,9 @@
           "label": "Referring organisation / clinician",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R1_RegisterCheck_Field_3",
           "layout": {
@@ -71,7 +77,9 @@
           "label": "Patient contact details",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R1_RegisterCheck_Field_4",
           "layout": {
@@ -99,7 +107,9 @@
           "label": "Reason for referral",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R1_RegisterCheck_Field_6",
           "layout": {
@@ -112,7 +122,9 @@
           "label": "Referral and investigation document references",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R1_RegisterCheck_Field_7",
           "layout": {
@@ -148,7 +160,8 @@
           "label": "Missing information or documents",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "id": "R1_RegisterCheck_Field_9",
           "layout": {
@@ -177,7 +190,9 @@
           "label": "Additional records received",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R1_UpdateReferral_Field_3",
           "layout": {
@@ -190,7 +205,9 @@
           "label": "Record updates",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R1_UpdateReferral_Field_4",
           "layout": {
@@ -226,7 +243,8 @@
           "label": "Outstanding information",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "id": "R1_UpdateReferral_Field_6",
           "layout": {
@@ -260,7 +278,9 @@
           "label": "Referring organisation / clinician",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Referrer_PrepareReferral_Field_3",
           "layout": {
@@ -273,7 +293,9 @@
           "label": "Patient contact details",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Referrer_PrepareReferral_Field_4",
           "layout": {
@@ -286,7 +308,9 @@
           "label": "Reason for referral",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Referrer_PrepareReferral_Field_5",
           "layout": {
@@ -299,7 +323,9 @@
           "label": "Document and investigation references",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Referrer_PrepareReferral_Field_6",
           "layout": {
@@ -343,7 +369,9 @@
           "label": "Requested documents",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Referrer_CollectDocs_Field_3",
           "layout": {
@@ -356,7 +384,9 @@
           "label": "Records supplied",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Referrer_CollectDocs_Field_4",
           "layout": {
@@ -369,7 +399,8 @@
           "label": "Additional information",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "id": "Referrer_CollectDocs_Field_5",
           "layout": {

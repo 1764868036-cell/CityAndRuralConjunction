@@ -482,7 +482,7 @@
     <bpmn:userTask id="R1_RegisterCheck" name="Register referral in PAS and check documents">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="medical-secretary" />
+        <zeebe:assignmentDefinition candidateGroups="medical-secretaries" />
         <zeebe:formDefinition formId="hospital_01_receive_referral" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R1_RegisterCheck&#34;" target="hospitalFormTask" />
@@ -507,6 +507,9 @@
           <zeebe:output source="= taskData_R1_RegisterCheck.documentsCompleteChoice = &#34;yes&#34;" target="documentsComplete" />
           <zeebe:output source="= taskData_R1_RegisterCheck.missingDocuments" target="missingDocuments" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_01</bpmn:categoryValueRef>
       <bpmn:incoming>P1_Flow_StartRegister</bpmn:incoming>
@@ -531,6 +534,7 @@
     </bpmn:receiveTask>
     <bpmn:userTask id="P13_Activity_1yti6jj" name="Check recipients and admin details">
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="medical-secretaries" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_13_clinic_letters" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -551,6 +555,9 @@
           <zeebe:output source="= taskData_P13_Activity_1yti6jj.distributionMethod" target="distributionMethod" />
           <zeebe:output source="= taskData_P13_Activity_1yti6jj.processingDate" target="processingDate" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_13</bpmn:categoryValueRef>
       <bpmn:incoming>P13_Flow_1cih9dx</bpmn:incoming>
@@ -1769,7 +1776,7 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
     <bpmn:userTask id="R2_Review" name="Review clinical suitability">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="consultant" />
+        <zeebe:assignmentDefinition candidateGroups="consultants" />
         <zeebe:formDefinition formId="hospital_02_review_referral" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R2_Review&#34;" target="hospitalFormTask" />
@@ -1786,6 +1793,9 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
           <zeebe:output source="= taskData_R2_Review.referralSuitableChoice = &#34;yes&#34;" target="referralSuitable" />
           <zeebe:output source="= taskData_R2_Review.referralDecisionReason" target="referralDecisionReason" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_02</bpmn:categoryValueRef>
       <bpmn:incoming>Flow_008</bpmn:incoming>
@@ -1800,7 +1810,7 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
     <bpmn:userTask id="R2_Route" name="Set urgency and select service">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="consultant" />
+        <zeebe:assignmentDefinition candidateGroups="consultants" />
         <zeebe:formDefinition formId="hospital_02_review_referral" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R2_Route&#34;" target="hospitalFormTask" />
@@ -1818,6 +1828,9 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
           <zeebe:output source="= taskData_R2_Route.selectedService" target="selectedService" />
           <zeebe:output source="= taskData_R2_Route.routingNotes" target="routingNotes" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_02</bpmn:categoryValueRef>
       <bpmn:incoming>Flow_010</bpmn:incoming>
@@ -1883,7 +1896,7 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
     <bpmn:userTask id="R3_RecordAvailability" name="Bookings team confirms availability">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="booking-clerk" />
+        <zeebe:assignmentDefinition candidateGroups="outpatient-bookings-team" />
         <zeebe:formDefinition formId="hospital_03_initial_consultation" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R3_RecordAvailability&#34;" target="hospitalFormTask" />
@@ -1908,6 +1921,9 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
           <zeebe:output source="= taskData_R3_RecordAvailability.availability = &#34;available&#34;" target="slotAvailable" />
           <zeebe:output source="= taskData_R3_RecordAvailability.requestedReviewBy" target="requestedReviewBy" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_03</bpmn:categoryValueRef>
       <bpmn:incoming>Redraw_P3_04</bpmn:incoming>
@@ -1996,7 +2012,7 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
     <bpmn:userTask id="R4_Assess" name="Consultant examines Patient and reviews investigations">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="consultant" />
+        <zeebe:assignmentDefinition candidateGroups="consultants" />
         <zeebe:formDefinition formId="hospital_04_diagnosis_consent" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R4_Assess&#34;" target="hospitalFormTask" />
@@ -2016,6 +2032,9 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
           <zeebe:output source="= taskData_R4_Assess.diagnosis" target="diagnosis" />
           <zeebe:output source="= taskData_R4_Assess.treatmentPlanReference" target="treatmentPlanReference" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_04</bpmn:categoryValueRef>
       <bpmn:incoming>Flow_031</bpmn:incoming>
@@ -2026,7 +2045,7 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
       <bpmn:documentation>External information flow MessageFlow_TreatmentOptions: send "Message_TreatmentOptions" to Patient_TreatmentOptionsStart (Receive diagnosis and treatment options).</bpmn:documentation>
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="consultant" />
+        <zeebe:assignmentDefinition candidateGroups="consultants" />
         <zeebe:formDefinition formId="hospital_04_diagnosis_consent" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R4_Explain&#34;" target="hospitalFormTask" />
@@ -2046,6 +2065,9 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
           <zeebe:output source="= taskData_R4_Explain.patientQuestions" target="patientQuestions" />
           <zeebe:output source="= taskData_R4_Explain.explainingClinician" target="explainingClinician" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_04</bpmn:categoryValueRef>
       <bpmn:incoming>Flow_032</bpmn:incoming>
@@ -2061,7 +2083,7 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
     <bpmn:userTask id="R4_RecordConsent" name="Record signed informed consent">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="clinical-team" />
+        <zeebe:assignmentDefinition candidateGroups="consultants" />
         <zeebe:formDefinition formId="hospital_04_diagnosis_consent" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R4_RecordConsent&#34;" target="hospitalFormTask" />
@@ -2081,6 +2103,9 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
           <zeebe:output source="= taskData_R4_RecordConsent.consentedPlanReference" target="consentedPlanReference" />
           <zeebe:output source="= taskData_R4_RecordConsent.consentNotes" target="consentNotes" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_04</bpmn:categoryValueRef>
       <bpmn:incoming>Flow_034</bpmn:incoming>
@@ -2094,7 +2119,7 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
     <bpmn:userTask id="R4_RecordRefusal" name="Record refusal and discuss alternatives">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="clinical-team" />
+        <zeebe:assignmentDefinition candidateGroups="consultants" />
         <zeebe:formDefinition formId="hospital_04_diagnosis_consent" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R4_RecordRefusal&#34;" target="hospitalFormTask" />
@@ -2112,6 +2137,9 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
           <zeebe:output source="= taskData_R4_RecordRefusal.refusalRecordedBy" target="refusalRecordedBy" />
           <zeebe:output source="= taskData_R4_RecordRefusal.refusalDate" target="refusalDate" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_04</bpmn:categoryValueRef>
       <bpmn:incoming>Flow_035</bpmn:incoming>
@@ -2173,7 +2201,7 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
     <bpmn:userTask id="R5_ConfirmTreatment" name="Reserve provisional slots and record dependencies">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="treatment-booking-team" />
+        <zeebe:assignmentDefinition candidateGroups="treatment-bookings-team" />
         <zeebe:formDefinition formId="hospital_05_treatment_services" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R5_ConfirmTreatment&#34;" target="hospitalFormTask" />
@@ -2191,6 +2219,9 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
           <zeebe:output source="= taskData_R5_ConfirmTreatment.serviceReservationReferences" target="serviceReservationReferences" />
           <zeebe:output source="= taskData_R5_ConfirmTreatment.bookingDependencies" target="bookingDependencies" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_05</bpmn:categoryValueRef>
       <bpmn:incoming>Flow_042</bpmn:incoming>
@@ -2206,6 +2237,7 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
     </bpmn:sendTask>
     <bpmn:userTask id="Confirm_Treatment_Booking" name="Confirm treatment booking after financial clearance">
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="treatment-bookings-team" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_05_treatment_services" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -2226,6 +2258,9 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
           <zeebe:output source="= taskData_Confirm_Treatment_Booking.clearanceReference" target="clearanceReference" />
           <zeebe:output source="= taskData_Confirm_Treatment_Booking.finalBookingInstructions" target="finalBookingInstructions" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_05</bpmn:categoryValueRef>
       <bpmn:incoming>P5_Flow_ClearMerge_Confirm</bpmn:incoming>
@@ -2257,7 +2292,7 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
     <bpmn:userTask id="P5_Task_HoldTreatment" name="Keep treatment on hold and notify the pathway team">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="booking-clerk" />
+        <zeebe:assignmentDefinition candidateGroups="treatment-bookings-team" />
         <zeebe:formDefinition formId="hospital_05_treatment_services" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;P5_Task_HoldTreatment&#34;" target="hospitalFormTask" />
@@ -2277,6 +2312,9 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
           <zeebe:output source="= taskData_P5_Task_HoldTreatment.holdReviewBy" target="holdReviewBy" />
           <zeebe:output source="= taskData_P5_Task_HoldTreatment.holdNotificationReference" target="holdNotificationReference" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_05</bpmn:categoryValueRef>
       <bpmn:incoming>LinkFlow_L09</bpmn:incoming>
@@ -2319,7 +2357,7 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
     <bpmn:userTask id="R6_RecordAllocation" name="Record payer, reference, amount and limits">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="finance" />
+        <zeebe:assignmentDefinition candidateGroups="finance-team" />
         <zeebe:formDefinition formId="hospital_06_cost_allocation" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R6_RecordAllocation&#34;" target="hospitalFormTask" />
@@ -2342,6 +2380,9 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
           <zeebe:output source="= taskData_R6_RecordAllocation.fundingApprovedChoice" target="fundingApprovedChoice" />
           <zeebe:output source="= taskData_R6_RecordAllocation.fundingApprovedChoice = &#34;yes&#34;" target="fundingApproved" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_06</bpmn:categoryValueRef>
       <bpmn:incoming>Flow_050</bpmn:incoming>
@@ -2357,7 +2398,7 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
     <bpmn:userTask id="R6_ResolveGap" name="Resolve funding gap or hold treatment">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="finance" />
+        <zeebe:assignmentDefinition candidateGroups="finance-team" />
         <zeebe:formDefinition formId="hospital_06_cost_allocation" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R6_ResolveGap&#34;" target="hospitalFormTask" />
@@ -2376,6 +2417,9 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
           <zeebe:output source="= taskData_R6_ResolveGap.fundingFollowUpDate" target="fundingFollowUpDate" />
           <zeebe:output source="= false" target="fundingApproved" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_06</bpmn:categoryValueRef>
       <bpmn:incoming>Flow_054</bpmn:incoming>
@@ -2409,7 +2453,7 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
     <bpmn:userTask id="R7_CalculateCharge" name="Calculate charge and prepare payment request">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="finance" />
+        <zeebe:assignmentDefinition candidateGroups="finance-team" />
         <zeebe:formDefinition formId="hospital_07_payment_result" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R7_CalculateCharge&#34;" target="hospitalFormTask" />
@@ -2429,6 +2473,9 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
           <zeebe:output source="= taskData_R7_CalculateCharge.chargeBreakdown" target="chargeBreakdown" />
           <zeebe:output source="= taskData_R7_CalculateCharge.paymentRequestReference" target="paymentRequestReference" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_07</bpmn:categoryValueRef>
       <bpmn:incoming>Flow_057</bpmn:incoming>
@@ -2460,7 +2507,7 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
     <bpmn:userTask id="R7_RecordPayment" name="Record status, reference, date and amount">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="finance" />
+        <zeebe:assignmentDefinition candidateGroups="finance-team" />
         <zeebe:formDefinition formId="hospital_07_payment_result" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R7_RecordPayment&#34;" target="hospitalFormTask" />
@@ -2481,6 +2528,9 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
           <zeebe:output source="= taskData_R7_RecordPayment.paymentRecordingNotes" target="paymentRecordingNotes" />
           <zeebe:output source="= &#34;paid&#34;" target="paymentStatus" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_07</bpmn:categoryValueRef>
       <bpmn:incoming>Flow_061</bpmn:incoming>
@@ -2491,7 +2541,7 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
       <bpmn:documentation>External information flow MessageFlow_PaymentNotice: send "Message_PaymentNotice" to Patient_PaymentNoticeStart (Receive payment follow-up notice).</bpmn:documentation>
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="finance" />
+        <zeebe:assignmentDefinition candidateGroups="finance-team" />
         <zeebe:formDefinition formId="hospital_07_payment_result" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R7_NotifyRetry&#34;" target="hospitalFormTask" />
@@ -2510,6 +2560,9 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
           <zeebe:output source="= taskData_R7_NotifyRetry.retryApprovedChoice = &#34;yes&#34;" target="retryApproved" />
           <zeebe:output source="= taskData_R7_NotifyRetry.retryDecisionReason" target="retryDecisionReason" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_07</bpmn:categoryValueRef>
       <bpmn:incoming>Flow_062</bpmn:incoming>
@@ -2547,7 +2600,7 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
     <bpmn:userTask id="R7_ReconcilePayment" name="Finance reconciles status with provider">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="finance" />
+        <zeebe:assignmentDefinition candidateGroups="finance-team" />
         <zeebe:formDefinition formId="hospital_07_payment_result" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R7_ReconcilePayment&#34;" target="hospitalFormTask" />
@@ -2568,6 +2621,9 @@ External information flow P12_Flow_1f79qtb: receive "patient question" from Part
           <zeebe:output source="= taskData_R7_ReconcilePayment.reconciledAmount" target="reconciledAmount" />
           <zeebe:output source="= taskData_R7_ReconcilePayment.reconciliationEvidence" target="reconciliationEvidence" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_07</bpmn:categoryValueRef>
       <bpmn:incoming>Flow_070</bpmn:incoming>
@@ -2611,6 +2667,9 @@ External information flow P8_MF_Lab_Request: send "blood sample and test request
           <zeebe:output source="= taskData_P8_Task_Review.clinicalReviewFindings" target="clinicalReviewFindings" />
           <zeebe:output source="= taskData_P8_Task_Review.bloodTestSummary" target="bloodTestSummary" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_08</bpmn:categoryValueRef>
       <bpmn:incoming>P8_Flow_ReviewEntry_Task</bpmn:incoming>
@@ -2643,6 +2702,9 @@ External information flow P8_MF_Lab_Results: receive "test results" from Partici
           <zeebe:output source="= taskData_P8_Task_Evaluate.clinicalDecisionReason" target="clinicalDecisionReason" />
           <zeebe:output source="= taskData_P8_Task_Evaluate.reviewingClinician" target="reviewingClinician" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_08</bpmn:categoryValueRef>
       <bpmn:incoming>P8_Flow_Fork_FitDecision</bpmn:incoming>
@@ -2682,7 +2744,7 @@ External information flow P8_MF_Lab_Results: receive "test results" from Partici
     <bpmn:userTask id="R8_ClinicalReview" name="Clinical review and blood test determine next step">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="clinical-team" />
+        <zeebe:assignmentDefinition candidateGroups="consultants" />
         <zeebe:formDefinition formId="hospital_08_continue_treatment" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R8_ClinicalReview&#34;" target="hospitalFormTask" />
@@ -2706,6 +2768,9 @@ External information flow P8_MF_Lab_Results: receive "test results" from Partici
           <zeebe:output source="= taskData_R8_ClinicalReview.revisedPlanReference" target="revisedPlanReference" />
           <zeebe:output source="= taskData_R8_ClinicalReview.reassessmentDelay" target="reassessmentDelay" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_08</bpmn:categoryValueRef>
       <bpmn:incoming>P8_Flow_Results_ReviewForm</bpmn:incoming>
@@ -2713,6 +2778,7 @@ External information flow P8_MF_Lab_Results: receive "test results" from Partici
     </bpmn:userTask>
     <bpmn:userTask id="Deliver_Treatment_Cycle" name="Provide authorised treatment cycle">
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="consultants" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_05_treatment_services" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -2735,6 +2801,9 @@ External information flow P8_MF_Lab_Results: receive "test results" from Partici
           <zeebe:output source="= taskData_Deliver_Treatment_Cycle.treatmentDelivered" target="treatmentDelivered" />
           <zeebe:output source="= taskData_Deliver_Treatment_Cycle.treatmentObservations" target="treatmentObservations" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_08</bpmn:categoryValueRef>
       <bpmn:incoming>P8_Flow_TreatmentBooked_Deliver</bpmn:incoming>
@@ -2763,7 +2832,7 @@ External information flow P8_MF_Lab_Results: receive "test results" from Partici
     <bpmn:userTask id="P8_Task_AssessPriority" name="Consultant assesses clinical priority for the scheduling conflict">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="clinical-team" />
+        <zeebe:assignmentDefinition candidateGroups="consultants" />
         <zeebe:formDefinition formId="hospital_08_continue_treatment" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;P8_Task_AssessPriority&#34;" target="hospitalFormTask" />
@@ -2785,6 +2854,9 @@ External information flow P8_MF_Lab_Results: receive "test results" from Partici
           <zeebe:output source="= taskData_P8_Task_AssessPriority.priorityAuthorisingClinician" target="priorityAuthorisingClinician" />
           <zeebe:output source="= taskData_P8_Task_AssessPriority.priorityDecisionReference" target="priorityDecisionReference" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_08</bpmn:categoryValueRef>
       <bpmn:incoming>P8_Flow_Priority_Start</bpmn:incoming>
@@ -2801,7 +2873,7 @@ External information flow P8_MF_Lab_Results: receive "test results" from Partici
     <bpmn:userTask id="P8_Task_AnswerClinicalInquiry" name="Qualified clinical team prepares an enquiry response">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="clinical-team" />
+        <zeebe:assignmentDefinition candidateGroups="clinical-nurse-specialists" />
         <zeebe:formDefinition formId="hospital_08_continue_treatment" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;P8_Task_AnswerClinicalInquiry&#34;" target="hospitalFormTask" />
@@ -2821,6 +2893,9 @@ External information flow P8_MF_Lab_Results: receive "test results" from Partici
           <zeebe:output source="= taskData_P8_Task_AnswerClinicalInquiry.clinicalResponseBy" target="clinicalResponseBy" />
           <zeebe:output source="= taskData_P8_Task_AnswerClinicalInquiry.clinicalResponseReference" target="clinicalResponseReference" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_08</bpmn:categoryValueRef>
       <bpmn:incoming>P8_Flow_Clinical_Start</bpmn:incoming>
@@ -2902,6 +2977,9 @@ External information flow P8_MF_Lab_Results: receive "test results" from Partici
           <zeebe:output source="= taskData_P9_Task_RecordApproval.approvalDate" target="approvalDate" />
           <zeebe:output source="= taskData_P9_Task_RecordApproval.clinicalRationale" target="clinicalRationale" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_09</bpmn:categoryValueRef>
       <bpmn:incoming>P9_Flow_Postpone_Record</bpmn:incoming>
@@ -2932,6 +3010,9 @@ External information flow P9_MF_Notify_Patient: send "changed schedule" to Parti
           <zeebe:output source="= taskData_P9_Task_AdjustSchedule.affectsChargeOrFunding" target="affectsChargeOrFunding" />
           <zeebe:output source="= taskData_P9_Task_AdjustSchedule.affectedBookingReference" target="affectedBookingReference" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_09</bpmn:categoryValueRef>
       <bpmn:incoming>P9_Flow_Record_Adjust</bpmn:incoming>
@@ -2967,6 +3048,9 @@ External information flow P9_MF_Notify_Patient: send "changed schedule" to Parti
           <zeebe:output source="= taskData_P9_Task_FinanceReview.financialReviewNotes" target="financialReviewNotes" />
           <zeebe:output source="= taskData_P9_Task_FinanceReview.financeReviewer" target="financeReviewer" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_09</bpmn:categoryValueRef>
       <bpmn:incoming>P9_Flow_Costs_Yes</bpmn:incoming>
@@ -2980,7 +3064,7 @@ External information flow P9_MF_Notify_Patient: send "changed schedule" to Parti
     <bpmn:userTask id="P9_Task_ConfirmClinicalApproval" name="Confirm formal clinical authorisation for the treatment change">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="clinical-team" />
+        <zeebe:assignmentDefinition candidateGroups="consultants" />
         <zeebe:formDefinition formId="hospital_09_treatment_changes" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;P9_Task_ConfirmClinicalApproval&#34;" target="hospitalFormTask" />
@@ -3000,6 +3084,9 @@ External information flow P9_MF_Notify_Patient: send "changed schedule" to Parti
           <zeebe:output source="= taskData_P9_Task_ConfirmClinicalApproval.approvalDate" target="approvalDate" />
           <zeebe:output source="= taskData_P9_Task_ConfirmClinicalApproval.clinicalRationale" target="clinicalRationale" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_09</bpmn:categoryValueRef>
       <bpmn:incoming>P9_Flow_Formal_ApprovalCheck</bpmn:incoming>
@@ -3036,6 +3123,9 @@ External information flow P9_MF_Notify_Patient: send "changed schedule" to Parti
           <zeebe:output source="= taskData_P10_Task_Record.paymentReceived" target="paymentReceived" />
           <zeebe:output source="= taskData_P10_Task_Record.patientNotified" target="patientNotified" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_10</bpmn:categoryValueRef>
       <bpmn:incoming>P10_Flow_Start_Record</bpmn:incoming>
@@ -3071,6 +3161,9 @@ External information flow P10_MF_Rebook_Offer: send "new appointment offered" to
           <zeebe:output source="= taskData_P10_Task_Rebook.contactMethod" target="contactMethod" />
           <zeebe:output source="= taskData_P10_Task_Rebook.patientContactOutcome" target="patientContactOutcome" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_10</bpmn:categoryValueRef>
       <bpmn:incoming>P10_Flow_Decide_Rebook</bpmn:incoming>
@@ -3095,6 +3188,9 @@ External information flow P10_MF_Rebook_Offer: send "new appointment offered" to
           <zeebe:output source="= taskData_P10_Task_ClinicalReview.clinicalReviewReason" target="clinicalReviewReason" />
           <zeebe:output source="= taskData_P10_Task_ClinicalReview.authorisedClinician" target="authorisedClinician" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_10</bpmn:categoryValueRef>
       <bpmn:incoming>P10_Flow_Decide_Clinical</bpmn:incoming>
@@ -3140,6 +3236,9 @@ External information flow P10_MF_Notify_Referrer: send "case information" to Par
           <zeebe:output source="= taskData_P10_Task_Finance.financialRationale" target="financialRationale" />
           <zeebe:output source="= taskData_P10_Task_Finance.financeAuthoriser" target="financeAuthoriser" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_10</bpmn:categoryValueRef>
       <bpmn:incoming>P10_Flow_Paid_Yes</bpmn:incoming>
@@ -3180,6 +3279,9 @@ External information flow P10_MF_Notify_Referrer: send "case information" to Par
           <zeebe:output source="= taskData_P11_Task_Decide.decisionReason" target="decisionReason" />
           <zeebe:output source="= taskData_P11_Task_Decide.financeApprover" target="financeApprover" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_11</bpmn:categoryValueRef>
       <bpmn:incoming>P11_Flow_RefundCase_Decide</bpmn:incoming>
@@ -3235,6 +3337,9 @@ External information flow P10_MF_Notify_Referrer: send "case information" to Par
           <zeebe:output source="= taskData_P11_Task_RecordDecision.decisionReference" target="decisionReference" />
           <zeebe:output source="= taskData_P11_Task_RecordDecision.patientNotified" target="patientNotified" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_11</bpmn:categoryValueRef>
       <bpmn:incoming>P11_Flow_Outcome_Rejected</bpmn:incoming>
@@ -3258,7 +3363,7 @@ External information flow P10_MF_Notify_Referrer: send "case information" to Par
       <bpmn:documentation>Finance decides any full or partial refund within its authority. Clinical staff decide treatment necessity; Finance does not make clinical decisions.</bpmn:documentation>
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="finance" />
+        <zeebe:assignmentDefinition candidateGroups="finance-team" />
         <zeebe:formDefinition formId="hospital_07_payment_result" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;Finance_RefundReview&#34;" target="hospitalFormTask" />
@@ -3283,6 +3388,9 @@ External information flow P10_MF_Notify_Referrer: send "case information" to Par
           <zeebe:output source="= taskData_Finance_RefundReview.refundDecisionReason" target="refundDecisionReason" />
           <zeebe:output source="= taskData_Finance_RefundReview.refundAuthorisedBy" target="refundAuthorisedBy" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_11</bpmn:categoryValueRef>
       <bpmn:incoming>P11_Flow_Outcome_Refund</bpmn:incoming>
@@ -3297,7 +3405,7 @@ External information flow P10_MF_Notify_Referrer: send "case information" to Par
     <bpmn:userTask id="Finance_RecordRefund" name="Record refund status and amount">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="finance" />
+        <zeebe:assignmentDefinition candidateGroups="finance-team" />
         <zeebe:formDefinition formId="hospital_07_payment_result" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;Finance_RecordRefund&#34;" target="hospitalFormTask" />
@@ -3319,6 +3427,9 @@ External information flow P10_MF_Notify_Referrer: send "case information" to Par
           <zeebe:output source="= taskData_Finance_RecordRefund.refundRecordedDate" target="refundRecordedDate" />
           <zeebe:output source="= taskData_Finance_RecordRefund.refundFollowUp" target="refundFollowUp" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_11</bpmn:categoryValueRef>
       <bpmn:incoming>P11_Flow_RecordResult_Finance</bpmn:incoming>
@@ -3340,6 +3451,7 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
     <bpmn:userTask id="P12_Activity_13m3bda" name="Record the enquiry and handler">
       <bpmn:documentation>Record the received date and time, call handler, assigned team, priority, response and resolution so that the enquiry has a complete history.</bpmn:documentation>
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="call-handlers" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_12_patient_enquiries" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -3358,6 +3470,9 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
           <zeebe:output source="= taskData_P12_Activity_13m3bda.contactChannel" target="contactChannel" />
           <zeebe:output source="= taskData_P12_Activity_13m3bda.enquirySummary" target="enquirySummary" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_12</bpmn:categoryValueRef>
       <bpmn:incoming>P12_Flow_0qbtabm</bpmn:incoming>
@@ -3365,6 +3480,7 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
     </bpmn:userTask>
     <bpmn:userTask id="P12_Activity_0qe6qfi" name="Assign a call handler">
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="call-handlers" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_12_patient_enquiries" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -3381,6 +3497,9 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
           <zeebe:output source="= taskData_P12_Activity_0qe6qfi.handlerTeam" target="handlerTeam" />
           <zeebe:output source="= taskData_P12_Activity_0qe6qfi.assignmentReason" target="assignmentReason" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_12</bpmn:categoryValueRef>
       <bpmn:incoming>P12_Flow_0t3px2j</bpmn:incoming>
@@ -3388,6 +3507,7 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
     </bpmn:userTask>
     <bpmn:userTask id="P12_Activity_1gk0gd9" name="Check urgency and priority">
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="call-handlers" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_12_patient_enquiries" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -3404,6 +3524,9 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
           <zeebe:output source="= taskData_P12_Activity_1gk0gd9.urgencyReason" target="urgencyReason" />
           <zeebe:output source="= taskData_P12_Activity_1gk0gd9.urgencyCheckedBy" target="urgencyCheckedBy" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_12</bpmn:categoryValueRef>
       <bpmn:incoming>P12_Flow_1om9e16</bpmn:incoming>
@@ -3418,6 +3541,7 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
     </bpmn:exclusiveGateway>
     <bpmn:userTask id="P12_Activity_1llzkmw" name="Flag urgent concern immediately">
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="call-handlers" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_12_patient_enquiries" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -3436,6 +3560,9 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
           <zeebe:output source="= taskData_P12_Activity_1llzkmw.flaggedAt" target="flaggedAt" />
           <zeebe:output source="= taskData_P12_Activity_1llzkmw.clinicalContactTeam" target="clinicalContactTeam" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_12</bpmn:categoryValueRef>
       <bpmn:incoming>P12_Flow_1otacrf</bpmn:incoming>
@@ -3443,6 +3570,7 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
     </bpmn:userTask>
     <bpmn:userTask id="P12_Activity_0z9svo5" name="Classify the enquiry">
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="call-handlers" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_12_patient_enquiries" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -3459,6 +3587,9 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
           <zeebe:output source="= taskData_P12_Activity_0z9svo5.enquiryPriority" target="enquiryPriority" />
           <zeebe:output source="= taskData_P12_Activity_0z9svo5.classificationNotes" target="classificationNotes" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_12</bpmn:categoryValueRef>
       <bpmn:incoming>P12_Flow_0irag33</bpmn:incoming>
@@ -3501,6 +3632,7 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
     </bpmn:sendTask>
     <bpmn:userTask id="P12_Activity_1rzh2hz" name="Transfer enquiry to the responsible administrative team">
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="call-handlers" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_12_patient_enquiries" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -3519,6 +3651,9 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
           <zeebe:output source="= taskData_P12_Activity_1rzh2hz.transferDate" target="transferDate" />
           <zeebe:output source="= taskData_P12_Activity_1rzh2hz.enquiryResolved" target="enquiryResolved" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_12</bpmn:categoryValueRef>
       <bpmn:incoming>P12_Flow_0pvl9aq</bpmn:incoming>
@@ -3526,6 +3661,7 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
     </bpmn:userTask>
     <bpmn:userTask id="P12_Activity_16idm3v" name="Answer the straightforward administrative enquiry">
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="call-handlers" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_12_patient_enquiries" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -3542,6 +3678,9 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
           <zeebe:output source="= taskData_P12_Activity_16idm3v.enquiryResolved" target="enquiryResolved" />
           <zeebe:output source="= taskData_P12_Activity_16idm3v.resolutionDate" target="resolutionDate" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_12</bpmn:categoryValueRef>
       <bpmn:incoming>P12_Flow_09679kz</bpmn:incoming>
@@ -3588,6 +3727,7 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
     </bpmn:exclusiveGateway>
     <bpmn:userTask id="P13_Activity_0az5u78" name="Draft the clinic letter">
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="consultants" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_13_clinic_letters" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -3611,6 +3751,9 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
           <zeebe:output source="= taskData_P13_Activity_0az5u78.patientInstructions" target="patientInstructions" />
           <zeebe:output source="= false" target="letterComplete" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_13</bpmn:categoryValueRef>
       <bpmn:incoming>P13_Flow_19w69uj</bpmn:incoming>
@@ -3624,6 +3767,7 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
     </bpmn:exclusiveGateway>
     <bpmn:userTask id="P13_Activity_1xgw427" name="Review the clinical content">
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="consultants" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_13_clinic_letters" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -3642,6 +3786,9 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
           <zeebe:output source="= taskData_P13_Activity_1xgw427.requestedCorrections" target="requestedCorrections" />
           <zeebe:output source="= taskData_P13_Activity_1xgw427.reviewDate" target="reviewDate" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_13</bpmn:categoryValueRef>
       <bpmn:incoming>P13_Flow_1e0we1y</bpmn:incoming>
@@ -3672,6 +3819,7 @@ External information flow P11_MF_RefundResult: receive "refund result" from Part
       <bpmn:documentation>Record the overdue status and appointment date in the delay tracker. The tracker supports pathway monitoring and reporting.
 External information flow P13_Flow_0vb3us2: send "delay record stored in the tracking system" to Track_Start_DelayRecord (Delay record received).</bpmn:documentation>
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="pathway-coordinators" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_13_clinic_letters" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -3692,6 +3840,9 @@ External information flow P13_Flow_0vb3us2: send "delay record stored in the tra
           <zeebe:output source="= taskData_P13_Activity_0nwm6rp.delayReason" target="delayReason" />
           <zeebe:output source="= taskData_P13_Activity_0nwm6rp.delayReasonValidated" target="delayReasonValidated" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_13</bpmn:categoryValueRef>
       <bpmn:incoming>P13_Flow_1njbs7y</bpmn:incoming>
@@ -3776,6 +3927,7 @@ External information flow P13_Flow_0vb3us2: send "delay record stored in the tra
     <bpmn:userTask id="P13_Activity_0oe33ui" name="Stop reminders when complete">
       <bpmn:documentation>Close the reminder branch when the letter is complete; preserve the full reminder, response and escalation history.</bpmn:documentation>
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="pathway-coordinators" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_13_clinic_letters" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -3792,6 +3944,9 @@ External information flow P13_Flow_0vb3us2: send "delay record stored in the tra
           <zeebe:output source="= taskData_P13_Activity_0oe33ui.completionDate" target="completionDate" />
           <zeebe:output source="= taskData_P13_Activity_0oe33ui.remindersStoppedAt" target="remindersStoppedAt" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_13</bpmn:categoryValueRef>
       <bpmn:incoming>P13_Flow_0rbwdcs</bpmn:incoming>
@@ -3807,6 +3962,7 @@ External information flow P13_Flow_0vb3us2: send "delay record stored in the tra
     <bpmn:userTask id="P13_Activity_0wt7ysb" name="Retain reminder and escalation history">
       <bpmn:documentation>Retain all reminders, responses, valid delay reasons and prior escalations.</bpmn:documentation>
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="pathway-coordinators" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_13_clinic_letters" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -3825,6 +3981,9 @@ External information flow P13_Flow_0vb3us2: send "delay record stored in the tra
           <zeebe:output source="= taskData_P13_Activity_0wt7ysb.responseAndEscalationSummary" target="responseAndEscalationSummary" />
           <zeebe:output source="= taskData_P13_Activity_0wt7ysb.retainedAt" target="retainedAt" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_13</bpmn:categoryValueRef>
       <bpmn:incoming>P13_Flow_1y8zdul</bpmn:incoming>
@@ -3842,6 +4001,7 @@ External information flow P13_Flow_0vb3us2: send "delay record stored in the tra
     </bpmn:intermediateThrowEvent>
     <bpmn:userTask id="P13_Task_SeniorReview" name="Review escalation and decide action">
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="senior-management" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_13_clinic_letters" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -3860,6 +4020,9 @@ External information flow P13_Flow_0vb3us2: send "delay record stored in the tra
           <zeebe:output source="= taskData_P13_Task_SeniorReview.actionOwner" target="actionOwner" />
           <zeebe:output source="= taskData_P13_Task_SeniorReview.actionDueDate" target="actionDueDate" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_13</bpmn:categoryValueRef>
       <bpmn:incoming>P13_Flow_Escalate</bpmn:incoming>
@@ -3893,6 +4056,7 @@ External information flow P14_MessageFlow_Booking: send "Book appointment" to Pa
     </bpmn:serviceTask>
     <bpmn:userTask id="P14_Task_Mark" name="Mark issue for attention">
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="outpatient-bookings-team" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_14_follow_up_appointments" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -3911,6 +4075,9 @@ External information flow P14_MessageFlow_Booking: send "Book appointment" to Pa
           <zeebe:output source="= taskData_P14_Task_Mark.availabilityIssueReason" target="availabilityIssueReason" />
           <zeebe:output source="= taskData_P14_Task_Mark.priorityFlag" target="priorityFlag" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_14</bpmn:categoryValueRef>
       <bpmn:incoming>P14_Flow_Gateway_Mark</bpmn:incoming>
@@ -3918,6 +4085,7 @@ External information flow P14_MessageFlow_Booking: send "Book appointment" to Pa
     </bpmn:userTask>
     <bpmn:userTask id="P14_Task_Hand" name="Pass case to pathway team">
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="pathway-coordinators" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_14_follow_up_appointments" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -3936,6 +4104,9 @@ External information flow P14_MessageFlow_Booking: send "Book appointment" to Pa
           <zeebe:output source="= taskData_P14_Task_Hand.handoffDate" target="handoffDate" />
           <zeebe:output source="= taskData_P14_Task_Hand.urgentFlag" target="urgentFlag" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_14</bpmn:categoryValueRef>
       <bpmn:incoming>P14_Flow_Mark_Hand</bpmn:incoming>
@@ -3943,6 +4114,7 @@ External information flow P14_MessageFlow_Booking: send "Book appointment" to Pa
     </bpmn:userTask>
     <bpmn:userTask id="P14_Task_Receive" name="Receive follow-up request">
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="outpatient-bookings-team" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_14_follow_up_appointments" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -3963,6 +4135,9 @@ External information flow P14_MessageFlow_Booking: send "Book appointment" to Pa
           <zeebe:output source="= taskData_P14_Task_Receive.followUpReason" target="followUpReason" />
           <zeebe:output source="= taskData_P14_Task_Receive.slotAvailable" target="slotAvailable" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_14</bpmn:categoryValueRef>
       <bpmn:incoming>P14_Flow_Start_Receive</bpmn:incoming>
@@ -4069,6 +4244,7 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
     </bpmn:intermediateCatchEvent>
     <bpmn:userTask id="P16_Task_Grant" name="Grant only the permissions required for the role">
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="system-administrators" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_16_identity_interruptions" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -4091,6 +4267,9 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
           <zeebe:output source="= taskData_P16_Task_Grant.authorisingAdministrator" target="authorisingAdministrator" />
           <zeebe:output source="= taskData_P16_Task_Grant.accessReviewDate" target="accessReviewDate" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_16</bpmn:categoryValueRef>
       <bpmn:incoming>P16_Flow_Access_Yes</bpmn:incoming>
@@ -4125,6 +4304,7 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
     <bpmn:userTask id="P16_Task_RecordInterruption" name="Record the affected service and notify responsible teams">
       <bpmn:documentation>Record the affected system or external service, incident start time, affected work and responsible teams; notify those teams promptly.</bpmn:documentation>
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="system-administrators" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_16_identity_interruptions" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -4147,6 +4327,9 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
           <zeebe:output source="= taskData_P16_Task_RecordInterruption.teamsNotified" target="teamsNotified" />
           <zeebe:output source="= taskData_P16_Task_RecordInterruption.notificationDate" target="notificationDate" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_16</bpmn:categoryValueRef>
       <bpmn:incoming>P16_Flow_Interruption_Record</bpmn:incoming>
@@ -4192,7 +4375,7 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
     <bpmn:userTask id="P17_Task_RecordRequest" name="Record the request, timestamp, channel, and patient details">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="call-handler" />
+        <zeebe:assignmentDefinition candidateGroups="call-handlers" />
         <zeebe:formDefinition formId="hospital_17_appointment_changes" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;P17_Task_RecordRequest&#34;" target="hospitalFormTask" />
@@ -4220,6 +4403,9 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
           <zeebe:output source="= taskData_P17_Task_RecordRequest.existingAppointmentDate" target="existingAppointmentDate" />
           <zeebe:output source="= taskData_P17_Task_RecordRequest.patientContact" target="patientContact" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_17</bpmn:categoryValueRef>
       <bpmn:incoming>P17_Flow_Start_Record</bpmn:incoming>
@@ -4229,7 +4415,7 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
     <bpmn:userTask id="P17_Task_VerifyIdentity" name="Verify patient identity before changing appointment data">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="call-handler" />
+        <zeebe:assignmentDefinition candidateGroups="call-handlers" />
         <zeebe:formDefinition formId="hospital_17_appointment_changes" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;P17_Task_VerifyIdentity&#34;" target="hospitalFormTask" />
@@ -4247,6 +4433,9 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
           <zeebe:output source="= taskData_P17_Task_VerifyIdentity.identityVerifiedBy" target="identityVerifiedBy" />
           <zeebe:output source="= taskData_P17_Task_VerifyIdentity.identityVerificationAt" target="identityVerificationAt" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_17</bpmn:categoryValueRef>
       <bpmn:incoming>P17_Flow_Record_Verify</bpmn:incoming>
@@ -4300,7 +4489,7 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
     <bpmn:userTask id="P17_Task_UpdateBooking" name="Update the booking, release the old slot, and record both dates">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="booking-clerk" />
+        <zeebe:assignmentDefinition candidateGroups="outpatient-bookings-team" />
         <zeebe:formDefinition formId="hospital_17_appointment_changes" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;P17_Task_UpdateBooking&#34;" target="hospitalFormTask" />
@@ -4324,6 +4513,9 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
           <zeebe:output source="= taskData_P17_Task_UpdateBooking.oldSlotReleased" target="oldSlotReleased" />
           <zeebe:output source="= taskData_P17_Task_UpdateBooking.bookingUpdateReference" target="bookingUpdateReference" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_17</bpmn:categoryValueRef>
       <bpmn:incoming>P17_Flow_Slot_Yes</bpmn:incoming>
@@ -4338,7 +4530,7 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
     <bpmn:userTask id="P17_Task_TelephonePatient" name="Telephone the patient and record the contact attempt">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="booking-clerk" />
+        <zeebe:assignmentDefinition candidateGroups="outpatient-bookings-team" />
         <zeebe:formDefinition formId="hospital_17_appointment_changes" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;P17_Task_TelephonePatient&#34;" target="hospitalFormTask" />
@@ -4358,6 +4550,9 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
           <zeebe:output source="= taskData_P17_Task_TelephonePatient.telephoneContactNotes" target="telephoneContactNotes" />
           <zeebe:output source="= taskData_P17_Task_TelephonePatient.telephoneContactBy" target="telephoneContactBy" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_17</bpmn:categoryValueRef>
       <bpmn:incoming>P17_Flow_TwoWeeks_Yes</bpmn:incoming>
@@ -4385,7 +4580,7 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
     <bpmn:userTask id="P17_Task_KeepExisting" name="Keep the existing appointment; do not book outside the requested window">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="booking-clerk" />
+        <zeebe:assignmentDefinition candidateGroups="pathway-coordinators" />
         <zeebe:formDefinition formId="hospital_17_appointment_changes" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;P17_Task_KeepExisting&#34;" target="hospitalFormTask" />
@@ -4405,6 +4600,9 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
           <zeebe:output source="= taskData_P17_Task_KeepExisting.appointmentRetentionReason" target="appointmentRetentionReason" />
           <zeebe:output source="= taskData_P17_Task_KeepExisting.appointmentRetentionRecordedBy" target="appointmentRetentionRecordedBy" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_17</bpmn:categoryValueRef>
       <bpmn:incoming>P17_Flow_Slot_No</bpmn:incoming>
@@ -4413,7 +4611,7 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
     <bpmn:userTask id="P17_Task_EscalatePathway" name="Escalate to the pathway coordinator and record recipient and time">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="pathway-coordinator" />
+        <zeebe:assignmentDefinition candidateGroups="pathway-coordinators" />
         <zeebe:formDefinition formId="hospital_17_appointment_changes" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;P17_Task_EscalatePathway&#34;" target="hospitalFormTask" />
@@ -4431,6 +4629,9 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
           <zeebe:output source="= taskData_P17_Task_EscalatePathway.pathwayEscalationReason" target="pathwayEscalationReason" />
           <zeebe:output source="= taskData_P17_Task_EscalatePathway.pathwayEscalationReference" target="pathwayEscalationReference" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_17</bpmn:categoryValueRef>
       <bpmn:incoming>P17_Flow_Keep_Escalate</bpmn:incoming>
@@ -4452,7 +4653,7 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
     <bpmn:userTask id="P17_Task_RecordPriorityDecision" name="Record the clinical decision and handoff outcome">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="pathway-coordinator" />
+        <zeebe:assignmentDefinition candidateGroups="pathway-coordinators" />
         <zeebe:formDefinition formId="hospital_17_appointment_changes" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;P17_Task_RecordPriorityDecision&#34;" target="hospitalFormTask" />
@@ -4474,6 +4675,9 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
           <zeebe:output source="= taskData_P17_Task_RecordPriorityDecision.priorityHandoffOutcome" target="priorityHandoffOutcome" />
           <zeebe:output source="= taskData_P17_Task_RecordPriorityDecision.priorityHandoffOwner" target="priorityHandoffOwner" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_17</bpmn:categoryValueRef>
       <bpmn:incoming>P17_Flow_Catch_Record</bpmn:incoming>
@@ -4611,6 +4815,7 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
     </bpmn:exclusiveGateway>
     <bpmn:userTask id="P16_Task_Authenticate" name="Authenticate the user and verify the requested role">
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="system-administrators" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_16_identity_interruptions" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -4637,6 +4842,9 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
           <zeebe:output source="= taskData_P16_Task_Authenticate.accessAuthorised" target="accessAuthorised" />
           <zeebe:output source="= taskData_P16_Task_Authenticate.verificationNotes" target="verificationNotes" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_16</bpmn:categoryValueRef>
       <bpmn:incoming>P16_Flow_Access_Authenticate</bpmn:incoming>
@@ -4645,6 +4853,7 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
     <bpmn:userTask id="P16_Task_Downtime" name="Use the downtime procedure to record work completed">
       <bpmn:documentation>Record offline work with the responsible staff member, relevant patient or process reference, action and time so it can be reconciled after restoration.</bpmn:documentation>
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="system-administrators" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_16_identity_interruptions" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -4669,6 +4878,9 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
           <zeebe:output source="= taskData_P16_Task_Downtime.actionDate" target="actionDate" />
           <zeebe:output source="= taskData_P16_Task_Downtime.reconciliationStatus" target="reconciliationStatus" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_16</bpmn:categoryValueRef>
       <bpmn:incoming>P16_Flow_Record_Downtime</bpmn:incoming>
@@ -4832,7 +5044,7 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
     <bpmn:userTask id="R1_UpdateReferral" name="Update record and recheck">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="medical-secretary" />
+        <zeebe:assignmentDefinition candidateGroups="medical-secretaries" />
         <zeebe:formDefinition formId="hospital_01_receive_referral" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R1_UpdateReferral&#34;" target="hospitalFormTask" />
@@ -4851,6 +5063,9 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
           <zeebe:output source="= taskData_R1_UpdateReferral.documentsCompleteChoice = &#34;yes&#34;" target="documentsComplete" />
           <zeebe:output source="= taskData_R1_UpdateReferral.missingDocuments" target="missingDocuments" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_01</bpmn:categoryValueRef>
       <bpmn:incoming>Flow_006</bpmn:incoming>
@@ -4907,7 +5122,7 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
     <bpmn:userTask id="R5_ReviewPlan" name="Review authorised treatment plan and resources">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="treatment-booking-team" />
+        <zeebe:assignmentDefinition candidateGroups="treatment-bookings-team" />
         <zeebe:formDefinition formId="hospital_05_treatment_services" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R5_ReviewPlan&#34;" target="hospitalFormTask" />
@@ -4929,6 +5144,9 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
           <zeebe:output source="= taskData_R5_ReviewPlan.externalServiceRequirements" target="externalServiceRequirements" />
           <zeebe:output source="= taskData_R5_ReviewPlan.treatmentServiceRetryDelay" target="treatmentServiceRetryDelay" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_05</bpmn:categoryValueRef>
       <bpmn:incoming>P5_Flow_Merge_Review</bpmn:incoming>
@@ -4966,7 +5184,7 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
     <bpmn:userTask id="P6_Task_RespondFinanceInquiry" name="Review payment / funding enquiry and prepare response">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="finance" />
+        <zeebe:assignmentDefinition candidateGroups="finance-team" />
         <zeebe:formDefinition formId="hospital_06_cost_allocation" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;P6_Task_RespondFinanceInquiry&#34;" target="hospitalFormTask" />
@@ -4986,6 +5204,9 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
           <zeebe:output source="= taskData_P6_Task_RespondFinanceInquiry.financeResponseBy" target="financeResponseBy" />
           <zeebe:output source="= taskData_P6_Task_RespondFinanceInquiry.financeResponseReference" target="financeResponseReference" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_06</bpmn:categoryValueRef>
       <bpmn:incoming>P6_Flow_FinanceInquiry_Respond</bpmn:incoming>
@@ -4999,7 +5220,7 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
     <bpmn:userTask id="R6_ClassifyFunding" name="Finance classifies payer and patient share">
       <bpmn:extensionElements>
         <zeebe:userTask />
-        <zeebe:assignmentDefinition assignee="finance" />
+        <zeebe:assignmentDefinition candidateGroups="finance-team" />
         <zeebe:formDefinition formId="hospital_06_cost_allocation" bindingType="deployment" />
         <zeebe:ioMapping>
           <zeebe:input source="= &#34;R6_ClassifyFunding&#34;" target="hospitalFormTask" />
@@ -5027,6 +5248,9 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
           <zeebe:output source="= taskData_R6_ClassifyFunding.paymentRequiredChoice" target="paymentRequiredChoice" />
           <zeebe:output source="= taskData_R6_ClassifyFunding.paymentRequiredChoice = &#34;yes&#34;" target="paymentRequired" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_06</bpmn:categoryValueRef>
       <bpmn:incoming>Flow_047</bpmn:incoming>
@@ -5177,6 +5401,9 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
           <zeebe:output source="= taskData_P8_Task_DecideAction.actionEffectiveDate" target="actionEffectiveDate" />
           <zeebe:output source="= taskData_P8_Task_DecideAction.urgentSafetyPostponement" target="urgentSafetyPostponement" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_08</bpmn:categoryValueRef>
       <bpmn:incoming>P8_Flow_GWFit_Decide</bpmn:incoming>
@@ -5281,6 +5508,7 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
     </bpmn:intermediateCatchEvent>
     <bpmn:userTask id="P13_Activity_0ba3vii" name="Escalate to senior management">
       <bpmn:extensionElements>
+        <zeebe:assignmentDefinition candidateGroups="pathway-coordinators" />
         <zeebe:userTask />
         <zeebe:formDefinition formId="hospital_13_clinic_letters" bindingType="deployment" />
         <zeebe:ioMapping>
@@ -5299,6 +5527,9 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
           <zeebe:output source="= taskData_P13_Activity_0ba3vii.remindersSentCount" target="remindersSentCount" />
           <zeebe:output source="= taskData_P13_Activity_0ba3vii.validDelayReason" target="validDelayReason" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_13</bpmn:categoryValueRef>
       <bpmn:incoming>P13_Flow_ThreeMonth_Yes</bpmn:incoming>
@@ -5355,6 +5586,9 @@ External information flow P14_MessageFlow_Notice: send "Appointment notice" to P
           <zeebe:output source="= taskData_P9_Task_DoNotProcess.notProcessedReason" target="notProcessedReason" />
           <zeebe:output source="= taskData_P9_Task_DoNotProcess.requesterNotified" target="requesterNotified" />
         </zeebe:ioMapping>
+        <zeebe:taskListeners>
+          <zeebe:taskListener eventType="completing" type="validate-hospital-user-input" />
+        </zeebe:taskListeners>
       </bpmn:extensionElements>
       <bpmn:categoryValueRef>CategoryValue_Layout_09</bpmn:categoryValueRef>
       <bpmn:incoming>P9_Flow_Type_Informal</bpmn:incoming>

@@ -176,3 +176,7 @@ HospitalPatientPathway/
 | `deliverables/` | 用户提供的 Acceptance Test Plan Word 文件 |
 | `evidence/` | 筛选后的测试证据；本地 `_analysis/` 为开发档案，不进入标记版本 |
 | `README.md` | 本 README 的英文版 |
+
+## Camunda 角色与输入校验
+
+70 个人工任务已统一配置候选组，并接入服务端提交校验。启用方式、角色配置和测试命令见 [配置说明](security/README.zh-CN.md)。

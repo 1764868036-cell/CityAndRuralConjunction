@@ -19,7 +19,9 @@
       "label": "Referral / case ID",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 64,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "description": "Use the reference assigned to this referral.",
       "id": "Common_referralId",
@@ -33,7 +35,9 @@
       "label": "Patient name",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 128,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_patient_name",
       "layout": {
@@ -84,7 +88,9 @@
           "label": "Payer / funding organisation",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R6_ClassifyFunding_Field_4",
           "layout": {
@@ -97,7 +103,8 @@
           "label": "Policy / funding reference",
           "type": "textfield",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 64
           },
           "id": "R6_ClassifyFunding_Field_5",
           "layout": {
@@ -111,7 +118,8 @@
           "type": "number",
           "validate": {
             "required": true,
-            "min": 0
+            "min": 0,
+            "max": 9999999999.99
           },
           "decimalDigits": 2,
           "id": "R6_ClassifyFunding_Field_6",
@@ -126,7 +134,8 @@
           "type": "number",
           "validate": {
             "required": true,
-            "min": 0
+            "min": 0,
+            "max": 9999999999.99
           },
           "decimalDigits": 2,
           "id": "R6_ClassifyFunding_Field_7",
@@ -229,7 +238,9 @@
           "label": "Authorisation / allocation reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R6_RecordAllocation_Field_3",
           "layout": {
@@ -243,7 +254,8 @@
           "type": "number",
           "validate": {
             "required": true,
-            "min": 0
+            "min": 0,
+            "max": 9999999999.99
           },
           "decimalDigits": 2,
           "id": "R6_RecordAllocation_Field_4",
@@ -258,7 +270,8 @@
           "type": "number",
           "validate": {
             "required": true,
-            "min": 0
+            "min": 0,
+            "max": 9999999999.99
           },
           "decimalDigits": 2,
           "id": "R6_RecordAllocation_Field_5",
@@ -299,7 +312,9 @@
           "label": "Coverage limits and conditions",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R6_RecordAllocation_Field_7",
           "layout": {
@@ -356,7 +371,9 @@
           "label": "Unresolved funding issue",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R6_ResolveGap_Field_3",
           "layout": {
@@ -369,7 +386,9 @@
           "label": "Required follow-up",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R6_ResolveGap_Field_4",
           "layout": {
@@ -382,7 +401,9 @@
           "label": "Follow-up owner",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R6_ResolveGap_Field_5",
           "layout": {
@@ -426,7 +447,9 @@
           "label": "Policy / funding reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Funder_CheckCoverage_Field_3",
           "layout": {
@@ -463,7 +486,8 @@
           "type": "number",
           "validate": {
             "required": true,
-            "min": 0
+            "min": 0,
+            "max": 9999999999.99
           },
           "decimalDigits": 2,
           "id": "Funder_CheckCoverage_Field_5",
@@ -504,7 +528,9 @@
           "label": "Coverage limits / exclusions",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Funder_CheckCoverage_Field_7",
           "layout": {
@@ -517,7 +543,9 @@
           "label": "Decision reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Funder_CheckCoverage_Field_8",
           "layout": {
@@ -530,7 +558,9 @@
           "label": "Reason for approval / rejection",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Funder_CheckCoverage_Field_9",
           "layout": {
@@ -564,7 +594,9 @@
           "label": "Payment or funding question",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P6_Task_RespondFinanceInquiry_Field_financeEnquirySummary",
           "layout": {
@@ -577,7 +609,9 @@
           "label": "Authorised Finance response",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P6_Task_RespondFinanceInquiry_Field_financeEnquiryResponse",
           "layout": {
@@ -613,7 +647,9 @@
           "label": "Responding Finance staff member",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P6_Task_RespondFinanceInquiry_Field_financeResponseBy",
           "layout": {
@@ -626,7 +662,9 @@
           "label": "Account / enquiry response reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P6_Task_RespondFinanceInquiry_Field_financeResponseReference",
           "layout": {

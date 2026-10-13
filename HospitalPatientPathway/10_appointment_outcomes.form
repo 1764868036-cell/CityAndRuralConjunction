@@ -19,7 +19,9 @@
       "label": "Referral / case ID",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 64,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_referralId",
       "layout": {
@@ -32,7 +34,9 @@
       "label": "Patient name",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 128,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_patient_name",
       "layout": {
@@ -126,7 +130,9 @@
           "label": "Reason or contact outcome",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P10_Task_Record_Field_eventReason",
           "layout": {
@@ -221,7 +227,9 @@
           "label": "Scheduling reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P10_Task_Rebook_Field_bookingReference",
           "layout": {
@@ -261,7 +269,9 @@
           "label": "Contact outcome and patient preference",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P10_Task_Rebook_Field_patientContactOutcome",
           "layout": {
@@ -322,7 +332,9 @@
           "label": "Clinical rationale and follow-up instructions",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P10_Task_ClinicalReview_Field_clinicalReviewReason",
           "layout": {
@@ -335,7 +347,9 @@
           "label": "Authorised clinician",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P10_Task_ClinicalReview_Field_authorisedClinician",
           "layout": {
@@ -397,7 +411,8 @@
           "type": "number",
           "validate": {
             "required": false,
-            "min": 0
+            "min": 0,
+            "max": 9999999999.99
           },
           "id": "P10_Task_Finance_Field_paymentAmount",
           "layout": {
@@ -411,7 +426,9 @@
           "label": "Reason and supporting reference",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P10_Task_Finance_Field_financialRationale",
           "layout": {
@@ -424,7 +441,9 @@
           "label": "Authorised Finance staff member",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P10_Task_Finance_Field_financeAuthoriser",
           "layout": {

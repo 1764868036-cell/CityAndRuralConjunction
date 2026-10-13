@@ -19,7 +19,9 @@
       "label": "Referral / case ID",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 64,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_referralId",
       "layout": {
@@ -32,7 +34,9 @@
       "label": "Patient name",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 128,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_patient_name",
       "layout": {
@@ -72,7 +76,9 @@
           "label": "Call handler",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P12_Activity_13m3bda_Field_callHandler",
           "layout": {
@@ -112,7 +118,9 @@
           "label": "Enquiry summary in the caller’s words",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P12_Activity_13m3bda_Field_enquirySummary",
           "layout": {
@@ -146,7 +154,9 @@
           "label": "Assigned call handler",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P12_Activity_0qe6qfi_Field_callHandler",
           "layout": {
@@ -159,7 +169,9 @@
           "label": "Call handling team",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P12_Activity_0qe6qfi_Field_handlerTeam",
           "layout": {
@@ -172,7 +184,8 @@
           "label": "Assignment note",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "id": "P12_Activity_0qe6qfi_Field_assignmentReason",
           "layout": {
@@ -229,7 +242,8 @@
           "label": "Reason and criteria used",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "id": "P12_Activity_1gk0gd9_Field_urgencyReason",
           "layout": {
@@ -242,7 +256,9 @@
           "label": "Staff member checking urgency",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P12_Activity_1gk0gd9_Field_urgencyCheckedBy",
           "layout": {
@@ -299,7 +315,9 @@
           "label": "Reason for urgent flag",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P12_Activity_1llzkmw_Field_urgentFlagReason",
           "layout": {
@@ -327,7 +345,8 @@
           "label": "Clinical team notified",
           "type": "textfield",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 128
           },
           "id": "P12_Activity_1llzkmw_Field_clinicalContactTeam",
           "layout": {
@@ -415,7 +434,8 @@
           "label": "Classification note",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "id": "P12_Activity_0z9svo5_Field_classificationNotes",
           "layout": {
@@ -449,7 +469,9 @@
           "label": "Receiving administrative team",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P12_Activity_1rzh2hz_Field_assignedTeam",
           "layout": {
@@ -462,7 +484,9 @@
           "label": "Reason for transfer",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P12_Activity_1rzh2hz_Field_transferReason",
           "layout": {
@@ -534,7 +558,9 @@
           "label": "Response provided",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P12_Activity_16idm3v_Field_responseSummary",
           "layout": {

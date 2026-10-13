@@ -19,7 +19,9 @@
       "label": "Referral / case ID",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 64,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "description": "Use the reference assigned to this referral.",
       "id": "Common_referralId",
@@ -33,7 +35,9 @@
       "label": "Patient name",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 128,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_patient_name",
       "layout": {
@@ -68,7 +72,9 @@
           "label": "Examination and clinical assessment",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R4_Assess_Field_4",
           "layout": {
@@ -81,7 +87,9 @@
           "label": "Investigation results",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R4_Assess_Field_5",
           "layout": {
@@ -94,7 +102,9 @@
           "label": "Diagnosis",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R4_Assess_Field_6",
           "layout": {
@@ -107,7 +117,9 @@
           "label": "Proposed treatment plan reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R4_Assess_Field_7",
           "layout": {
@@ -136,7 +148,9 @@
           "label": "Expected benefits",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R4_Explain_Field_3",
           "layout": {
@@ -149,7 +163,9 @@
           "label": "Material risks and side effects",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R4_Explain_Field_4",
           "layout": {
@@ -162,7 +178,9 @@
           "label": "Reasonable alternatives, including declining treatment",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R4_Explain_Field_5",
           "layout": {
@@ -175,7 +193,8 @@
           "label": "Patient questions and answers",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "id": "R4_Explain_Field_6",
           "layout": {
@@ -188,7 +207,9 @@
           "label": "Clinician providing the explanation",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R4_Explain_Field_7",
           "layout": {
@@ -222,7 +243,9 @@
           "label": "Signed consent document reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R4_RecordConsent_Field_3",
           "layout": {
@@ -250,7 +273,9 @@
           "label": "Recorded by",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R4_RecordConsent_Field_5",
           "layout": {
@@ -263,7 +288,9 @@
           "label": "Treatment plan covered by consent",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R4_RecordConsent_Field_6",
           "layout": {
@@ -276,7 +303,8 @@
           "label": "Consent notes",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "id": "R4_RecordConsent_Field_7",
           "layout": {
@@ -305,7 +333,9 @@
           "label": "Patient refusal or concerns",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R4_RecordRefusal_Field_3",
           "layout": {
@@ -318,7 +348,9 @@
           "label": "Alternatives and follow-up plan",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R4_RecordRefusal_Field_4",
           "layout": {
@@ -331,7 +363,9 @@
           "label": "Recorded by",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R4_RecordRefusal_Field_5",
           "layout": {
@@ -375,7 +409,8 @@
           "label": "Diagnosis",
           "type": "textfield",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 128
           },
           "readonly": true,
           "id": "Patient_ReviewTreatmentOptions_Field_3",
@@ -389,7 +424,8 @@
           "label": "Expected benefits",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "readonly": true,
           "id": "Patient_ReviewTreatmentOptions_Field_4",
@@ -403,7 +439,8 @@
           "label": "Risks",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "readonly": true,
           "id": "Patient_ReviewTreatmentOptions_Field_5",
@@ -417,7 +454,8 @@
           "label": "Alternatives",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "readonly": true,
           "id": "Patient_ReviewTreatmentOptions_Field_6",
@@ -431,7 +469,8 @@
           "label": "Questions for the clinical team",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "id": "Patient_ReviewTreatmentOptions_Field_7",
           "layout": {
@@ -488,7 +527,9 @@
           "label": "Treatment plan reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Patient_DecideConsent_Field_4",
           "layout": {
@@ -501,7 +542,8 @@
           "label": "Comments or concerns",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "id": "Patient_DecideConsent_Field_5",
           "layout": {

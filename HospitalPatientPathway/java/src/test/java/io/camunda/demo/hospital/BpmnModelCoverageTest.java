@@ -228,6 +228,13 @@ class BpmnModelCoverageTest {
                 steps.put(event.getAttribute("id"), jobType(event));
             }
         }
+        for (Element task : elementsOfExecutableProcess("userTask")) {
+            NodeList listeners = task.getElementsByTagNameNS(ZEEBE_NS, "taskListener");
+            for (int i = 0; i < listeners.getLength(); i++) {
+                steps.put(task.getAttribute("id") + ":listener:" + i,
+                        ((Element) listeners.item(i)).getAttribute("type"));
+            }
+        }
         return steps;
     }
 

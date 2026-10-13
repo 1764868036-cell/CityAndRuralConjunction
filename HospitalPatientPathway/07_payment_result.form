@@ -19,7 +19,9 @@
       "label": "Referral / case ID",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 64,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "description": "Use the reference assigned to this referral.",
       "id": "Common_referralId",
@@ -33,7 +35,9 @@
       "label": "Patient name",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 128,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_patient_name",
       "layout": {
@@ -53,7 +57,9 @@
           "label": "Invoice / charge reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R7_CalculateCharge_Field_3",
           "layout": {
@@ -67,7 +73,8 @@
           "type": "number",
           "validate": {
             "required": true,
-            "min": 0
+            "min": 0,
+            "max": 9999999999.99
           },
           "decimalDigits": 2,
           "id": "R7_CalculateCharge_Field_4",
@@ -108,7 +115,9 @@
           "label": "Charge breakdown",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R7_CalculateCharge_Field_6",
           "layout": {
@@ -121,7 +130,9 @@
           "label": "Unique payment request reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R7_CalculateCharge_Field_7",
           "layout": {
@@ -155,7 +166,9 @@
           "label": "Provider transaction reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R7_RecordPayment_Field_3",
           "layout": {
@@ -169,7 +182,8 @@
           "type": "number",
           "validate": {
             "required": true,
-            "min": 0
+            "min": 0,
+            "max": 9999999999.99
           },
           "decimalDigits": 2,
           "id": "R7_RecordPayment_Field_4",
@@ -225,7 +239,8 @@
           "label": "Recording notes",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "id": "R7_RecordPayment_Field_7",
           "layout": {
@@ -259,7 +274,9 @@
           "label": "Payment issue / uncertainty",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R7_NotifyRetry_Field_3",
           "layout": {
@@ -272,7 +289,9 @@
           "label": "Instructions communicated to patient / administrator",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R7_NotifyRetry_Field_4",
           "layout": {
@@ -308,7 +327,9 @@
           "label": "Reason for retry decision",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R7_NotifyRetry_Field_6",
           "layout": {
@@ -337,7 +358,9 @@
           "label": "Provider investigation reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R7_ReconcilePayment_Field_3",
           "layout": {
@@ -373,7 +396,8 @@
           "label": "Provider transaction reference",
           "type": "textfield",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 64
           },
           "id": "R7_ReconcilePayment_Field_5",
           "layout": {
@@ -387,7 +411,8 @@
           "type": "number",
           "validate": {
             "required": false,
-            "min": 0
+            "min": 0,
+            "max": 9999999999.99
           },
           "decimalDigits": 2,
           "id": "R7_ReconcilePayment_Field_6",
@@ -401,7 +426,9 @@
           "label": "Reconciliation evidence and outcome",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R7_ReconcilePayment_Field_7",
           "layout": {
@@ -486,7 +513,8 @@
           "type": "number",
           "validate": {
             "required": true,
-            "min": 0
+            "min": 0,
+            "max": 9999999999.99
           },
           "decimalDigits": 2,
           "id": "Finance_RefundReview_Field_5",
@@ -527,7 +555,9 @@
           "label": "Original provider payment reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Finance_RefundReview_Field_7",
           "layout": {
@@ -540,7 +570,9 @@
           "label": "Financial decision and authority",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Finance_RefundReview_Field_8",
           "layout": {
@@ -553,7 +585,9 @@
           "label": "Reviewer / authoriser",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Finance_RefundReview_Field_9",
           "layout": {
@@ -609,7 +643,9 @@
           "label": "Provider refund reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Finance_RecordRefund_Field_4",
           "layout": {
@@ -623,7 +659,8 @@
           "type": "number",
           "validate": {
             "required": true,
-            "min": 0
+            "min": 0,
+            "max": 9999999999.99
           },
           "decimalDigits": 2,
           "id": "Finance_RecordRefund_Field_5",
@@ -679,7 +716,8 @@
           "label": "Follow-up if pending or failed",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "id": "Finance_RecordRefund_Field_8",
           "layout": {
@@ -708,7 +746,8 @@
           "label": "Reported payment issue",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "readonly": true,
           "id": "Patient_ReviewPaymentIssue_Field_3",
@@ -722,7 +761,8 @@
           "label": "Contact instructions",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "readonly": true,
           "id": "Patient_ReviewPaymentIssue_Field_4",
@@ -736,7 +776,9 @@
           "label": "Patient response / follow-up details",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Patient_ReviewPaymentIssue_Field_5",
           "layout": {
@@ -749,7 +791,9 @@
           "label": "Contact details",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Patient_ReviewPaymentIssue_Field_6",
           "layout": {
@@ -783,7 +827,8 @@
           "label": "Provider secure payment link",
           "type": "textfield",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 128
           },
           "readonly": true,
           "id": "Patient_PaySecurely_Field_3",
@@ -798,7 +843,8 @@
           "type": "number",
           "validate": {
             "required": false,
-            "min": 0
+            "min": 0,
+            "max": 9999999999.99
           },
           "readonly": true,
           "decimalDigits": 2,
@@ -813,7 +859,8 @@
           "label": "Currency",
           "type": "textfield",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 128
           },
           "readonly": true,
           "id": "Patient_PaySecurely_Field_5",
@@ -827,7 +874,9 @@
           "label": "Provider submission / confirmation reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Patient_PaySecurely_Field_6",
           "layout": {
@@ -840,7 +889,8 @@
           "label": "Payment submission notes",
           "type": "textarea",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 2000
           },
           "id": "Patient_PaySecurely_Field_7",
           "layout": {

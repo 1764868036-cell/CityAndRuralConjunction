@@ -19,7 +19,9 @@
       "label": "Referral / case ID",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 64,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_referralId",
       "layout": {
@@ -32,7 +34,9 @@
       "label": "Patient name",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 128,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_patient_name",
       "layout": {
@@ -99,7 +103,9 @@
           "label": "Reason the request was not processed",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P9_Task_DoNotProcess_Field_notProcessedReason",
           "layout": {
@@ -179,7 +185,9 @@
           "label": "Authorising clinician",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P9_Task_RecordApproval_Field_authorisingClinician",
           "layout": {
@@ -207,7 +215,9 @@
           "label": "Clinical rationale and instructions",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P9_Task_RecordApproval_Field_clinicalRationale",
           "layout": {
@@ -241,7 +251,9 @@
           "label": "Current schedule or plan reference",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P9_Task_AdjustSchedule_Field_previousSchedule",
           "layout": {
@@ -254,7 +266,9 @@
           "label": "Approved revised schedule",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P9_Task_AdjustSchedule_Field_revisedSchedule",
           "layout": {
@@ -305,7 +319,8 @@
           "label": "Affected booking reference",
           "type": "textfield",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 64
           },
           "id": "P9_Task_AdjustSchedule_Field_affectedBookingReference",
           "layout": {
@@ -339,7 +354,9 @@
           "label": "Effect on funding approval",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P9_Task_FinanceReview_Field_fundingApprovalImpact",
           "layout": {
@@ -353,7 +370,8 @@
           "type": "number",
           "validate": {
             "required": false,
-            "min": 0
+            "min": 0,
+            "max": 9999999999.99
           },
           "id": "P9_Task_FinanceReview_Field_chargeImpact",
           "layout": {
@@ -394,7 +412,9 @@
           "label": "Review notes and next steps",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P9_Task_FinanceReview_Field_financialReviewNotes",
           "layout": {
@@ -407,7 +427,9 @@
           "label": "Finance reviewer",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P9_Task_FinanceReview_Field_financeReviewer",
           "layout": {
@@ -464,7 +486,9 @@
           "label": "Formal approval reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P9_Task_ConfirmClinicalApproval_Field_clinicalApprovalReference",
           "layout": {
@@ -480,7 +504,9 @@
           "label": "Authorising clinician",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P9_Task_ConfirmClinicalApproval_Field_authorisingClinician",
           "layout": {
@@ -514,7 +540,9 @@
           "label": "Authorised change or reason approval is not verified",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P9_Task_ConfirmClinicalApproval_Field_clinicalRationale",
           "layout": {

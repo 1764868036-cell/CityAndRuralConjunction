@@ -19,7 +19,9 @@
       "label": "Referral / case ID",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 64,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_referralId",
       "layout": {
@@ -32,7 +34,9 @@
       "label": "Patient name",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 128,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_patient_name",
       "layout": {
@@ -57,7 +61,9 @@
           "label": "Requesting clinician",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P14_Task_Receive_Field_requestingClinician",
           "layout": {
@@ -108,7 +114,9 @@
           "label": "Reason and clinical requirements",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P14_Task_Receive_Field_followUpReason",
           "layout": {
@@ -195,7 +203,9 @@
           "label": "Reason for unavailable slot",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P14_Task_Mark_Field_availabilityIssueReason",
           "layout": {
@@ -252,7 +262,9 @@
           "label": "Receiving pathway team",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P14_Task_Hand_Field_pathwayTeam",
           "layout": {
@@ -265,7 +277,9 @@
           "label": "Reason for escalation",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P14_Task_Hand_Field_handoffReason",
           "layout": {

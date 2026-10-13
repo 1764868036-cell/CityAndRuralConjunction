@@ -19,7 +19,9 @@
       "label": "Staff user ID",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 64,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_staffUserId",
       "layout": {
@@ -32,7 +34,9 @@
       "label": "Staff member name",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 128,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_staffName",
       "layout": {
@@ -57,7 +61,9 @@
           "label": "Staff account requested",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P16_Task_Authenticate_Field_targetStaffUserId",
           "layout": {
@@ -70,7 +76,9 @@
           "label": "Staff member name",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P16_Task_Authenticate_Field_targetStaffName",
           "layout": {
@@ -108,7 +116,7 @@
         {
           "key": "requestedRole",
           "label": "Requested role",
-          "type": "textfield",
+          "type": "select",
           "validate": {
             "required": true
           },
@@ -117,14 +125,62 @@
             "row": "P16_Task_Authenticate_Row_requestedRole",
             "columns": null
           },
-          "description": "Select only a role appropriate to the staff member’s duties."
+          "description": "Select only a role appropriate to the staff member’s duties.",
+          "values": [
+            {
+              "label": "Medical Secretaries",
+              "value": "medical-secretaries"
+            },
+            {
+              "label": "Consultants",
+              "value": "consultants"
+            },
+            {
+              "label": "Clinical Nurse Specialist Team",
+              "value": "clinical-nurse-specialists"
+            },
+            {
+              "label": "Outpatient Bookings Team",
+              "value": "outpatient-bookings-team"
+            },
+            {
+              "label": "Treatment and Chemotherapy Bookings Team",
+              "value": "treatment-bookings-team"
+            },
+            {
+              "label": "Finance Team",
+              "value": "finance-team"
+            },
+            {
+              "label": "Patient Pathway Coordinators",
+              "value": "pathway-coordinators"
+            },
+            {
+              "label": "Call Handling Team",
+              "value": "call-handlers"
+            },
+            {
+              "label": "Administrative Manager",
+              "value": "administrative-managers"
+            },
+            {
+              "label": "Hospital IT Support and System Administration",
+              "value": "system-administrators"
+            },
+            {
+              "label": "Hospital Senior Management",
+              "value": "senior-management"
+            }
+          ]
         },
         {
           "key": "verificationMethod",
           "label": "Identity verification method",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P16_Task_Authenticate_Field_verificationMethod",
           "layout": {
@@ -137,7 +193,9 @@
           "label": "Evidence or request reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P16_Task_Authenticate_Field_identityEvidenceReference",
           "layout": {
@@ -173,7 +231,9 @@
           "label": "Verification notes",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P16_Task_Authenticate_Field_verificationNotes",
           "layout": {
@@ -205,7 +265,7 @@
         {
           "key": "approvedRole",
           "label": "Approved role",
-          "type": "textfield",
+          "type": "select",
           "validate": {
             "required": true
           },
@@ -213,14 +273,62 @@
           "layout": {
             "row": "P16_Task_Grant_Row_approvedRole",
             "columns": null
-          }
+          },
+          "values": [
+            {
+              "label": "Medical Secretaries",
+              "value": "medical-secretaries"
+            },
+            {
+              "label": "Consultants",
+              "value": "consultants"
+            },
+            {
+              "label": "Clinical Nurse Specialist Team",
+              "value": "clinical-nurse-specialists"
+            },
+            {
+              "label": "Outpatient Bookings Team",
+              "value": "outpatient-bookings-team"
+            },
+            {
+              "label": "Treatment and Chemotherapy Bookings Team",
+              "value": "treatment-bookings-team"
+            },
+            {
+              "label": "Finance Team",
+              "value": "finance-team"
+            },
+            {
+              "label": "Patient Pathway Coordinators",
+              "value": "pathway-coordinators"
+            },
+            {
+              "label": "Call Handling Team",
+              "value": "call-handlers"
+            },
+            {
+              "label": "Administrative Manager",
+              "value": "administrative-managers"
+            },
+            {
+              "label": "Hospital IT Support and System Administration",
+              "value": "system-administrators"
+            },
+            {
+              "label": "Hospital Senior Management",
+              "value": "senior-management"
+            }
+          ]
         },
         {
           "key": "grantedPermissions",
           "label": "Permissions granted",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P16_Task_Grant_Field_grantedPermissions",
           "layout": {
@@ -233,7 +341,9 @@
           "label": "Access scope and restrictions",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P16_Task_Grant_Field_accessScope",
           "layout": {
@@ -246,7 +356,9 @@
           "label": "Why these permissions are required",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P16_Task_Grant_Field_permissionRationale",
           "layout": {
@@ -259,7 +371,9 @@
           "label": "Authorising administrator",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P16_Task_Grant_Field_authorisingAdministrator",
           "layout": {
@@ -308,7 +422,9 @@
           "label": "Incident reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P16_Task_RecordInterruption_Field_incidentReference",
           "layout": {
@@ -321,7 +437,9 @@
           "label": "Unavailable system or external service",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P16_Task_RecordInterruption_Field_affectedService",
           "layout": {
@@ -349,7 +467,9 @@
           "label": "Affected work and operational impact",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P16_Task_RecordInterruption_Field_impactSummary",
           "layout": {
@@ -362,7 +482,9 @@
           "label": "Responsible teams notified",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P16_Task_RecordInterruption_Field_teamsNotified",
           "layout": {
@@ -411,7 +533,9 @@
           "label": "Offline record reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P16_Task_Downtime_Field_offlineRecordReference",
           "layout": {
@@ -424,7 +548,8 @@
           "label": "Patient or process reference",
           "type": "textfield",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 64
           },
           "id": "P16_Task_Downtime_Field_patientOrProcessReference",
           "layout": {
@@ -468,7 +593,9 @@
           "label": "Action completed and outcome",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P16_Task_Downtime_Field_activityDescription",
           "layout": {
@@ -481,7 +608,9 @@
           "label": "Staff member completing the action",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P16_Task_Downtime_Field_completedBy",
           "layout": {

@@ -19,7 +19,9 @@
       "label": "Referral / case ID",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 64,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "description": "Use the reference assigned to this referral.",
       "id": "Common_referralId",
@@ -33,7 +35,9 @@
       "label": "Patient name",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 128,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_patient_name",
       "layout": {
@@ -53,7 +57,9 @@
           "label": "Authorised treatment plan reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R5_ReviewPlan_Field_3",
           "layout": {
@@ -66,7 +72,9 @@
           "label": "Treatment / regimen",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R5_ReviewPlan_Field_4",
           "layout": {
@@ -80,9 +88,10 @@
           "type": "number",
           "validate": {
             "required": true,
-            "min": 0
+            "min": 1,
+            "max": 2147483647
           },
-          "decimalDigits": 2,
+          "decimalDigits": 0,
           "id": "R5_ReviewPlan_Field_5",
           "layout": {
             "row": "R5_ReviewPlan_Row_5",
@@ -94,7 +103,9 @@
           "label": "Staff, equipment and facility requirements",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R5_ReviewPlan_Field_6",
           "layout": {
@@ -107,7 +118,9 @@
           "label": "Laboratory, imaging and other external services",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R5_ReviewPlan_Field_7",
           "layout": {
@@ -120,10 +133,12 @@
           "label": "Service retry interval (ISO 8601)",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "^P([0-9]+D(T([0-9]+H)?([0-9]+M)?([0-9]+S)?)?|T([0-9]+H([0-9]+M)?([0-9]+S)?|[0-9]+M([0-9]+S)?|[0-9]+S))$"
           },
           "defaultValue": "P1D",
-          "description": "Confirm the interval under local service policy.",
+          "description": "Use a positive ISO duration in days/hours/minutes/seconds, e.g. P1D or PT30M.",
           "id": "R5_ReviewPlan_Field_8",
           "layout": {
             "row": "R5_ReviewPlan_Row_8",
@@ -156,7 +171,9 @@
           "label": "Provisional booking reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R5_ConfirmTreatment_Field_3",
           "layout": {
@@ -184,7 +201,9 @@
           "label": "Service reservation references",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R5_ConfirmTreatment_Field_5",
           "layout": {
@@ -197,7 +216,9 @@
           "label": "Dependencies and outstanding clearances",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R5_ConfirmTreatment_Field_6",
           "layout": {
@@ -226,7 +247,9 @@
           "label": "Final booking reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Confirm_Treatment_Booking_Field_3",
           "layout": {
@@ -254,7 +277,9 @@
           "label": "Treatment location",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Confirm_Treatment_Booking_Field_5",
           "layout": {
@@ -267,7 +292,9 @@
           "label": "Financial clearance reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Confirm_Treatment_Booking_Field_6",
           "layout": {
@@ -280,7 +307,9 @@
           "label": "Patient and service instructions",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Confirm_Treatment_Booking_Field_7",
           "layout": {
@@ -309,7 +338,9 @@
           "label": "Authorised plan reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Deliver_Treatment_Cycle_Field_3",
           "layout": {
@@ -323,9 +354,10 @@
           "type": "number",
           "validate": {
             "required": true,
-            "min": 0
+            "min": 1,
+            "max": 2147483647
           },
-          "decimalDigits": 2,
+          "decimalDigits": 0,
           "id": "Deliver_Treatment_Cycle_Field_4",
           "layout": {
             "row": "Deliver_Treatment_Cycle_Row_4",
@@ -352,7 +384,9 @@
           "label": "Responsible clinician / team",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Deliver_Treatment_Cycle_Field_6",
           "layout": {
@@ -365,7 +399,9 @@
           "label": "Treatment provided",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Deliver_Treatment_Cycle_Field_7",
           "layout": {
@@ -378,7 +414,9 @@
           "label": "Observations and follow-up requirements",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "Deliver_Treatment_Cycle_Field_8",
           "layout": {
@@ -412,7 +450,9 @@
           "label": "Reason treatment remains on hold",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P5_Task_HoldTreatment_Field_treatmentHoldReason",
           "layout": {
@@ -448,7 +488,9 @@
           "label": "Responsible follow-up staff member or team",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P5_Task_HoldTreatment_Field_holdFollowUpOwner",
           "layout": {
@@ -476,7 +518,9 @@
           "label": "Notification / case note reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P5_Task_HoldTreatment_Field_holdNotificationReference",
           "layout": {

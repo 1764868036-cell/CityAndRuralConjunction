@@ -110,8 +110,8 @@ class HospitalPathwayProcessTest {
 
         publish(HospitalMessages.ACCESS_REQUEST, Map.of(
                 "targetStaffUserId", "STAFF-1",
-                "requestType", "role change",
-                "requestedRole", "clinic administrator"));
+                "requestType", "change",
+                "requestedRole", "medical-secretaries"));
 
         CamundaAssert.assertThat(ProcessInstanceSelectors.byKey(instanceKey))
                 .hasActiveElements("P16_Task_Authenticate");
@@ -119,8 +119,8 @@ class HospitalPathwayProcessTest {
         completeUserTask("P16_Task_Authenticate", instanceKey,
                 Map.of("targetStaffUserId", "STAFF-1",
                         "targetStaffName", "Alex Morgan",
-                        "requestType", "role change",
-                        "requestedRole", "clinic administrator",
+                        "requestType", "change",
+                        "requestedRole", "medical-secretaries",
                         "verificationMethod", "line manager confirmation",
                         "identityEvidenceReference", "ID-STAFF-1",
                         "accessAuthorised", "yes",
@@ -130,7 +130,7 @@ class HospitalPathwayProcessTest {
                 .hasActiveElements("P16_Task_Grant");
 
         completeUserTask("P16_Task_Grant", instanceKey,
-                Map.of("approvedRole", "clinic administrator",
+                Map.of("approvedRole", "medical-secretaries",
                         "grantedPermissions", "view clinic letters",
                         "accessScope", "clinic letters of this referral",
                         "authorisingAdministrator", "service manager"));
@@ -147,8 +147,8 @@ class HospitalPathwayProcessTest {
 
         publish(HospitalMessages.ACCESS_REQUEST, Map.of(
                 "targetStaffUserId", "STAFF-DENIED-1",
-                "requestType", "role change",
-                "requestedRole", "clinic administrator"));
+                "requestType", "change",
+                "requestedRole", "medical-secretaries"));
 
         CamundaAssert.assertThat(ProcessInstanceSelectors.byKey(instanceKey))
                 .hasActiveElements("P16_Task_Authenticate");
@@ -156,8 +156,8 @@ class HospitalPathwayProcessTest {
         completeUserTask("P16_Task_Authenticate", instanceKey,
                 Map.of("targetStaffUserId", "STAFF-DENIED-1",
                         "targetStaffName", "Synthetic Denied User",
-                        "requestType", "role change",
-                        "requestedRole", "clinic administrator",
+                        "requestType", "change",
+                        "requestedRole", "medical-secretaries",
                         "verificationMethod", "line manager confirmation",
                         "identityEvidenceReference", "ID-DENIED-1",
                         "accessAuthorised", "no",
@@ -291,9 +291,18 @@ class HospitalPathwayProcessTest {
      * wrong branch - see {@code ../WORK_REPORT.md}, section 17.4.
      */
     private void completeUserTask(String elementId, long instanceKey, Map<String, Object> fields) {
+        Map<String, Object> submission;
+        try {
+            submission = io.camunda.demo.hospital.validation.HospitalFormValidatorTest.validSubmission(elementId);
+        } catch (Exception e) {
+            throw new IllegalStateException("Cannot build form submission", e);
+        }
+        @SuppressWarnings("unchecked")
+        Map<String, Object> taskData = (Map<String, Object>) submission.get("taskData_" + elementId);
+        taskData.putAll(fields);
+        if (submission.containsKey("referralId")) submission.put("referralId", referralId);
         processTestContext.completeUserTask(
-                UserTaskSelectors.byElementId(elementId, instanceKey),
-                Map.of("taskData_" + elementId, fields));
+                UserTaskSelectors.byElementId(elementId, instanceKey), submission);
     }
 
     /** Publishes an entry message correlated on the referral id of the started instance. */

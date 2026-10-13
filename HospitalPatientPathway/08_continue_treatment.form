@@ -19,7 +19,9 @@
       "label": "Referral / case ID",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 64,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "description": "Use the reference assigned to this referral.",
       "id": "Common_referralId",
@@ -33,7 +35,9 @@
       "label": "Patient name",
       "type": "textfield",
       "validate": {
-        "required": true
+        "required": true,
+        "maxLength": 128,
+        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
       },
       "id": "Common_patient_name",
       "layout": {
@@ -54,9 +58,10 @@
           "type": "number",
           "validate": {
             "required": true,
-            "min": 0
+            "min": 1,
+            "max": 2147483647
           },
-          "decimalDigits": 2,
+          "decimalDigits": 0,
           "id": "R8_ClinicalReview_Field_3",
           "layout": {
             "row": "R8_ClinicalReview_Row_3",
@@ -68,7 +73,9 @@
           "label": "Clinical review findings",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R8_ClinicalReview_Field_4",
           "layout": {
@@ -81,7 +88,9 @@
           "label": "Blood test results and assessment",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R8_ClinicalReview_Field_5",
           "layout": {
@@ -125,7 +134,9 @@
           "label": "Reason and authorised next steps",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "R8_ClinicalReview_Field_7",
           "layout": {
@@ -138,7 +149,8 @@
           "label": "Revised plan reference, when applicable",
           "type": "textfield",
           "validate": {
-            "required": false
+            "required": false,
+            "maxLength": 64
           },
           "id": "R8_ClinicalReview_Field_8",
           "layout": {
@@ -151,10 +163,12 @@
           "label": "Reassessment interval (ISO 8601)",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "^P([0-9]+D(T([0-9]+H)?([0-9]+M)?([0-9]+S)?)?|T([0-9]+H([0-9]+M)?([0-9]+S)?|[0-9]+M([0-9]+S)?|[0-9]+S))$"
           },
           "defaultValue": "P7D",
-          "description": "Set the clinically authorised interval when delaying treatment.",
+          "description": "Use a positive ISO duration in days/hours/minutes/seconds, e.g. P1D or PT30M.",
           "id": "R8_ClinicalReview_Field_9",
           "layout": {
             "row": "R8_ClinicalReview_Row_9",
@@ -188,7 +202,8 @@
           "type": "number",
           "validate": {
             "required": true,
-            "min": 1
+            "min": 1,
+            "max": 2147483647
           },
           "id": "P8_Task_Review_Field_cycleNumber",
           "layout": {
@@ -217,7 +232,9 @@
           "label": "Clinical review findings",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P8_Task_Review_Field_clinicalReviewFindings",
           "layout": {
@@ -230,7 +247,9 @@
           "label": "Blood test results and assessment",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P8_Task_Review_Field_bloodTestSummary",
           "layout": {
@@ -287,7 +306,9 @@
           "label": "Clinical rationale and required action",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P8_Task_Evaluate_Field_clinicalDecisionReason",
           "layout": {
@@ -300,7 +321,9 @@
           "label": "Reviewing clinician",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P8_Task_Evaluate_Field_reviewingClinician",
           "layout": {
@@ -373,7 +396,9 @@
           "label": "Clinical reason and instructions",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P8_Task_DecideAction_Field_actionReason",
           "layout": {
@@ -505,7 +530,9 @@
           "label": "Clinical rationale and instructions",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P8_Task_AssessPriority_Field_priorityDecisionReason",
           "layout": {
@@ -518,7 +545,9 @@
           "label": "Authorising Consultant",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P8_Task_AssessPriority_Field_priorityAuthorisingClinician",
           "layout": {
@@ -531,7 +560,9 @@
           "label": "Clinical decision reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P8_Task_AssessPriority_Field_priorityDecisionReference",
           "layout": {
@@ -565,7 +596,9 @@
           "label": "Clinical enquiry",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P8_Task_AnswerClinicalInquiry_Field_clinicalEnquirySummary",
           "layout": {
@@ -578,7 +611,9 @@
           "label": "Clinical response and next steps",
           "type": "textarea",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 2000,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P8_Task_AnswerClinicalInquiry_Field_clinicalEnquiryResponse",
           "layout": {
@@ -614,7 +649,9 @@
           "label": "Responding clinical professional",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 128,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P8_Task_AnswerClinicalInquiry_Field_clinicalResponseBy",
           "layout": {
@@ -627,7 +664,9 @@
           "label": "Clinical response / record reference",
           "type": "textfield",
           "validate": {
-            "required": true
+            "required": true,
+            "maxLength": 64,
+            "pattern": "[\\s\\S]*\\S[\\s\\S]*"
           },
           "id": "P8_Task_AnswerClinicalInquiry_Field_clinicalResponseReference",
           "layout": {
