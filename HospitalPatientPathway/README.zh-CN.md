@@ -8,6 +8,16 @@
 **承载各自动化步骤的 Java job worker 位于 [`java/`](java/README.zh-CN.md)。**
 完整的变更报告（改了什么、为什么改、如何验证）见 [`WORK_REPORT.md`](WORK_REPORT.md)。
 
+## iStar SD/SR 整合模型
+
+绿色整合图依据 `1-17.bpmn` 梳理角色职责与内部任务，全部内容保留在一张图中。模型包含 19 个角色、121 个意图元素和 33 条依赖，每条依赖的两端均连接到具体任务。
+
+- [可编辑 piStar 模型（TXT，内容为 JSON）](istar/Hospital_SD_SR_Reviewed.txt)：下载原始文件，在 piStar 中使用 **File > Load model** 导入。
+- [高清矢量图 SVG](istar/Hospital_SD_SR_Reviewed.svg)
+- [预览图 PNG](istar/Hospital_SD_SR_Reviewed.png)
+
+依赖方向为“依赖任务 → 依赖项 → 提供任务”。AND／OR 表达需求分解与替代方式，不表示执行先后；条件性服务能力在模型属性中注明。本版明确了同意／拒绝治疗、正常预约／异常处理的替代关系，并将付款结果、支付链接和访问批准等建模为资源依赖。TXT 已通过普通 piStar 导入、保存和重新加载检查，66 个任务端点均保留。
+
 ## 在 Camunda Modeler 中使用
 
 用 Camunda Modeler 打开 `1-17.bpmn`，并保持 `.form` 文件与模型在同一文件夹内。

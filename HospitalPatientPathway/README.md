@@ -9,6 +9,16 @@ This folder contains the integrated `1-17.bpmn` model and 16 deployment-bound Ca
 [`java/`](java/README.md).** The full change report (what was changed, why, and how it was verified)
 is in [`WORK_REPORT.md`](WORK_REPORT.md) - 中文工作文档，逐条说明改动与验证证据。
 
+## Integrated iStar SD/SR model
+
+The reviewed green diagram combines actor responsibilities and internal task rationale in one model, aligned with `1-17.bpmn`. It contains 19 actors, 121 intentional elements and 33 dependencies. Both ends of every dependency connect to specific internal tasks.
+
+- [Editable piStar model (TXT containing JSON)](istar/Hospital_SD_SR_Reviewed.txt): download the raw file and use **File > Load model** in piStar.
+- [Scalable SVG diagram](istar/Hospital_SD_SR_Reviewed.svg)
+- [PNG preview](istar/Hospital_SD_SR_Reviewed.png)
+
+Dependencies read **dependent task > dependum > providing task**. AND/OR refinements describe requirements and alternatives, not execution order; conditional capabilities are documented in model properties. The review makes consent/refusal and booking/exception alternatives explicit and identifies payment results, payment links and access approvals as resource dependencies. The TXT was checked by importing, saving and reloading it in the standard piStar editor, preserving all 66 task endpoints.
+
 ## Use in Camunda Modeler
 
 **Roles and validation:** all 70 executable user tasks now use lane-based Camunda candidate
