@@ -1,0 +1,1475 @@
+{
+  "info": {
+    "_postman_id": "656947ef-a6df-44d9-9743-99f5a635de27",
+    "name": "Hospital Patient Pathway - Camunda 8.9",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Camunda 8.9 REST requests for CityAndRuralConjunction. Import the companion local environment. Run setup requests individually, complete the referral form in Tasklist, then choose ONE entry message. This collection is an interactive toolkit, not a sequential end-to-end runner. See README.zh-CN.md / README.md for setup, authentication and limitations."
+  },
+  "auth": {
+    "type": "noauth"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const now = new Date();",
+          "pm.variables.set(\"today\", now.toISOString().slice(0, 10));",
+          "pm.variables.set(\"preferredDate\", new Date(now.getTime() + 14 * 86400000).toISOString().slice(0, 10));"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "01 - Setup (run individually)",
+      "item": [
+        {
+          "name": "01 - Check cluster topology",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/topology",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "02 - Deploy BPMN and all 16 forms",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/deployments",
+            "description": "Set the Postman working directory to HospitalPatientPathway. If files are not resolved, reselect 1-17.bpmn and all 16 .form files in the resources file field. Deploy them in ONE request. Do not manually set Content-Type; Postman supplies the multipart boundary.",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "resources",
+                  "type": "file",
+                  "src": [
+                    "1-17.bpmn",
+                    "01_receive_referral.form",
+                    "02_review_referral.form",
+                    "03_initial_consultation.form",
+                    "04_diagnosis_consent.form",
+                    "05_treatment_services.form",
+                    "06_cost_allocation.form",
+                    "07_payment_result.form",
+                    "08_continue_treatment.form",
+                    "09_treatment_changes.form",
+                    "10_appointment_outcomes.form",
+                    "11_refund_decisions.form",
+                    "12_patient_enquiries.form",
+                    "13_clinic_letters.form",
+                    "14_follow_up_appointments.form",
+                    "16_identity_interruptions.form",
+                    "17_appointment_changes.form"
+                  ]
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "03 - Find deployed hospital definitions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/process-definitions/search",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filter\": {\n    \"processDefinitionId\": \"{{processDefinitionId}}\"\n  },\n  \"page\": {\n    \"limit\": 20\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Search items returned\", () => pm.expect(pm.response.json().items).to.be.an(\"array\"));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "04 - Create hospital instance",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/process-instances",
+            "description": "Starts at Start_Tasklist. Complete R1_RegisterCheck in Tasklist before selecting ONE entry message. Empty referralId/patientId values are generated before sending. Clear both values before a new independent run.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"processDefinitionId\": \"{{processDefinitionId}}\",\n  \"variables\": {\n    \"referralId\": \"{{referralId}}\",\n    \"patientId\": \"{{patientId}}\",\n    \"patient_name\": \"{{patientName}}\",\n    \"referrerName\": \"Demo General Practice\",\n    \"patientContact\": \"demo.patient@example.org\",\n    \"referralReceivedDate\": \"{{today}}\",\n    \"referralReason\": \"Demo referral for pathway testing\",\n    \"documentReferences\": \"DEMO-DOC-1\",\n    \"documentsCompleteChoice\": \"yes\",\n    \"missingDocuments\": \"\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const runId = pm.variables.replaceIn(\"{{$guid}}\");",
+                  "if (!pm.environment.get(\"referralId\")) pm.environment.set(\"referralId\", \"REF-PM-\" + runId);",
+                  "if (!pm.environment.get(\"patientId\")) pm.environment.set(\"patientId\", \"PAT-PM-\" + runId);",
+                  "pm.environment.unset(\"processInstanceKey\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  const key = pm.response.json().processInstanceKey;",
+                  "  pm.test(\"Instance key returned as a string\", () => pm.expect(key).to.be.a(\"string\").and.not.empty);",
+                  "  if (typeof key === \"string\" && key) pm.environment.set(\"processInstanceKey\", key);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02 - Entry events (choose ONE after referral form)",
+      "item": [
+        {
+          "name": "P01 - Incoming referral",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: Incoming referral package\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"referralId\": \"{{referralId}}\",\n    \"patientId\": \"{{patientId}}\",\n    \"patient_name\": \"{{patientName}}\",\n    \"referrerName\": \"Demo General Practice\",\n    \"patientContact\": \"demo.patient@example.org\",\n    \"referralReceivedDate\": \"{{today}}\",\n    \"referralReason\": \"Demo referral for pathway testing\",\n    \"documentReferences\": \"DEMO-DOC-1\",\n    \"documentsCompleteChoice\": \"yes\",\n    \"missingDocuments\": \"\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P04 - Clinic visit completed",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: Clinic visit completed\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"referralId\": \"{{referralId}}\",\n    \"patientId\": \"{{patientId}}\",\n    \"patient_name\": \"{{patientName}}\",\n    \"appointmentDate\": \"{{today}}\",\n    \"visitSummary\": \"Demo consultation completed\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P06 - Finance enquiry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: Finance enquiry received message\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"referralId\": \"{{referralId}}\",\n    \"patientId\": \"{{patientId}}\",\n    \"patient_name\": \"{{patientName}}\",\n    \"enquiryReceivedAt\": \"{{today}}\",\n    \"enquiryCategory\": \"finance\",\n    \"enquirySummary\": \"Demo question about treatment costs\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P08 - Next treatment cycle due",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: Next treatment cycle due\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"referralId\": \"{{referralId}}\",\n    \"patientId\": \"{{patientId}}\",\n    \"patient_name\": \"{{patientName}}\",\n    \"cycleNumber\": 2\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P08 - Patient attends cycle",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: Patient attends a treatment cycle message\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"referralId\": \"{{referralId}}\",\n    \"patientId\": \"{{patientId}}\",\n    \"patient_name\": \"{{patientName}}\",\n    \"attendanceDate\": \"{{today}}\",\n    \"attendanceSummary\": \"Demo attendance\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P09 - Treatment change requested",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: TreatmentChangeRequestMessage\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"referralId\": \"{{referralId}}\",\n    \"patientId\": \"{{patientId}}\",\n    \"patient_name\": \"{{patientName}}\",\n    \"requestChannel\": \"telephone\",\n    \"requestReceivedDate\": \"{{today}}\",\n    \"requestSummary\": \"Demo request to move next cycle\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P10 - Appointment cancellation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: AppointmentCancellationReportMessage\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"referralId\": \"{{referralId}}\",\n    \"patientId\": \"{{patientId}}\",\n    \"patient_name\": \"{{patientName}}\",\n    \"caseEventType\": \"cancellation\",\n    \"eventDate\": \"{{today}}\",\n    \"eventReason\": \"Demo cancellation\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P12 - Patient question",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: PatientQuestionMessage\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"referralId\": \"{{referralId}}\",\n    \"patientId\": \"{{patientId}}\",\n    \"patient_name\": \"{{patientName}}\",\n    \"enquiryReceivedAt\": \"{{today}}\",\n    \"contactChannel\": \"telephone\",\n    \"enquirySummary\": \"Demo question about appointment scheduling\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P15 - Monitoring request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: Monitoring run or report request\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"referralId\": \"{{referralId}}\",\n    \"patientId\": \"{{patientId}}\",\n    \"patient_name\": \"{{patientName}}\",\n    \"requestedBy\": \"Performance and Reporting Team\",\n    \"reportingPeriod\": \"{{today}}\",\n    \"reportScope\": \"all pathways\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P15 - Pathway record updated",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: A pathway record changes message\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"referralId\": \"{{referralId}}\",\n    \"patientId\": \"{{patientId}}\",\n    \"patient_name\": \"{{patientName}}\",\n    \"changedRecord\": \"referral\",\n    \"changeSummary\": \"Demo referral update\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P16 - Access change request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: Staff identity or access change request\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"referralId\": \"{{referralId}}\",\n    \"patientId\": \"{{patientId}}\",\n    \"patient_name\": \"{{patientName}}\",\n    \"targetStaffUserId\": \"DEMO-STAFF-1\",\n    \"targetStaffName\": \"Demo Staff\",\n    \"requestType\": \"role change\",\n    \"requestedRole\": \"clinic administrator\",\n    \"verificationMethod\": \"line manager confirmation\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P16 - System interruption",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: System or external-service interruption\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"referralId\": \"{{referralId}}\",\n    \"patientId\": \"{{patientId}}\",\n    \"patient_name\": \"{{patientName}}\",\n    \"incidentReference\": \"{{incidentReference}}\",\n    \"affectedService\": \"pathway worklist\",\n    \"interruptionStartDate\": \"{{today}}\",\n    \"impactSummary\": \"Demo worklist interruption\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P17 - Appointment change request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: Patient requests a change to an existing appointment message\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"referralId\": \"{{referralId}}\",\n    \"patientId\": \"{{patientId}}\",\n    \"patient_name\": \"{{patientName}}\",\n    \"requestChannel\": \"telephone\",\n    \"requestReceivedDate\": \"{{today}}\",\n    \"appointmentChangeType\": \"date\",\n    \"requestSummary\": \"Demo request to move appointment\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03 - Patient and laboratory responses (choose when waiting)",
+      "item": [
+        {
+          "name": "P03 - Patient appointment preference",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: Patient appointment preference\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"preferredClinician\": \"no preference\",\n    \"preferredDate\": \"{{preferredDate}}\",\n    \"contactChannel\": \"telephone\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P03 - Patient accepts appointment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: Patient appointment response\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"appointmentAccepted\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P03 - Patient proposes alternative date",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: Alternative consultation date\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"alternativeAppointmentDate\": \"{{preferredDate}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P03 - Patient declines consultation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: Patient declines consultation\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"patientDeclineReason\": \"Demo patient declined\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P04 - Patient consents",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: Patient consents message\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"informedConsent\": true,\n    \"consentDecision\": \"consented\",\n    \"consentDecisionDate\": \"{{today}}\",\n    \"consentNotes\": \"Demo consent\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P04 - Patient refuses treatment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on referralId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: Patient refuses treatment message\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"informedConsent\": false,\n    \"consentDecision\": \"refused\",\n    \"consentDecisionDate\": \"{{today}}\",\n    \"consentNotes\": \"Demo refusal\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P08 - Laboratory test results",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on patientId. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: TestResultsMessage\",\n  \"correlationKey\": \"{{patientId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"patientId\": \"{{patientId}}\",\n    \"fitToContinue\": \"yes\",\n    \"clinicalDecisionReason\": \"Demo laboratory result\",\n    \"bloodTestSummary\": \"Demo values within required range\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"patientId\")) throw new Error(\"Set patientId to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P16 - Service restored",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Correlates on incidentReference. HTTP 200 means publication was accepted, not that the process consumed it. TTL is 15 minutes (900000 milliseconds). Send only when the intended instance is waiting for this message. A fresh messageId is generated on each Send.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hospital pathway: System or external service restored\",\n  \"correlationKey\": \"{{incidentReference}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"incidentReference\": \"{{incidentReference}}\",\n    \"restoredAt\": \"{{today}}\",\n    \"restorationSummary\": \"Demo worklist restored\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"incidentReference\")) throw new Error(\"Set incidentReference to the value used by the waiting instance.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04 - Observe current instance",
+      "item": [
+        {
+          "name": "Get current instance",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/process-instances/{{processInstanceKey}}",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"processInstanceKey\")) throw new Error(\"Create an instance first, or set processInstanceKey in the environment.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Search user tasks",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/user-tasks/search",
+            "description": "Uses the processInstanceKey saved by Create hospital instance. Search indexes are eventually consistent; resend if a recent change is not visible. Follow response page cursors to inspect more than 100 records.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filter\": {\n    \"processInstanceKey\": \"{{processInstanceKey}}\"\n  },\n  \"page\": {\n    \"limit\": 100\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"processInstanceKey\")) throw new Error(\"Create an instance first, or set processInstanceKey in the environment.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Search items returned\", () => pm.expect(pm.response.json().items).to.be.an(\"array\"));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Search variables",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/variables/search",
+            "description": "Uses the processInstanceKey saved by Create hospital instance. Search indexes are eventually consistent; resend if a recent change is not visible. Follow response page cursors to inspect more than 100 records.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filter\": {\n    \"processInstanceKey\": \"{{processInstanceKey}}\"\n  },\n  \"page\": {\n    \"limit\": 100\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"processInstanceKey\")) throw new Error(\"Create an instance first, or set processInstanceKey in the environment.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Search items returned\", () => pm.expect(pm.response.json().items).to.be.an(\"array\"));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Search incidents",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/incidents/search",
+            "description": "Uses the processInstanceKey saved by Create hospital instance. Search indexes are eventually consistent; resend if a recent change is not visible. Follow response page cursors to inspect more than 100 records.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filter\": {\n    \"processInstanceKey\": \"{{processInstanceKey}}\"\n  },\n  \"page\": {\n    \"limit\": 100\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"processInstanceKey\")) throw new Error(\"Create an instance first, or set processInstanceKey in the environment.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Search items returned\", () => pm.expect(pm.response.json().items).to.be.an(\"array\"));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    }
+  ]
+}

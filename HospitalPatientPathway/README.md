@@ -9,6 +9,10 @@ This folder contains the integrated `1-17.bpmn` model and 16 deployment-bound Ca
 [`java/`](java/README.md).** The full change report (what was changed, why, and how it was verified)
 is in [`WORK_REPORT.md`](WORK_REPORT.md) - 中文工作文档，逐条说明改动与验证证据。
 
+## Postman API testing
+
+[`postman/`](postman/README.md) includes **29 importable Camunda 8.9 requests** and a local environment: deployment, instance creation, 13 entry events, patient/laboratory responses and status searches. Create an instance and complete its referral form in Tasklist before selecting one entry message. See the [Postman guide](postman/README.md) for setup and usage.
+
 ## Integrated iStar SD/SR model
 
 The reviewed green diagram combines actor responsibilities and internal task rationale in one model, aligned with `1-17.bpmn`. It contains 19 actors, 121 intentional elements and 33 dependencies. Both ends of every dependency connect to specific internal tasks.
