@@ -8,6 +8,10 @@
 **承载各自动化步骤的 Java job worker 位于 [`java/`](java/README.zh-CN.md)。**
 完整的变更报告（改了什么、为什么改、如何验证）见 [`WORK_REPORT.md`](WORK_REPORT.md)。
 
+## Postman 接口调试
+
+[`postman/`](postman/README.zh-CN.md) 提供可直接导入的 **29 个 Camunda 8.9 请求**及本地环境文件，覆盖部署、实例创建、13 种业务入口、患者/检验应答及状态查询。先创建实例并在 Tasklist 完成转诊表单，再选择一条入口消息；详细操作见 [Postman 使用说明](postman/README.zh-CN.md)。
+
 ## iStar SD/SR 整合模型
 
 绿色整合图依据 `1-17.bpmn` 梳理角色职责与内部任务，全部内容保留在一张图中。模型包含 19 个角色、121 个意图元素和 33 条依赖，每条依赖的两端均连接到具体任务。
