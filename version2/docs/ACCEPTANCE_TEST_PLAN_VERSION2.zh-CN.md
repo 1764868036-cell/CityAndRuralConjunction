@@ -1,61 +1,211 @@
-# Version 2 验收测试计划
+# Hospital Patient Pathway（Version 2）验收测试计划
 
-本计划复用 version1 的 `deliverables/Hospital_Patient_Pathway_Acceptance_Test_Plan.docx`（AT-01—AT-16），原文副本保存在 [docs/source](source/Hospital_Patient_Pathway_Acceptance_Test_Plan.version1.docx)。业务预期保留，流程 ID、节点、变量和资源数量按 version2 映射。临床紧急程度、适宜性和授权决定由测试数据明确给出，不生成新的临床判定规则。
+## 需求与业务规则目录
 
-## 测试对象和边界
+本计划沿用 version1 验收计划的 AT-01—AT-16 业务标准与用例组织方式，测试对象、流程元素、变量和资源数量映射到 version2。原文副本：[version1 验收计划](source/Hospital_Patient_Pathway_Acceptance_Test_Plan.version1.docx)。测试规则来自原计划和 version2 流程定义；临床紧急程度、适宜性及授权决定均由测试数据给定，不自行设定临床阈值。
 
-- version1：`HospitalPatientPathway/1-17.bpmn`，`Process_Hospital_Integrated`。
-- version2：`HospitalPatientPathway-redesign/hospital-patient-pathway.bpmn`，`Process_HPAS`。
-- version2 资源基线：1 个可执行医院流程、37 个独立表单、55 种 Worker 类型、7 个外部模拟参与者、9 个非中断事件子流程。原计划的 16 个共享表单/81 个协作用户任务/50 种 Worker 数量不沿用。
-- `Version2AcceptanceIT` 在真实 Camunda 8.9 上检查流程路由。外部服务 Worker 使用 CPT 替身，不据此声称真实支付、通知或全部业务表写入成功。
-- `OriginalPlanParityIT` 保留原计划的决策契约及真实 Worker 拒绝规则；缺失业务能力会产生失败，不会以替换变量或删除原标准来变成通过。
-- 已移植的 H2/JDBC 测试独立验证数据库 schema、仓储、初始化与审计；数据库测试通过不替代流程验收。
+| ID | Version 2 验收规则 | 可观察的验收标准 |
+|---|---|---|
+| R-01 | 主流程、表单及协作边界 | 1 个可执行医院流程与 37 个表单成组部署；外部参与者作为模拟池；资源无重复或缺失。 |
+| R-02 / BR-01 | 转诊完整性与适宜性 | 资料齐全且审核接受进入主诊疗；缺资料请求应关联原实例；拒绝/转向不得进入治疗。 |
+| R-03 / BR-02 | 排班、时限与联系升级 | 有号源可继续；无号源按请求日期重试或升级；紧急/超期不无限循环；联系失败进入人工处理。 |
+| R-04 / BR-03 | 知情同意 | 未同意不得进入预约、收费或实施治疗。 |
+| R-05 / BR-04 | 服务可用性与资金授权 | 外部服务不可用或资金未授权时不得开始治疗/付款；保留原因并进入等待或后续处理。 |
+| R-06 / BR-05 | 支付与重复收费 | 成功支付有单次记录；同一参考号已有扣款时不得再次收费。 |
+| R-07 / BR-06 | 继续、变更或停止治疗 | 继续须符合给定临床决定；停止优先于变更；不得从停止分支进入变更实施。 |
+| R-08 / BR-07 | 正式治疗变更 | 未批准不得实施；费用/资金变化时，实施前必须再次复核。 |
+| R-09 / BR-08 | 预约变更 | 验证身份；新日期不得越过请求时限；14 天内的预约变更须先电话联系。 |
+| R-10 / BR-09 | 退款或资金转移 | 退款须明确授权；转移须走独立路线，不得误执行退款。 |
+| R-11 / BR-10 | 问询与信件 | 问询按类别/紧急程度路由；信件须获批且无临床疑错才可发出；未完成信件按计划提醒。 |
+| R-12 / BR-11 | 权限与停机恢复 | 未授权访问不得进入受保护操作；恢复通知按 incidentReference 关联后再核对。 |
+| R-13 | 表单与 Worker 覆盖 | 37 个用户任务表单可渲染/提交；55 个 Worker 类型与 BPMN 自动化任务匹配；消息契约完整。 |
 
-## 固定输入
+## 测试对象、环境与边界
 
-当前有其他任务同时保存主图。本轮测试使用 `evidence/acceptance-input/` 下的固定快照，来源及 SHA-256 见 `manifest.json`。表单存为 `.form.keep`，BPMN 存为 `.bpmn.keep`，部署时恢复资源名。
+- 被测版本：version2 `hospital-patient-pathway.bpmn`，流程 `Process_HPAS`；基线为 1 个医院可执行流程、37 个独立表单、55 种 Worker 类型、7 个外部模拟参与者、9 个非中断事件子流程。
+- version1 的 16 个共享表单、81 个协作用户任务、50 种 Worker 和 51 个自动化步骤属于旧版资源基线，不直接套用到 version2。
+- 路由验收使用 Camunda 8.9 和 Camunda Process Test。外部 Worker 以受控替身完成作业；此项证明引擎路由，不证明真实外部支付/通知或所有领域表写入。
+- API 完成用户任务不等于浏览器 form-js 表单渲染与校验。数据库仓储测试也不替代业务流程验收。
+- 本轮流程测试使用固定快照，哈希和规范化记录在 `evidence/acceptance-input/manifest.json`。由于主 BPMN 正由其他任务并行修改，本计划的结果只适用于该快照；快照仅移除 9 个没有 plane 的空 BPMNDiagram，未改执行语义。
 
-本轮发现主文件含空 `BPMNDiagram`，引擎拒绝部署。快照显式清除了这些空 DI 图层；不修改执行节点、流、条件、消息或表单。该操作逐项记在 manifest，不能把快照部署成功等同于并行修改中的主文件已通过部署。
+## 测试用例
 
-重新冻结主图和表单：
+### AT-01 — 部署与资源完整性
 
-```powershell
-python tools\freeze_acceptance_input.py
-# 仅在需要诊断空图层且明确接受测试快照规范化时：
-python tools\freeze_acceptance_input.py --normalize-empty-di
-```
+**需求/规则：** R-01、R-13。
+**前置条件：** 可重置的 Camunda 8.9 测试集群；固定版 BPMN 和对应 37 个表单。
+**测试数据：** `evidence/acceptance-input/manifest.json` 中的 BPMN 与表单快照。
+**操作：** 同批部署 BPMN 和表单；运行模型结构及 Camunda Schema 检查。
+**预期/量化：** 1 个可执行流程、37 个表单成功部署；无重复 ID、缺失资源或 Schema 错误。另记录 c8ctl lint，不把 lint 与引擎部署混为一个结果。
+**通过/失败：** 资源数、标识符、Schema 任一不符即失败；lint 问题单独记录。
+**证据状态：** 快照部署和 6 项静态契约检查通过；原主文件有并行修改风险。快照 lint 为 21 errors、35 warnings。详见 `evidence/acceptance-results.json` 和 `evidence/acceptance-snapshot-lint.json`。
 
-## 验收场景与映射
+### AT-02 — 完整且适宜的转诊进入主路径
 
-| AT | 保留的原业务预期 | Version 2 输入/节点与用例 | 尚需满足的原标准 |
-| --- | --- | --- | --- |
-| AT-01 | 同批部署模型与表单，无重复或缺失资源 | `at01_bundleDeploys` + 6 项静态模型契约；部署快照全部 38 个资源 | 原主文件的 Schema 与 lint 结果单独登记；引擎部署和 lint 是两个检查 |
-| AT-02 | 完整、适宜、非紧急转诊进入诊疗并最终结案 | `documentsComplete=true`、`reviewDecision=accept`；`at02_completeSuitableReferral` 从 Top_Start 走到 Top_End_Closed | 完整路径须无 incident；外部应答为受控模拟 |
-| AT-03 | 缺资料只向正确实例关联应答并重新审核 | `missingDocumentsAreRequestedAndCorrelatedBack`；两条实例、同名消息、不同 referralId | 不允许另一条实例消费应答 |
-| AT-04 | 拒绝不适宜转诊，通知并结束，不进入预约治疗 | `declinedReferralEndsAfterSendingTheOutcome`；`reviewDecision=reject`，另测 information→redirect | 保留禁止进入预约/治疗的断言 |
-| AT-05 | 有号源推进，无号源/紧急/超期进入明确人工处理，电话联系有升级 | slotFound、urgentReferral、withinTwoWeeks、phoneAttempts；含 3 次联系失败升级 | 原 requestedReviewBy 日期/重试窗口标准未因 slotFound 布尔值而视为已验证 |
-| AT-06 | 无知情同意不得预约或实施治疗 | `consentGiven=false`；`at06_consentRefusal` | 禁止激活内部/外部预约、收费和治疗实施 |
-| AT-07 | 服务不可用或资金被拒时不启动治疗 | externalAvailable=false 等待释放；hospital/exempt/insurer/patient-pay 分支及无效申请纠正 | 原 fundingAuthorised=false 阻断标准保留为契约检查 |
-| AT-08 | 支付成功只记录一次，已有扣款不得重新请求 | paymentStatus=completed/confirmation-lost/failed；调查 taken/not-taken，人工 retry/urgent-override | priorChargeFound/已扣款检查须实现并验证；确定性请求 ID 不自动等同于重复收费已被阻止 |
-| AT-09 | 可继续者继续，停止优先于变更 | fitnessDecision=fit/delay/change；周期消息、延期和变更等待 | 原 clinicalDecision=stop 优先级目前没有等价 stop 路由，保留失败检查 |
-| AT-10 | 未批准不得变更；涉及费用时实施前重新核查 | urgentChange、formallyAuthorised、financialImpact；紧急追认与常规分支、财务/退款 | 当前财务检查在 ApplyChange 之后；原实施前重查标准保留 |
-| AT-11 | 未验证身份不可改约；日期不超期；14 天内电话联系 | changeKind=reschedule/other、slotAcceptable=true/false | 身份、requestedReviewBy 日期边界和近期开约电话规则分别登记，不能以 slotAcceptable 代替三个标准 |
-| AT-12 | 取消改约、临床复核、未到诊分别处理 | attendanceEvent=cancelled/declined/no-show；pathwayResponse=re-offer/clinical-review/close；已付费触发财务 | 各路线的结束、禁止遗留 incident 单独断言 |
-| AT-13 | 已授权退款，与资金转移分流 | refundDue=true/false + financeApprover；真实 Worker 授权拒绝测试 | 原 refundAuthorised=false 否决、transfer 独立路线仍保留，不把“无退款”当作“资金转移” |
-| AT-14 | 财务问询分配、批准信件发布、临床疑错退回、7 天/周期提醒 | enquiryClass、infoAuthorised、urgentConcern；letterApproved、adminCheck=clinical-error/ok；原 P7D 计时器 | 使用受控时钟快进原计时器；时钟不可变时登记 BLOCKED，不改成短时计时器并声称原标准通过 |
-| AT-15 | 权限允许/拒绝；按 incidentReference 恢复后才对账 | accessAuthorised 布尔值、eventKind=access/interruption；真实 Worker denied 输出 | 原恢复消息关联标准仍需实现；“记录停机后立即对账”仅是当前路线样例 |
-| AT-16 | 所有人工作业表单可用，Worker 与消息契约完整 | 部署 37 个表单，路由测试按 `.form` 字段形状提交，静态检查 55 种 Worker | API 提交不替代浏览器 form-js 渲染；历史 37/37 截图单独作为旧证据，当前浏览器审计仍需重跑 |
+**需求/规则：** R-02 / BR-01。
+**前置条件：** AT-01 资源可部署；Worker 已注册；使用唯一合成 referralId/patientId。
+**测试数据：** `documentsComplete=true`、`reviewDecision="accept"`、非紧急；其他必需条件按成功路径给定。
+**操作：** 从 `Top_Start` 启动，逐项完成主流程中的用户任务，外部参与者由受控模拟应答。
+**预期/量化：** 路径到达 `Top_End_Closed`；无 incident，结束后无活动任务。
+**通过/失败：** 路由、终态和 incident 状态均符合预期才通过。
+**证据状态：** 路由用例通过；外部应答为测试替身。覆盖报告统计 401/401 路由点，不代表总体验收通过。
 
-## 运行方法
+### AT-03 — 缺少转诊资料并关联返回消息
 
-普通回归（数据库、Worker 审计、当前主文件静态契约）：
+**需求/规则：** R-02 / BR-01。
+**前置条件：** 两个独立转诊实例和消息模拟器可用。
+**测试数据：** 两个不同 referralId；初次 `documentsComplete=false`，后续返回资料消息携带目标 referralId。
+**操作：** 启动两条流程；触发资料请求；只向其中一条发送返回消息；检查两条实例状态。
+**预期/量化：** 仅目标实例恢复审核；另一实例仍等待；无错误消费或孤儿订阅。
+**通过/失败：** 消息相关实例唯一且状态正确才通过。
+**证据状态：** 双实例同名消息相关测试通过。
+
+### AT-04 — 不适宜转诊
+
+**需求/规则：** R-02 / BR-01。
+**前置条件：** 完整资料已到达审核任务。
+**测试数据：** `documentsComplete=true`、`reviewDecision="reject"`；另覆盖 information/redirect 决定。
+**操作：** 提交审核结果，检查后续元素、通知及结束状态。
+**预期/量化：** 不进入咨询预约和治疗；按拒绝或转向路线通知并结束，无 incident。
+**通过/失败：** 治疗相关任务不得激活，结束路由符合决定才通过。
+**证据状态：** 拒绝转诊路线通过。
+
+### AT-05 — 咨询号源、请求窗口与联系升级
+
+**需求/规则：** R-03 / BR-02。
+**前置条件：** 转诊已接受，进入排班；可模拟无号源和联系失败。
+**测试数据：** 有号源、无号源但仍在 requestedReviewBy 窗口、紧急/超期、电话联系连续失败（达到模型升级次数）。
+**操作：** 分别提交排班/联系结果，推进重试或人工升级。
+**预期/量化：** 有号源继续；可重试案例不越过请求时限；紧急/超期及反复联系失败进入人工处理且不无限循环。
+**通过/失败：** 四类路由及边界结果均正确才通过。
+**证据状态：** 部分布尔路由已覆盖；日期窗口规则缺失，原标准未满足。不得以 `withinTwoWeeks` 替代日期比较。
+
+### AT-06 — 拒绝知情同意阻止治疗
+
+**需求/规则：** R-04 / BR-03。
+**前置条件：** 患者到达同意任务。
+**测试数据：** `consentGiven=false`。
+**操作：** 提交拒绝并检查后续任务、事件和活动订阅。
+**预期/量化：** 不激活内部/外部预约、收费、治疗实施；进入拒绝或跟进路线并可结束。
+**通过/失败：** 治疗及收费节点均未执行才通过。
+**证据状态：** 拒绝同意路由通过。
+
+### AT-07 — 服务不可用或资金被拒
+
+**需求/规则：** R-05 / BR-04。
+**前置条件：** 临床已批准治疗请求。
+**测试数据：** A：`externalAvailable=false`；B：资金需授权且 `fundingAuthorised=false`；正向对照覆盖 hospital/exempt/insurer/patient-pay。
+**操作：** 分别触发外部服务及资金答复，查看等待、治疗、付款和后续处理。
+**预期/量化：** A/B 不开始治疗或未授权收费；保留原因并进入等待/替代处理；服务恢复只释放对应等待实例。
+**通过/失败：** 阻断场景无治疗/付款，恢复相关性正确才通过。
+**证据状态：** 服务等待/释放及正向资金路线已测试；`fundingAuthorised=false` 契约缺失，原拒绝资金标准未满足。
+
+### AT-08 — 成功支付与重复收费保护
+
+**需求/规则：** R-06 / BR-05。
+**前置条件：** 资金已批准，支付模拟器可提供成功、超时和失败结果。
+**测试数据：** A：无既有扣款、支付成功或确认丢失；B：`priorChargeFound=true`，使用相同 payment reference。
+**操作：** 运行成功、确认丢失后调查、已扣款和未扣款重试路径；检查支付记录及作业调用。
+**预期/量化：** A 每个 reference 只记录一次并继续；B 不再发起收费；确认丢失后按调查结果分流。
+**通过/失败：** 同 reference 实际收费次数不超过 1 才通过。
+**证据状态：** 支付结果、调查和重试路由覆盖；显式既有扣款守卫缺失，未满足完整原标准。
+
+### AT-09 — 继续治疗与临床停止优先级
+
+**需求/规则：** R-07 / BR-06。
+**前置条件：** 治疗周期后到达临床复核。
+**测试数据：** A：继续；B：停止且同时给出变更请求；另覆盖延迟/继续周期。
+**操作：** 提交临床决定并跟踪后续路线。
+**预期/量化：** A 继续；B 进入停止处理，不得进入治疗变更实施；延期按后续复核路线等待。
+**通过/失败：** 停止优先且无治疗实施才通过。
+**证据状态：** fit/delay/change 路由可测；没有显式 stop 分支，原停止优先标准未满足。
+
+### AT-10 — 正式变更批准与费用复核
+
+**需求/规则：** R-08 / BR-07。
+**前置条件：** 存在有效治疗计划及变更请求。
+**测试数据：** A：批准且费用/资金有变化；B：未批准；另覆盖紧急变更和后续追认。
+**操作：** 提交申请及审批，按 trace 检查财务复核相对 `ApplyChange` 的顺序。
+**预期/量化：** B 永不实施；A 在实施前完成费用/资金重核；两条路均无 incident。
+**通过/失败：** 轨迹证明审批及实施前复核先于实施才通过。
+**证据状态：** 未批准保护测试通过；财务复核当前位于实施之后，顺序断言失败。
+
+### AT-11 — 预约变更身份、日期与电话联系
+
+**需求/规则：** R-09 / BR-08。
+**前置条件：** 已有预约并收到变更请求。
+**测试数据：** A 身份未验证；B 身份验证但新日期超过请求时限；C 有效且 14 天内；D 有效且超过 14 天。
+**操作：** 每种情况单独启动实例并检查预约更新、电话联系、通知与结束状态。
+**预期/量化：** A 不更新预约；B 拒绝超期日期；C 更新前完成电话联系；D 走常规通知。
+**通过/失败：** 四种结果均符合规则才通过。
+**证据状态：** 当前只有 `changeKind`/`slotAcceptable` 路由；身份、请求日期边界和 14 天联系规则均缺少映射，三项契约检查失败。
+
+### AT-12 — 取消、临床复核与未到诊
+
+**需求/规则：** R-03 及异常处理。
+**前置条件：** 已确认预约。
+**测试数据：** 分别使用 `attendanceEvent=cancelled/declined/no-show`，并覆盖 `pathwayResponse=re-offer/clinical-review/close` 及已付费情况。
+**操作：** 触发预约事件，完成相应人工任务并检查终态。
+**预期/量化：** 三种情形进入各自结果；应退费场景触发财务；完成后无活动任务/incident。
+**通过/失败：** 路由互不混淆且实例达到预期终态才通过。
+**证据状态：** 取消、临床复核、未到诊路由通过。
+
+### AT-13 — 授权退款与资金转移
+
+**需求/规则：** R-10 / BR-09。
+**前置条件：** 财务调整任务可执行；Worker 实现可调用。
+**测试数据：** A：退款到期、`refundAuthorised=true`；B：`refundAuthorised=false` 但填写审批人；C：资金转移。
+**操作：** 分别提交并检查 Worker 输出、退款/转移作业和记录。
+**预期/量化：** A 只执行授权退款；B 被拒绝；C 只执行独立转移，不调用退款。
+**通过/失败：** 未授权退款必须被 Worker 拒绝，退款与转移结果不得交叉。
+**证据状态：** `refundAuthorised=false` 但有 financeApprover 时 Worker 仍接受；拒绝测试失败。流程也缺少独立 transfer 契约，另一静态检查失败。
+
+### AT-14 — 问询、信件与提醒计时器
+
+**需求/规则：** R-11 / BR-10。
+**前置条件：** Camunda 测试时钟可控；问询及信件任务可启动。
+**测试数据：** 财务/临床/普通问询；已批准且无疑错信件；疑似临床错误信件；未完成准备的提醒案例。
+**操作：** 检查问询路由；提交信件审批结果；推进时钟 7 天及后续周；完成准备后再推进时钟。
+**预期/量化：** 问询按类别路由；未批准或疑错信件不发送；未准备期间每周提醒，完成准备后不再提醒。
+**通过/失败：** 路由、重复间隔和取消条件均满足才通过。
+**证据状态：** 问询/信件路由及完成后取消提醒通过；原 `P7D` 定时器只触发一次，第二周没有提醒任务，运行断言失败。
+
+### AT-15 — 权限控制与停机恢复
+
+**需求/规则：** R-12 / BR-11。
+**前置条件：** 可启动权限请求及独立停机事件；每次故障使用唯一 incidentReference。
+**测试数据：** 授权/拒绝访问；停机和携带同一 incidentReference 的恢复消息。
+**操作：** 提交访问决定；记录停机及离线工作；发送匹配与不匹配 reference 的恢复消息；检查核对步骤。
+**预期/量化：** 拒绝访问不能进入受保护操作；只有匹配的恢复消息释放对应实例；恢复后才核对。
+**通过/失败：** 授权边界、消息相关性及核对顺序均满足才通过。
+**证据状态：** Worker 拒绝授权测试通过；BPMN 未发现按 incidentReference 相关恢复消息的订阅，原标准断言失败。
+
+### AT-16 — 表单渲染与 Worker/消息契约
+
+**需求/规则：** R-13。
+**前置条件：** 使用与测试 BPMN 同一快照的 37 个表单和 Java Worker。
+**测试数据：** 37 个用户任务表单；55 种模型 Worker 类型；全部消息 start/catch 事件。
+**操作：** 执行静态表单绑定审计；使用 form-js 在浏览器逐表单渲染、必填/校验和提交；比对 Worker、消息名称与变量；检查数据库审计。
+**预期/量化：** 37/37 可渲染并提交；bindingType 与部署版本一致；Worker 类型及消息契约无缺失/多余；数据库只记录允许的审计数据。
+**通过/失败：** 所有计数、渲染、提交和契约检查完整才通过。
+**证据状态：** 37/37 用户任务由引擎 API 完成；55 种 Worker 静态契约检查通过；显式 deployment binding 声明为 0/37；浏览器渲染未在本轮执行，因此本 AT 仅部分验证。
+
+## 验收结论与结果记录
+
+本轮共运行 86 项：74 通过、12 失败、0 错误、0 跳过。Camunda 流程路由覆盖为 401/401；该覆盖率不代表原计划通过。失败项集中于 AT-05、07、08、09、10、11、13、14、15 的业务规则或 Worker 行为；AT-16 浏览器表单审查和绑定声明仍未完成。总体验收结论：**未通过**。
+
+逐用例状态、失败消息、快照哈希及报告位置以 [`TEST_RESULTS_VERSION2.zh-CN.md`](../TEST_RESULTS_VERSION2.zh-CN.md)、[`evidence/acceptance-results.json`](../evidence/acceptance-results.json)、归档 Surefire XML 和 [`evidence/acceptance-input/manifest.json`](../evidence/acceptance-input/manifest.json) 为准。实例追踪位于 `evidence/acceptance-instance-traces.jsonl`；使用 `runId + case + instanceKey` 唯一识别记录。
+
+## 执行方法
+
+普通回归：
 
 ```powershell
 cd java
 .\mvnw.cmd test
 ```
 
-完整验收（含未实现的原计划断言，可能按真实缺口返回失败）：
+完整验收与报告：
 
 ```powershell
 cd java
@@ -64,13 +214,4 @@ cd ..
 python tools\report_acceptance_results.py
 ```
 
-流程测试通过 remote CPT 连接测试专用的 Camunda 8.9，默认 REST 8080、gRPC 26500、监控 9600。CPT 会清理其运行状态，必须使用可重置的开发/测试集群。可用 `-Dacceptance.rest=...`、`-Dacceptance.grpc=...` 覆盖客户端地址。要运行原计时器快进测试，测试引擎启动时设置 `ZEEBE_CLOCK_CONTROLLED=true`；不在生产集群启用。
-
-## 证据和判定
-
-- 逐测试结果：`java/target/surefire-reports/`。
-- BPMN 路由覆盖：`java/target/coverage-report/report.html`，以 Process_HPAS 数据计算，绝不以 JUnit 通过率冒充分支覆盖率。
-- 本轮输入：`evidence/acceptance-input/manifest.json`。
-- 测试实例及清理前状态：`evidence/acceptance-instance-traces.jsonl`。CPT 可重置实例编号，须使用 runId + case + instanceKey 一起识别记录。
-- 汇总：`evidence/acceptance-results.json` 和 `TEST_RESULTS_VERSION2.zh-CN.md`。
-- PASS、FAIL、BLOCKED、仅静态验证和历史样例分开登记。任一原标准缺失时，该 AT 项最多标为部分完成，不声明整项通过。
+验收 profile 使用测试专用 Camunda 8.9（默认 REST 8080、gRPC 26500、监控 9600），CPT 会清理其运行状态；不要连接生产或共享重要数据的集群。计时器验收需要测试引擎启动时设置 `ZEEBE_CLOCK_CONTROLLED=true`。冻结输入时先检查并行编辑已结束，再运行 `python tools\freeze_acceptance_input.py`；需要诊断空 DI 时可选择 `--normalize-empty-di`，并保留新的 manifest。不得把计划中、静态检查或历史证据改记为本轮运行通过。

@@ -65,11 +65,20 @@ class OriginalPlanParityIT {
 
     @Test @DisplayName("AT-15 — restoration must have a message subscription keyed by incidentReference")
     void at15_restorationUsesIncidentReference() {
-        var subs = model.getElementsByTagNameNS("http://camunda.org/schema/zeebe/1.0", "subscription");
-        boolean found = false;
-        for (int i = 0; i < subs.getLength(); i++)
-            found |= "=incidentReference".equals(((Element) subs.item(i)).getAttribute("correlationKey").replace(" ", ""));
-        assertThat(found).as("Original downtime recovery criterion requires incidentReference correlation").isTrue();
+        var messages = model.getElementsByTagNameNS(B, "message");
+        boolean restoredMessageFound = false;
+        for (int i = 0; i < messages.getLength(); i++) {
+            Element message = (Element) messages.item(i);
+            String name = message.getAttribute("name").toLowerCase(java.util.Locale.ROOT);
+            if (!name.contains("restor") && !name.contains("recover")) continue;
+            restoredMessageFound = true;
+            Element extensions = firstChild(message, "extensionElements");
+            Element subscription = firstChild(extensions, "subscription");
+            assertThat(subscription).as("restoration message subscription").isNotNull();
+            assertThat(subscription.getAttribute("correlationKey").replace(" ", ""))
+                .as("restoration must correlate by incidentReference").isEqualTo("=incidentReference");
+        }
+        assertThat(restoredMessageFound).as("a distinct service-restored message is required").isTrue();
     }
 
     @Test @DisplayName("AT-13 — refundAuthorised=false cannot create a refund request even with a named approver")
@@ -120,6 +129,12 @@ class OriginalPlanParityIT {
             if (id.equals(e.getAttribute("id"))) return e;
         }
         throw new AssertionError("Missing model scope: " + id);
+    }
+    private static Element firstChild(Element parent, String local) {
+        if (parent == null) return null;
+        for (var child = parent.getFirstChild(); child != null; child = child.getNextSibling())
+            if (child instanceof Element e && local.equals(e.getLocalName())) return e;
+        return null;
     }
     private static String conditions(String id) {
         var nodes = scope(id).getElementsByTagNameNS(B, "conditionExpression");

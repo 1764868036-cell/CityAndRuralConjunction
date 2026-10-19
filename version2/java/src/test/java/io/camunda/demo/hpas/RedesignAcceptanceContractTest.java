@@ -98,6 +98,23 @@ class RedesignAcceptanceContractTest {
     }
 
     @Test
+    @DisplayName("AT-16: every hospital task form is explicitly bound to its deployment")
+    void everyHospitalTaskUsesDeploymentBoundForm() {
+        int checked = 0;
+        NodeList tasks = executableProcess().getElementsByTagNameNS(B, "userTask");
+        for (int i = 0; i < tasks.getLength(); i++) {
+            Element task = (Element) tasks.item(i);
+            Element def = firstChild(firstChild(task, "extensionElements"), "formDefinition");
+            assertThat(def).as(task.getAttribute("id") + " form binding").isNotNull();
+            assertThat(def.getAttribute("bindingType"))
+                    .as(task.getAttribute("id") + " must bind to deployed form version")
+                    .isEqualTo("deployment");
+            checked++;
+        }
+        assertThat(checked).isEqualTo(37);
+    }
+
+    @Test
     @DisplayName("AT-16: executable jobs resolve to Java workers or the SP05 REST Connector")
     void modelJobTypesMatchWorkerRegistrations() throws Exception {
         Set<String> modelTypes = new TreeSet<>();
@@ -123,7 +140,12 @@ class RedesignAcceptanceContractTest {
         assertThat(modelTypes).hasSize(55);
         assertThat(modelTypes.remove("io.camunda:http-json:1")).isTrue();
         assertThat(workerTypes.remove("hpas-sp05-request-availability")).isTrue();
-        assertThat(workerTypes).isEqualTo(modelTypes);
+        Set<String> missingWorkers = new TreeSet<>(modelTypes);
+        missingWorkers.removeAll(workerTypes);
+        Set<String> unreferencedWorkers = new TreeSet<>(workerTypes);
+        unreferencedWorkers.removeAll(modelTypes);
+        assertThat(missingWorkers).as("BPMN job types without Java workers").isEmpty();
+        assertThat(unreferencedWorkers).as("Java workers not referenced by the BPMN").isEmpty();
     }
 
     @Test
