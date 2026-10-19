@@ -10,7 +10,9 @@ The model adapts the VERSION2 BPMN to the revised hospital boundary: 15 actors, 
 
 ## Postman
 
-[`postman/`](postman/README.md) provides **36 Version 2 requests**, a local environment and bilingual guides, covering all 22 messages received by `Process_HPAS`. Import both JSON files, create an instance, publish `HPAS: Referral received`, then complete the referral form in Tasklist. Deploy only the main BPMN and the 37 forms; the nine event subprocesses run inside active instances.
+Start with the [beginner Postman walkthrough](postman/README.md): install the app, send your first request, then follow one complete pathway with example form values, expected results and links to the code. For a first session, work through step 3 before continuing.
+
+The toolkit provides **36 Version 2 requests and a local environment**, covering all 22 messages received by `Process_HPAS`. Message correlation rules and optional paths such as payment are in the [advanced reference](postman/REFERENCE.md).
 
 ## Project files and checks
 

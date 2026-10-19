@@ -36,7 +36,9 @@ P01–P08 的人工作业仍引用原来的 37 个表单；55 种 Java Worker �
 
 ## Postman 接口调试
 
-[`postman/`](postman/README.zh-CN.md) 提供 Version 2 专用的 **36 个请求、本地环境及中英文说明**，覆盖 `Process_HPAS` 接收的全部 22 种消息。导入两个 JSON 文件后，先创建实例、发送 `HPAS: Referral received`，再在 Tasklist 完成转诊表单。部署请求仅包含主 BPMN 与 `forms/` 中的 37 个表单；9 个事件子流程在活动实例内按需触发。
+第一次使用请打开 [Postman 新手教程：从安装到完整走一遍](postman/README.zh-CN.md)。教程说明每一步点哪里、填什么、看到什么算成功，并提供可照填的演示表单和代码对照。可以先做到第 3 步，发出第一个请求。
+
+本目录提供 **36 个请求和本地环境**，覆盖 `Process_HPAS` 接收的全部 22 种消息。消息关联、付款等可选分支见 [进阶参考](postman/REFERENCE.zh-CN.md)。
 
 ## 重建和校验
 
