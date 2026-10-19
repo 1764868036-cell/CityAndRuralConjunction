@@ -1,0 +1,33 @@
+{
+  "nativeRendering": {
+    "models": [
+      {
+        "file": "Hospital_SD_SR_Green",
+        "warnings": [],
+        "overlaps": [],
+        "through": [],
+        "elements": 123,
+        "links": 119,
+        "roundtrip": true
+      }
+    ],
+    "consoleErrors": []
+  },
+  "viewer": {
+    "oneDiagram": true,
+    "actors": 15,
+    "intentionalElements": 82,
+    "dependencies": 26,
+    "focusAndReset": "passed",
+    "textOverflow": [],
+    "consoleErrors": []
+  },
+  "nativeRoundtrip": {
+    "standardEditorWithoutBoundaryExtension": true,
+    "saveLoadRoundtrip": true,
+    "taskEndpoints": 52,
+    "actorEndpoints": 0,
+    "endpointIDsPreserved": true
+  },
+  "modelSha256": "4938cabb47188f55f31e560dcff78eb5bd722c7c6dd0670c7803636e7b98119d"
+}

@@ -1,0 +1,11 @@
+{
+  "actors": 15,
+  "externalActors": 5,
+  "intentionalElements": 82,
+  "dependencies": 26,
+  "taskEndpoints": 52,
+  "actorEndpoints": 0,
+  "allSourceIdsExist": true,
+  "noRefinedDepender": true,
+  "sourceSha256": "847c8fe493a90da7f47f35369e989bd1dc9d773137d35ccfbdf798d6f43c6147"
+}

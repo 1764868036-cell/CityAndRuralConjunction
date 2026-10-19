@@ -1,5 +1,13 @@
 # HPAS BPMN 分层图
 
+## SD / SR 整合图
+
+[可编辑 TXT](goalModel.txt) · [单张绿色 SVG](istar/Hospital_SD_SR_Version2.svg) · [PNG](istar/Hospital_SD_SR_Version2.png) · [角色精简、连线含义与验证说明](istar/README.md)。
+
+按 VERSION2 重写为 15 个 Actor（其中 5 个外部 Actor）、82 个内部意图元素、26 条连接到具体任务的跨角色依赖。排班和信函服务在战略图中隐藏为实现细节，BPMN 中仍保留实际外部服务；顾问与临床执行团队按新版职责分开。VERSION1 保持不变。
+
+## BPMN 结构
+
 主图保留 P01–P08 的具体任务。9 个事件分支在主图中显示为带“+”标记的折叠子流程；每个子流程的任务和泳道都放在独立 BPMN 图层中，可在 Camunda Modeler 中下钻查看。
 
 | 子流程 | 名称 | 下钻图层中的泳道 |
