@@ -26,6 +26,10 @@
 
 P01–P08 的人工作业仍引用原来的 37 个表单；55 种 Java Worker 类型保持与 BPMN 中的任务类型一致。分支内部流程、触发事件和泳道也保留在原事件子流程中。
 
+## Postman 接口调试
+
+[`postman/`](postman/README.zh-CN.md) 提供 Version 2 专用的 **36 个请求、本地环境及中英文说明**，覆盖 `Process_HPAS` 接收的全部 22 种消息。导入两个 JSON 文件后，先创建实例、发送 `HPAS: Referral received`，再在 Tasklist 完成转诊表单。部署请求仅包含主 BPMN 与 `forms/` 中的 37 个表单；9 个事件子流程在活动实例内按需触发。
+
 ## 重建和校验
 
 在项目根目录运行：

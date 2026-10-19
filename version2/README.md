@@ -2,6 +2,12 @@
 
 Independent Camunda 8.9 project. See [Chinese guide](README.zh-CN.md).
 
+## Postman
+
+[`postman/`](postman/README.md) provides **36 Version 2 requests**, a local environment and bilingual guides, covering all 22 messages received by `Process_HPAS`. Import both JSON files, create an instance, publish `HPAS: Referral received`, then complete the referral form in Tasklist. Deploy only the main BPMN and the 37 forms; the nine event subprocesses run inside active instances.
+
+## Project files and checks
+
 ```text
 hospital-patient-pathway.bpmn   Deployable BPMN with drill-down planes
 forms/                         Camunda Forms
