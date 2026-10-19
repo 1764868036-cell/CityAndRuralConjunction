@@ -1,0 +1,58 @@
+{
+  "type": "default",
+  "id": "hpas_sp13_approve",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "heading_SP13_Approve",
+      "type": "text",
+      "text": "# Approve clinical content"
+    },
+    {
+      "key": "letterApproved",
+      "label": "Consultant approves clinical content",
+      "type": "checkbox",
+      "defaultValue": false,
+      "id": "SP13_Approve_field_0",
+      "layout": {
+        "row": "SP13_Approve_row_0",
+        "columns": null
+      }
+    },
+    {
+      "key": "letterApprovalNotes",
+      "label": "Approval notes",
+      "type": "textarea",
+      "validate": {
+        "required": false,
+        "maxLength": 2000
+      },
+      "id": "SP13_Approve_field_1",
+      "layout": {
+        "row": "SP13_Approve_row_1",
+        "columns": null
+      }
+    },
+    {
+      "id": "audit_SP13_Approve",
+      "type": "text",
+      "text": "Record the responsible person's identity; the system records the submission time and task audit."
+    },
+    {
+      "id": "actor_SP13_Approve",
+      "type": "textfield",
+      "key": "SP13_Approve_actor",
+      "label": "Responsible staff ID",
+      "validate": {
+        "required": true,
+        "maxLength": 80
+      },
+      "layout": {
+        "row": "SP13_Approve_actor",
+        "columns": null
+      }
+    }
+  ]
+}

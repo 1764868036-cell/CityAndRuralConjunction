@@ -1,0 +1,64 @@
+# HPAS BPMN 分层图
+
+主图保留 P01–P08 的具体任务。9 个事件分支在主图中显示为带“+”标记的折叠子流程；每个子流程的任务和泳道都放在独立 BPMN 图层中，可在 Camunda Modeler 中下钻查看。
+
+| 子流程 | 名称 | 下钻图层中的泳道 |
+| --- | --- | --- |
+| SP03B | P03B Appointment changes | Outpatient Bookings Team |
+| SP09 | P09 Manage treatment changes | Clinical Team、Consultants、Finance Team |
+| SP10 | P10 Cancellation, refusal and no-shows | Call Handling Team、Finance Team、Consultants、Clinical Team |
+| SP11 | P11 Refunds and fund transfers | Finance Team |
+| SP12 | P12 Patient enquiries | Call Handling Team、Finance Team、Clinical Nurse Specialist Team |
+| SP13 | P13 Clinic letters | Consultants、Patient Pathway Coordinators、Medical Secretaries、Consultants - letter preparation |
+| SP14 | P14 Follow-up appointments | Outpatient Bookings Team、Patient Pathway Coordinators |
+| SP15 | P15 Monitoring and reports | Patient Pathway Coordinators、Administrative Management Team |
+| SP16 | P16 Access, audit and downtime | Administrative Management Team |
+
+打开 [hospital-patient-pathway.bpmn](hospital-patient-pathway.bpmn)，在主图点击折叠子流程的“+”或下钻入口查看内部任务和泳道，再沿面包屑返回主图。事件触发、非中断行为、表单绑定和 Java Job Worker 类型保持在同一流程定义中。
+
+## 文件
+
+- `hospital-patient-pathway.bpmn`：主图及 9 个可下钻的子流程图层。
+- `previews/hospital-patient-pathway-preview.svg`、`previews/overview.png`：折叠后的主图预览。
+- `forms/`：37 个 Camunda Form。
+- `java/`：Spring Boot Java Job Worker 项目。
+- `build_redesign.py`、`validate_bundle.py`：生成 BPMN 并检查 BPMN、泳道、表单、Worker 和图层的对应关系。
+
+P01–P08 的人工作业仍引用原来的 37 个表单；55 种 Java Worker 类型保持与 BPMN 中的任务类型一致。分支内部流程、触发事件和泳道也保留在原事件子流程中。
+
+## 重建和校验
+
+在项目根目录运行：
+
+```powershell
+python tools\build_redesign.py
+python tools\validate_bundle.py
+python tools\check_semantics.py hospital-patient-pathway.bpmn
+python tools\render_preview.py hospital-patient-pathway.bpmn previews/hospital-patient-pathway-preview.svg
+```
+
+## 验证记录
+
+- BPMN lint：0 个错误；32 条 `fake-join` 警告来自多个合法流入的合流节点建议。
+- Camunda 8.9 部署成功（`Process_HPAS` v4）。
+- 对活动实例发送预约变更消息后，SP03B 事件子流程创建了 `hpas-sp03b-search-slot` Job；无 incident。验证实例已取消，测试集群已停止。
+
+主图采用纵向增加泳道高度的紧凑布局，宽度由约 12800 缩至 4550；事件分支和外部参与者按三列排列。build_redesign.py 自动调用 compact_layout.py。
+
+进一步按实际节点占用压缩空白，并以障碍检测选择折线路径。当前测量节点穿越从179处降至49处；仍有部分密集区连线需要进一步人工整理。
+
+已移除6个仅用于汇合的排他网关，替代路线直接汇入原决策网关，减少相邻菱形。
+
+## Java Worker 数据库
+
+`java/` 使用与 version1 相同的 Spring JDBC + H2 repository/schema 实现，数据文件独立保存在 `java/data/hpas-redesign`，不会复用 version1 的数据库文件。初始化建表与种子脚本可重复执行。当前已接入的业务写入是 Worker 完成审计：只保存 BPMN 节点、job type、流程实例键、合成 referral/patient ID 与生成结果字段，不保存用户提交的表单正文。
+
+基础测试使用独立内存 H2（`java/src/test/resources/application.properties`），不访问运行数据文件。运行 `cd java; .\mvnw.cmd test` 可执行 14 项数据库、Worker 审计与模型契约检查，其中包含新增的 Camunda BPMN Schema 校验。
+
+测试差异与移植范围见 [TEST_COMPARISON_VERSION1_VERSION2.zh-CN.md](TEST_COMPARISON_VERSION1_VERSION2.zh-CN.md)。
+
+## Version 2 验收计划
+
+已按 version1 的 AT-01—AT-16 移植验收计划与可执行测试。见 [计划与变量映射](docs/ACCEPTANCE_TEST_PLAN_VERSION2.zh-CN.md)、[本轮结果](TEST_RESULTS_VERSION2.zh-CN.md) 和 [机器可读结果](evidence/acceptance-results.json)。
+
+在可重置的 Camunda 8.9 测试集群启动后，在 `java/` 运行 `.\mvnw.cmd -Pacceptance test`。测试使用 `evidence/acceptance-input/` 的固定快照；原计划未满足的业务标准保留为失败。流程覆盖率、JUnit 通过率、浏览器表单审计和历史运行证据分别登记。

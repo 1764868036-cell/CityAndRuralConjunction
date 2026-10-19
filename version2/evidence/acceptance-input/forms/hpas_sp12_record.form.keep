@@ -1,0 +1,92 @@
+{
+  "type": "default",
+  "id": "hpas_sp12_record",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "heading_SP12_Record",
+      "type": "text",
+      "text": "# Record and classify enquiry"
+    },
+    {
+      "key": "enquiryClass",
+      "label": "Enquiry classification",
+      "type": "select",
+      "values": [
+        {
+          "label": "Simple administration",
+          "value": "admin-simple"
+        },
+        {
+          "label": "Transfer administration",
+          "value": "admin-transfer"
+        },
+        {
+          "label": "Financial",
+          "value": "financial"
+        },
+        {
+          "label": "Clinical",
+          "value": "clinical"
+        }
+      ],
+      "validate": {
+        "required": true
+      },
+      "id": "SP12_Record_field_0",
+      "layout": {
+        "row": "SP12_Record_row_0",
+        "columns": null
+      }
+    },
+    {
+      "key": "enquiryDetails",
+      "label": "Enquiry and requested response",
+      "type": "textarea",
+      "validate": {
+        "required": true,
+        "maxLength": 2000
+      },
+      "id": "SP12_Record_field_1",
+      "layout": {
+        "row": "SP12_Record_row_1",
+        "columns": null
+      }
+    },
+    {
+      "key": "enquiryPriority",
+      "label": "Initial priority / concern noted",
+      "type": "textfield",
+      "validate": {
+        "required": true,
+        "maxLength": 160
+      },
+      "id": "SP12_Record_field_2",
+      "layout": {
+        "row": "SP12_Record_row_2",
+        "columns": null
+      }
+    },
+    {
+      "id": "audit_SP12_Record",
+      "type": "text",
+      "text": "Record the responsible person's identity; the system records the submission time and task audit."
+    },
+    {
+      "id": "actor_SP12_Record",
+      "type": "textfield",
+      "key": "SP12_Record_actor",
+      "label": "Responsible staff ID",
+      "validate": {
+        "required": true,
+        "maxLength": 80
+      },
+      "layout": {
+        "row": "SP12_Record_actor",
+        "columns": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "type": "default",
+  "id": "hpas_sp03_escalatecontact",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "heading_SP03_EscalateContact",
+      "type": "text",
+      "text": "# Escalate failed contact to Pathway Coordinator"
+    },
+    {
+      "key": "contactEscalation",
+      "label": "Action agreed after unsuccessful contact",
+      "type": "textarea",
+      "validate": {
+        "required": true,
+        "maxLength": 2000
+      },
+      "id": "SP03_EscalateContact_field_0",
+      "layout": {
+        "row": "SP03_EscalateContact_row_0",
+        "columns": null
+      }
+    },
+    {
+      "id": "audit_SP03_EscalateContact",
+      "type": "text",
+      "text": "Record the responsible person's identity; the system records the submission time and task audit."
+    },
+    {
+      "id": "actor_SP03_EscalateContact",
+      "type": "textfield",
+      "key": "SP03_EscalateContact_actor",
+      "label": "Responsible staff ID",
+      "validate": {
+        "required": true,
+        "maxLength": 80
+      },
+      "layout": {
+        "row": "SP03_EscalateContact_actor",
+        "columns": null
+      }
+    }
+  ]
+}

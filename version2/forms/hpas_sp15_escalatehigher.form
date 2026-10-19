@@ -1,0 +1,47 @@
+{
+  "type": "default",
+  "id": "hpas_sp15_escalatehigher",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "heading_SP15_EscalateHigher",
+      "type": "text",
+      "text": "# Escalate to higher management team"
+    },
+    {
+      "key": "higherEscalation",
+      "label": "Higher management escalation",
+      "type": "textarea",
+      "validate": {
+        "required": true,
+        "maxLength": 2000
+      },
+      "id": "SP15_EscalateHigher_field_0",
+      "layout": {
+        "row": "SP15_EscalateHigher_row_0",
+        "columns": null
+      }
+    },
+    {
+      "id": "audit_SP15_EscalateHigher",
+      "type": "text",
+      "text": "Record the responsible person's identity; the system records the submission time and task audit."
+    },
+    {
+      "id": "actor_SP15_EscalateHigher",
+      "type": "textfield",
+      "key": "SP15_EscalateHigher_actor",
+      "label": "Responsible staff ID",
+      "validate": {
+        "required": true,
+        "maxLength": 80
+      },
+      "layout": {
+        "row": "SP15_EscalateHigher_actor",
+        "columns": null
+      }
+    }
+  ]
+}

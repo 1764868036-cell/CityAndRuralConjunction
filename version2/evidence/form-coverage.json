@@ -1,0 +1,126 @@
+{
+  "expectedCount": 37,
+  "completedUniqueCount": 37,
+  "missing": [],
+  "byScenario": {
+    "main": [
+      "SP01_CheckDocuments",
+      "SP02_ClinicalReview",
+      "SP03_EscalateContact",
+      "SP03_NoSlotReview",
+      "SP03_PhoneContact",
+      "SP04_Assess",
+      "SP04_CreateRequest",
+      "SP04_RecordConsent",
+      "SP06_RecordApproval",
+      "SP08_Review",
+      "SP13_AdminProcess",
+      "SP13_Approve",
+      "SP13_Draft"
+    ],
+    "branches": [],
+    "appointment": [
+      "SP03B_Review"
+    ],
+    "change": [
+      "SP09_Retrospective"
+    ],
+    "cancel": [
+      "SP10_ClinicalReview",
+      "SP10_Decide",
+      "SP10_Record"
+    ],
+    "refund": [
+      "SP11_Determine"
+    ],
+    "admin": [
+      "SP12_Answer",
+      "SP12_Record"
+    ],
+    "transfer": [
+      "SP12_Record",
+      "SP12_Transfer"
+    ],
+    "financial": [
+      "SP12_AnswerFin",
+      "SP12_Record"
+    ],
+    "finance-referral": [
+      "SP12_Record",
+      "SP12_ReferFinance"
+    ],
+    "clinical": [
+      "SP12_AssessPriority",
+      "SP12_Record",
+      "SP12_ReferCNS"
+    ],
+    "followup": [
+      "SP14_Highlight"
+    ],
+    "manager": [
+      "SP15_EscalateManager"
+    ],
+    "higher": [
+      "SP15_EscalateHigher"
+    ],
+    "access": [
+      "SP16_VerifyAuth"
+    ],
+    "downtime": [
+      "SP16_RecordDowntime"
+    ],
+    "change-approved": [
+      "SP09_FinanceReview",
+      "SP09_Retrospective",
+      "SP11_Determine"
+    ],
+    "payment-investigate": [
+      "SP01_CheckDocuments",
+      "SP02_ClinicalReview",
+      "SP04_Assess",
+      "SP04_CreateRequest",
+      "SP04_RecordConsent",
+      "SP07_Investigate",
+      "SP08_Review",
+      "SP13_AdminProcess",
+      "SP13_Approve",
+      "SP13_Draft"
+    ],
+    "payment-failed": [
+      "SP01_CheckDocuments",
+      "SP02_ClinicalReview",
+      "SP04_Assess",
+      "SP04_CreateRequest",
+      "SP04_RecordConsent",
+      "SP07_DecideRetry",
+      "SP07_RecordOverride",
+      "SP08_Review",
+      "SP13_AdminProcess",
+      "SP13_Approve",
+      "SP13_Draft"
+    ],
+    "timer": [
+      "SP13_AdminProcess",
+      "SP13_Approve",
+      "SP13_Draft",
+      "SP13_Reminder"
+    ],
+    "change-denied-v6": [
+      "SP09_Retrospective"
+    ],
+    "delay-path-v6": [
+      "SP01_CheckDocuments",
+      "SP02_ClinicalReview",
+      "SP03_NoSlotReview",
+      "SP03_PhoneContact",
+      "SP04_Assess",
+      "SP04_CreateRequest",
+      "SP04_RecordConsent",
+      "SP08_DelayHandling",
+      "SP08_Review",
+      "SP13_AdminProcess",
+      "SP13_Approve",
+      "SP13_Draft"
+    ]
+  }
+}

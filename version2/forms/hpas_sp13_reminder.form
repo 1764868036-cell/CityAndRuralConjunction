@@ -1,0 +1,47 @@
+{
+  "type": "default",
+  "id": "hpas_sp13_reminder",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "heading_SP13_Reminder",
+      "type": "text",
+      "text": "# Issue weekly reminder to Consultant"
+    },
+    {
+      "key": "reminderNotes",
+      "label": "Weekly reminder and Consultant response",
+      "type": "textarea",
+      "validate": {
+        "required": true,
+        "maxLength": 2000
+      },
+      "id": "SP13_Reminder_field_0",
+      "layout": {
+        "row": "SP13_Reminder_row_0",
+        "columns": null
+      }
+    },
+    {
+      "id": "audit_SP13_Reminder",
+      "type": "text",
+      "text": "Record the responsible person's identity; the system records the submission time and task audit."
+    },
+    {
+      "id": "actor_SP13_Reminder",
+      "type": "textfield",
+      "key": "SP13_Reminder_actor",
+      "label": "Responsible staff ID",
+      "validate": {
+        "required": true,
+        "maxLength": 80
+      },
+      "layout": {
+        "row": "SP13_Reminder_actor",
+        "columns": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "type": "default",
+  "id": "hpas_sp12_answer",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "heading_SP12_Answer",
+      "type": "text",
+      "text": "# Answer administrative question directly"
+    },
+    {
+      "key": "enquiryResponse",
+      "label": "Administrative response",
+      "type": "textarea",
+      "validate": {
+        "required": true,
+        "maxLength": 2000
+      },
+      "id": "SP12_Answer_field_0",
+      "layout": {
+        "row": "SP12_Answer_row_0",
+        "columns": null
+      }
+    },
+    {
+      "id": "audit_SP12_Answer",
+      "type": "text",
+      "text": "Record the responsible person's identity; the system records the submission time and task audit."
+    },
+    {
+      "id": "actor_SP12_Answer",
+      "type": "textfield",
+      "key": "SP12_Answer_actor",
+      "label": "Responsible staff ID",
+      "validate": {
+        "required": true,
+        "maxLength": 80
+      },
+      "layout": {
+        "row": "SP12_Answer_actor",
+        "columns": null
+      }
+    }
+  ]
+}

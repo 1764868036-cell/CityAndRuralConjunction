@@ -1,0 +1,460 @@
+-------------------------------------------------------------------------------
+Test set: io.camunda.demo.hpas.OriginalPlanParityIT
+-------------------------------------------------------------------------------
+Tests run: 14, Failures: 11, Errors: 0, Skipped: 0, Time elapsed: 2.407 s <<< FAILURE! -- in io.camunda.demo.hpas.OriginalPlanParityIT
+io.camunda.demo.hpas.OriginalPlanParityIT.at13_unauthorisedRefundMustBeRejected -- Time elapsed: 0.107 s <<< FAILURE!
+java.lang.AssertionError: 
+
+Expecting code to raise a throwable.
+	at io.camunda.demo.hpas.OriginalPlanParityIT.at13_unauthorisedRefundMustBeRejected(OriginalPlanParityIT.java:80)
+
+io.camunda.demo.hpas.OriginalPlanParityIT.at10_financeRecheckMustPrecedeImplementation -- Time elapsed: 0.041 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: 
+[There must be a route from finance recheck to implementation; version 2 currently checks finance after implementation] 
+Expecting value to be true but was false
+	at io.camunda.demo.hpas.OriginalPlanParityIT.at10_financeRecheckMustPrecedeImplementation(OriginalPlanParityIT.java:63)
+
+io.camunda.demo.hpas.OriginalPlanParityIT.at15_restorationUsesIncidentReference -- Time elapsed: 0.019 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: 
+[Original downtime recovery criterion requires incidentReference correlation] 
+Expecting value to be true but was false
+	at io.camunda.demo.hpas.OriginalPlanParityIT.at15_restorationUsesIncidentReference(OriginalPlanParityIT.java:72)
+
+io.camunda.demo.hpas.OriginalPlanParityIT.originalDecisionContractExists(String, String, String, String)[1] -- Time elapsed: 0.044 s <<< FAILURE!
+java.lang.AssertionError: 
+[AT-05: requested scheduling window is represented by a date/deadline rule; original acceptance criterion is not waived] 
+Expecting actual:
+  "= changeKind = "reschedule"
+= changeKind != "reschedule"
+= slotAcceptable = true
+= slotAcceptable = false
+= urgentChange = true
+= urgentChange = false
+= formallyAuthorised = true
+= formallyAuthorised = false
+= financialImpact = true
+= financialImpact = false
+= refundRequired = true
+= refundRequired = false
+= appointmentPaid = true
+= appointmentPaid = false
+= pathwayResponse = "re-offer"
+= pathwayResponse = "clinical-review"
+= pathwayResponse = "close"
+= refundDue = true
+= refundDue = false
+= enquiryClass = "admin-simple"
+= enquiryClass = "admin-transfer"
+= enquiryClass = "financial"
+= enquiryClass = "clinical"
+= infoAuthorised = true
+= infoAuthorised = false
+= urgentConcern = false
+= urgentConcern = true
+= adminCheck = "ok"
+= adminCheck = "clinical-error"
+= followUpInstructed = true
+= followUpInstructed = false
+= inRequestedPeriod = true
+= inRequestedPeriod = false
+= letterOverdueMonths >= 1 and letterOverdueMonths < 3
+= letterOverdueMonths >= 3
+= letterOverdueMonths < 1
+= eventKind = "access"
+= eventKind = "interruption"
+= reviewDecision = "accept"
+= reviewDecision = "accept"
+= reviewDecision != "accept"
+= sp03Outcome = "attended"
+= sp03Outcome = "closed"
+= consentGiven = true
+= consentGiven = false
+= consentGiven = true
+= consentGiven = false
+= fundingRoute = "hospital"
+= fundingRoute = "patient-pay"
+= fundingRoute = "patient-pay"
+= fundingRoute != "patient-pay"
+= documentsComplete = true
+= documentsComplete = false
+= reviewDecision = "reject"
+= reviewDecision = "information"
+= reviewDecision = "redirect"
+= urgentReferral = true
+= urgentReferral = false
+= slotFound = true
+= slotFound = false
+= withinTwoWeeks = true
+= withinTwoWeeks = false
+= phoneAttempts < 3
+= contactOutcome != "reached"
+= phoneAttempts >= 3
+= contactOutcome = "reached"
+= consentGiven = true
+= consentGiven = false
+= requestValid = false
+= requestValid = true
+= resourceType = "internal"
+= resourceType = "external"
+= externalAvailable = true
+= externalAvailable = false
+= fundingRoute = "exempt"
+= fundingRoute = "insurer"
+= retryDecision = "retry"
+= investigationOutcome = "not-taken"
+= paymentStatus = "completed"
+= paymentStatus = "confirmation-lost"
+= paymentStatus != "completed" and paymentStatus != "confirmation-lost"
+= investigationOutcome = "taken"
+= retryDecision = "urgent-override"
+= fitnessDecision = "fit"
+= fitnessDecision = "delay"
+= fitnessDecision = "change"
+= moreCycles = true
+= moreCycles = false
+"
+to contain pattern:
+  "(?is)(requestedReviewBy|reviewBy|deadline)"
+	at io.camunda.demo.hpas.OriginalPlanParityIT.originalDecisionContractExists(OriginalPlanParityIT.java:56)
+
+io.camunda.demo.hpas.OriginalPlanParityIT.originalDecisionContractExists(String, String, String, String)[2] -- Time elapsed: 0.004 s <<< FAILURE!
+java.lang.AssertionError: 
+[AT-07: funding denial is a routing input; original acceptance criterion is not waived] 
+Expecting actual:
+  "= changeKind = "reschedule"
+= changeKind != "reschedule"
+= slotAcceptable = true
+= slotAcceptable = false
+= urgentChange = true
+= urgentChange = false
+= formallyAuthorised = true
+= formallyAuthorised = false
+= financialImpact = true
+= financialImpact = false
+= refundRequired = true
+= refundRequired = false
+= appointmentPaid = true
+= appointmentPaid = false
+= pathwayResponse = "re-offer"
+= pathwayResponse = "clinical-review"
+= pathwayResponse = "close"
+= refundDue = true
+= refundDue = false
+= enquiryClass = "admin-simple"
+= enquiryClass = "admin-transfer"
+= enquiryClass = "financial"
+= enquiryClass = "clinical"
+= infoAuthorised = true
+= infoAuthorised = false
+= urgentConcern = false
+= urgentConcern = true
+= adminCheck = "ok"
+= adminCheck = "clinical-error"
+= followUpInstructed = true
+= followUpInstructed = false
+= inRequestedPeriod = true
+= inRequestedPeriod = false
+= letterOverdueMonths >= 1 and letterOverdueMonths < 3
+= letterOverdueMonths >= 3
+= letterOverdueMonths < 1
+= eventKind = "access"
+= eventKind = "interruption"
+= reviewDecision = "accept"
+= reviewDecision = "accept"
+= reviewDecision != "accept"
+= sp03Outcome = "attended"
+= sp03Outcome = "closed"
+= consentGiven = true
+= consentGiven = false
+= consentGiven = true
+= consentGiven = false
+= fundingRoute = "hospital"
+= fundingRoute = "patient-pay"
+= fundingRoute = "patient-pay"
+= fundingRoute != "patient-pay"
+= documentsComplete = true
+= documentsComplete = false
+= reviewDecision = "reject"
+= reviewDecision = "information"
+= reviewDecision = "redirect"
+= urgentReferral = true
+= urgentReferral = false
+= slotFound = true
+= slotFound = false
+= withinTwoWeeks = true
+= withinTwoWeeks = false
+= phoneAttempts < 3
+= contactOutcome != "reached"
+= phoneAttempts >= 3
+= contactOutcome = "reached"
+= consentGiven = true
+= consentGiven = false
+= requestValid = false
+= requestValid = true
+= resourceType = "internal"
+= resourceType = "external"
+= externalAvailable = true
+= externalAvailable = false
+= fundingRoute = "exempt"
+= fundingRoute = "insurer"
+= retryDecision = "retry"
+= investigationOutcome = "not-taken"
+= paymentStatus = "completed"
+= paymentStatus = "confirmation-lost"
+= paymentStatus != "completed" and paymentStatus != "confirmation-lost"
+= investigationOutcome = "taken"
+= retryDecision = "urgent-override"
+= fitnessDecision = "fit"
+= fitnessDecision = "delay"
+= fitnessDecision = "change"
+= moreCycles = true
+= moreCycles = false
+"
+to contain pattern:
+  "(?is)(fundingAuthorised|fundingApproved)"
+	at io.camunda.demo.hpas.OriginalPlanParityIT.originalDecisionContractExists(OriginalPlanParityIT.java:56)
+
+io.camunda.demo.hpas.OriginalPlanParityIT.originalDecisionContractExists(String, String, String, String)[3] -- Time elapsed: 0.003 s <<< FAILURE!
+java.lang.AssertionError: 
+[AT-08: prior charge is checked before a new payment request; original acceptance criterion is not waived] 
+Expecting actual:
+  "= changeKind = "reschedule"
+= changeKind != "reschedule"
+= slotAcceptable = true
+= slotAcceptable = false
+= urgentChange = true
+= urgentChange = false
+= formallyAuthorised = true
+= formallyAuthorised = false
+= financialImpact = true
+= financialImpact = false
+= refundRequired = true
+= refundRequired = false
+= appointmentPaid = true
+= appointmentPaid = false
+= pathwayResponse = "re-offer"
+= pathwayResponse = "clinical-review"
+= pathwayResponse = "close"
+= refundDue = true
+= refundDue = false
+= enquiryClass = "admin-simple"
+= enquiryClass = "admin-transfer"
+= enquiryClass = "financial"
+= enquiryClass = "clinical"
+= infoAuthorised = true
+= infoAuthorised = false
+= urgentConcern = false
+= urgentConcern = true
+= adminCheck = "ok"
+= adminCheck = "clinical-error"
+= followUpInstructed = true
+= followUpInstructed = false
+= inRequestedPeriod = true
+= inRequestedPeriod = false
+= letterOverdueMonths >= 1 and letterOverdueMonths < 3
+= letterOverdueMonths >= 3
+= letterOverdueMonths < 1
+= eventKind = "access"
+= eventKind = "interruption"
+= reviewDecision = "accept"
+= reviewDecision = "accept"
+= reviewDecision != "accept"
+= sp03Outcome = "attended"
+= sp03Outcome = "closed"
+= consentGiven = true
+= consentGiven = false
+= consentGiven = true
+= consentGiven = false
+= fundingRoute = "hospital"
+= fundingRoute = "patient-pay"
+= fundingRoute = "patient-pay"
+= fundingRoute != "patient-pay"
+= documentsComplete = true
+= documentsComplete = false
+= reviewDecision = "reject"
+= reviewDecision = "information"
+= reviewDecision = "redirect"
+= urgentReferral = true
+= urgentReferral = false
+= slotFound = true
+= slotFound = false
+= withinTwoWeeks = true
+= withinTwoWeeks = false
+= phoneAttempts < 3
+= contactOutcome != "reached"
+= phoneAttempts >= 3
+= contactOutcome = "reached"
+= consentGiven = true
+= consentGiven = false
+= requestValid = false
+= requestValid = true
+= resourceType = "internal"
+= resourceType = "external"
+= externalAvailable = true
+= externalAvailable = false
+= fundingRoute = "exempt"
+= fundingRoute = "insurer"
+= retryDecision = "retry"
+= investigationOutcome = "not-taken"
+= paymentStatus = "completed"
+= paymentStatus = "confirmation-lost"
+= paymentStatus != "completed" and paymentStatus != "confirmation-lost"
+= investigationOutcome = "taken"
+= retryDecision = "urgent-override"
+= fitnessDecision = "fit"
+= fitnessDecision = "delay"
+= fitnessDecision = "change"
+= moreCycles = true
+= moreCycles = false
+"
+to contain pattern:
+  "(?is)(priorChargeFound|alreadyCharged)"
+	at io.camunda.demo.hpas.OriginalPlanParityIT.originalDecisionContractExists(OriginalPlanParityIT.java:56)
+
+io.camunda.demo.hpas.OriginalPlanParityIT.originalDecisionContractExists(String, String, String, String)[4] -- Time elapsed: 0.004 s <<< FAILURE!
+java.lang.AssertionError: 
+[AT-09: clinical stop has an explicit route; original acceptance criterion is not waived] 
+Expecting actual:
+  "= changeKind = "reschedule"
+= changeKind != "reschedule"
+= slotAcceptable = true
+= slotAcceptable = false
+= urgentChange = true
+= urgentChange = false
+= formallyAuthorised = true
+= formallyAuthorised = false
+= financialImpact = true
+= financialImpact = false
+= refundRequired = true
+= refundRequired = false
+= appointmentPaid = true
+= appointmentPaid = false
+= pathwayResponse = "re-offer"
+= pathwayResponse = "clinical-review"
+= pathwayResponse = "close"
+= refundDue = true
+= refundDue = false
+= enquiryClass = "admin-simple"
+= enquiryClass = "admin-transfer"
+= enquiryClass = "financial"
+= enquiryClass = "clinical"
+= infoAuthorised = true
+= infoAuthorised = false
+= urgentConcern = false
+= urgentConcern = true
+= adminCheck = "ok"
+= adminCheck = "clinical-error"
+= followUpInstructed = true
+= followUpInstructed = false
+= inRequestedPeriod = true
+= inRequestedPeriod = false
+= letterOverdueMonths >= 1 and letterOverdueMonths < 3
+= letterOverdueMonths >= 3
+= letterOverdueMonths < 1
+= eventKind = "access"
+= eventKind = "interruption"
+= reviewDecision = "accept"
+= reviewDecision = "accept"
+= reviewDecision != "accept"
+= sp03Outcome = "attended"
+= sp03Outcome = "closed"
+= consentGiven = true
+= consentGiven = false
+= consentGiven = true
+= consentGiven = false
+= fundingRoute = "hospital"
+= fundingRoute = "patient-pay"
+= fundingRoute = "patient-pay"
+= fundingRoute != "patient-pay"
+= documentsComplete = true
+= documentsComplete = false
+= reviewDecision = "reject"
+= reviewDecision = "information"
+= reviewDecision = "redirect"
+= urgentReferral = true
+= urgentReferral = false
+= slotFound = true
+= slotFound = false
+= withinTwoWeeks = true
+= withinTwoWeeks = false
+= phoneAttempts < 3
+= contactOutcome != "reached"
+= phoneAttempts >= 3
+= contactOutcome = "reached"
+= consentGiven = true
+= consentGiven = false
+= requestValid = false
+= requestValid = true
+= resourceType = "internal"
+= resourceType = "external"
+= externalAvailable = true
+= externalAvailable = false
+= fundingRoute = "exempt"
+= fundingRoute = "insurer"
+= retryDecision = "retry"
+= investigationOutcome = "not-taken"
+= paymentStatus = "completed"
+= paymentStatus = "confirmation-lost"
+= paymentStatus != "completed" and paymentStatus != "confirmation-lost"
+= investigationOutcome = "taken"
+= retryDecision = "urgent-override"
+= fitnessDecision = "fit"
+= fitnessDecision = "delay"
+= fitnessDecision = "change"
+= moreCycles = true
+= moreCycles = false
+"
+to contain pattern:
+  "(?is)(fitnessDecision.*stop|clinicalDecision.*stop)"
+	at io.camunda.demo.hpas.OriginalPlanParityIT.originalDecisionContractExists(OriginalPlanParityIT.java:56)
+
+io.camunda.demo.hpas.OriginalPlanParityIT.originalDecisionContractExists(String, String, String, String)[5] -- Time elapsed: 0.005 s <<< FAILURE!
+java.lang.AssertionError: 
+[AT-11-identity: rescheduling has an identity guard; original acceptance criterion is not waived] 
+Expecting actual:
+  "= changeKind = "reschedule"
+= changeKind != "reschedule"
+= slotAcceptable = true
+= slotAcceptable = false
+"
+to contain pattern:
+  "(?is)(identityVerified)"
+	at io.camunda.demo.hpas.OriginalPlanParityIT.originalDecisionContractExists(OriginalPlanParityIT.java:56)
+
+io.camunda.demo.hpas.OriginalPlanParityIT.originalDecisionContractExists(String, String, String, String)[6] -- Time elapsed: 0.004 s <<< FAILURE!
+java.lang.AssertionError: 
+[AT-11-date: rescheduling validates the requested review deadline; original acceptance criterion is not waived] 
+Expecting actual:
+  "= changeKind = "reschedule"
+= changeKind != "reschedule"
+= slotAcceptable = true
+= slotAcceptable = false
+"
+to contain pattern:
+  "(?is)(requestedReviewBy|reviewBy|deadline)"
+	at io.camunda.demo.hpas.OriginalPlanParityIT.originalDecisionContractExists(OriginalPlanParityIT.java:56)
+
+io.camunda.demo.hpas.OriginalPlanParityIT.originalDecisionContractExists(String, String, String, String)[7] -- Time elapsed: 0.003 s <<< FAILURE!
+java.lang.AssertionError: 
+[AT-11-contact: near-term rescheduling has a telephone-contact decision; original acceptance criterion is not waived] 
+Expecting actual:
+  "= changeKind = "reschedule"
+= changeKind != "reschedule"
+= slotAcceptable = true
+= slotAcceptable = false
+"
+to contain pattern:
+  "(?is)(withinTwoWeeks|14|phone)"
+	at io.camunda.demo.hpas.OriginalPlanParityIT.originalDecisionContractExists(OriginalPlanParityIT.java:56)
+
+io.camunda.demo.hpas.OriginalPlanParityIT.originalDecisionContractExists(String, String, String, String)[8] -- Time elapsed: 0.003 s <<< FAILURE!
+java.lang.AssertionError: 
+[AT-13-transfer: transfer is separate from refund/no-refund; original acceptance criterion is not waived] 
+Expecting actual:
+  "= refundDue = true
+= refundDue = false
+"
+to contain pattern:
+  "(?is)(refundOutcome.*transfer|transferRequired)"
+	at io.camunda.demo.hpas.OriginalPlanParityIT.originalDecisionContractExists(OriginalPlanParityIT.java:56)
+

@@ -1,0 +1,47 @@
+{
+  "type": "default",
+  "id": "hpas_sp12_refercns",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "heading_SP12_ReferCNS",
+      "type": "text",
+      "text": "# Respond to clinical enquiry (CNS team)"
+    },
+    {
+      "key": "enquiryResponse",
+      "label": "CNS clinical response",
+      "type": "textarea",
+      "validate": {
+        "required": true,
+        "maxLength": 2000
+      },
+      "id": "SP12_ReferCNS_field_0",
+      "layout": {
+        "row": "SP12_ReferCNS_row_0",
+        "columns": null
+      }
+    },
+    {
+      "id": "audit_SP12_ReferCNS",
+      "type": "text",
+      "text": "Record the responsible person's identity; the system records the submission time and task audit."
+    },
+    {
+      "id": "actor_SP12_ReferCNS",
+      "type": "textfield",
+      "key": "SP12_ReferCNS_actor",
+      "label": "Responsible staff ID",
+      "validate": {
+        "required": true,
+        "maxLength": 80
+      },
+      "layout": {
+        "row": "SP12_ReferCNS_actor",
+        "columns": null
+      }
+    }
+  ]
+}

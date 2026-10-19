@@ -1,0 +1,47 @@
+{
+  "type": "default",
+  "id": "hpas_sp10_clinicalreview",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "heading_SP10_ClinicalReview",
+      "type": "text",
+      "text": "# Review patient pathway"
+    },
+    {
+      "key": "clinicalReviewOutcome",
+      "label": "Clinical pathway review outcome",
+      "type": "textarea",
+      "validate": {
+        "required": true,
+        "maxLength": 2000
+      },
+      "id": "SP10_ClinicalReview_field_0",
+      "layout": {
+        "row": "SP10_ClinicalReview_row_0",
+        "columns": null
+      }
+    },
+    {
+      "id": "audit_SP10_ClinicalReview",
+      "type": "text",
+      "text": "Record the responsible person's identity; the system records the submission time and task audit."
+    },
+    {
+      "id": "actor_SP10_ClinicalReview",
+      "type": "textfield",
+      "key": "SP10_ClinicalReview_actor",
+      "label": "Responsible staff ID",
+      "validate": {
+        "required": true,
+        "maxLength": 80
+      },
+      "layout": {
+        "row": "SP10_ClinicalReview_actor",
+        "columns": null
+      }
+    }
+  ]
+}

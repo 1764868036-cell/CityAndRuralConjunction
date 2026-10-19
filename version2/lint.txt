@@ -1,0 +1,36 @@
+
+D:\桌面\26.9-26.12\demo\advanced_info_sys\HospitalPatientPathway\redesign\hospital-patient-pathway.bpmn
+   Top_WaitClosure          warning  Incoming flows do not join  fake-join
+   Top_End_Closed           warning  Incoming flows do not join  fake-join
+   SP03B_Review             warning  Incoming flows do not join  fake-join
+   SP03B_End                warning  Incoming flows do not join  fake-join
+   SP09_ApplyChange         warning  Incoming flows do not join  fake-join
+   SP09_End                 warning  Incoming flows do not join  fake-join
+   SP10_Decide              warning  Incoming flows do not join  fake-join
+   SP10_End                 warning  Incoming flows do not join  fake-join
+   SP11_End                 warning  Incoming flows do not join  fake-join
+   SP12_ReferCNS            warning  Incoming flows do not join  fake-join
+   SP12_Close               warning  Incoming flows do not join  fake-join
+   SP13_PrepareScope        warning  Incoming flows do not join  fake-join
+   SP13_End                 warning  Incoming flows do not join  fake-join
+   SP14_End                 warning  Incoming flows do not join  fake-join
+   SP15_Generate            warning  Incoming flows do not join  fake-join
+   SP16_Audit               warning  Incoming flows do not join  fake-join
+   SP01_CheckDocuments      warning  Incoming flows do not join  fake-join
+   SP02_ClinicalReview      warning  Incoming flows do not join  fake-join
+   SP03_RequestSlot         warning  Incoming flows do not join  fake-join
+   SP03_ConfirmBooking      warning  Incoming flows do not join  fake-join
+   SP03_PhoneContact        warning  Incoming flows do not join  fake-join
+   SP03_SendLetter          warning  Incoming flows do not join  fake-join
+   SP04_CreateRequest       warning  Incoming flows do not join  fake-join
+   SP04_NotifyLetter        warning  Incoming flows do not join  fake-join
+   SP06_Determine           warning  Incoming flows do not join  fake-join
+   SP07_SendPaymentRequest  warning  Incoming flows do not join  fake-join
+   SP07_RecordTransaction   warning  Incoming flows do not join  fake-join
+   SP08_RequestBloods       warning  Incoming flows do not join  fake-join
+   SP08_Catch_NextDue       warning  Incoming flows do not join  fake-join
+   XPat_End2                warning  Incoming flows do not join  fake-join
+   XCorr_Prepare            warning  Incoming flows do not join  fake-join
+   XExt_End1                warning  Incoming flows do not join  fake-join
+
+✖ 32 problems (0 errors, 32 warnings)

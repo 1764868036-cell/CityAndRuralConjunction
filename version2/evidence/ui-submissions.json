@@ -1,0 +1,453 @@
+[
+  {
+    "scenario": "main",
+    "task": "SP08_Review",
+    "key": "2251799813715360",
+    "values": {
+      "fitnessDecision": "fit",
+      "moreCycles": false,
+      "bloodTestReference": "TEST-BLOOD-001",
+      "clinicalReason": "Test patient clinically fit to continue; no further cycles planned.",
+      "SP08_Review_actor": "TEST SP08_Review_actor"
+    }
+  },
+  {
+    "scenario": "main",
+    "task": "SP13_Draft",
+    "key": "2251799813717136",
+    "values": {
+      "clinicLetterDraft": "TEST clinicLetterDraft",
+      "letterRecipients": "TEST letterRecipients",
+      "SP13_Draft_actor": "TEST SP13_Draft_actor"
+    }
+  },
+  {
+    "scenario": "timer",
+    "task": "SP13_Approve",
+    "key": "2251799813715011",
+    "values": {
+      "letterApproved": true,
+      "letterApprovalNotes": "TEST letterApprovalNotes",
+      "SP13_Approve_actor": "TEST SP13_Approve_actor"
+    }
+  },
+  {
+    "scenario": "payment-investigate",
+    "task": "SP13_Draft",
+    "key": "2251799813715575",
+    "values": {
+      "clinicLetterDraft": "TEST clinicLetterDraft",
+      "letterRecipients": "TEST letterRecipients",
+      "SP13_Draft_actor": "TEST SP13_Draft_actor"
+    }
+  },
+  {
+    "scenario": "payment-failed",
+    "task": "SP04_CreateRequest",
+    "key": "2251799813714966",
+    "values": {
+      "treatmentPlanId": "TEST treatmentPlanId",
+      "treatmentDescription": "TEST treatmentDescription",
+      "requiredStartDate": "2026-11-01",
+      "cycleCount": 1,
+      "resourceType": "internal",
+      "authorisingClinician": "TEST authorisingClinician",
+      "SP04_CreateRequest_actor": "TEST SP04_CreateRequest_actor"
+    }
+  },
+  {
+    "scenario": "main",
+    "task": "SP13_Approve",
+    "key": "2251799813717240",
+    "values": {
+      "letterApproved": true,
+      "letterApprovalNotes": "Approved for the test pathway.",
+      "SP13_Approve_actor": "TEST SP13_Approve_actor"
+    }
+  },
+  {
+    "scenario": "timer",
+    "task": "SP13_AdminProcess",
+    "key": "2251799813717309",
+    "values": {
+      "adminCheck": "ok",
+      "followUpInstructed": false,
+      "confirmedRecipients": "TEST patient and clinic",
+      "deliveryChannel": "TEST secure portal",
+      "SP13_AdminProcess_actor": "TEST SP13_AdminProcess_actor"
+    }
+  },
+  {
+    "scenario": "payment-investigate",
+    "task": "SP07_Investigate",
+    "key": "2251799813715635",
+    "values": {
+      "investigationOutcome": "taken",
+      "transactionReference": "TEST-PSP-RECON-001",
+      "investigationNotes": "PSP confirmed payment captured; reconcile before booking.",
+      "SP07_Investigate_actor": "TEST SP07_Investigate_actor"
+    }
+  },
+  {
+    "scenario": "payment-investigate",
+    "task": "SP13_Approve",
+    "key": "2251799813717381",
+    "values": {
+      "letterApproved": true,
+      "letterApprovalNotes": "Approved for payment investigation test.",
+      "SP13_Approve_actor": "TEST SP13_Approve_actor"
+    }
+  },
+  {
+    "scenario": "main",
+    "task": "SP13_AdminProcess",
+    "key": "2251799813717607",
+    "values": {
+      "adminCheck": "ok",
+      "followUpInstructed": false,
+      "confirmedRecipients": "TEST patient and clinic",
+      "deliveryChannel": "TEST secure portal",
+      "SP13_AdminProcess_actor": "TEST SP13_AdminProcess_actor"
+    }
+  },
+  {
+    "scenario": "payment-investigate",
+    "task": "SP08_Review",
+    "key": "2251799813717780",
+    "values": {
+      "fitnessDecision": "fit",
+      "moreCycles": false,
+      "bloodTestReference": "TEST-BLOOD-PAY-001",
+      "clinicalReason": "Fit to continue after payment reconciliation.",
+      "SP08_Review_actor": "TEST SP08_Review_actor"
+    }
+  },
+  {
+    "scenario": "payment-failed",
+    "task": "SP07_DecideRetry",
+    "key": "2251799813717553",
+    "values": {
+      "retryDecision": "urgent-override",
+      "paymentResolutionReason": "Test payment failed; clinician-authorised urgent pathway required.",
+      "SP07_DecideRetry_actor": "TEST SP07_DecideRetry_actor"
+    }
+  },
+  {
+    "scenario": "payment-investigate",
+    "task": "SP13_AdminProcess",
+    "key": "2251799813717860",
+    "values": {
+      "adminCheck": "ok",
+      "followUpInstructed": false,
+      "confirmedRecipients": "TEST patient and clinic",
+      "deliveryChannel": "TEST secure portal",
+      "SP13_AdminProcess_actor": "TEST SP13_AdminProcess_actor"
+    }
+  },
+  {
+    "scenario": "payment-failed",
+    "task": "SP13_Draft",
+    "key": "2251799813717462",
+    "values": {
+      "clinicLetterDraft": "TEST clinicLetterDraft",
+      "letterRecipients": "TEST letterRecipients",
+      "SP13_Draft_actor": "TEST SP13_Draft_actor"
+    }
+  },
+  {
+    "scenario": "payment-failed",
+    "task": "SP07_RecordOverride",
+    "key": "2251799813718230",
+    "values": {
+      "urgentOverrideReason": "Test urgent clinical risk justifies proceeding while payment confirmation is unavailable.",
+      "overrideClinician": "TEST-CLINICIAN-001",
+      "SP07_RecordOverride_actor": "TEST SP07_RecordOverride_actor"
+    }
+  },
+  {
+    "scenario": "payment-investigate",
+    "task": "SP13_Draft",
+    "key": "2251799813718169",
+    "values": {
+      "clinicLetterDraft": "TEST clinicLetterDraft",
+      "letterRecipients": "TEST letterRecipients",
+      "SP13_Draft_actor": "TEST SP13_Draft_actor"
+    }
+  },
+  {
+    "scenario": "payment-failed",
+    "task": "SP13_Approve",
+    "key": "2251799813718473",
+    "values": {
+      "letterApproved": true,
+      "letterApprovalNotes": "Approved for the payment exception test.",
+      "SP13_Approve_actor": "TEST SP13_Approve_actor"
+    }
+  },
+  {
+    "scenario": "payment-investigate",
+    "task": "SP13_Approve",
+    "key": "2251799813718721",
+    "values": {
+      "letterApproved": true,
+      "letterApprovalNotes": "Approved after transaction reconciliation.",
+      "SP13_Approve_actor": "TEST SP13_Approve_actor"
+    }
+  },
+  {
+    "scenario": "payment-failed",
+    "task": "SP08_Review",
+    "key": "2251799813718585",
+    "values": {
+      "fitnessDecision": "fit",
+      "moreCycles": false,
+      "bloodTestReference": "TEST-BLOOD-OVR-001",
+      "clinicalReason": "Clinician reviewed urgent exception booking; fit to continue.",
+      "SP08_Review_actor": "TEST SP08_Review_actor"
+    }
+  },
+  {
+    "scenario": "payment-failed",
+    "task": "SP13_AdminProcess",
+    "key": "2251799813718740",
+    "values": {
+      "adminCheck": "ok",
+      "followUpInstructed": false,
+      "confirmedRecipients": "TEST patient and clinic",
+      "deliveryChannel": "TEST secure portal",
+      "SP13_AdminProcess_actor": "TEST SP13_AdminProcess_actor"
+    }
+  },
+  {
+    "scenario": "payment-investigate",
+    "task": "SP13_AdminProcess",
+    "key": "2251799813718825",
+    "values": {
+      "adminCheck": "ok",
+      "followUpInstructed": false,
+      "confirmedRecipients": "TEST patient and clinic",
+      "deliveryChannel": "TEST secure portal",
+      "SP13_AdminProcess_actor": "TEST SP13_AdminProcess_actor"
+    }
+  },
+  {
+    "scenario": "payment-failed",
+    "task": "SP13_Draft",
+    "key": "2251799813718924",
+    "values": {
+      "clinicLetterDraft": "TEST clinicLetterDraft",
+      "letterRecipients": "TEST letterRecipients",
+      "SP13_Draft_actor": "TEST SP13_Draft_actor"
+    }
+  },
+  {
+    "scenario": "payment-failed",
+    "task": "SP13_Approve",
+    "key": "2251799813719183",
+    "values": {
+      "letterApproved": true,
+      "letterApprovalNotes": "Approved for the completed failed-payment pathway test.",
+      "SP13_Approve_actor": "TEST SP13_Approve_actor"
+    }
+  },
+  {
+    "scenario": "payment-failed",
+    "task": "SP13_AdminProcess",
+    "key": "2251799813719407",
+    "values": {
+      "adminCheck": "ok",
+      "followUpInstructed": false,
+      "confirmedRecipients": "TEST patient and clinic",
+      "deliveryChannel": "TEST secure portal",
+      "SP13_AdminProcess_actor": "TEST SP13_AdminProcess_actor"
+    }
+  },
+  {
+    "scenario": "change-denied-v6",
+    "task": "SP09_Retrospective",
+    "key": "2251799813720635",
+    "values": {
+      "formallyAuthorised": false,
+      "retrospectiveReason": "Test record: retrospective authorisation was not granted.",
+      "authorisingClinician": "TEST-CLINICIAN-002",
+      "SP09_Retrospective_actor": "TEST SP09_Retrospective_actor"
+    }
+  },
+  {
+    "scenario": "delay-path-v6",
+    "task": "SP01_CheckDocuments",
+    "key": "2251799813721268",
+    "values": {
+      "documentsComplete": true,
+      "missingDocuments": "TEST missingDocuments",
+      "patientId": "TEST-PATIENT-delay-path-v6",
+      "SP01_CheckDocuments_actor": "TEST SP01_CheckDocuments_actor"
+    }
+  },
+  {
+    "scenario": "delay-path-v6",
+    "task": "SP02_ClinicalReview",
+    "key": "2251799813721342",
+    "values": {
+      "reviewDecision": "accept",
+      "reviewReason": "Synthetic test referral approved.",
+      "decisionMaker": "TEST-CLINICIAN-003",
+      "urgentReferral": false,
+      "SP02_ClinicalReview_actor": "TEST SP02_ClinicalReview_actor"
+    }
+  },
+  {
+    "scenario": "delay-path-v6",
+    "task": "SP03_NoSlotReview",
+    "key": "2251799813721454",
+    "values": {
+      "slotExceptionReason": "Test no slot within requested timeframe.",
+      "pathwayEscalation": "Escalated to pathway team; proceed to next available slot.",
+      "SP03_NoSlotReview_actor": "TEST SP03_NoSlotReview_actor"
+    }
+  },
+  {
+    "scenario": "delay-path-v6",
+    "task": "SP03_PhoneContact",
+    "key": "2251799813721613",
+    "values": {
+      "contactOutcome": "reached",
+      "phoneAttempts": 1,
+      "contactNotes": "Patient reached in synthetic test.",
+      "SP03_PhoneContact_actor": "TEST SP03_PhoneContact_actor"
+    }
+  },
+  {
+    "scenario": "delay-path-v6",
+    "task": "SP04_Assess",
+    "key": "2251799813721750",
+    "values": {
+      "diagnosisSummary": "Synthetic referral assessment for test.",
+      "treatmentOptions": "Test treatment plan and risks reviewed.",
+      "consentGiven": true,
+      "SP04_Assess_actor": "TEST SP04_Assess_actor"
+    }
+  },
+  {
+    "scenario": "delay-path-v6",
+    "task": "SP04_RecordConsent",
+    "key": "2251799813721852",
+    "values": {
+      "consentReference": "TEST consentReference",
+      "consentDiscussion": "TEST consentDiscussion",
+      "SP04_RecordConsent_actor": "TEST SP04_RecordConsent_actor"
+    }
+  },
+  {
+    "scenario": "delay-path-v6",
+    "task": "SP04_CreateRequest",
+    "key": "2251799813721942",
+    "values": {
+      "treatmentPlanId": "TEST treatmentPlanId",
+      "treatmentDescription": "TEST treatmentDescription",
+      "requiredStartDate": "2026-11-01",
+      "cycleCount": 1,
+      "resourceType": "internal",
+      "authorisingClinician": "TEST authorisingClinician",
+      "SP04_CreateRequest_actor": "TEST SP04_CreateRequest_actor"
+    }
+  },
+  {
+    "scenario": "delay-path-v6",
+    "task": "SP08_Review",
+    "key": "2251799813722155",
+    "values": {
+      "fitnessDecision": "delay",
+      "moreCycles": false,
+      "bloodTestReference": "TEST-BLOOD-DELAY-001",
+      "clinicalReason": "Test delay branch due to temporary clinical concern; reschedule after criteria are met.",
+      "SP08_Review_actor": "TEST SP08_Review_actor"
+    }
+  },
+  {
+    "scenario": "delay-path-v6",
+    "task": "SP08_DelayHandling",
+    "key": "2251799813722272",
+    "values": {
+      "delayReason": "Synthetic test delay for the treatment pathway.",
+      "resumptionCriteria": "Resume after clinical review confirms fitness and current blood tests are acceptable.",
+      "SP08_DelayHandling_actor": "TEST SP08_DelayHandling_actor"
+    }
+  },
+  {
+    "scenario": "delay-path-v6",
+    "task": "SP13_Draft",
+    "key": "2251799813722113",
+    "values": {
+      "clinicLetterDraft": "TEST clinicLetterDraft",
+      "letterRecipients": "TEST letterRecipients",
+      "SP13_Draft_actor": "TEST SP13_Draft_actor"
+    }
+  },
+  {
+    "scenario": "delay-path-v6",
+    "task": "SP13_Approve",
+    "key": "2251799813722447",
+    "values": {
+      "letterApproved": true,
+      "letterApprovalNotes": "Approved test notice for treatment delay.",
+      "SP13_Approve_actor": "TEST SP13_Approve_actor"
+    }
+  },
+  {
+    "scenario": "delay-path-v6",
+    "task": "SP13_AdminProcess",
+    "key": "2251799813722529",
+    "values": {
+      "adminCheck": "ok",
+      "followUpInstructed": false,
+      "confirmedRecipients": "TEST patient and clinic",
+      "deliveryChannel": "TEST secure portal",
+      "SP13_AdminProcess_actor": "TEST SP13_AdminProcess_actor"
+    }
+  },
+  {
+    "scenario": "delay-path-v6",
+    "task": "SP08_Review",
+    "key": "2251799813722719",
+    "values": {
+      "fitnessDecision": "fit",
+      "moreCycles": false,
+      "bloodTestReference": "TEST-LAB-RESUMED-001",
+      "clinicalReason": "Test re-review confirms fitness to resume after delay.",
+      "SP08_Review_actor": "TEST SP08_Review_actor"
+    }
+  },
+  {
+    "scenario": "delay-path-v6",
+    "task": "SP13_Draft",
+    "key": "2251799813723025",
+    "values": {
+      "clinicLetterDraft": "TEST clinicLetterDraft",
+      "letterRecipients": "TEST letterRecipients",
+      "SP13_Draft_actor": "TEST SP13_Draft_actor"
+    }
+  },
+  {
+    "scenario": "delay-path-v6",
+    "task": "SP13_Approve",
+    "key": "2251799813723100",
+    "values": {
+      "letterApproved": true,
+      "letterApprovalNotes": "Approved completion notice after delay test.",
+      "SP13_Approve_actor": "TEST SP13_Approve_actor"
+    }
+  },
+  {
+    "scenario": "delay-path-v6",
+    "task": "SP13_AdminProcess",
+    "key": "2251799813723189",
+    "values": {
+      "adminCheck": "ok",
+      "followUpInstructed": false,
+      "confirmedRecipients": "TEST patient and clinic",
+      "deliveryChannel": "TEST secure portal",
+      "SP13_AdminProcess_actor": "TEST SP13_AdminProcess_actor"
+    }
+  }
+]

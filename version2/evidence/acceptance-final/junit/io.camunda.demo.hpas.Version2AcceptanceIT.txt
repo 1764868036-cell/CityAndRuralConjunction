@@ -1,0 +1,18 @@
+-------------------------------------------------------------------------------
+Test set: io.camunda.demo.hpas.Version2AcceptanceIT
+-------------------------------------------------------------------------------
+Tests run: 58, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 243.8 s <<< FAILURE! -- in io.camunda.demo.hpas.Version2AcceptanceIT
+io.camunda.demo.hpas.Version2AcceptanceIT.at14_originalTimerReminder -- Time elapsed: 16.25 s <<< FAILURE!
+java.lang.AssertionError: Expected to complete user task [elementId: SP13_Reminder, processInstanceKey: 2251799813685406] but no user task is available.
+	at io.camunda.process.test.impl.assertions.util.AwaitilityBehavior.untilAsserted(AwaitilityBehavior.java:66)
+	at io.camunda.process.test.api.CamundaAssertAwaitBehavior.untilAsserted(CamundaAssertAwaitBehavior.java:50)
+	at io.camunda.process.test.impl.extension.CamundaProcessTestContextImpl.awaitUserTask(CamundaProcessTestContextImpl.java:711)
+	at io.camunda.process.test.impl.extension.CamundaProcessTestContextImpl.completeUserTask(CamundaProcessTestContextImpl.java:457)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at io.camunda.process.test.impl.proxy.AbstractInvocationHandler.handleInvocation(AbstractInvocationHandler.java:90)
+	at io.camunda.process.test.impl.proxy.AbstractInvocationHandler.invoke(AbstractInvocationHandler.java:69)
+	at jdk.proxy2/jdk.proxy2.$Proxy158.completeUserTask(Unknown Source)
+	at io.camunda.demo.hpas.Version2AcceptanceIT.complete(Version2AcceptanceIT.java:571)
+	at io.camunda.demo.hpas.Version2AcceptanceIT.at14_originalTimerReminder(Version2AcceptanceIT.java:506)
+

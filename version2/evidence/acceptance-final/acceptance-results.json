@@ -1,0 +1,1504 @@
+{
+  "generatedAt": "2026-10-16T08:53:52.002838+00:00",
+  "scope": "frozen version2 acceptance snapshot",
+  "sourcePlan": "D:\\桌面\\26.9-26.12\\demo\\advanced_info_sys\\HospitalPatientPathway-redesign\\docs\\source\\Hospital_Patient_Pathway_Acceptance_Test_Plan.version1.docx",
+  "sourcePlanSHA256": "a938df0fce8b25aa9795e34688ad78d8d951135d26f877449cb37f25f59c30cf",
+  "input": {
+    "capturedAt": "2026-10-16",
+    "sourceModel": "hospital-patient-pathway.bpmn",
+    "sourceSHA256": "4c391978f89067756487f09bb8677b05c4bbaad1cc7d1135f22c1f885efd161c",
+    "testedSHA256": "138e5a33c0925b54180bbe739e15235a192b9eccd791ca363a6dd604cebf2cdb",
+    "normalizations": {
+      "removedEmptyDiagramIds": [
+        "TidyDiagram_P03B",
+        "TidyDiagram_P09",
+        "TidyDiagram_P10",
+        "TidyDiagram_P11",
+        "TidyDiagram_P12",
+        "TidyDiagram_P13",
+        "TidyDiagram_P14",
+        "TidyDiagram_P15",
+        "TidyDiagram_P16"
+      ]
+    },
+    "forms": {
+      "hpas_sp01_checkdocuments.form": "1835b18b1502c0da84898fe86fdf05b10f3230dcb02d99a06b1ba6cbfbe6e906",
+      "hpas_sp02_clinicalreview.form": "167f40f0a2fa27ed158730762481f6ea869b8858d8967ede396831b9bc36b175",
+      "hpas_sp03_escalatecontact.form": "10329a14243fe1ce79eed14a11c1a5dceb3f22c5450de7b5389cc034b28964db",
+      "hpas_sp03_noslotreview.form": "8e59ac8530e16a5694be9e63ea25bf56cf997e9407ae59d966976e1e2f4ca548",
+      "hpas_sp03_phonecontact.form": "a10b30a1441190034db82d00fe163564de34c199d1d4c3d7e8f6fbf3b51b9729",
+      "hpas_sp03b_review.form": "dde80eabb4cd7a6b7a7f028941566a98127d8cda0d65d0baa9bf5f158642d715",
+      "hpas_sp04_assess.form": "569b3a2c7b7001a23f51ad25ed5205965dd1817c659f2853484cf6bbf1224d6d",
+      "hpas_sp04_createrequest.form": "f254b652a8d60e48f63b944ea2bb9a801b8ecd69730ae7c174a1c5fa4a57c704",
+      "hpas_sp04_recordconsent.form": "958dac2e690981938c1b99faf91bf5001e9c82e1f0cd43c0a90a9c7ea4c916bf",
+      "hpas_sp06_recordapproval.form": "cc0df9832f0bec573f4ffab4bc1991e15cb6eba066b53bcf9b8ccedf71defdc6",
+      "hpas_sp07_decideretry.form": "cfd75bad7ea93e6ccbe76727c7ac9d04fe763b1850d49580129cc711edb53532",
+      "hpas_sp07_investigate.form": "b462e8a972d7d925ad76c55d4ef57f85cb89fe7d41bfda8a70be1ce3df756aad",
+      "hpas_sp07_recordoverride.form": "983acf86a53e4117b1974d48ef4dfdb5a1adbd22f59f2b5af3069c44b30b0ca8",
+      "hpas_sp08_delayhandling.form": "859934e454569eb9aad2a593b342b12f773c5ce410fc94e91f4b4527138dcc21",
+      "hpas_sp08_review.form": "18b123298fa6a30bc19337b32150d3bd33fc81bf7d5b7fbee7add3e63bfca0b2",
+      "hpas_sp09_financereview.form": "84c714b6c48c534e6a11f3eb1e42a89ab6e8d4303283ea1510a5c467ae895ad1",
+      "hpas_sp09_retrospective.form": "681cf9fd367ce55bb4478faa5335c0f5fb3215c400edf25753574930475fd939",
+      "hpas_sp10_clinicalreview.form": "8a47243c3ec28b9985810e6a07dad5251a2c3158a18efa0658e755c59a3a9143",
+      "hpas_sp10_decide.form": "a24dbf6baed43bbf2bf6fe0cef47e8c525ced07dcccba02cdcbf34c9674d7149",
+      "hpas_sp10_record.form": "8367560a680285193225d4bdca4270da8c2281dde16ea2ee87d7124ce4ddaf2f",
+      "hpas_sp11_determine.form": "92668c2ca4392ab583e3499426dc33163b351e7d0554ae75258fbd0652e68ac7",
+      "hpas_sp12_answer.form": "7bd9456aba81d419e0c76c2428a9fdf305773e37f42b3a699f5b958fa11a5b32",
+      "hpas_sp12_answerfin.form": "121272e63449475d3762b712dcac79ae6f829ef0d5ae0fa5abc75352e910752c",
+      "hpas_sp12_assesspriority.form": "3dd6225059338f4e91a635ab7ab62f30fb7bd718d465a3b9d63dbd3f90407b34",
+      "hpas_sp12_record.form": "f283fa4843692d2109c560d74f38fec41018dc7369435748102ef5073265931a",
+      "hpas_sp12_refercns.form": "7e7d8db21da024ec6a3f1dbd13f3f8d4966556cddc3700441f934fc22602a690",
+      "hpas_sp12_referfinance.form": "b767ec94c8d82496c2b3f99de5b0d6ff2b6df59ab66e2cf0b731402a80d3bdeb",
+      "hpas_sp12_transfer.form": "31700d3f396d37a21cfae4b923447d94d5f783ee4ea7ef4c9293081ba94615e1",
+      "hpas_sp13_adminprocess.form": "bb2b02d96a65c28cc196c4339192d498e3155e490523b2a31f54cb8827ecf171",
+      "hpas_sp13_approve.form": "6d22221df3f63422e7dba64bc285e3ee4e345b80a04edf9898ece44cd5d206cf",
+      "hpas_sp13_draft.form": "4590eb7a29f7506a92d23dd6a9541e8c0347d05f5281bde2a5db7aca88bc6b1c",
+      "hpas_sp13_reminder.form": "91dbc3a7a74b339b79b17c8bc0255b4112204f44a98f5147b7ba2a75cb1e9c7f",
+      "hpas_sp14_highlight.form": "76f8a1d6fb054a1dde9758e18413bb6957248d42ba5e2fc3f09827e0ff53b749",
+      "hpas_sp15_escalatehigher.form": "1f6e0834c9bc7e53b28afc7ef55273d7bb4f53d05bd28a34c02b2d9d24feaed0",
+      "hpas_sp15_escalatemanager.form": "1ac992ee845a5ef79a8e2947939294d47a96318d948ca3d698f85f014d65c9a0",
+      "hpas_sp16_recorddowntime.form": "fd06ad4b3ad1f5f33689cb628bab3f7d6e11e7ffe5add5a08eece84ff13186a3",
+      "hpas_sp16_verifyauth.form": "2b44475cfdb4186137b0f5332f02f0f06774fef57081b51ab632d9763826adab"
+    },
+    "note": "Source is concurrently edited. Frozen snapshot preserves executable BPMN; only empty DI diagrams are removed."
+  },
+  "currentModelSHA256": "4c391978f89067756487f09bb8677b05c4bbaad1cc7d1135f22c1f885efd161c",
+  "totals": {
+    "tests": 86,
+    "passed": 74,
+    "failures": 12,
+    "errors": 0,
+    "skipped": 0
+  },
+  "suites": [
+    {
+      "suite": "io.camunda.demo.hpas.RedesignAcceptanceContractTest",
+      "kind": "model-contract",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 6
+    },
+    {
+      "suite": "io.camunda.demo.hpas.persistence.HospitalDatabaseTest",
+      "kind": "database",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 7
+    },
+    {
+      "suite": "io.camunda.demo.hpas.worker.HpasJobAuditPersistenceTest",
+      "kind": "worker-audit",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 1
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "tests": 58,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 57
+    },
+    {
+      "suite": "io.camunda.demo.hpas.OriginalPlanParityIT",
+      "kind": "original-plan-parity",
+      "tests": 14,
+      "failures": 11,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 3
+    }
+  ],
+  "coverage": {
+    "processDefinitionId": "Process_HPAS",
+    "covered": 401,
+    "total": 401,
+    "percent": 100.0,
+    "completedElements": [
+      "Top_Start",
+      "Top_Catch_Referral",
+      "SP01_CheckDocuments",
+      "SP01_GW_Complete",
+      "SP02_ClinicalReview",
+      "SP02_GW_Decision",
+      "SP02_NotifyRejected",
+      "GW_SP02_Exit",
+      "Top_End_ReferralClosed",
+      "SP08_Review",
+      "SP08_GW_Fit",
+      "SP08_DelayHandling",
+      "SP08_Catch_NextDue",
+      "SP05_RequestAvailability",
+      "SP05_Catch_Availability",
+      "SP05_GW_Available",
+      "SP05_NotifyPending",
+      "SP05_Catch_Released",
+      "SP05_BookExternal",
+      "SP06_Determine",
+      "SP06_GW_Route",
+      "GW_SP06_Exit",
+      "SP08_RequestBloods",
+      "SP08_Catch_Lab",
+      "SP10",
+      "SP10_Start",
+      "SP10_Record",
+      "SP10_GW_Paid",
+      "SP10_NotifyRefund",
+      "SP10_Decide",
+      "SP10_GW_Response",
+      "SP10_NotifyReferrer",
+      "SP10_End",
+      "SP09",
+      "SP09_Start",
+      "SP09_GW_Urgency",
+      "SP09_ValidateFormal",
+      "SP09_GW_Formal",
+      "SP09_ApplyChange",
+      "SP09_NotifyPlanUpdated",
+      "SP09_GW_Financial",
+      "SP09_FinanceReview",
+      "SP09_GW_Refund",
+      "SP09_NotifyRefund",
+      "SP09_End",
+      "SP12",
+      "SP12_Start",
+      "SP12_Record",
+      "SP12_GW_Class",
+      "SP12_AssessPriority",
+      "SP12_GW_Urgency",
+      "SP12_ReferCNS",
+      "SP12_Close",
+      "SP12_End",
+      "SP04_Assess",
+      "SP04_GW_Consent",
+      "SP04_NotifyLetter",
+      "SP04_GW_AfterLetter",
+      "GW_SP04_Exit",
+      "Top_WaitClosure",
+      "Top_NotifyClosure",
+      "Top_End_Closed",
+      "SP12_Answer",
+      "SP12_Transfer",
+      "SP12_GW_Info",
+      "SP12_AnswerFin",
+      "SP12_ReferFinance",
+      "SP12_FlagUrgent",
+      "SP08_Administer",
+      "SP08_GW_More",
+      "SP08_NotifyLetter",
+      "SP04_CreateRequest",
+      "SP04_Validate",
+      "SP04_GW_Valid",
+      "SP05_GW_Resource",
+      "SP02_RequestInfo",
+      "SP02_Catch_Info",
+      "SP02_NotifyRedirected",
+      "SP13",
+      "SP13_Start",
+      "SP13_PrepareScope",
+      "SP13_PS_Start",
+      "SP13_Draft",
+      "SP13_Approve",
+      "SP13_PS_End",
+      "SP13_AdminProcess",
+      "SP13_GW_Admin",
+      "SP13_Distribute",
+      "SP13_RecordDates",
+      "SP13_GW_FollowUp",
+      "SP13_NotifyFollowUp",
+      "SP13_End",
+      "SP01_RequestMissing",
+      "SP01_Catch_Supplementary",
+      "SP06_RecordExemption",
+      "SP06_RequestApproval",
+      "SP06_Catch_Approval",
+      "SP06_RecordApproval",
+      "SP07_CalculateCharge",
+      "SP07_SendPaymentRequest",
+      "SP07_Catch_Status",
+      "SP07_GW_Status",
+      "SP07_RecordTransaction",
+      "SP07_ConfirmBooking",
+      "SP03B",
+      "SP03B_Start",
+      "SP03B_GW_Kind",
+      "SP03B_Review",
+      "SP03B_End",
+      "SP03B_RequestSlot",
+      "SP03B_Catch_Result",
+      "SP03B_GW_Result",
+      "SP03B_Rebook",
+      "SP03B_Notify",
+      "SP14",
+      "SP14_Start",
+      "SP14_RequestSlot",
+      "SP14_Catch_Result",
+      "SP14_GW_InPeriod",
+      "SP14_Book",
+      "SP14_Inform",
+      "SP14_End",
+      "SP14_Highlight",
+      "SP08_NotifyChange",
+      "SP08_Catch_PlanUpdated",
+      "SP07_MarkInvestigation",
+      "SP07_Investigate",
+      "SP07_GW_Investigation",
+      "SP07_NotifyIssue",
+      "SP07_DecideRetry",
+      "SP07_GW_Retry",
+      "SP07_RecordOverride",
+      "SP07_ReferFinance",
+      "SP03_GW_Urgent",
+      "SP03_RequestSlot",
+      "SP03_Catch_Slot",
+      "SP03_GW_Slot",
+      "SP03_ConfirmBooking",
+      "SP03_GW_TwoWeek",
+      "SP03_PhoneContact",
+      "SP03_GW_Phone",
+      "SP03_GW_Attempts",
+      "SP03_EscalateContact",
+      "SP03_SendLetter",
+      "SP03_WaitVisit",
+      "SP16",
+      "SP16_Start",
+      "SP16_GW_Kind",
+      "SP16_VerifyAuth",
+      "SP16_ApplyAccess",
+      "SP16_Audit",
+      "SP16_End",
+      "SP11",
+      "SP11_Start",
+      "SP11_Determine",
+      "SP11_GW_Scope",
+      "SP11_SendRefund",
+      "SP11_Catch_Result",
+      "SP11_Record",
+      "SP11_End",
+      "SP11_RecordNone",
+      "SP09_End_Rejected",
+      "SP09_ExecuteHold",
+      "SP09_Retrospective",
+      "SP15",
+      "SP15_Start",
+      "SP15_Scan",
+      "SP15_GW_Findings",
+      "SP15_Generate",
+      "SP15_End",
+      "SP15_EscalateManager",
+      "SP15_EscalateHigher",
+      "SP13_Timer7d",
+      "SP13_Reminder",
+      "SP13_End_Reminder",
+      "SP03_Catch_Visited",
+      "GW_SP03_Exit",
+      "SP04_RecordConsent",
+      "SP05_BookInternal",
+      "SP10_NotifyRebook",
+      "SP10_ClinicalReview",
+      "SP03_NoSlotReview",
+      "SP03_BookNextAvailable",
+      "SP03_FastTrack",
+      "SP03_Catch_Close",
+      "SP16_RecordDowntime",
+      "SP16_Reconcile"
+    ],
+    "takenSequenceFlows": [
+      "Flow_001",
+      "Flow_002",
+      "Flow_006",
+      "Flow_022",
+      "Flow_023",
+      "Flow_028",
+      "Flow_030",
+      "Flow_033",
+      "Flow_125",
+      "Flow_127",
+      "Flow_133",
+      "Flow_016",
+      "Flow_087",
+      "Flow_088",
+      "Flow_089",
+      "Flow_090",
+      "Flow_091",
+      "Flow_092",
+      "Flow_093",
+      "Flow_095",
+      "Flow_096",
+      "Flow_123",
+      "Flow_153",
+      "Flow_154",
+      "Flow_155",
+      "Flow_157",
+      "Flow_158",
+      "Flow_161",
+      "Flow_164",
+      "Flow_137",
+      "Flow_139",
+      "Flow_142",
+      "Flow_143",
+      "Flow_145",
+      "Flow_146",
+      "Flow_147",
+      "Flow_149",
+      "Flow_150",
+      "Flow_152",
+      "Flow_173",
+      "Flow_174",
+      "Flow_178",
+      "Flow_186",
+      "Flow_187",
+      "Flow_SP12_Assessed",
+      "Flow_SP12_Routine",
+      "Flow_012",
+      "Flow_019",
+      "Flow_020",
+      "Flow_072",
+      "Flow_074",
+      "Flow_080",
+      "Flow_082",
+      "Flow_175",
+      "Flow_179",
+      "Flow_176",
+      "Flow_180",
+      "Flow_177",
+      "Flow_181",
+      "Flow_183",
+      "Flow_182",
+      "Flow_184",
+      "Flow_185",
+      "Flow_SP12_Urgent",
+      "Flow_124",
+      "Flow_126",
+      "Flow_129",
+      "Flow_130",
+      "Flow_131",
+      "Flow_132",
+      "Flow_136",
+      "Flow_011",
+      "Flow_076",
+      "Flow_077",
+      "Flow_078",
+      "Flow_079",
+      "Flow_081",
+      "Flow_085",
+      "Flow_031",
+      "Flow_032",
+      "Flow_034",
+      "Flow_035",
+      "Flow_036",
+      "Flow_188",
+      "Flow_189",
+      "Flow_190",
+      "Flow_191",
+      "Flow_192",
+      "Flow_195",
+      "Flow_196",
+      "Flow_198",
+      "Flow_199",
+      "Flow_200",
+      "Flow_202",
+      "Flow_024",
+      "Flow_025",
+      "Flow_026",
+      "Flow_097",
+      "Flow_100",
+      "Flow_098",
+      "Flow_101",
+      "Flow_102",
+      "Flow_103",
+      "Flow_015",
+      "Flow_099",
+      "Flow_105",
+      "Flow_106",
+      "Flow_107",
+      "Flow_108",
+      "Flow_111",
+      "Flow_112",
+      "Flow_061",
+      "Flow_063",
+      "Flow_070",
+      "Flow_062",
+      "Flow_064",
+      "Flow_065",
+      "Flow_066",
+      "Flow_068",
+      "Flow_069",
+      "Flow_067",
+      "Flow_203",
+      "Flow_204",
+      "Flow_205",
+      "Flow_206",
+      "Flow_208",
+      "Flow_209",
+      "Flow_207",
+      "Flow_210",
+      "Flow_128",
+      "Flow_134",
+      "Flow_135",
+      "Flow_109",
+      "Flow_118",
+      "Flow_119",
+      "Flow_120",
+      "Flow_110",
+      "Flow_113",
+      "Flow_115",
+      "Flow_116",
+      "Flow_117",
+      "Flow_SP07_DecideRetry",
+      "Flow_039",
+      "Flow_041",
+      "Flow_042",
+      "Flow_043",
+      "Flow_047",
+      "Flow_048",
+      "Flow_050",
+      "Flow_052",
+      "Flow_053",
+      "Flow_054",
+      "Flow_055",
+      "Flow_056",
+      "Flow_201",
+      "Flow_219",
+      "Flow_220",
+      "Flow_222",
+      "Flow_223",
+      "Flow_226",
+      "Flow_197",
+      "Flow_165",
+      "Flow_166",
+      "Flow_167",
+      "Flow_169",
+      "Flow_170",
+      "Flow_171",
+      "Flow_168",
+      "Flow_172",
+      "Flow_148",
+      "Flow_151",
+      "Flow_144",
+      "Flow_138",
+      "Flow_140",
+      "Flow_141",
+      "Flow_211",
+      "Flow_212",
+      "Flow_215",
+      "Flow_218",
+      "Flow_213",
+      "Flow_216",
+      "Flow_214",
+      "Flow_217",
+      "Flow_193",
+      "Flow_194",
+      "Flow_005",
+      "Flow_008",
+      "Flow_029",
+      "Flow_049",
+      "Flow_059",
+      "Flow_073",
+      "Flow_075",
+      "Flow_084",
+      "Flow_086",
+      "Flow_057",
+      "Flow_156",
+      "Flow_159",
+      "Flow_162",
+      "Flow_160",
+      "Flow_163",
+      "Flow_044",
+      "Flow_045",
+      "Flow_046",
+      "Flow_038",
+      "Flow_040",
+      "Flow_009",
+      "Flow_051",
+      "Flow_060",
+      "Flow_058",
+      "Flow_114",
+      "Flow_121",
+      "Flow_221",
+      "Flow_224",
+      "Flow_225"
+    ],
+    "completedHumanTaskCount": 37,
+    "totalHumanTaskCount": 37,
+    "missingHumanTasks": [],
+    "explicitDeploymentFormBindings": 0,
+    "coverageOnlyGreedySegments": [
+      {
+        "name": "at02_completeSuitableReferral#48",
+        "newIds": 81
+      },
+      {
+        "name": "at14_letterFollowUpInstruction#17",
+        "newIds": 25
+      },
+      {
+        "name": "at10_financialChangeRequestsRefund#5",
+        "newIds": 22
+      },
+      {
+        "name": "at14_enquiryClassification#12",
+        "newIds": 18
+      },
+      {
+        "name": "at08_paymentRoutes#29",
+        "newIds": 18
+      },
+      {
+        "name": "at12_paidCancellation#4",
+        "newIds": 16
+      },
+      {
+        "name": "at11_appointmentChangeCurrentRoutes#23",
+        "newIds": 16
+      },
+      {
+        "name": "at14_followUpPeriod#25",
+        "newIds": 14
+      },
+      {
+        "name": "at13_refundCurrentRoutes#37",
+        "newIds": 14
+      },
+      {
+        "name": "at07_serviceUnavailable#3",
+        "newIds": 13
+      },
+      {
+        "name": "at15_accessDecisionRouting#33",
+        "newIds": 12
+      },
+      {
+        "name": "monitoringRunIsCarriedOutByTheWorkers#45",
+        "newIds": 12
+      },
+      {
+        "name": "at08_paymentRoutes#30",
+        "newIds": 11
+      },
+      {
+        "name": "at04_informationThenRedirect#16",
+        "newIds": 10
+      },
+      {
+        "name": "at05_phoneEscalation#31",
+        "newIds": 10
+      },
+      {
+        "name": "at05_schedulingAvailabilityAndHumanEscalation#54",
+        "newIds": 8
+      },
+      {
+        "name": "at07_supportedFundingRoutes#20",
+        "newIds": 7
+      },
+      {
+        "name": "at10_formalTreatmentChange#43",
+        "newIds": 7
+      },
+      {
+        "name": "missingDocumentsAreRequestedAndCorrelatedBack#18",
+        "newIds": 5
+      },
+      {
+        "name": "at14_originalTimerReminder#47",
+        "newIds": 5
+      },
+      {
+        "name": "at15_downtimeCurrentRoute#58",
+        "newIds": 5
+      },
+      {
+        "name": "at14_enquiryClassification#10",
+        "newIds": 5
+      },
+      {
+        "name": "at09_waitForChangedPlan#27",
+        "newIds": 5
+      },
+      {
+        "name": "at05_phoneReachedThenClosure#55",
+        "newIds": 5
+      },
+      {
+        "name": "at09_delayTreatment#2",
+        "newIds": 4
+      },
+      {
+        "name": "at12_cancellationOutcomes#49",
+        "newIds": 4
+      },
+      {
+        "name": "at07_supportedFundingRoutes#19",
+        "newIds": 3
+      },
+      {
+        "name": "at11_otherAppointmentChange#22",
+        "newIds": 3
+      },
+      {
+        "name": "at13_refundCurrentRoutes#38",
+        "newIds": 3
+      },
+      {
+        "name": "at06_consentRefusal#7",
+        "newIds": 3
+      },
+      {
+        "name": "at14_enquiryClassification#8",
+        "newIds": 3
+      },
+      {
+        "name": "at14_enquiryClassification#9",
+        "newIds": 3
+      },
+      {
+        "name": "at14_followUpPeriod#26",
+        "newIds": 3
+      },
+      {
+        "name": "monitoringRunIsCarriedOutByTheWorkers#46",
+        "newIds": 3
+      },
+      {
+        "name": "declinedReferralEndsAfterSendingTheOutcome#1",
+        "newIds": 3
+      },
+      {
+        "name": "at14_enquiryClassification#11",
+        "newIds": 3
+      },
+      {
+        "name": "at12_cancellationOutcomes#50",
+        "newIds": 3
+      },
+      {
+        "name": "at07_supportedFundingRoutes#21",
+        "newIds": 3
+      },
+      {
+        "name": "at09_continueTreatment#13",
+        "newIds": 2
+      },
+      {
+        "name": "at14_letterClinicalErrorControl#35",
+        "newIds": 2
+      },
+      {
+        "name": "at07_correctInvalidRequest#15",
+        "newIds": 2
+      },
+      {
+        "name": "monitoringRunIsCarriedOutByTheWorkers#44",
+        "newIds": 1
+      },
+      {
+        "name": "at11_appointmentChangeCurrentRoutes#24",
+        "newIds": 1
+      },
+      {
+        "name": "at14_routineClinicalEnquiry#6",
+        "newIds": 1
+      },
+      {
+        "name": "at10_formalTreatmentChange#39",
+        "newIds": 1
+      },
+      {
+        "name": "at08_authorisedRetryAfterNegativeResult#56",
+        "newIds": 1
+      },
+      {
+        "name": "at08_authorisedRetryAfterNegativeResult#57",
+        "newIds": 1
+      },
+      {
+        "name": "at10_formalTreatmentChange#40",
+        "newIds": 1
+      }
+    ],
+    "overlappingRuns": [
+      "at01_bundleDeploys#14",
+      "at08_paymentRoutes#28",
+      "at14_completedLetterCancelsReminders#32",
+      "at15_accessDecisionRouting#33",
+      "at15_accessDecisionRouting#34",
+      "at14_letterClinicalErrorControl#36",
+      "at10_formalTreatmentChange#39",
+      "at10_formalTreatmentChange#41",
+      "at10_formalTreatmentChange#42",
+      "at10_formalTreatmentChange#43",
+      "at12_cancellationOutcomes#51",
+      "at05_schedulingAvailabilityAndHumanEscalation#52",
+      "at05_schedulingAvailabilityAndHumanEscalation#53"
+    ],
+    "duplicateRunNames": 0,
+    "parameterizedCoverageLabelCollisions": 24
+  },
+  "acceptanceCases": [
+    {
+      "at": "AT-01",
+      "title": "部署与资源完整性",
+      "status": "快照部署通过；主文件并行修改及 lint 需单独复核",
+      "passed": 7,
+      "failed": 0,
+      "blocked": 0
+    },
+    {
+      "at": "AT-02",
+      "title": "完整适宜转诊",
+      "status": "路由预期已验证",
+      "passed": 1,
+      "failed": 0,
+      "blocked": 0
+    },
+    {
+      "at": "AT-03",
+      "title": "缺资料关联往返",
+      "status": "路由预期已验证",
+      "passed": 1,
+      "failed": 0,
+      "blocked": 0
+    },
+    {
+      "at": "AT-04",
+      "title": "不适宜转诊",
+      "status": "路由预期已验证",
+      "passed": 2,
+      "failed": 0,
+      "blocked": 0
+    },
+    {
+      "at": "AT-05",
+      "title": "排班、窗口与升级",
+      "status": "缺口/未满足原标准",
+      "passed": 5,
+      "failed": 1,
+      "blocked": 0
+    },
+    {
+      "at": "AT-06",
+      "title": "知情同意拒绝",
+      "status": "路由预期已验证",
+      "passed": 1,
+      "failed": 0,
+      "blocked": 0
+    },
+    {
+      "at": "AT-07",
+      "title": "服务与资金阻断",
+      "status": "缺口/未满足原标准",
+      "passed": 5,
+      "failed": 1,
+      "blocked": 0
+    },
+    {
+      "at": "AT-08",
+      "title": "支付与重复收费",
+      "status": "缺口/未满足原标准",
+      "passed": 5,
+      "failed": 1,
+      "blocked": 0
+    },
+    {
+      "at": "AT-09",
+      "title": "治疗继续、停止与变更",
+      "status": "缺口/未满足原标准",
+      "passed": 3,
+      "failed": 1,
+      "blocked": 0
+    },
+    {
+      "at": "AT-10",
+      "title": "正式治疗变更与费用复核",
+      "status": "缺口/未满足原标准",
+      "passed": 7,
+      "failed": 1,
+      "blocked": 0
+    },
+    {
+      "at": "AT-11",
+      "title": "预约变更身份、日期和联系",
+      "status": "缺口/未满足原标准",
+      "passed": 3,
+      "failed": 3,
+      "blocked": 0
+    },
+    {
+      "at": "AT-12",
+      "title": "取消、临床复核和未到诊",
+      "status": "路由预期已验证",
+      "passed": 4,
+      "failed": 0,
+      "blocked": 0
+    },
+    {
+      "at": "AT-13",
+      "title": "授权退款和资金转移",
+      "status": "缺口/未满足原标准",
+      "passed": 2,
+      "failed": 2,
+      "blocked": 0
+    },
+    {
+      "at": "AT-14",
+      "title": "问询、信件与计时器",
+      "status": "缺口/未满足原标准",
+      "passed": 13,
+      "failed": 1,
+      "blocked": 0
+    },
+    {
+      "at": "AT-15",
+      "title": "权限与停机恢复",
+      "status": "缺口/未满足原标准",
+      "passed": 4,
+      "failed": 1,
+      "blocked": 0
+    },
+    {
+      "at": "AT-16",
+      "title": "表单渲染和 Worker 契约",
+      "status": "静态契约/API 完成已验证；部署绑定声明与浏览器渲染仍需复核",
+      "passed": 3,
+      "failed": 0,
+      "blocked": 0
+    }
+  ],
+  "tests": [
+    {
+      "suite": "io.camunda.demo.hpas.RedesignAcceptanceContractTest",
+      "kind": "model-contract",
+      "name": "camundaBpmnSchemaAcceptsAllDiagramPlanes",
+      "at": "AT-01",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.RedesignAcceptanceContractTest",
+      "kind": "model-contract",
+      "name": "allMessageReferencesResolveAndHaveCorrelationKeys",
+      "at": "AT-16",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.RedesignAcceptanceContractTest",
+      "kind": "model-contract",
+      "name": "eventSubprocessesHaveLaneAwareDrillDownDi",
+      "at": "AT-01",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.RedesignAcceptanceContractTest",
+      "kind": "model-contract",
+      "name": "deploymentBundleHasOneExecutableHospitalProcess",
+      "at": "AT-01",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.RedesignAcceptanceContractTest",
+      "kind": "model-contract",
+      "name": "formsMatchTheirUserTasksAndHaveUniqueIds",
+      "at": "AT-16",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.RedesignAcceptanceContractTest",
+      "kind": "model-contract",
+      "name": "modelJobTypesMatchWorkerRegistrations",
+      "at": "AT-16",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.persistence.HospitalDatabaseTest",
+      "kind": "database",
+      "name": "seedIsReplayedWithoutDuplicatingRows",
+      "at": null,
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.persistence.HospitalDatabaseTest",
+      "kind": "database",
+      "name": "findLatestByReportTypeReturnsTheNewestOfSeveralReports",
+      "at": null,
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.persistence.HospitalDatabaseTest",
+      "kind": "database",
+      "name": "everyRepositoryRoundTripsOneRow",
+      "at": null,
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.persistence.HospitalDatabaseTest",
+      "kind": "database",
+      "name": "accessAuditRecordsASubjectTheHospitalDoesNotHave",
+      "at": null,
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.persistence.HospitalDatabaseTest",
+      "kind": "database",
+      "name": "eventLogRecordsASubjectTheHospitalDoesNotHave",
+      "at": null,
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.persistence.HospitalDatabaseTest",
+      "kind": "database",
+      "name": "schemaCreatesEveryTable",
+      "at": null,
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.persistence.HospitalDatabaseTest",
+      "kind": "database",
+      "name": "foreignKeysRejectUnknownParents",
+      "at": null,
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.worker.HpasJobAuditPersistenceTest",
+      "kind": "worker-audit",
+      "name": "completedWorkerActionIsAuditedWithoutPersistingSubmittedFormValues",
+      "at": null,
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "declinedReferralEndsAfterSendingTheOutcome",
+      "at": "AT-04",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at09_delayTreatment",
+      "at": "AT-09",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at07_serviceUnavailable",
+      "at": "AT-07",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at12_paidCancellation",
+      "at": "AT-12",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at10_financialChangeRequestsRefund",
+      "at": "AT-10",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at14_routineClinicalEnquiry",
+      "at": "AT-14",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at06_consentRefusal",
+      "at": "AT-06",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at14_enquiryClassification(String, boolean)[1]",
+      "at": "AT-14",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at14_enquiryClassification(String, boolean)[2]",
+      "at": "AT-14",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at14_enquiryClassification(String, boolean)[3]",
+      "at": "AT-14",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at14_enquiryClassification(String, boolean)[4]",
+      "at": "AT-14",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at14_enquiryClassification(String, boolean)[5]",
+      "at": "AT-14",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at09_continueTreatment",
+      "at": "AT-09",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at01_bundleDeploys",
+      "at": "AT-01",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at07_correctInvalidRequest",
+      "at": "AT-07",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at04_informationThenRedirect",
+      "at": "AT-04",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at14_letterFollowUpInstruction",
+      "at": "AT-14",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "missingDocumentsAreRequestedAndCorrelatedBack",
+      "at": "AT-03",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at07_supportedFundingRoutes(String)[1]",
+      "at": "AT-07",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at07_supportedFundingRoutes(String)[2]",
+      "at": "AT-07",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at07_supportedFundingRoutes(String)[3]",
+      "at": "AT-07",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at11_otherAppointmentChange",
+      "at": "AT-11",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at11_appointmentChangeCurrentRoutes(boolean)[1]",
+      "at": "AT-11",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at11_appointmentChangeCurrentRoutes(boolean)[2]",
+      "at": "AT-11",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at14_followUpPeriod(boolean)[1]",
+      "at": "AT-14",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at14_followUpPeriod(boolean)[2]",
+      "at": "AT-14",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at09_waitForChangedPlan",
+      "at": "AT-09",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at08_paymentRoutes(String)[1]",
+      "at": "AT-08",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at08_paymentRoutes(String)[2]",
+      "at": "AT-08",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at08_paymentRoutes(String)[3]",
+      "at": "AT-08",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at05_phoneEscalation",
+      "at": "AT-05",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at14_completedLetterCancelsReminders",
+      "at": "AT-14",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at15_accessDecisionRouting(boolean)[1]",
+      "at": "AT-15",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at15_accessDecisionRouting(boolean)[2]",
+      "at": "AT-15",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at14_letterClinicalErrorControl(boolean)[1]",
+      "at": "AT-14",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at14_letterClinicalErrorControl(boolean)[2]",
+      "at": "AT-14",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at13_refundCurrentRoutes(boolean)[1]",
+      "at": "AT-13",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at13_refundCurrentRoutes(boolean)[2]",
+      "at": "AT-13",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at10_formalTreatmentChange(boolean, boolean, boolean)[1]",
+      "at": "AT-10",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at10_formalTreatmentChange(boolean, boolean, boolean)[2]",
+      "at": "AT-10",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at10_formalTreatmentChange(boolean, boolean, boolean)[3]",
+      "at": "AT-10",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at10_formalTreatmentChange(boolean, boolean, boolean)[4]",
+      "at": "AT-10",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at10_formalTreatmentChange(boolean, boolean, boolean)[5]",
+      "at": "AT-10",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "monitoringRunIsCarriedOutByTheWorkers(int)[1]",
+      "at": "AT-01",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "monitoringRunIsCarriedOutByTheWorkers(int)[2]",
+      "at": "AT-01",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "monitoringRunIsCarriedOutByTheWorkers(int)[3]",
+      "at": "AT-01",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at14_originalTimerReminder",
+      "at": "AT-14",
+      "status": "FAIL",
+      "detail": "Expected to complete user task [elementId: SP13_Reminder, processInstanceKey: 2251799813685406] but no user task is available."
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at02_completeSuitableReferral",
+      "at": "AT-02",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at12_cancellationOutcomes(String)[1]",
+      "at": "AT-12",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at12_cancellationOutcomes(String)[2]",
+      "at": "AT-12",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at12_cancellationOutcomes(String)[3]",
+      "at": "AT-12",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at05_schedulingAvailabilityAndHumanEscalation(boolean, boolean)[1]",
+      "at": "AT-05",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at05_schedulingAvailabilityAndHumanEscalation(boolean, boolean)[2]",
+      "at": "AT-05",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at05_schedulingAvailabilityAndHumanEscalation(boolean, boolean)[3]",
+      "at": "AT-05",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at05_phoneReachedThenClosure",
+      "at": "AT-05",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at08_authorisedRetryAfterNegativeResult(String)[1]",
+      "at": "AT-08",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at08_authorisedRetryAfterNegativeResult(String)[2]",
+      "at": "AT-08",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.Version2AcceptanceIT",
+      "kind": "engine-routing",
+      "name": "at15_downtimeCurrentRoute",
+      "at": "AT-15",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.OriginalPlanParityIT",
+      "kind": "original-plan-parity",
+      "name": "at14_realWorkerRejectsUnapprovedLetter",
+      "at": "AT-14",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.OriginalPlanParityIT",
+      "kind": "original-plan-parity",
+      "name": "at13_unauthorisedRefundMustBeRejected",
+      "at": "AT-13",
+      "status": "FAIL",
+      "detail": "\nExpecting code to raise a throwable."
+    },
+    {
+      "suite": "io.camunda.demo.hpas.OriginalPlanParityIT",
+      "kind": "original-plan-parity",
+      "name": "at10_financeRecheckMustPrecedeImplementation",
+      "at": "AT-10",
+      "status": "FAIL",
+      "detail": "[There must be a route from finance recheck to implementation; version 2 currently checks finance after implementation] \nExpecting value to be true but was false"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.OriginalPlanParityIT",
+      "kind": "original-plan-parity",
+      "name": "at15_realWorkerDeniesAccess",
+      "at": "AT-15",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.OriginalPlanParityIT",
+      "kind": "original-plan-parity",
+      "name": "at10_realWorkerRejectsUnapprovedChange",
+      "at": "AT-10",
+      "status": "PASS"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.OriginalPlanParityIT",
+      "kind": "original-plan-parity",
+      "name": "at15_restorationUsesIncidentReference",
+      "at": "AT-15",
+      "status": "FAIL",
+      "detail": "[Original downtime recovery criterion requires incidentReference correlation] \nExpecting value to be true but was false"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.OriginalPlanParityIT",
+      "kind": "original-plan-parity",
+      "name": "originalDecisionContractExists(String, String, String, String)[1]",
+      "at": "AT-05",
+      "status": "FAIL",
+      "detail": "[AT-05: requested scheduling window is represented by a date/deadline rule; original acceptance criterion is not waived] \nExpecting actual:\n  \"= changeKind = \"reschedule\"\n= changeKind != \"reschedule\"\n= slotAcceptable = true\n= slotAcceptable = false\n= urgentChange = true\n= urgentChange = false\n= formallyAuthorised = true\n= formallyAuthorised = false\n= financialImpact = true\n= financialImpact = false\n= refundRequired = true\n= refundRequired = false\n= appointmentPaid = true\n= appointmentPaid = false\n= pathwayResponse = \"re-offer\"\n= pathwayResponse = \"clinical-review\"\n= pathwayResponse = \"close\"\n= refundDue = true\n= refundDue = false\n= enquiryClass = \"admin-simple\"\n= enquiryClass = \"admin-transfer\"\n= enquiryClass = \"financial\"\n= enquiryClass = \"clinical\"\n= infoAuthorised = true\n= infoAuthorised = false\n= urgentConcern = false\n= urgentConcern = true\n= adminCheck = \"ok\"\n= adminCheck = \"clinical-error\"\n= followUpInstructed = true\n= followUpInstructed = false\n= inRequestedPeriod = true\n= inRequestedPeriod = false\n= letterOverdueMonths >= 1 and letterOverdueMonths < 3\n= letterOverdueMonths >= 3\n= letterOverdueMonths < 1\n= eventKind = \"access\"\n= eventKind = \"interruption\"\n= reviewDecision = \"accept\"\n= reviewDecision = \"accept\"\n= reviewDecision != \"accept\"\n= sp03Outcome = \"attended\"\n= sp03Outcome = \"closed\"\n= consentGiven = true\n= consentGiven = false\n= consentGiven = true\n= consentGiven = false\n= fundingRoute = \"hospital\"\n= fundingRoute = \"patient-pay\"\n= fundingRoute = \"patient-pay\"\n= fundingRoute != \"patient-pay\"\n= documentsComplete = true\n= documentsComplete = false\n= reviewDecision = \"reject\"\n= reviewDecision = \"information\"\n= reviewDecision = \"redirect\"\n= urgentReferral = true\n= urgentReferral = false\n= slotFound = true\n= slotFound = false\n= withinTwoWeeks = true\n= withinTwoWeeks = false\n= phoneAttempts < 3\n= contactOutcome != \"reached\"\n= phoneAttempts >= 3\n= contactOutcome = \"reached\"\n= consentGiven = true\n= consentGiven = false\n= requestValid = false\n= requestValid = true\n= resourceType = \"internal\"\n= resourceType = \"external\"\n= externalAvailable = true\n= externalAvailable = false\n= fundingRoute = \"exempt\"\n= fundingRoute = \"insurer\"\n= retryDecision = \"retry\"\n= investigationOutcome = \"not-taken\"\n= paymentStatus = \"completed\"\n= paymentStatus = \"confirmation-lost\"\n= paymentStatus != \"completed\" and paymentStatus != \"confirmation-lost\"\n= investigationOutcome = \"taken\"\n= retryDecision = \"urgent-override\"\n= fitnessDecision = \"fit\"\n= fitnessDecision = \"delay\"\n= fitne"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.OriginalPlanParityIT",
+      "kind": "original-plan-parity",
+      "name": "originalDecisionContractExists(String, String, String, String)[2]",
+      "at": "AT-07",
+      "status": "FAIL",
+      "detail": "[AT-07: funding denial is a routing input; original acceptance criterion is not waived] \nExpecting actual:\n  \"= changeKind = \"reschedule\"\n= changeKind != \"reschedule\"\n= slotAcceptable = true\n= slotAcceptable = false\n= urgentChange = true\n= urgentChange = false\n= formallyAuthorised = true\n= formallyAuthorised = false\n= financialImpact = true\n= financialImpact = false\n= refundRequired = true\n= refundRequired = false\n= appointmentPaid = true\n= appointmentPaid = false\n= pathwayResponse = \"re-offer\"\n= pathwayResponse = \"clinical-review\"\n= pathwayResponse = \"close\"\n= refundDue = true\n= refundDue = false\n= enquiryClass = \"admin-simple\"\n= enquiryClass = \"admin-transfer\"\n= enquiryClass = \"financial\"\n= enquiryClass = \"clinical\"\n= infoAuthorised = true\n= infoAuthorised = false\n= urgentConcern = false\n= urgentConcern = true\n= adminCheck = \"ok\"\n= adminCheck = \"clinical-error\"\n= followUpInstructed = true\n= followUpInstructed = false\n= inRequestedPeriod = true\n= inRequestedPeriod = false\n= letterOverdueMonths >= 1 and letterOverdueMonths < 3\n= letterOverdueMonths >= 3\n= letterOverdueMonths < 1\n= eventKind = \"access\"\n= eventKind = \"interruption\"\n= reviewDecision = \"accept\"\n= reviewDecision = \"accept\"\n= reviewDecision != \"accept\"\n= sp03Outcome = \"attended\"\n= sp03Outcome = \"closed\"\n= consentGiven = true\n= consentGiven = false\n= consentGiven = true\n= consentGiven = false\n= fundingRoute = \"hospital\"\n= fundingRoute = \"patient-pay\"\n= fundingRoute = \"patient-pay\"\n= fundingRoute != \"patient-pay\"\n= documentsComplete = true\n= documentsComplete = false\n= reviewDecision = \"reject\"\n= reviewDecision = \"information\"\n= reviewDecision = \"redirect\"\n= urgentReferral = true\n= urgentReferral = false\n= slotFound = true\n= slotFound = false\n= withinTwoWeeks = true\n= withinTwoWeeks = false\n= phoneAttempts < 3\n= contactOutcome != \"reached\"\n= phoneAttempts >= 3\n= contactOutcome = \"reached\"\n= consentGiven = true\n= consentGiven = false\n= requestValid = false\n= requestValid = true\n= resourceType = \"internal\"\n= resourceType = \"external\"\n= externalAvailable = true\n= externalAvailable = false\n= fundingRoute = \"exempt\"\n= fundingRoute = \"insurer\"\n= retryDecision = \"retry\"\n= investigationOutcome = \"not-taken\"\n= paymentStatus = \"completed\"\n= paymentStatus = \"confirmation-lost\"\n= paymentStatus != \"completed\" and paymentStatus != \"confirmation-lost\"\n= investigationOutcome = \"taken\"\n= retryDecision = \"urgent-override\"\n= fitnessDecision = \"fit\"\n= fitnessDecision = \"delay\"\n= fitnessDecision = \"change\"\n= moreCycle"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.OriginalPlanParityIT",
+      "kind": "original-plan-parity",
+      "name": "originalDecisionContractExists(String, String, String, String)[3]",
+      "at": "AT-08",
+      "status": "FAIL",
+      "detail": "[AT-08: prior charge is checked before a new payment request; original acceptance criterion is not waived] \nExpecting actual:\n  \"= changeKind = \"reschedule\"\n= changeKind != \"reschedule\"\n= slotAcceptable = true\n= slotAcceptable = false\n= urgentChange = true\n= urgentChange = false\n= formallyAuthorised = true\n= formallyAuthorised = false\n= financialImpact = true\n= financialImpact = false\n= refundRequired = true\n= refundRequired = false\n= appointmentPaid = true\n= appointmentPaid = false\n= pathwayResponse = \"re-offer\"\n= pathwayResponse = \"clinical-review\"\n= pathwayResponse = \"close\"\n= refundDue = true\n= refundDue = false\n= enquiryClass = \"admin-simple\"\n= enquiryClass = \"admin-transfer\"\n= enquiryClass = \"financial\"\n= enquiryClass = \"clinical\"\n= infoAuthorised = true\n= infoAuthorised = false\n= urgentConcern = false\n= urgentConcern = true\n= adminCheck = \"ok\"\n= adminCheck = \"clinical-error\"\n= followUpInstructed = true\n= followUpInstructed = false\n= inRequestedPeriod = true\n= inRequestedPeriod = false\n= letterOverdueMonths >= 1 and letterOverdueMonths < 3\n= letterOverdueMonths >= 3\n= letterOverdueMonths < 1\n= eventKind = \"access\"\n= eventKind = \"interruption\"\n= reviewDecision = \"accept\"\n= reviewDecision = \"accept\"\n= reviewDecision != \"accept\"\n= sp03Outcome = \"attended\"\n= sp03Outcome = \"closed\"\n= consentGiven = true\n= consentGiven = false\n= consentGiven = true\n= consentGiven = false\n= fundingRoute = \"hospital\"\n= fundingRoute = \"patient-pay\"\n= fundingRoute = \"patient-pay\"\n= fundingRoute != \"patient-pay\"\n= documentsComplete = true\n= documentsComplete = false\n= reviewDecision = \"reject\"\n= reviewDecision = \"information\"\n= reviewDecision = \"redirect\"\n= urgentReferral = true\n= urgentReferral = false\n= slotFound = true\n= slotFound = false\n= withinTwoWeeks = true\n= withinTwoWeeks = false\n= phoneAttempts < 3\n= contactOutcome != \"reached\"\n= phoneAttempts >= 3\n= contactOutcome = \"reached\"\n= consentGiven = true\n= consentGiven = false\n= requestValid = false\n= requestValid = true\n= resourceType = \"internal\"\n= resourceType = \"external\"\n= externalAvailable = true\n= externalAvailable = false\n= fundingRoute = \"exempt\"\n= fundingRoute = \"insurer\"\n= retryDecision = \"retry\"\n= investigationOutcome = \"not-taken\"\n= paymentStatus = \"completed\"\n= paymentStatus = \"confirmation-lost\"\n= paymentStatus != \"completed\" and paymentStatus != \"confirmation-lost\"\n= investigationOutcome = \"taken\"\n= retryDecision = \"urgent-override\"\n= fitnessDecision = \"fit\"\n= fitnessDecision = \"delay\"\n= fitnessDecision = \""
+    },
+    {
+      "suite": "io.camunda.demo.hpas.OriginalPlanParityIT",
+      "kind": "original-plan-parity",
+      "name": "originalDecisionContractExists(String, String, String, String)[4]",
+      "at": "AT-09",
+      "status": "FAIL",
+      "detail": "[AT-09: clinical stop has an explicit route; original acceptance criterion is not waived] \nExpecting actual:\n  \"= changeKind = \"reschedule\"\n= changeKind != \"reschedule\"\n= slotAcceptable = true\n= slotAcceptable = false\n= urgentChange = true\n= urgentChange = false\n= formallyAuthorised = true\n= formallyAuthorised = false\n= financialImpact = true\n= financialImpact = false\n= refundRequired = true\n= refundRequired = false\n= appointmentPaid = true\n= appointmentPaid = false\n= pathwayResponse = \"re-offer\"\n= pathwayResponse = \"clinical-review\"\n= pathwayResponse = \"close\"\n= refundDue = true\n= refundDue = false\n= enquiryClass = \"admin-simple\"\n= enquiryClass = \"admin-transfer\"\n= enquiryClass = \"financial\"\n= enquiryClass = \"clinical\"\n= infoAuthorised = true\n= infoAuthorised = false\n= urgentConcern = false\n= urgentConcern = true\n= adminCheck = \"ok\"\n= adminCheck = \"clinical-error\"\n= followUpInstructed = true\n= followUpInstructed = false\n= inRequestedPeriod = true\n= inRequestedPeriod = false\n= letterOverdueMonths >= 1 and letterOverdueMonths < 3\n= letterOverdueMonths >= 3\n= letterOverdueMonths < 1\n= eventKind = \"access\"\n= eventKind = \"interruption\"\n= reviewDecision = \"accept\"\n= reviewDecision = \"accept\"\n= reviewDecision != \"accept\"\n= sp03Outcome = \"attended\"\n= sp03Outcome = \"closed\"\n= consentGiven = true\n= consentGiven = false\n= consentGiven = true\n= consentGiven = false\n= fundingRoute = \"hospital\"\n= fundingRoute = \"patient-pay\"\n= fundingRoute = \"patient-pay\"\n= fundingRoute != \"patient-pay\"\n= documentsComplete = true\n= documentsComplete = false\n= reviewDecision = \"reject\"\n= reviewDecision = \"information\"\n= reviewDecision = \"redirect\"\n= urgentReferral = true\n= urgentReferral = false\n= slotFound = true\n= slotFound = false\n= withinTwoWeeks = true\n= withinTwoWeeks = false\n= phoneAttempts < 3\n= contactOutcome != \"reached\"\n= phoneAttempts >= 3\n= contactOutcome = \"reached\"\n= consentGiven = true\n= consentGiven = false\n= requestValid = false\n= requestValid = true\n= resourceType = \"internal\"\n= resourceType = \"external\"\n= externalAvailable = true\n= externalAvailable = false\n= fundingRoute = \"exempt\"\n= fundingRoute = \"insurer\"\n= retryDecision = \"retry\"\n= investigationOutcome = \"not-taken\"\n= paymentStatus = \"completed\"\n= paymentStatus = \"confirmation-lost\"\n= paymentStatus != \"completed\" and paymentStatus != \"confirmation-lost\"\n= investigationOutcome = \"taken\"\n= retryDecision = \"urgent-override\"\n= fitnessDecision = \"fit\"\n= fitnessDecision = \"delay\"\n= fitnessDecision = \"change\"\n= moreCyc"
+    },
+    {
+      "suite": "io.camunda.demo.hpas.OriginalPlanParityIT",
+      "kind": "original-plan-parity",
+      "name": "originalDecisionContractExists(String, String, String, String)[5]",
+      "at": "AT-11",
+      "status": "FAIL",
+      "detail": "[AT-11-identity: rescheduling has an identity guard; original acceptance criterion is not waived] \nExpecting actual:\n  \"= changeKind = \"reschedule\"\n= changeKind != \"reschedule\"\n= slotAcceptable = true\n= slotAcceptable = false\n\"\nto contain pattern:\n  \"(?is)(identityVerified)\""
+    },
+    {
+      "suite": "io.camunda.demo.hpas.OriginalPlanParityIT",
+      "kind": "original-plan-parity",
+      "name": "originalDecisionContractExists(String, String, String, String)[6]",
+      "at": "AT-11",
+      "status": "FAIL",
+      "detail": "[AT-11-date: rescheduling validates the requested review deadline; original acceptance criterion is not waived] \nExpecting actual:\n  \"= changeKind = \"reschedule\"\n= changeKind != \"reschedule\"\n= slotAcceptable = true\n= slotAcceptable = false\n\"\nto contain pattern:\n  \"(?is)(requestedReviewBy|reviewBy|deadline)\""
+    },
+    {
+      "suite": "io.camunda.demo.hpas.OriginalPlanParityIT",
+      "kind": "original-plan-parity",
+      "name": "originalDecisionContractExists(String, String, String, String)[7]",
+      "at": "AT-11",
+      "status": "FAIL",
+      "detail": "[AT-11-contact: near-term rescheduling has a telephone-contact decision; original acceptance criterion is not waived] \nExpecting actual:\n  \"= changeKind = \"reschedule\"\n= changeKind != \"reschedule\"\n= slotAcceptable = true\n= slotAcceptable = false\n\"\nto contain pattern:\n  \"(?is)(withinTwoWeeks|14|phone)\""
+    },
+    {
+      "suite": "io.camunda.demo.hpas.OriginalPlanParityIT",
+      "kind": "original-plan-parity",
+      "name": "originalDecisionContractExists(String, String, String, String)[8]",
+      "at": "AT-13",
+      "status": "FAIL",
+      "detail": "[AT-13-transfer: transfer is separate from refund/no-refund; original acceptance criterion is not waived] \nExpecting actual:\n  \"= refundDue = true\n= refundDue = false\n\"\nto contain pattern:\n  \"(?is)(refundOutcome.*transfer|transferRequired)\""
+    }
+  ],
+  "lint": {
+    "errorCount": 21,
+    "warningCount": 35,
+    "evidence": "evidence/acceptance-snapshot-lint.json"
+  },
+  "accepted": false,
+  "limitations": [
+    "Engine routing uses controlled worker stubs, not real external services.",
+    "Structural parity failures retain original criteria; no business thresholds are invented.",
+    "Browser form rendering and full domain-worker persistence are separate checks.",
+    "Concurrent main-model edits are outside the frozen snapshot results."
+  ]
+}
