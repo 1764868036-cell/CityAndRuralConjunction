@@ -1,0 +1,1858 @@
+{
+  "info": {
+    "_postman_id": "d457b448-06ae-4dd0-98cd-f537d72f88f3",
+    "name": "Hospital Patient Pathway - Version 2 HPAS - Camunda 8.9",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Version2 only: Process_HPAS, HPAS: message names, 37 forms. Import the companion Version 2 environment. Create an instance, publish Referral received, then complete human tasks in Tasklist. Event branches run inside an active instance. Select requests individually; do not run this toolkit as a whole collection. See README.zh-CN.md and README.md."
+  },
+  "auth": {
+    "type": "noauth"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "if (pm.environment.get(\"processDefinitionId\") !== \"Process_HPAS\") throw new Error(\"Select the Version 2 HPAS environment (Process_HPAS).\");",
+          "const now = new Date();",
+          "pm.variables.set(\"futureDate\", new Date(now.getTime() + 21 * 86400000).toISOString().slice(0, 10));"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "01 - Setup and referral entry (run individually)",
+      "item": [
+        {
+          "name": "01 - Check cluster topology",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/topology",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "02 - Deploy version2 BPMN and all 37 forms",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/deployments",
+            "description": "Set the file working directory to version2. Select ONLY hospital-patient-pathway.bpmn and forms/*.form. Do not deploy source/, evidence/, version1/ or the frozen acceptance snapshot. Reselect all 38 files in resources if imported paths do not resolve. Let Postman set the multipart boundary.",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "resources",
+                  "type": "file",
+                  "src": [
+                    "hospital-patient-pathway.bpmn",
+                    "forms/hpas_sp01_checkdocuments.form",
+                    "forms/hpas_sp02_clinicalreview.form",
+                    "forms/hpas_sp03_escalatecontact.form",
+                    "forms/hpas_sp03_noslotreview.form",
+                    "forms/hpas_sp03_phonecontact.form",
+                    "forms/hpas_sp03b_review.form",
+                    "forms/hpas_sp04_assess.form",
+                    "forms/hpas_sp04_createrequest.form",
+                    "forms/hpas_sp04_recordconsent.form",
+                    "forms/hpas_sp06_recordapproval.form",
+                    "forms/hpas_sp07_decideretry.form",
+                    "forms/hpas_sp07_investigate.form",
+                    "forms/hpas_sp07_recordoverride.form",
+                    "forms/hpas_sp08_delayhandling.form",
+                    "forms/hpas_sp08_review.form",
+                    "forms/hpas_sp09_financereview.form",
+                    "forms/hpas_sp09_retrospective.form",
+                    "forms/hpas_sp10_clinicalreview.form",
+                    "forms/hpas_sp10_decide.form",
+                    "forms/hpas_sp10_record.form",
+                    "forms/hpas_sp11_determine.form",
+                    "forms/hpas_sp12_answer.form",
+                    "forms/hpas_sp12_answerfin.form",
+                    "forms/hpas_sp12_assesspriority.form",
+                    "forms/hpas_sp12_record.form",
+                    "forms/hpas_sp12_refercns.form",
+                    "forms/hpas_sp12_referfinance.form",
+                    "forms/hpas_sp12_transfer.form",
+                    "forms/hpas_sp13_adminprocess.form",
+                    "forms/hpas_sp13_approve.form",
+                    "forms/hpas_sp13_draft.form",
+                    "forms/hpas_sp13_reminder.form",
+                    "forms/hpas_sp14_highlight.form",
+                    "forms/hpas_sp15_escalatehigher.form",
+                    "forms/hpas_sp15_escalatemanager.form",
+                    "forms/hpas_sp16_recorddowntime.form",
+                    "forms/hpas_sp16_verifyauth.form"
+                  ]
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "03 - Find HPAS definitions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/process-definitions/search",
+            "description": "Check the deployed definition/version before creating an instance. The frozen acceptance snapshot uses the same process ID.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filter\": {\n    \"processDefinitionId\": \"{{processDefinitionId}}\"\n  },\n  \"page\": {\n    \"limit\": 20\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Search result array\", () => pm.expect(pm.response.json().items).to.be.an(\"array\"));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "04 - Create HPAS instance",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/process-instances",
+            "description": "Starts at Top_Start and waits at Top_Catch_Referral. Send 05 - Referral received NEXT, before filling SP01_CheckDocuments in Tasklist. Uses the latest active Process_HPAS definition. Empty referralId and patientId values get unique version2 IDs. Clear both before a new independent run.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"processDefinitionId\": \"{{processDefinitionId}}\",\n  \"variables\": {\n    \"referralId\": \"{{referralId}}\",\n    \"patientId\": \"{{patientId}}\",\n    \"urgentReferral\": false,\n    \"withinTwoWeeks\": false,\n    \"resourceType\": \"internal\",\n    \"fundingRoute\": \"hospital\",\n    \"moreCycles\": false,\n    \"appointmentPaid\": false\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const runId = pm.variables.replaceIn(\"{{$guid}}\");",
+                  "if (!pm.environment.get(\"referralId\")) pm.environment.set(\"referralId\", \"REF-V2-PM-\" + runId);",
+                  "if (!pm.environment.get(\"patientId\")) pm.environment.set(\"patientId\", \"PAT-V2-PM-\" + runId);",
+                  "pm.environment.unset(\"processInstanceKey\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  const key = pm.response.json().processInstanceKey;",
+                  "  pm.test(\"Instance key is a string\", () => pm.expect(key).to.be.a(\"string\").and.not.empty);",
+                  "  if (typeof key === \"string\" && key) pm.environment.set(\"processInstanceKey\", key);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "05 - Referral received",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Send AFTER creating an instance. Releases Top_Catch_Referral and opens SP01_CheckDocuments in Tasklist. This is an intermediate catch, not a message start that creates an instance. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Referral received\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"patientId\": \"{{patientId}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02 - External responses (send at the matching wait)",
+      "item": [
+        {
+          "name": "P01-P02 - Supplementary information received",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Send only while waiting at SP01_Catch_Supplementary or SP02_Catch_Info All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Supplementary information received\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"supplementaryReceived\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P03 - Scheduling result (slot found)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Send only while waiting at SP03_Catch_Slot. For no-slot testing change slotFound to false; complete SP03_NoSlotReview in Tasklist. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Scheduling result\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"slotFound\": true,\n    \"appointmentDate\": \"{{futureDate}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P03 - Clinic visit completed",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Send only while waiting at SP03_Catch_Visited All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Clinic visit completed\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"sp03Outcome\": \"attended\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P05 - External availability result",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Send only while waiting at SP05_Catch_Availability. To test the pending branch set externalAvailable=false, then send External slot released when SP05_Catch_Released is active. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: External availability result\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"externalAvailable\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P05 - External slot released",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Send only while waiting at SP05_Catch_Released All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: External slot released\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"externalAvailable\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P06 - Funding approval received",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Send only while waiting at SP06_Catch_Approval. Finance must still record the approval in SP06_RecordApproval. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Funding approval received\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"fundingApprovalReceived\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P07 - Payment completed",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Send only while waiting at SP07_Catch_Status. Sample PSP identifiers match the worker defaults; use actual values if the instance overrides them. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Payment status\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"paymentStatus\": \"completed\",\n    \"transactionReference\": \"TX-{{referralId}}\",\n    \"paymentRequestId\": \"PAY-{{referralId}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P07 - Payment failed (alternative)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Send only while waiting at SP07_Catch_Status. Alternative to completed; opens the retry/exception path. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Payment status\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"paymentStatus\": \"failed\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P07 - Payment confirmation lost (alternative)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Send only while waiting at SP07_Catch_Status. Alternative to completed; opens payment investigation. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Payment status\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"paymentStatus\": \"confirmation-lost\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P08 - Laboratory result",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Send only while waiting at SP08_Catch_Lab. Correlation is referralId, NOT patientId; fitness remains a human decision in SP08_Review. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Lab result\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"bloodTestReference\": \"LAB-{{referralId}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P08 - Next cycle due",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Send only while waiting at SP08_Catch_NextDue; only after moreCycles=true. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Next cycle due\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P08 - Treatment plan updated",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Send only while waiting at SP08_Catch_PlanUpdated. The treatment-change worker normally publishes this internal handoff; use only when that handoff is intentionally being simulated. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Treatment plan updated\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"planUpdated\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P03B - Rescheduling result",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Send only while waiting at SP03B_Catch_Result. Use slotAcceptable, not the main-path slotFound field. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Scheduling result\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"slotAcceptable\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P11 - Refund result",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Send only while waiting at SP11_Catch_Result, after finance approval and hpas-sp11-send-refund. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Refund result\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"refundStatus\": \"completed\",\n    \"refundReference\": \"RF-{{referralId}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P14 - Follow-up scheduling result",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Send only while waiting at SP14_Catch_Result. Use inRequestedPeriod, not slotFound or slotAcceptable. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Scheduling result\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"inRequestedPeriod\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03 - Event branches (active instance required)",
+      "item": [
+        {
+          "name": "P03B - Appointment change requested",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Requires an active Process_HPAS instance with the same referralId. Starts a non-interrupting event subprocess, not a new root instance. SP03B; send a P03B rescheduling result when it waits at SP03B_Catch_Result. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Appointment change requested\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"changeKind\": \"reschedule\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P09 - Treatment change requested (review inputs)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Requires an active Process_HPAS instance with the same referralId. Starts a non-interrupting event subprocess, not a new root instance. SP09. Defaults exercise the rejection path. Set formallyAuthorised=true only for a synthetic approved test case, or urgentChange=true to exercise retrospective review. Clinical authorisation remains an explicit input. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Treatment change requested\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"urgentChange\": false,\n    \"formallyAuthorised\": false,\n    \"financialImpact\": false\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P10 - Cancellation reported",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Requires an active Process_HPAS instance with the same referralId. Starts a non-interrupting event subprocess, not a new root instance. SP10; complete SP10_Record and SP10_Decide in Tasklist. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Cancellation reported\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"attendanceEvent\": \"cancelled\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P11 - Refund case opened",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Requires an active Process_HPAS instance with the same referralId. Starts a non-interrupting event subprocess, not a new root instance. SP11; finance records refundDue and financeApprover before the worker sends a refund request. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Refund case opened\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"refundCaseOpen\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P12 - Patient enquiry received",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Requires an active Process_HPAS instance with the same referralId. Starts a non-interrupting event subprocess, not a new root instance. SP12; classify the enquiry in SP12_Record. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Patient enquiry received\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P13 - Clinic letter required",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Requires an active Process_HPAS instance with the same referralId. Starts a non-interrupting event subprocess, not a new root instance. SP13. The main-path worker also publishes this message; do not duplicate an existing letter branch. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Clinic letter required\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"letterRequired\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P14 - Follow-up instruction authorised",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Requires an active Process_HPAS instance with the same referralId. Starts a non-interrupting event subprocess, not a new root instance. SP14. Represents a synthetic already-authorised instruction; the clinic-letter worker may already have triggered this branch. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Follow-up instruction authorised\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"followUpInstructed\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P15 - Monitoring run due",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Requires an active Process_HPAS instance with the same referralId. Starts a non-interrupting event subprocess, not a new root instance. SP15. Values 1 or 3 exercise manager/higher escalation tasks. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Monitoring run due\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"letterOverdueMonths\": 0\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P16 - Access change requested",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Requires an active Process_HPAS instance with the same referralId. Starts a non-interrupting event subprocess, not a new root instance. SP16; complete SP16_VerifyAuth before the worker records the access decision. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Access or interruption event\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"eventKind\": \"access\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "P16 - Service interruption reported",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Requires an active Process_HPAS instance with the same referralId. Starts a non-interrupting event subprocess, not a new root instance. SP16; complete SP16_RecordDowntime. The current model has no service-restored message catch. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Access or interruption event\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"eventKind\": \"interruption\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04 - Observe current instance",
+      "item": [
+        {
+          "name": "Get current HPAS instance",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/process-instances/{{processInstanceKey}}",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"processInstanceKey\")) throw new Error(\"Set processInstanceKey for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Search user tasks",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/user-tasks/search",
+            "description": "Uses the saved instance key. Search indexes are eventually consistent; retry after a recent change. Use response cursors for more than 100 records.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filter\": {\n    \"processInstanceKey\": \"{{processInstanceKey}}\"\n  },\n  \"page\": {\n    \"limit\": 100\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"processInstanceKey\")) throw new Error(\"Set processInstanceKey for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Search result array\", () => pm.expect(pm.response.json().items).to.be.an(\"array\"));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Search variables",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/variables/search",
+            "description": "Uses the saved instance key. Search indexes are eventually consistent; retry after a recent change. Use response cursors for more than 100 records.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filter\": {\n    \"processInstanceKey\": \"{{processInstanceKey}}\"\n  },\n  \"page\": {\n    \"limit\": 100\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"processInstanceKey\")) throw new Error(\"Set processInstanceKey for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Search result array\", () => pm.expect(pm.response.json().items).to.be.an(\"array\"));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Search incidents",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/incidents/search",
+            "description": "Uses the saved instance key. Search indexes are eventually consistent; retry after a recent change. Use response cursors for more than 100 records.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filter\": {\n    \"processInstanceKey\": \"{{processInstanceKey}}\"\n  },\n  \"page\": {\n    \"limit\": 100\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"processInstanceKey\")) throw new Error(\"Set processInstanceKey for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Search result array\", () => pm.expect(pm.response.json().items).to.be.an(\"array\"));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "05 - Authorised closure (choose matching wait)",
+      "item": [
+        {
+          "name": "Close pathway at Top_WaitClosure",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Send only when Top_WaitClosure is active and closure is authorised for the demo case. Other active event-subprocess tokens may still prevent root completion. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Pathway closure authorised\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Close before clinic attendance (alternative)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/messages/publication",
+            "description": "Send only at SP03_Catch_Close, as an alternative to Clinic visit completed. sp03Outcome=closed is required by GW_SP03_Exit. This is not a generic cancel request. All version2 messages correlate on referralId, including laboratory results. HTTP 200 confirms publication only. Inspect the current element in Operate. TTL is 15 minutes; every Send creates a new message ID. Do not run all alternatives sequentially.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HPAS: Pathway closure authorised\",\n  \"correlationKey\": \"{{referralId}}\",\n  \"timeToLive\": 900000,\n  \"messageId\": \"{{$guid}}\",\n  \"variables\": {\n    \"sp03Outcome\": \"closed\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"referralId\")) throw new Error(\"Set referralId for the current HPAS instance first.\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Message key returned\", () => pm.expect(pm.response.json().messageKey).to.be.a(\"string\").and.not.empty);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    }
+  ]
+}
