@@ -6,7 +6,7 @@ Independent Camunda 8.9 project. See [Chinese guide](README.zh-CN.md).
 
 [Editable piStar TXT](goalModel.txt) · [Single green SVG](istar/Hospital_SD_SR_Version2.svg) · [PNG](istar/Hospital_SD_SR_Version2.png) · [Scope and notation](istar/README.md).
 
-The model follows the VERSION2 BPMN: 15 actors, including 5 external actors, 86 intentional elements and 27 task-to-task dependencies. Scheduling and correspondence providers are hidden implementation details in this strategic view; they remain external participants in BPMN. Consultants and the Clinical Team retain separate responsibilities. Rebuild the TXT with `python version2/tools/build_istar.py` from the repository root.
+The model adapts the VERSION2 BPMN to the revised hospital boundary: 15 actors, including 4 external actors, 86 intentional elements and 27 task-to-task dependencies. Scheduling and correspondence providers are hidden implementation details in this strategic view; they remain external participants in BPMN. Clinical support services are internal under the revised business scope, while the current BPMN still models the laboratory and treatment provider as external. Consultants and the Clinical Team retain separate responsibilities. Rebuild the TXT with `python version2/tools/build_istar.py` from the repository root.
 
 ## Postman
 

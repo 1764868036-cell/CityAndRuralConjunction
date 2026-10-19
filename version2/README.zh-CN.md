@@ -4,7 +4,7 @@
 
 [可编辑 TXT](goalModel.txt) · [单张绿色 SVG](istar/Hospital_SD_SR_Version2.svg) · [PNG](istar/Hospital_SD_SR_Version2.png) · [角色精简、连线含义与验证说明](istar/README.md)。
 
-按 VERSION2 重写为 15 个 Actor（其中 5 个外部 Actor）、86 个内部意图元素、27 条连接到具体任务的跨角色依赖。排班和信函服务在战略图中隐藏为实现细节，BPMN 中仍保留实际外部服务；顾问与临床执行团队按新版职责分开。VERSION1 保持不变。
+以 VERSION2 为基础，按修订后的院内业务边界建模：15 个 Actor（其中 4 个外部 Actor）、86 个内部意图元素、27 条连接到具体任务的跨角色依赖。Clinical support services 归为院内服务，院内资源预订任务依赖其可用性。当前 BPMN 仍将相关检验和治疗服务定义为外部参与者，此处是明确记录的业务边界修订，尚未改动可执行 BPMN。排班和信函服务在战略图中隐藏为实现细节；顾问与临床执行团队按新版职责分开。VERSION1 保持不变。
 
 ## BPMN 结构
 

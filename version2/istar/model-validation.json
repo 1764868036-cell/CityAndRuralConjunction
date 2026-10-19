@@ -1,6 +1,6 @@
 {
   "actors": 15,
-  "externalActors": 5,
+  "externalActors": 4,
   "intentionalElements": 86,
   "dependencies": 27,
   "taskEndpoints": 54,

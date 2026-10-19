@@ -26,7 +26,8 @@ M = {'actors': [], 'orphans': [], 'dependencies': [], 'links': [], 'display': {}
          'Scope': 'P01-P08 and event branches P03B, P09-P16; strategic service capabilities, not sequence flow.',
          'Reading': 'Depender task -> dependum -> provider task. AND means required capabilities, not all branches executing in one case. HELP means positive contribution, not a guarantee.',
          'Abstraction': 'Scheduling and correspondence remain external in BPMN. This strategic view hides their implementation actors; hospital tasks coordinate those services. Tracking is part of pathway monitoring; access, downtime and management escalation belong to Administrative Management.',
-         'External actors': 'Patient; Referring organisation; External clinical services; Funding organisation; Payment provider.',
+         'External actors': 'Patient; Referring organisation; Funding organisation; Payment provider.',
+         'Business boundary revision': 'Clinical support services are hospital-owned under the revised business scope. VERSION2 BPMN still represents the laboratory and external treatment participant as external. This strategic model deliberately changes that boundary; executable BPMN remains unchanged. Internal service tasks are abstractions, not additional executable BPMN tasks.',
          'Layout': 'One green integrated model; all dependencies end on tasks; no actor endpoint or custom renderer required.'}}}
 COLORS = {'Goal': '#cfe8d3', 'Task': '#e1f0df', 'Resource': '#edf5df', 'Quality': '#bfe1c8'}
 A, N, owner = {}, {}, {}
@@ -90,9 +91,9 @@ actor('callteam', 'Call handling', 'Patient contact supported', [
     ('financial', 'Answer or refer financial query', 'SP12_AnswerFin; SP12_GW_Info; SP12_ReferFinance', 'Task', 'Answer only from authorised information; otherwise obtain Finance response.'),
     ('cancel', 'Record cancellation and route response', 'SP10_Record; SP10_NotifyRebook; SP10_NotifyReferrer'),
     ('close', 'Record handling and resolution', 'SP12_Close')])
-actor('trtsvc', 'External clinical services', 'External service supported', [
-    ('capacity', 'Report service availability', 'XExt_Check; XExt_Queue; XExt_SendReleased'),
-    ('lab', 'Perform test and return lab result', 'XExt_Test; XExt_SendLab')], True)
+actor('trtsvc', 'Clinical support services', 'Hospital clinical support available', [
+    ('capacity', 'Report hospital service availability', 'SP05_BookInternal', 'Task', 'Internal support responsibility inferred from hospital resource booking under the revised business scope. The external capacity interaction remains a separate implementation detail.'),
+    ('lab', 'Perform test and return lab result', 'SP08_RequestBloods; SP08_Catch_Lab', 'Task', 'Hospital laboratory responsibility under the revised business scope. The current BPMN routes this interaction to an external laboratory; source IDs trace the interaction, not an unchanged provider boundary.')])
 actor('trtbook', 'Treatment bookings', 'Treatment resources coordinated', [
     ('validate', 'Accept validated booking request', 'SP04_Validate; SP05_GW_Resource', 'Task', 'Booking intake uses the Consultants lane validation result; it does not take clinical authorisation ownership.'),
     ('internal', 'Book hospital facility', 'SP05_BookInternal', 'Task', 'Internal resource route only.'),
@@ -154,8 +155,8 @@ dep('telephone', 'Recorded telephone outcome', 'outpt_contact', 'callteam_phone'
 dep('attendance', 'Attend clinical appointment', 'consult_assess', 'patient_attend', 'XPat_Attend; SP04_Assess', 'Task')
 dep('consent', 'Patient consent or refusal', 'consult_consent', 'patient_decision', 'SP04_GW_Consent; SP04_RecordConsent; SP10_Record')
 dep('request', 'Authorised treatment request', 'trtbook_validate', 'consult_request', 'SP04_CreateRequest; SP04_Validate')
-dep('capacity', 'Service availability status', 'trtbook_external', 'trtsvc_capacity', 'SP05_RequestAvailability; XExt_Check')
-dep('bloods', 'Pre-cycle blood test results', 'clinical_fitness', 'trtsvc_lab', 'SP08_Catch_Lab; XExt_SendLab')
+dep('capacity', 'Hospital service availability', 'trtbook_internal', 'trtsvc_capacity', 'SP05_BookInternal')
+dep('bloods', 'Pre-cycle blood test results', 'clinical_fitness', 'trtsvc_lab', 'SP08_RequestBloods; SP08_Catch_Lab')
 dep('retrospective', 'Retrospective safety authorisation', 'clinical_authorise', 'consult_decision', 'SP09_ExecuteHold; SP09_Retrospective')
 dep('funding', 'Funding approval and limits', 'finance_funding', 'fundorg_approval', 'SP06_RecordApproval; XFund_Send')
 dep('payment', 'Payment status and reference', 'finance_payment', 'psp_payment', 'SP07_Catch_Status; XPSP_SendStatus')

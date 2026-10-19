@@ -29,25 +29,16 @@
     "actorEndpoints": 0,
     "endpointIDsPreserved": true
   },
-  "modelSha256": "826404db07050e3119c84cd918263cdfc907832a2c0d94a7fe074e79658bc8f0",
+  "modelSha256": "d69c083eff87bbc24ff2ff8c59fed9cf68f4058947668395b781fe058f5a40a8",
   "wording": {
     "txtContainsNoSlash": true,
     "diagramTextContainsNoSlash": true,
     "diagramAndViewerUseEnglish": true
   },
-  "routingComparison": {
-    "previous": {
-      "dependencyPolylineCrossings": 22,
-      "centerlineLength": 50042
-    },
-    "updatedSemanticsOldRouter": {
-      "dependencyPolylineCrossings": 19,
-      "centerlineLength": 49465
-    },
-    "updated": {
-      "dependencyPolylineCrossings": 13,
-      "centerlineLength": 50049
-    },
-    "definition": "Strict intersections of distinct dependency polylines; shared endpoints, internal links and renderer curve smoothing excluded. Baseline commit 3131fec."
+  "businessBoundary": {
+    "clinicalSupportIsInternal": true,
+    "hospitalBookingUsesInternalAvailability": true,
+    "externalActors": 4,
+    "bpmnBoundaryDifferenceDocumented": true
   }
 }

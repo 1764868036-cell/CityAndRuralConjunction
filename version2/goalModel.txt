@@ -499,30 +499,31 @@
     {
       "id": "actor_trtsvc",
       "type": "istar.Actor",
-      "text": "External clinical services",
+      "text": "Clinical support services",
       "x": 3390,
       "y": 140,
       "nodes": [
         {
           "id": "n_trtsvc_goal",
           "type": "istar.Goal",
-          "text": "External service supported",
+          "text": "Hospital clinical support available",
           "x": 3670,
           "y": 240,
           "customProperties": {
-            "Source BPMN IDs": "XExt_Check; XExt_Queue; XExt_SendReleased; XExt_Test; XExt_SendLab",
-            "Full wording": "External service supported"
+            "Source BPMN IDs": "SP05_BookInternal; SP08_RequestBloods; SP08_Catch_Lab",
+            "Full wording": "Hospital clinical support available"
           }
         },
         {
           "id": "n_trtsvc_capacity",
           "type": "istar.Task",
-          "text": "Report service availability",
+          "text": "Report hospital service availability",
           "x": 3420,
           "y": 390,
           "customProperties": {
-            "Source BPMN IDs": "XExt_Check; XExt_Queue; XExt_SendReleased",
-            "Full wording": "Report service availability"
+            "Source BPMN IDs": "SP05_BookInternal",
+            "Full wording": "Report hospital service availability",
+            "Applicability": "Internal support responsibility inferred from hospital resource booking under the revised business scope. The external capacity interaction remains a separate implementation detail."
           }
         },
         {
@@ -532,14 +533,15 @@
           "x": 3670,
           "y": 390,
           "customProperties": {
-            "Source BPMN IDs": "XExt_Test; XExt_SendLab",
-            "Full wording": "Perform test and return lab result"
+            "Source BPMN IDs": "SP08_RequestBloods; SP08_Catch_Lab",
+            "Full wording": "Perform test and return lab result",
+            "Applicability": "Hospital laboratory responsibility under the revised business scope. The current BPMN routes this interaction to an external laboratory; source IDs trace the interaction, not an unchanged provider boundary."
           }
         }
       ],
       "customProperties": {
-        "Full actor name": "External clinical services",
-        "Scope": "External"
+        "Full actor name": "Clinical support services",
+        "Scope": "Hospital"
       }
     },
     {
@@ -1293,14 +1295,14 @@
     {
       "id": "dep_capacity",
       "type": "istar.Resource",
-      "text": "Service availability status",
-      "source": "n_trtbook_external",
+      "text": "Hospital service availability",
+      "source": "n_trtbook_internal",
       "target": "n_trtsvc_capacity",
-      "x": 2850,
+      "x": 2810,
       "y": 460,
       "customProperties": {
-        "Source BPMN IDs": "SP05_RequestAvailability; XExt_Check",
-        "Full wording": "Service availability status"
+        "Source BPMN IDs": "SP05_BookInternal",
+        "Full wording": "Hospital service availability"
       }
     },
     {
@@ -1312,7 +1314,7 @@
       "x": 3530,
       "y": 740,
       "customProperties": {
-        "Source BPMN IDs": "SP08_Catch_Lab; XExt_SendLab",
+        "Source BPMN IDs": "SP08_RequestBloods; SP08_Catch_Lab",
         "Full wording": "Pre-cycle blood test results"
       }
     },
@@ -2045,7 +2047,7 @@
     {
       "id": "link_86",
       "type": "istar.DependencyLink",
-      "source": "n_trtbook_external",
+      "source": "n_trtbook_internal",
       "target": "dep_capacity"
     },
     {
@@ -4297,102 +4299,6 @@
         }
       ]
     },
-    "link_86": {
-      "vertices": [
-        {
-          "x": 2375.0,
-          "y": 491.0
-        },
-        {
-          "x": 2418.85,
-          "y": 491.0
-        },
-        {
-          "x": 2462.69,
-          "y": 491.0
-        },
-        {
-          "x": 2506.54,
-          "y": 491.0
-        },
-        {
-          "x": 2550.38,
-          "y": 491.0
-        },
-        {
-          "x": 2594.23,
-          "y": 491.0
-        },
-        {
-          "x": 2638.08,
-          "y": 491.0
-        },
-        {
-          "x": 2681.92,
-          "y": 491.0
-        },
-        {
-          "x": 2725.77,
-          "y": 491.0
-        },
-        {
-          "x": 2769.62,
-          "y": 491.0
-        },
-        {
-          "x": 2813.46,
-          "y": 491.0
-        }
-      ]
-    },
-    "link_87": {
-      "vertices": [
-        {
-          "x": 2945.0,
-          "y": 421.0
-        },
-        {
-          "x": 2988.85,
-          "y": 421.0
-        },
-        {
-          "x": 3032.69,
-          "y": 421.0
-        },
-        {
-          "x": 3076.54,
-          "y": 421.0
-        },
-        {
-          "x": 3120.38,
-          "y": 421.0
-        },
-        {
-          "x": 3164.23,
-          "y": 421.0
-        },
-        {
-          "x": 3208.08,
-          "y": 421.0
-        },
-        {
-          "x": 3251.92,
-          "y": 421.0
-        },
-        {
-          "x": 3295.77,
-          "y": 421.0
-        },
-        {
-          "x": 3339.62,
-          "y": 421.0
-        },
-        {
-          "x": 3383.46,
-          "y": 421.0
-        }
-      ]
-    },
     "link_75": {
       "vertices": [
         {
@@ -4674,6 +4580,58 @@
         {
           "x": 2125.0,
           "y": 3628.0
+        }
+      ]
+    },
+    "link_87": {
+      "vertices": [
+        {
+          "x": 2905.0,
+          "y": 421.0
+        },
+        {
+          "x": 2948.57,
+          "y": 421.0
+        },
+        {
+          "x": 2992.14,
+          "y": 421.0
+        },
+        {
+          "x": 3035.71,
+          "y": 421.0
+        },
+        {
+          "x": 3079.29,
+          "y": 421.0
+        },
+        {
+          "x": 3122.86,
+          "y": 421.0
+        },
+        {
+          "x": 3166.43,
+          "y": 421.0
+        },
+        {
+          "x": 3210.0,
+          "y": 421.0
+        },
+        {
+          "x": 3253.57,
+          "y": 421.0
+        },
+        {
+          "x": 3297.14,
+          "y": 421.0
+        },
+        {
+          "x": 3340.71,
+          "y": 421.0
+        },
+        {
+          "x": 3384.29,
+          "y": 421.0
         }
       ]
     },
@@ -5238,6 +5196,74 @@
         {
           "x": 1053.75,
           "y": 771.0
+        }
+      ]
+    },
+    "link_86": {
+      "vertices": [
+        {
+          "x": 2125.0,
+          "y": 491.0
+        },
+        {
+          "x": 2168.33,
+          "y": 491.0
+        },
+        {
+          "x": 2211.67,
+          "y": 491.0
+        },
+        {
+          "x": 2255.0,
+          "y": 491.0
+        },
+        {
+          "x": 2298.33,
+          "y": 491.0
+        },
+        {
+          "x": 2341.67,
+          "y": 491.0
+        },
+        {
+          "x": 2385.0,
+          "y": 491.0
+        },
+        {
+          "x": 2428.33,
+          "y": 491.0
+        },
+        {
+          "x": 2471.67,
+          "y": 491.0
+        },
+        {
+          "x": 2515.0,
+          "y": 491.0
+        },
+        {
+          "x": 2558.33,
+          "y": 491.0
+        },
+        {
+          "x": 2601.67,
+          "y": 491.0
+        },
+        {
+          "x": 2645.0,
+          "y": 491.0
+        },
+        {
+          "x": 2688.33,
+          "y": 491.0
+        },
+        {
+          "x": 2731.67,
+          "y": 491.0
+        },
+        {
+          "x": 2775.0,
+          "y": 491.0
         }
       ]
     },
@@ -8300,16 +8326,16 @@
     "link_35": {
       "vertices": [
         {
-          "x": 2250.0,
-          "y": 561.0
-        },
-        {
-          "x": 2250.0,
-          "y": 526.0
-        },
-        {
-          "x": 2250.0,
+          "x": 2375.0,
           "y": 491.0
+        },
+        {
+          "x": 2375.0,
+          "y": 456.0
+        },
+        {
+          "x": 2375.0,
+          "y": 421.0
         }
       ]
     },
@@ -8317,67 +8343,75 @@
       "vertices": [
         {
           "x": 2625.0,
-          "y": 519.57
-        },
-        {
-          "x": 2625.0,
-          "y": 478.14
-        },
-        {
-          "x": 2625.0,
-          "y": 436.71
-        },
-        {
-          "x": 2625.0,
-          "y": 395.29
-        },
-        {
-          "x": 2625.0,
-          "y": 353.86
-        },
-        {
-          "x": 2625.0,
-          "y": 312.43
-        },
-        {
-          "x": 2625.0,
-          "y": 271.0
+          "y": 498.0
         },
         {
           "x": 2583.33,
-          "y": 271.0
+          "y": 498.0
         },
         {
           "x": 2541.67,
-          "y": 271.0
+          "y": 498.0
         },
         {
           "x": 2500.0,
-          "y": 271.0
+          "y": 498.0
         },
         {
           "x": 2458.33,
-          "y": 271.0
+          "y": 498.0
         },
         {
           "x": 2416.67,
-          "y": 271.0
+          "y": 498.0
         },
         {
           "x": 2375.0,
-          "y": 271.0
+          "y": 498.0
         },
         {
           "x": 2333.33,
-          "y": 271.0
+          "y": 498.0
         },
         {
           "x": 2291.67,
-          "y": 271.0
+          "y": 498.0
         },
         {
           "x": 2250.0,
-          "y": 271.0
+          "y": 498.0
+        },
+        {
+          "x": 2208.33,
+          "y": 498.0
+        },
+        {
+          "x": 2166.67,
+          "y": 498.0
+        },
+        {
+          "x": 2125.0,
+          "y": 498.0
+        },
+        {
+          "x": 2125.0,
+          "y": 460.17
+        },
+        {
+          "x": 2125.0,
+          "y": 422.33
+        },
+        {
+          "x": 2125.0,
+          "y": 384.5
+        },
+        {
+          "x": 2125.0,
+          "y": 346.67
+        },
+        {
+          "x": 2125.0,
+          "y": 308.83
         }
       ]
     },
@@ -9594,7 +9628,8 @@
       "Scope": "P01-P08 and event branches P03B, P09-P16; strategic service capabilities, not sequence flow.",
       "Reading": "Depender task -> dependum -> provider task. AND means required capabilities, not all branches executing in one case. HELP means positive contribution, not a guarantee.",
       "Abstraction": "Scheduling and correspondence remain external in BPMN. This strategic view hides their implementation actors; hospital tasks coordinate those services. Tracking is part of pathway monitoring; access, downtime and management escalation belong to Administrative Management.",
-      "External actors": "Patient; Referring organisation; External clinical services; Funding organisation; Payment provider.",
+      "External actors": "Patient; Referring organisation; Funding organisation; Payment provider.",
+      "Business boundary revision": "Clinical support services are hospital-owned under the revised business scope. VERSION2 BPMN still represents the laboratory and external treatment participant as external. This strategic model deliberately changes that boundary; executable BPMN remains unchanged. Internal service tasks are abstractions, not additional executable BPMN tasks.",
       "Layout": "One green integrated model; all dependencies end on tasks; no actor endpoint or custom renderer required."
     }
   }
