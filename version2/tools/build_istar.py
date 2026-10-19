@@ -19,14 +19,14 @@ OUT = ROOT / 'istar'
 OUT.mkdir(exist_ok=True)
 M = {'actors': [], 'orphans': [], 'dependencies': [], 'links': [], 'display': {},
      'tool': 'pistar.2.1.0', 'istar': '2.0',
-     'diagram': {'width': 4950, 'height': 4100, 'name': 'Hospital VERSION2 - Integrated SD / SR',
+     'diagram': {'width': 4950, 'height': 4100, 'name': 'Hospital VERSION2 - Integrated SD and SR',
      'customProperties': {
-         'Source file': 'version2/hospital-patient-pathway.bpmn',
+         'Source file': 'hospital-patient-pathway.bpmn in version2',
          'Source SHA256': hashlib.sha256(BPMN.read_bytes()).hexdigest(),
          'Scope': 'P01-P08 and event branches P03B, P09-P16; strategic service capabilities, not sequence flow.',
          'Reading': 'Depender task -> dependum -> provider task. AND means required capabilities, not all branches executing in one case. HELP means positive contribution, not a guarantee.',
          'Abstraction': 'Scheduling and correspondence remain external in BPMN. This strategic view hides their implementation actors; hospital tasks coordinate those services. Tracking is part of pathway monitoring; access, downtime and management escalation belong to Administrative Management.',
-         'External actors': 'Patient; Referring organisation; External clinical services; Insurer / funder; Payment provider.',
+         'External actors': 'Patient; Referring organisation; External clinical services; Funding organisation; Payment provider.',
          'Layout': 'One green integrated model; all dependencies end on tasks; no actor endpoint or custom renderer required.'}}}
 COLORS = {'Goal': '#cfe8d3', 'Task': '#e1f0df', 'Resource': '#edf5df', 'Quality': '#bfe1c8'}
 A, N, owner = {}, {}, {}
@@ -54,71 +54,74 @@ def actor(key, title, goal, rows, external=False):
         child = node(key, *row); link(child, root)
 
 actor('refOrg', 'Referring organisation', 'Referral loop completed', [
-    ('send', 'Submit / supplement referral', 'XRef_Prepare; XRef_ProvideInfo'),
+    ('send', 'Submit referral and missing details', 'XRef_Prepare; XRef_ProvideInfo'),
     ('outcome', 'Receive and record outcome', 'XRef_Record')], True)
 actor('medsec', 'Medical secretaries', 'Referral and letter support', [
     ('check', 'Check referral documents', 'SP01_CheckDocuments'),
     ('missing', 'Obtain missing information', 'SP01_RequestMissing; SP01_Catch_Supplementary', 'Task', 'Only when referral documents are incomplete.'),
-    ('distribute', 'Check recipients; arrange dispatch', 'SP13_AdminProcess; SP13_Distribute'),
+    ('distribute', 'Check recipients and arrange dispatch', 'SP13_AdminProcess; SP13_Distribute'),
     ('record', 'Record distribution evidence', 'SP13_RecordDates')])
 actor('consult', 'Consultants', 'Clinical decisions governed', [
-    ('referral', 'Review referral; record decision', 'SP02_ClinicalReview; SP02_RequestInfo; SP02_NotifyRejected; SP02_NotifyRedirected'),
-    ('assess', 'Assess patient; explain options', 'SP04_Assess'),
-    ('consent', 'Record consent / refusal outcome', 'SP04_RecordConsent; SP04_GW_Consent; SP10_Decide', 'Task', 'Consent permits request creation. Refusal is handled through P10; it is not simultaneous consent.'),
+    ('referral', 'Review referral and record decision', 'SP02_ClinicalReview; SP02_RequestInfo; SP02_NotifyRejected; SP02_NotifyRedirected'),
+    ('assess', 'Assess patient and explain options', 'SP04_Assess'),
+    ('consent', 'Record consent or refusal', 'SP04_RecordConsent; SP04_GW_Consent; SP10_Decide', 'Task', 'Consent permits request creation. Refusal is handled through P10; it is not simultaneous consent.'),
     ('request', 'Create authorised treatment request', 'SP04_CreateRequest; SP04_Validate', 'Task', 'Only with consent and a valid, complete request.'),
     ('letter', 'Prepare and approve clinic letter', 'SP13_Draft; SP13_Approve'),
-    ('decision', 'Decide cancellation / safety response', 'SP10_Decide; SP09_Retrospective', 'Task', 'Cancellation decisions and retrospective authorisation after an urgent safety hold are separate conditional responsibilities.')])
+    ('followup', 'Request indicated follow-up', 'SP13_NotifyFollowUp', 'Task', 'Only when follow-up is instructed. Preparing and approving the letter does not depend on booking completion.'),
+    ('decision', 'Review cancellation and safety cases', 'SP10_Decide; SP09_Retrospective', 'Task', 'Cancellation decisions and retrospective authorisation after an urgent safety hold are separate conditional responsibilities.')])
 actor('patient', 'Patient', 'Patient participation supported', [
-    ('attend', 'Receive details; attend appointment', 'XPat_Attend'),
-    ('decision', 'Communicate consent decision', 'SP04_Assess; SP04_RecordConsent; SP10_Record', 'Task', 'Inferred patient responsibility from the hospital consent/refusal interaction, not an added executable BPMN task.'),
-    ('change', 'Request change / cancellation', 'XPat_Decide'),
+    ('attend', 'Receive details and attend appointment', 'XPat_Attend'),
+    ('decision', 'Communicate consent decision', 'SP04_Assess; SP04_RecordConsent; SP10_Record', 'Task', 'Inferred patient responsibility from the hospital consent or refusal interaction, not an added executable BPMN task.'),
+    ('change', 'Request appointment change', 'XPat_Decide; XPat_SendChange'),
+    ('cancel', 'Report appointment cancellation', 'XPat_Decide; XPat_SendCancel'),
     ('enquire', 'Raise question or concern', 'XPat_Enquire')], True)
 actor('outpt', 'Outpatient bookings', 'Appointment service supported', [
-    ('slot', 'Search and handle slot outcome', 'SP03_RequestSlot; SP03_Catch_Slot; SP03_NoSlotReview; SP03_BookNextAvailable', 'Task', 'Coordinate external scheduling. Book normally or record/escalate an exception according to availability.'),
-    ('confirm', 'Confirm booking; send details', 'SP03_ConfirmBooking; SP03_SendLetter'),
+    ('slot', 'Search and handle slot outcome', 'SP03_RequestSlot; SP03_Catch_Slot; SP03_NoSlotReview; SP03_BookNextAvailable', 'Task', 'Coordinate external scheduling. Book normally or record and escalate an exception according to availability.'),
+    ('confirm', 'Confirm booking and send details', 'SP03_ConfirmBooking; SP03_SendLetter'),
     ('contact', 'Arrange timely patient contact', 'SP03_GW_TwoWeek; SP03_EscalateContact', 'Task', 'Telephone contact is performed by Call Handling when required; failed attempts are escalated.'),
-    ('change', 'Rebook / review requested change', 'SP03B_RequestSlot; SP03B_Rebook; SP03B_Notify; SP03B_Review', 'Task', 'P03B event branch; avoid duplicate bookings and review unresolved requests.'),
+    ('change', 'Rebook or review change request', 'SP03B_RequestSlot; SP03B_Rebook; SP03B_Notify; SP03B_Review', 'Task', 'P03B event branch; avoid duplicate bookings and review unresolved requests.'),
     ('followup', 'Book requested follow-up', 'SP14_RequestSlot; SP14_Book; SP14_Inform'),
-    ('exception', 'Escalate timing / contact exceptions', 'SP03_NoSlotReview; SP03_EscalateContact; SP14_Highlight')])
+    ('exception', 'Escalate booking and contact issues', 'SP03_NoSlotReview; SP03_EscalateContact; SP14_Highlight')])
 actor('callteam', 'Call handling', 'Patient contact supported', [
-    ('phone', 'Call patient; record outcome', 'SP03_PhoneContact'),
+    ('phone', 'Call patient and record outcome', 'SP03_PhoneContact'),
     ('classify', 'Record and classify enquiry', 'SP12_Record'),
-    ('answer', 'Answer / route administrative query', 'SP12_Answer; SP12_Transfer'),
+    ('answer', 'Answer or route administrative query', 'SP12_Answer; SP12_Transfer'),
     ('clinical', 'Route clinical enquiry to CNS', 'SP12_GW_Class; SP12_ReferCNS', 'Task', 'Routing abstraction: CNS, not Call Handling, assesses clinical urgency.'),
-    ('financial', 'Answer / refer financial query', 'SP12_AnswerFin; SP12_GW_Info; SP12_ReferFinance', 'Task', 'Answer only from authorised information; otherwise obtain Finance response.'),
-    ('cancel', 'Record cancellation; route response', 'SP10_Record; SP10_NotifyRebook; SP10_NotifyReferrer'),
+    ('financial', 'Answer or refer financial query', 'SP12_AnswerFin; SP12_GW_Info; SP12_ReferFinance', 'Task', 'Answer only from authorised information; otherwise obtain Finance response.'),
+    ('cancel', 'Record cancellation and route response', 'SP10_Record; SP10_NotifyRebook; SP10_NotifyReferrer'),
     ('close', 'Record handling and resolution', 'SP12_Close')])
 actor('trtsvc', 'External clinical services', 'External service supported', [
-    ('capacity', 'Return capacity / released slot', 'XExt_Check; XExt_Queue; XExt_SendReleased'),
-    ('lab', 'Perform test; return lab result', 'XExt_Test; XExt_SendLab')], True)
+    ('capacity', 'Report service availability', 'XExt_Check; XExt_Queue; XExt_SendReleased'),
+    ('lab', 'Perform test and return lab result', 'XExt_Test; XExt_SendLab')], True)
 actor('trtbook', 'Treatment bookings', 'Treatment resources coordinated', [
     ('validate', 'Accept validated booking request', 'SP04_Validate; SP05_GW_Resource', 'Task', 'Booking intake uses the Consultants lane validation result; it does not take clinical authorisation ownership.'),
     ('internal', 'Book hospital facility', 'SP05_BookInternal', 'Task', 'Internal resource route only.'),
     ('external', 'Coordinate external availability', 'SP05_RequestAvailability; SP05_Catch_Availability; SP05_BookExternal', 'Task', 'External resource route only; creates a provisional booking.'),
-    ('pending', 'Keep pending; prevent duplicates', 'SP05_NotifyPending; SP05_Catch_Released', 'Task', 'When external capacity is unavailable; resume after slot release.')])
+    ('pending', 'Keep pending and prevent duplicates', 'SP05_NotifyPending; SP05_Catch_Released', 'Task', 'When external capacity is unavailable; resume after slot release.')])
 actor('clinical', 'Clinical team', 'Treatment safety supported', [
-    ('fitness', 'Obtain bloods; assess fitness', 'SP08_RequestBloods; SP08_Catch_Lab; SP08_Review'),
-    ('cycle', 'Record cycle; review continuation', 'SP08_Administer; SP08_GW_More; SP08_Catch_NextDue', 'Task', 'Administer only when fit; continue only when another cycle is required.'),
-    ('delay', 'Record delay; request plan change', 'SP08_DelayHandling; SP08_NotifyChange; SP08_Catch_PlanUpdated'),
-    ('hold', 'Apply immediate safety hold', 'SP09_ExecuteHold', 'Task', 'Urgent route only; obtain retrospective Consultant authorisation.'),
+    ('fitness', 'Obtain bloods and assess fitness', 'SP08_RequestBloods; SP08_Catch_Lab; SP08_Review'),
+    ('cycle', 'Record cycle and review continuation', 'SP08_Administer; SP08_GW_More; SP08_Catch_NextDue', 'Task', 'Administer only when fit; continue only when another cycle is required.'),
+    ('delay', 'Record delay and request plan change', 'SP08_DelayHandling; SP08_NotifyChange; SP08_Catch_PlanUpdated'),
+    ('hold', 'Apply immediate safety hold', 'SP09_ExecuteHold', 'Task', 'Apply immediately on the urgent route. Obtain Consultant authorisation separately afterwards.'),
+    ('authorise', 'Obtain retrospective authorisation', 'SP09_ExecuteHold; SP09_Retrospective', 'Task', 'After the immediate safety hold. The hold itself does not wait for this authorisation; this receiving task abstracts the clinical team obtaining the Consultant decision.'),
     ('change', 'Validate and apply treatment change', 'SP09_ValidateFormal; SP09_ApplyChange; SP09_NotifyPlanUpdated', 'Task', 'Apply only when formal authorisation is valid; invalid requests are rejected.'),
-    ('financial', 'Refer financial effects / refund', 'SP09_GW_Financial; SP09_FinanceReview; SP09_NotifyRefund', 'Task', 'Coordination only; Finance owns the financial review and refund decision.'),
-    ('review', 'Review pathway; request clinic letter', 'SP10_ClinicalReview; SP08_NotifyLetter')])
-actor('fundorg', 'Insurer / funder', 'Funding decision available', [
+    ('financial', 'Refer financial changes and refunds', 'SP09_GW_Financial; SP09_FinanceReview; SP09_NotifyRefund', 'Task', 'Coordination only; Finance owns the financial review and refund decision.'),
+    ('review', 'Review pathway and request clinic letter', 'SP10_ClinicalReview; SP08_NotifyLetter')])
+actor('fundorg', 'Funding organisation', 'Funding decision available', [
     ('assess', 'Assess funding application', 'XFund_Assess'),
     ('approval', 'Return funding approval decision', 'XFund_Send')], True)
 actor('finance', 'Finance team', 'Financial cases controlled', [
-    ('funding', 'Determine funding; record approval', 'SP06_Determine; SP06_RecordExemption; SP06_RequestApproval; SP06_RecordApproval', 'Task', 'Record exemption or insurer approval as applicable; these are alternative funding routes.'),
-    ('payment', 'Request payment; record result', 'SP07_CalculateCharge; SP07_SendPaymentRequest; SP07_RecordTransaction', 'Task', 'Record status/reference/date/amount, never card data.'),
+    ('funding', 'Determine funding and record approval', 'SP06_Determine; SP06_RecordExemption; SP06_RequestApproval; SP06_RecordApproval', 'Task', 'Record exemption or insurer approval as applicable; these are alternative funding routes.'),
+    ('payment', 'Request payment and record result', 'SP07_CalculateCharge; SP07_SendPaymentRequest; SP07_RecordTransaction', 'Task', 'Record transaction status, reference, date and amount. Never record card data.'),
     ('investigate', 'Investigate ambiguous payment', 'SP07_MarkInvestigation; SP07_Investigate', 'Task', 'No automatic duplicate payment request while transaction status is uncertain.'),
-    ('resolve', 'Resolve retry / urgent exception', 'SP07_DecideRetry; SP07_RecordOverride; SP07_ReferFinance', 'Task', 'Retry or record the authorised urgent clinical exception with reason; follow up outstanding finance.'),
+    ('resolve', 'Retry payment or record exception', 'SP07_DecideRetry; SP07_RecordOverride; SP07_ReferFinance', 'Task', 'Retry or record the authorised urgent clinical exception with reason; follow up outstanding finance.'),
     ('confirm', 'Confirm payment-cleared booking', 'SP07_ConfirmBooking', 'Task', 'Normal payment-complete route; exception handling remains a separate capability.'),
-    ('refund', 'Decide and reconcile refund', 'SP11_Determine; SP11_SendRefund; SP11_Record; SP11_RecordNone', 'Task', 'Full/partial/no refund according to financial authority. No-refund decisions retain their reason.'),
+    ('refund', 'Decide and reconcile refund', 'SP11_Determine; SP11_SendRefund; SP11_Record; SP11_RecordNone', 'Task', 'Choose a full refund, a partial refund or no refund according to financial authority. No-refund decisions retain their reason.'),
     ('enquiry', 'Respond to financial enquiry', 'SP12_ReferFinance'),
     ('change', 'Review treatment-change finances', 'SP09_FinanceReview')])
 actor('psp', 'Payment provider', 'Secure transactions supported', [
-    ('payment', 'Process payment; return status', 'XPSP_Process; XPSP_SendStatus'),
-    ('refund', 'Execute refund; return result', 'XPSP_Refund; XPSP_SendRefund')], True)
+    ('payment', 'Process payment and return status', 'XPSP_Process; XPSP_SendStatus'),
+    ('refund', 'Execute refund and return result', 'XPSP_Refund; XPSP_SendRefund')], True)
 actor('cnst', 'CNS team', 'Clinical enquiries supported', [
     ('priority', 'Assess clinical urgency', 'SP12_AssessPriority; SP12_FlagUrgent'),
     ('respond', 'Respond to clinical enquiry', 'SP12_ReferCNS')])
@@ -129,9 +132,9 @@ actor('pathway', 'Pathway coordinators', 'Pathway oversight supported', [
     ('escalate', 'Refer unresolved delays to management', 'SP15_EscalateManager; SP15_EscalateHigher'),
     ('report', 'Generate pathway management reports', 'SP15_Generate')])
 actor('adminmgmt', 'Administrative management', 'Operational governance supported', [
-    ('escalation', 'Resolve / escalate persistent delay', 'SP15_EscalateManager; SP15_EscalateHigher'),
-    ('access', 'Verify authority; apply access', 'SP16_VerifyAuth; SP16_ApplyAccess'),
-    ('downtime', 'Record downtime; reconcile records', 'SP16_RecordDowntime; SP16_Reconcile'),
+    ('escalation', 'Resolve or escalate persistent delay', 'SP15_EscalateManager; SP15_EscalateHigher'),
+    ('access', 'Verify authority and apply access', 'SP16_VerifyAuth; SP16_ApplyAccess'),
+    ('downtime', 'Record downtime and reconcile records', 'SP16_RecordDowntime; SP16_Reconcile'),
     ('audit', 'Write attributable audit record', 'SP16_Audit')])
 
 def dep(key, label, s, t, refs, typ='Resource'):
@@ -149,11 +152,11 @@ dep('approved', 'Approved clinic letter', 'medsec_distribute', 'consult_letter',
 dep('appointment', 'Confirmed appointment details', 'patient_attend', 'outpt_confirm', 'SP03_SendLetter; XPat_Attend')
 dep('telephone', 'Recorded telephone outcome', 'outpt_contact', 'callteam_phone', 'SP03_PhoneContact; SP03_EscalateContact')
 dep('attendance', 'Attend clinical appointment', 'consult_assess', 'patient_attend', 'XPat_Attend; SP04_Assess', 'Task')
-dep('consent', 'Patient consent / refusal decision', 'consult_consent', 'patient_decision', 'SP04_GW_Consent; SP04_RecordConsent; SP10_Record')
+dep('consent', 'Patient consent or refusal', 'consult_consent', 'patient_decision', 'SP04_GW_Consent; SP04_RecordConsent; SP10_Record')
 dep('request', 'Authorised treatment request', 'trtbook_validate', 'consult_request', 'SP04_CreateRequest; SP04_Validate')
-dep('capacity', 'External capacity / slot status', 'trtbook_external', 'trtsvc_capacity', 'SP05_RequestAvailability; XExt_Check')
+dep('capacity', 'Service availability status', 'trtbook_external', 'trtsvc_capacity', 'SP05_RequestAvailability; XExt_Check')
 dep('bloods', 'Pre-cycle blood test results', 'clinical_fitness', 'trtsvc_lab', 'SP08_Catch_Lab; XExt_SendLab')
-dep('retrospective', 'Retrospective safety authorisation', 'clinical_hold', 'consult_decision', 'SP09_ExecuteHold; SP09_Retrospective')
+dep('retrospective', 'Retrospective safety authorisation', 'clinical_authorise', 'consult_decision', 'SP09_ExecuteHold; SP09_Retrospective')
 dep('funding', 'Funding approval and limits', 'finance_funding', 'fundorg_approval', 'SP06_RecordApproval; XFund_Send')
 dep('payment', 'Payment status and reference', 'finance_payment', 'psp_payment', 'SP07_Catch_Status; XPSP_SendStatus')
 dep('investigation', 'Verified transaction outcome', 'finance_investigate', 'psp_payment', 'SP07_Investigate; XPSP_SendStatus')
@@ -161,13 +164,22 @@ dep('refund', 'Refund execution result', 'finance_refund', 'psp_refund', 'SP11_C
 dep('cns', 'Clinical assessment and response', 'callteam_clinical', 'cnst_respond', 'SP12_ReferCNS; SP12_AssessPriority')
 dep('financequery', 'Authorised financial response', 'callteam_financial', 'finance_enquiry', 'SP12_ReferFinance; SP12_AnswerFin')
 dep('enquiry', 'Enquiry recorded and routed', 'patient_enquire', 'callteam_classify', 'XPat_Enquire; SP12_Record', 'Goal')
-dep('followup', 'Arrange instructed follow-up', 'consult_letter', 'outpt_followup', 'SP13_NotifyFollowUp; SP14_Book', 'Task')
+dep('followup', 'Arrange instructed follow-up', 'consult_followup', 'outpt_followup', 'SP13_NotifyFollowUp; SP14_Book', 'Task')
 dep('letter', 'Overdue letter completion status', 'pathway_letter', 'consult_letter', 'SP13_Reminder; SP13_Approve')
 dep('escalate', 'Management escalation response', 'pathway_escalate', 'adminmgmt_escalation', 'SP15_EscalateManager; SP15_EscalateHigher')
 dep('cancel', 'Clinically approved pathway response', 'callteam_cancel', 'consult_decision', 'SP10_Decide; SP10_NotifyRebook')
 dep('financialchange', 'Financial review outcome', 'clinical_financial', 'finance_change', 'SP09_FinanceReview')
 dep('exception', 'Pathway exception review', 'outpt_exception', 'pathway_exceptions', 'SP03_EscalateContact; SP14_Highlight', 'Task')
 dep('change', 'Handle appointment change request', 'patient_change', 'outpt_change', 'XPat_SendChange; SP03B', 'Task')
+dep('cancellation', 'Record and route cancellation', 'patient_cancel', 'callteam_cancel', 'XPat_SendCancel; SP10_Record', 'Task')
+
+# Preserve the exclusive resource alternatives explicitly in SR.
+resource_goal = node('trtbook', 'resource', 'Required resource arranged', 'SP05_GW_Resource', 'Goal',
+    'Internal and external resource routes are alternative means selected by resourceType; OR does not itself encode BPMN exclusivity.')
+link(resource_goal, 'n_trtbook_goal')
+for edge in M['links']:
+    if edge['type']=='istar.AndRefinementLink' and edge['source'] in ('n_trtbook_internal', 'n_trtbook_external'):
+        edge.update(target=resource_goal, type='istar.OrRefinementLink')
 
 # Two explicit quality contributions; neither is an unsupported guarantee.
 for a, text, child, refs in [('clinical', 'Patient safety', 'hold', 'SP09_ExecuteHold'),
@@ -199,6 +211,9 @@ for j,k in enumerate(best):
     for idx,n in enumerate(tasks): n.update(x=a['x']+30+(idx%4)*250,y=a['y']+250+(idx//4)*140)
     N['n_'+k+'_goal'].update(x=a['x']+280,y=a['y']+100)
     if 'n_'+k+'_quality' in N: N['n_'+k+'_quality'].update(x=a['x']+780,y=a['y']+540)
+a = A['trtbook']
+for key, x, y in [('resource', 405, 250), ('internal', 280, 390), ('external', 530, 390), ('pending', 780, 390)]:
+    N['n_trtbook_'+key].update(x=a['x']+x, y=a['y']+y)
 A = {a['id']:a for a in M['actors']}
 
 # Validate source mappings and the native iStar dependency restrictions.
@@ -207,6 +222,15 @@ for e in [*N.values(), *M['dependencies']]:
     for ref in e['customProperties']['Source BPMN IDs'].split('; '): assert ref in bids, ref
 refined={l['target'] for l in M['links'] if 'Refinement' in l['type'] or 'Contribution' in l['type']}
 assert all(N[d['source']]['type']==N[d['target']]['type']=='istar.Task' and owner[d['source']]!=owner[d['target']] and d['source'] not in refined for d in M['dependencies'])
+refinements = collections.defaultdict(list)
+for edge in M['links']:
+    if 'Refinement' in edge['type']: refinements[edge['target']].append(edge)
+assert all(len({edge['type'] for edge in edges})==1 for edges in refinements.values()), 'Mixed AND/OR parent'
+assert all(len(edges)>=2 for edges in refinements.values() if edges[0]['type']=='istar.AndRefinementLink'), 'Singleton AND'
+assert next(d for d in M['dependencies'] if d['id']=='dep_retrospective')['source']=='n_clinical_authorise'
+assert next(d for d in M['dependencies'] if d['id']=='dep_cancellation')['target']=='n_callteam_cancel'
+
+assert all('/' not in e['text'] for e in [*M['actors'], *N.values(), *M['dependencies']]), 'Slash in visible text'
 
 # ROUTING
 
@@ -249,6 +273,8 @@ def route(start,end,obs):
   for p1,p2 in used:
    if x1==x2==p1[0]==p2[0]:extra+=max(0,min(max(y1,y2),max(p1[1],p2[1]))-max(min(y1,y2),min(p1[1],p2[1])))*4
    elif y1==y2==p1[1]==p2[1]:extra+=max(0,min(max(x1,x2),max(p1[0],p2[0]))-max(min(x1,x2),min(p1[0],p2[0])))*4
+   elif x1==x2 and p1[1]==p2[1] and min(p1[0],p2[0])<x1<max(p1[0],p2[0]) and min(y1,y2)<p1[1]<=max(y1,y2):extra+=350
+   elif y1==y2 and p1[0]==p2[0] and min(p1[1],p2[1])<y1<max(p1[1],p2[1]) and min(x1,x2)<p1[0]<=max(x1,x2):extra+=350
   cache[key]=abs(x1-x2)+abs(y1-y2)+extra;return cache[key]
  while q:
   _,c,i,j,d=heapq.heappop(q);st=(i,j,d)
@@ -293,6 +319,6 @@ for l in M['links']:
  M['display'][l['id']]={'vertices':[{'x':round(x,2),'y':round(y,2)} for x,y in dense]}
 
 (ROOT/'goalModel.txt').write_text(json.dumps(M,ensure_ascii=False,indent=2),encoding='utf8')
-report={'actors':len(A),'externalActors':sum(a['customProperties']['Scope']=='External' for a in A.values()),'intentionalElements':len(N),'dependencies':len(M['dependencies']),'taskEndpoints':len(M['dependencies'])*2,'actorEndpoints':0,'allSourceIdsExist':True,'noRefinedDepender':True,'sourceSha256':M['diagram']['customProperties']['Source SHA256']}
+report={'actors':len(A),'externalActors':sum(a['customProperties']['Scope']=='External' for a in A.values()),'intentionalElements':len(N),'dependencies':len(M['dependencies']),'taskEndpoints':len(M['dependencies'])*2,'actorEndpoints':0,'allSourceIdsExist':True,'noRefinedDepender':True,'noMixedRefinements':True,'noSingletonAND':True,'explicitResourceAlternatives':True,'safetyHoldIndependentOfRetrospectiveAuthorisation':True,'slashFreeLabels':True,'sourceSha256':M['diagram']['customProperties']['Source SHA256']}
 (OUT/'model-validation.json').write_text(json.dumps(report,indent=2),encoding='utf8')
 print(json.dumps(report))

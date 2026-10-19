@@ -2,11 +2,11 @@
 
 Independent Camunda 8.9 project. See [Chinese guide](README.zh-CN.md).
 
-## Integrated SD / SR
+## Integrated SD and SR
 
 [Editable piStar TXT](goalModel.txt) · [Single green SVG](istar/Hospital_SD_SR_Version2.svg) · [PNG](istar/Hospital_SD_SR_Version2.png) · [Scope and notation](istar/README.md).
 
-The model follows the VERSION2 BPMN: 15 actors, including 5 external actors, 82 intentional elements and 26 task-to-task dependencies. Scheduling and correspondence providers are hidden implementation details in this strategic view; they remain external participants in BPMN. Consultants and the Clinical Team retain separate responsibilities. Rebuild the TXT with `python version2/tools/build_istar.py` from the repository root.
+The model follows the VERSION2 BPMN: 15 actors, including 5 external actors, 86 intentional elements and 27 task-to-task dependencies. Scheduling and correspondence providers are hidden implementation details in this strategic view; they remain external participants in BPMN. Consultants and the Clinical Team retain separate responsibilities. Rebuild the TXT with `python version2/tools/build_istar.py` from the repository root.
 
 ## Postman
 

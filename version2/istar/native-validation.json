@@ -6,8 +6,8 @@
         "warnings": [],
         "overlaps": [],
         "through": [],
-        "elements": 123,
-        "links": 119,
+        "elements": 128,
+        "links": 125,
         "roundtrip": true
       }
     ],
@@ -16,8 +16,8 @@
   "viewer": {
     "oneDiagram": true,
     "actors": 15,
-    "intentionalElements": 82,
-    "dependencies": 26,
+    "intentionalElements": 86,
+    "dependencies": 27,
     "focusAndReset": "passed",
     "textOverflow": [],
     "consoleErrors": []
@@ -25,9 +25,29 @@
   "nativeRoundtrip": {
     "standardEditorWithoutBoundaryExtension": true,
     "saveLoadRoundtrip": true,
-    "taskEndpoints": 52,
+    "taskEndpoints": 54,
     "actorEndpoints": 0,
     "endpointIDsPreserved": true
   },
-  "modelSha256": "4938cabb47188f55f31e560dcff78eb5bd722c7c6dd0670c7803636e7b98119d"
+  "modelSha256": "826404db07050e3119c84cd918263cdfc907832a2c0d94a7fe074e79658bc8f0",
+  "wording": {
+    "txtContainsNoSlash": true,
+    "diagramTextContainsNoSlash": true,
+    "diagramAndViewerUseEnglish": true
+  },
+  "routingComparison": {
+    "previous": {
+      "dependencyPolylineCrossings": 22,
+      "centerlineLength": 50042
+    },
+    "updatedSemanticsOldRouter": {
+      "dependencyPolylineCrossings": 19,
+      "centerlineLength": 49465
+    },
+    "updated": {
+      "dependencyPolylineCrossings": 13,
+      "centerlineLength": 50049
+    },
+    "definition": "Strict intersections of distinct dependency polylines; shared endpoints, internal links and renderer curve smoothing excluded. Baseline commit 3131fec."
+  }
 }
