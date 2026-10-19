@@ -1,0 +1,16 @@
+id: 01a153f4-69dd-704c-963f-ee9c8a5fd1bc
+version: 1
+name: SP05 Availability Mock
+slug: sp05-availability
+enableSession: true
+protocol: http
+port: 4510
+autoRestartOnChange: true
+logging:
+  level: verbose
+  showBody: true
+scenarios:
+  - name: default
+    path: ./default.js
+    default: true
+    id: 01a15402-799d-71e8-aa22-d71ac25670d1

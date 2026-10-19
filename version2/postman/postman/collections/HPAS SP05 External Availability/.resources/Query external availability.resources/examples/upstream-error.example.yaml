@@ -1,0 +1,16 @@
+$kind: http-example
+request:
+  url: "{{mockBaseUrl}}/availability?referralId=DEMO-001&treatmentPlanId=PLAN-001"
+  method: GET
+  queryParams:
+    referralId: DEMO-001
+    treatmentPlanId: PLAN-001
+response:
+  statusCode: 503
+  statusText: Service Unavailable
+  headers:
+    Content-Type: application/json
+  body:
+    type: text
+    content: '{"error": "availability service temporarily unavailable"}'
+order: 3000

@@ -98,7 +98,7 @@ class RedesignAcceptanceContractTest {
     }
 
     @Test
-    @DisplayName("AT-16: every executable job type maps one-to-one to a Java @JobWorker")
+    @DisplayName("AT-16: executable jobs resolve to Java workers or the SP05 REST Connector")
     void modelJobTypesMatchWorkerRegistrations() throws Exception {
         Set<String> modelTypes = new TreeSet<>();
         Element process = executableProcess();
@@ -120,8 +120,10 @@ class RedesignAcceptanceContractTest {
                 if (annotation != null) workerTypes.add(annotation.type().isBlank() ? method.getName() : annotation.type());
             }
         }
-        assertThat(workerTypes).isEqualTo(modelTypes);
         assertThat(modelTypes).hasSize(55);
+        assertThat(modelTypes.remove("io.camunda:http-json:1")).isTrue();
+        assertThat(workerTypes.remove("hpas-sp05-request-availability")).isTrue();
+        assertThat(workerTypes).isEqualTo(modelTypes);
     }
 
     @Test

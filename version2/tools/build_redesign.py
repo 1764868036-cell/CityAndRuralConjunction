@@ -571,3 +571,4 @@ import subprocess, sys
 subprocess.run([sys.executable, str(ROOT / 'tools/compact_layout.py')], check=True)
 
 subprocess.run([sys.executable, str(ROOT / 'tools/optimize_routes.py')], check=True)
+subprocess.run([sys.executable, str(ROOT / 'tools/apply_sp05_rest.py')], check=True)

@@ -1,0 +1,39 @@
+{
+  "info": {
+    "name": "HPAS SP05 External Availability",
+    "description": "Synthetic availability query for the redesign SP05 REST Connector. Saved examples power a Postman Desktop classic Mock Server.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [{"key": "mockBaseUrl", "value": "https://REPLACE.mock.pstmn.io"}],
+  "item": [{
+    "name": "Query external availability",
+    "request": {
+      "method": "GET",
+      "header": [{"key": "x-mock-response-name", "value": "available"}],
+      "url": "{{mockBaseUrl}}/availability?referralId=DEMO-001&treatmentPlanId=PLAN-001"
+    },
+    "response": [
+      {
+        "name": "available",
+        "originalRequest": {"method": "GET", "header": [], "url": "{{mockBaseUrl}}/availability?referralId=DEMO-001&treatmentPlanId=PLAN-001"},
+        "status": "OK", "code": 200,
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": "{\"externalAvailable\": true}"
+      },
+      {
+        "name": "unavailable",
+        "originalRequest": {"method": "GET", "header": [], "url": "{{mockBaseUrl}}/availability?referralId=DEMO-001&treatmentPlanId=PLAN-001"},
+        "status": "OK", "code": 200,
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": "{\"externalAvailable\": false}"
+      },
+      {
+        "name": "upstream-error",
+        "originalRequest": {"method": "GET", "header": [], "url": "{{mockBaseUrl}}/availability?referralId=DEMO-001&treatmentPlanId=PLAN-001"},
+        "status": "Service Unavailable", "code": 503,
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": "{\"error\": \"availability service temporarily unavailable\"}"
+      }
+    ]
+  }]
+}

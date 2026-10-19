@@ -7,6 +7,9 @@
 以 VERSION2 为基础，按修订后的院内业务边界建模：15 个 Actor（其中 4 个外部 Actor）、86 个内部意图元素、27 条连接到具体任务的跨角色依赖。Clinical support services 归为院内服务，院内资源预订任务依赖其可用性。当前 BPMN 仍将相关检验和治疗服务定义为外部参与者，此处是明确记录的业务边界修订，尚未改动可执行 BPMN。排班和信函服务在战略图中隐藏为实现细节；顾问与临床执行团队按新版职责分开。VERSION1 保持不变。
 
 ## BPMN 结构
+## SP05 REST Connector
+
+外部资源可用性查询现已使用 REST Connector。部署前需要配置 Connector Runtime 和模拟 API，详细步骤见 [SP05 Postman 桌面端指南](postman/README.zh-CN.md)。当前模型使用 54 种 Java Worker 类型和 1 种 REST Connector 类型；原查询 Worker 保留供历史部署版本使用。下方验证记录为改造前的历史记录。
 
 主图保留 P01–P08 的具体任务。9 个事件分支在主图中显示为带“+”标记的折叠子流程；每个子流程的任务和泳道都放在独立 BPMN 图层中，可在 Camunda Modeler 中下钻查看。
 
@@ -32,7 +35,7 @@
 - `java/`：Spring Boot Java Job Worker 项目。
 - `build_redesign.py`、`validate_bundle.py`：生成 BPMN 并检查 BPMN、泳道、表单、Worker 和图层的对应关系。
 
-P01–P08 的人工作业仍引用原来的 37 个表单；55 种 Java Worker 类型保持与 BPMN 中的任务类型一致。分支内部流程、触发事件和泳道也保留在原事件子流程中。
+P01–P08 的人工作业仍引用原来的 37 个表单；54 种 Java Worker 类型加 1 种 REST Connector 类型与当前 BPMN 对应；原查询 Worker 另保留供历史版本使用。分支内部流程、触发事件和泳道也保留在原事件子流程中。
 
 ## Postman 接口调试
 
@@ -74,3 +77,7 @@ python tools\render_preview.py hospital-patient-pathway.bpmn previews/hospital-p
 已按 version1 的 AT-01—AT-16 移植验收计划与可执行测试。见 [计划与变量映射](docs/ACCEPTANCE_TEST_PLAN_VERSION2.zh-CN.md)、[本轮结果](TEST_RESULTS_VERSION2.zh-CN.md) 和 [机器可读结果](evidence/acceptance-results.json)。
 
 在可重置的 Camunda 8.9 测试集群启动后，在 `java/` 运行 `.\mvnw.cmd -Pacceptance test`。测试使用 `evidence/acceptance-input/` 的固定快照；原计划未满足的业务标准保留为失败。流程覆盖率、JUnit 通过率、浏览器表单审计和历史运行证据分别登记。
+
+## 本轮改动与验证
+
+[SP05 改动报告](docs/SP05_CHANGE_REPORT.zh-CN.md) · [部署指南](postman/README.zh-CN.md) · [真实网页流程测试](evidence/SP05_WEB_E2E.zh-CN.md)。本轮 12 次网页提交、9 种表单，实例 COMPLETED、0 incident；不代表全分支和权限隔离覆盖。

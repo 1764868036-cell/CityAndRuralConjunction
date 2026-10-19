@@ -195,8 +195,6 @@
     <bpmn:messageFlow id="MF_SP03B_RequestSlot_XSched_Start" sourceRef="SP03B_RequestSlot" targetRef="XSched_Start" messageRef="Msg_SlotSearch" />
     <bpmn:messageFlow id="MF_XSched_SendResult_SP03B_Catch_Result" sourceRef="XSched_SendResult" targetRef="SP03B_Catch_Result" messageRef="Msg_SchedulingResult" />
     <bpmn:messageFlow id="MF_SP03B_Notify_XCorr_ApptStart" sourceRef="SP03B_Notify" targetRef="XCorr_ApptStart" messageRef="Msg_AppointmentLetter" />
-    <bpmn:messageFlow id="MF_SP05_RequestAvailability_XExt_AvailStart" sourceRef="SP05_RequestAvailability" targetRef="XExt_AvailStart" messageRef="Msg_ExternalAvailability" />
-    <bpmn:messageFlow id="MF_XExt_SendAvail_SP05_Catch_Availability" sourceRef="XExt_SendAvail" targetRef="SP05_Catch_Availability" messageRef="Msg_ExternalAvailabilityResult" />
     <bpmn:messageFlow id="MF_XExt_SendReleased_SP05_Catch_Released" sourceRef="XExt_SendReleased" targetRef="SP05_Catch_Released" messageRef="Msg_ExternalSlotReleased" />
     <bpmn:messageFlow id="MF_SP06_RequestApproval_XFund_Start" sourceRef="SP06_RequestApproval" targetRef="XFund_Start" messageRef="Msg_FundingApprovalRequest" />
     <bpmn:messageFlow id="MF_XFund_Send_SP06_Catch_Approval" sourceRef="XFund_Send" targetRef="SP06_Catch_Approval" messageRef="Msg_FundingApproval" />
@@ -277,7 +275,6 @@
         <bpmn:flowNodeRef>SP05_GW_Resource</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>SP05_BookInternal</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>SP05_RequestAvailability</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>SP05_Catch_Availability</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>SP05_GW_Available</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>SP05_BookExternal</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>SP05_NotifyPending</bpmn:flowNodeRef>
@@ -571,20 +568,32 @@
       <bpmn:incoming>Flow_084</bpmn:incoming>
       <bpmn:outgoing>Flow_086</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sendTask id="SP05_RequestAvailability" name="Request availability from external service">
+    <bpmn:serviceTask id="SP05_RequestAvailability" name="Request availability from external service" zeebe:modelerTemplate="io.camunda.connectors.HttpJson.v2" zeebe:modelerTemplateVersion="15" zeebe:modelerTemplateIcon="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3LjAzMzUgOC45OTk5N0MxNy4wMzM1IDEzLjQ0NzUgMTMuNDI4MSAxNy4wNTI5IDguOTgwNjUgMTcuMDUyOUM0LjUzMzE2IDE3LjA1MjkgMC45Mjc3NjUgMTMuNDQ3NSAwLjkyNzc2NSA4Ljk5OTk3QzAuOTI3NzY1IDQuNTUyNDggNC41MzMxNiAwLjk0NzA4MyA4Ljk4MDY1IDAuOTQ3MDgzQzEzLjQyODEgMC45NDcwODMgMTcuMDMzNSA0LjU1MjQ4IDE3LjAzMzUgOC45OTk5N1oiIGZpbGw9IiM1MDU1NjIiLz4KPHBhdGggZD0iTTQuOTMxMjYgMTQuMTU3MUw2Ljc4MTA2IDMuNzE0NzFIMTAuMTM3NUMxMS4xOTE3IDMuNzE0NzEgMTEuOTgyNCAzLjk4MzIzIDEyLjUwOTUgNC41MjAyN0MxMy4wNDY1IDUuMDQ3MzYgMTMuMzE1IDUuNzMzNTggMTMuMzE1IDYuNTc4OTJDMTMuMzE1IDcuNDQ0MTQgMTMuMDcxNCA4LjE1NTIyIDEyLjU4NDEgOC43MTIxNUMxMi4xMDY3IDkuMjU5MTMgMTEuNDU1MyA5LjYzNzA1IDEwLjYyOTggOS44NDU5TDEyLjA2MTkgMTQuMTU3MUgxMC4zMzE1TDkuMDMzNjQgMTAuMDI0OUg3LjI0MzUxTDYuNTEyNTQgMTQuMTU3MUg0LjkzMTI2Wk03LjQ5NzExIDguNTkyODFIOS4yNDI0OEM5Ljk5ODMyIDguNTkyODEgMTAuNTkwMSA4LjQyMzc0IDExLjAxNzcgOC4wODU2MUMxMS40NTUzIDcuNzM3NTMgMTEuNjc0MSA3LjI2NTEzIDExLjY3NDEgNi42Njg0MkMxMS42NzQxIDYuMTkxMDYgMTEuNTI0OSA1LjgxODExIDExLjIyNjUgNS41NDk1OUMxMC45MjgyIDUuMjcxMTMgMTAuNDU1OCA1LjEzMTkgOS44MDkzNiA1LjEzMTlIOC4xMDg3NEw3LjQ5NzExIDguNTkyODFaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="hpas-sp05-request-availability" retries="3" />
+        <zeebe:taskDefinition type="io.camunda:http-json:1" retries="3" />
+        <zeebe:taskHeaders>
+          <zeebe:header key="elementTemplateVersion" value="15" />
+          <zeebe:header key="elementTemplateId" value="io.camunda.connectors.HttpJson.v2" />
+          <zeebe:header key="resultExpression" value="= {externalAvailable: if response.body.externalAvailable instance of boolean then response.body.externalAvailable else null}" />
+          <zeebe:header key="retryBackoff" value="PT30S" />
+        </zeebe:taskHeaders>
+        <zeebe:ioMapping>
+          <zeebe:input source="noAuth" target="authentication.type" />
+          <zeebe:input source="GET" target="method" />
+          <zeebe:input source="{{secrets.SP05_AVAILABILITY_URL}}" target="url" />
+          <zeebe:input source="= if sp05MockExample instance of string then {&#34;x-mock-response-name&#34;: sp05MockExample} else {}" target="headers" />
+          <zeebe:input source="= {referralId: referralId, treatmentPlanId: treatmentPlanId}" target="queryParameters" />
+          <zeebe:input source="=false" target="storeResponse" />
+          <zeebe:input source="=false" target="followRedirects" />
+          <zeebe:input source="= 10" target="connectionTimeoutInSeconds" />
+          <zeebe:input source="= 20" target="readTimeoutInSeconds" />
+        </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_085</bpmn:incoming>
       <bpmn:outgoing>Flow_087</bpmn:outgoing>
-    </bpmn:sendTask>
-    <bpmn:intermediateCatchEvent id="SP05_Catch_Availability" name="Availability result received">
-      <bpmn:incoming>Flow_087</bpmn:incoming>
-      <bpmn:outgoing>Flow_088</bpmn:outgoing>
-      <bpmn:messageEventDefinition messageRef="Msg_ExternalAvailabilityResult" />
-    </bpmn:intermediateCatchEvent>
+    </bpmn:serviceTask>
     <bpmn:exclusiveGateway id="SP05_GW_Available" name="External slot available?">
-      <bpmn:incoming>Flow_088</bpmn:incoming>
+      <bpmn:incoming>Flow_087</bpmn:incoming>
       <bpmn:incoming>Flow_093</bpmn:incoming>
       <bpmn:outgoing>Flow_089</bpmn:outgoing>
       <bpmn:outgoing>Flow_090</bpmn:outgoing>
@@ -1985,8 +1994,7 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">= resourceType = "external"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_086" sourceRef="SP05_BookInternal" targetRef="SP06_Determine" />
-    <bpmn:sequenceFlow id="Flow_087" sourceRef="SP05_RequestAvailability" targetRef="SP05_Catch_Availability" />
-    <bpmn:sequenceFlow id="Flow_088" sourceRef="SP05_Catch_Availability" targetRef="SP05_GW_Available" />
+    <bpmn:sequenceFlow id="Flow_087" sourceRef="SP05_RequestAvailability" targetRef="SP05_GW_Available" />
     <bpmn:sequenceFlow id="Flow_093" sourceRef="SP05_Catch_Released" targetRef="SP05_GW_Available" />
     <bpmn:sequenceFlow id="Flow_089" name="available" sourceRef="SP05_GW_Available" targetRef="SP05_BookExternal">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">= externalAvailable = true</bpmn:conditionExpression>
@@ -2372,32 +2380,32 @@
       <bpmndi:BPMNShape id="RestoredShape_Collaboration_Participant_Hospital" bpmnElement="Participant_Hospital" isHorizontal="true">
         <dc:Bounds x="380" y="2348" width="18955" height="6284" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="RestoredShape_Collaboration_Lane_HPAS_Redesigned_0" bpmnElement="Lane_HPAS_Redesigned_0" isHorizontal="true">
-        <dc:Bounds x="385" y="2475" width="18950" height="413" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="RestoredShape_Collaboration_Lane_HPAS_Redesigned_1" bpmnElement="Lane_HPAS_Redesigned_1" isHorizontal="true">
-        <dc:Bounds x="385" y="2889" width="18950" height="416" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="RestoredShape_Collaboration_Lane_HPAS_Redesigned_2" bpmnElement="Lane_HPAS_Redesigned_2" isHorizontal="true">
-        <dc:Bounds x="385" y="3305" width="18950" height="989" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="RestoredShape_Collaboration_Lane_HPAS_Redesigned_3" bpmnElement="Lane_HPAS_Redesigned_3" isHorizontal="true">
-        <dc:Bounds x="385" y="4294" width="18950" height="700" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="RestoredShape_Collaboration_Lane_HPAS_Redesigned_4" bpmnElement="Lane_HPAS_Redesigned_4" isHorizontal="true">
-        <dc:Bounds x="385" y="4993" width="18950" height="475" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="RestoredShape_Collaboration_Lane_HPAS_Redesigned_5" bpmnElement="Lane_HPAS_Redesigned_5" isHorizontal="true">
-        <dc:Bounds x="385" y="5468" width="18950" height="990" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="RestoredShape_Collaboration_Lane_HPAS_Redesigned_6" bpmnElement="Lane_HPAS_Redesigned_6" isHorizontal="true">
-        <dc:Bounds x="385" y="6458" width="18950" height="660" />
+      <bpmndi:BPMNShape id="RestoredShape_Collaboration_Lane_HPAS_Redesigned_8" bpmnElement="Lane_HPAS_Redesigned_8" isHorizontal="true">
+        <dc:Bounds x="385" y="7800" width="18950" height="702" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="RestoredShape_Collaboration_Lane_HPAS_Redesigned_7" bpmnElement="Lane_HPAS_Redesigned_7" isHorizontal="true">
         <dc:Bounds x="385" y="7118" width="18950" height="681" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="RestoredShape_Collaboration_Lane_HPAS_Redesigned_8" bpmnElement="Lane_HPAS_Redesigned_8" isHorizontal="true">
-        <dc:Bounds x="385" y="7800" width="18950" height="702" />
+      <bpmndi:BPMNShape id="RestoredShape_Collaboration_Lane_HPAS_Redesigned_6" bpmnElement="Lane_HPAS_Redesigned_6" isHorizontal="true">
+        <dc:Bounds x="385" y="6458" width="18950" height="660" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="RestoredShape_Collaboration_Lane_HPAS_Redesigned_5" bpmnElement="Lane_HPAS_Redesigned_5" isHorizontal="true">
+        <dc:Bounds x="385" y="5468" width="18950" height="990" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="RestoredShape_Collaboration_Lane_HPAS_Redesigned_4" bpmnElement="Lane_HPAS_Redesigned_4" isHorizontal="true">
+        <dc:Bounds x="385" y="4993" width="18950" height="475" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="RestoredShape_Collaboration_Lane_HPAS_Redesigned_3" bpmnElement="Lane_HPAS_Redesigned_3" isHorizontal="true">
+        <dc:Bounds x="385" y="4294" width="18950" height="700" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="RestoredShape_Collaboration_Lane_HPAS_Redesigned_2" bpmnElement="Lane_HPAS_Redesigned_2" isHorizontal="true">
+        <dc:Bounds x="385" y="3305" width="18950" height="989" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="RestoredShape_Collaboration_Lane_HPAS_Redesigned_1" bpmnElement="Lane_HPAS_Redesigned_1" isHorizontal="true">
+        <dc:Bounds x="385" y="2889" width="18950" height="416" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="RestoredShape_Collaboration_Lane_HPAS_Redesigned_0" bpmnElement="Lane_HPAS_Redesigned_0" isHorizontal="true">
+        <dc:Bounds x="385" y="2475" width="18950" height="413" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape xmlns:ns19="http://bpmn.io/schema/bpmn/biocolor/1.0" id="RestoredShape_Collaboration_Top_Start" bpmnElement="Top_Start" ns19:stroke="#365b54" ns19:fill="#ffffff">
         <dc:Bounds x="505" y="2616" width="38" height="38" />
@@ -2572,12 +2580,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape xmlns:ns157="http://bpmn.io/schema/bpmn/biocolor/1.0" id="RestoredShape_Collaboration_SP05_RequestAvailability" bpmnElement="SP05_RequestAvailability" ns157:stroke="#365b54" ns157:fill="#ffffff">
         <dc:Bounds x="10795" y="5586" width="210" height="96" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape xmlns:ns159="http://bpmn.io/schema/bpmn/biocolor/1.0" id="RestoredShape_Collaboration_SP05_Catch_Availability" bpmnElement="SP05_Catch_Availability" ns159:stroke="#365b54" ns159:fill="#ffffff">
-        <dc:Bounds x="11216" y="5615" width="38" height="38" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="11194" y="5663" width="82" height="27" />
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape xmlns:ns162="http://bpmn.io/schema/bpmn/biocolor/1.0" id="RestoredShape_Collaboration_SP05_GW_Available" bpmnElement="SP05_GW_Available" isMarkerVisible="true" ns162:stroke="#365b54" ns162:fill="#fff7e8">
         <dc:Bounds x="11460" y="5607" width="54" height="54" />
@@ -2961,11 +2963,6 @@
           <dc:Bounds x="15003" y="2623" width="58" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="RestoredEdge_Collaboration_Flow_136" bpmnElement="Flow_136">
-        <di:waypoint x="18552" y="7527" />
-        <di:waypoint x="18703" y="7527" />
-        <di:waypoint x="18703" y="2676" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="RestoredEdge_Collaboration_Flow_019" bpmnElement="Flow_019">
         <di:waypoint x="18723" y="2658" />
         <di:waypoint x="18842" y="2658" />
@@ -3247,16 +3244,8 @@
         <di:waypoint x="12020" y="6640" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="RestoredEdge_Collaboration_Flow_087" bpmnElement="Flow_087">
-        <di:waypoint x="11004.538" y="5595.303" />
-        <di:waypoint x="11044.538" y="5595.303" />
-        <di:waypoint x="11044.538" y="5633.703" />
-        <di:waypoint x="11215.538" y="5633.703" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="RestoredEdge_Collaboration_Flow_088" bpmnElement="Flow_088">
-        <di:waypoint x="11245.938" y="5618.503" />
-        <di:waypoint x="11419.818" y="5618.503" />
-        <di:waypoint x="11419.818" y="5633.703" />
-        <di:waypoint x="11459.818" y="5633.703" />
+        <di:waypoint x="11005" y="5633" />
+        <di:waypoint x="11460" y="5634" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="RestoredEdge_Collaboration_Flow_093" bpmnElement="Flow_093">
         <di:waypoint x="12113.474" y="5648.903" />
@@ -3520,6 +3509,11 @@
         <di:waypoint x="17753" y="7284" />
         <di:waypoint x="17753" y="7370" />
         <di:waypoint x="17841" y="7370" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="RestoredEdge_Collaboration_Flow_136" bpmnElement="Flow_136">
+        <di:waypoint x="18552" y="7527" />
+        <di:waypoint x="18703" y="7527" />
+        <di:waypoint x="18703" y="2676" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="RestoredEdge_Collaboration_Flow_075" bpmnElement="Flow_075">
         <di:waypoint x="8625" y="3465" />
@@ -4215,17 +4209,6 @@
         <di:waypoint x="7212.282" y="4472.732" />
         <di:waypoint x="7398.162" y="4472.732" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="RestoredEdge_Collaboration_MF_SP05_RequestAvailability_XExt_AvailStart" bpmnElement="MF_SP05_RequestAvailability_XExt_AvailStart">
-        <di:waypoint x="10874" y="5586" />
-        <di:waypoint x="10900" y="5560" />
-        <di:waypoint x="11028.538" y="861.685" />
-        <di:waypoint x="15322" y="862" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="RestoredEdge_Collaboration_MF_XExt_SendAvail_SP05_Catch_Availability" bpmnElement="MF_XExt_SendAvail_SP05_Catch_Availability">
-        <di:waypoint x="16460" y="1007" />
-        <di:waypoint x="11277.538" y="1006.885" />
-        <di:waypoint x="11235" y="5615" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="RestoredEdge_Collaboration_MF_XExt_SendReleased_SP05_Catch_Released" bpmnElement="MF_XExt_SendReleased_SP05_Catch_Released">
         <di:waypoint x="16460" y="747" />
         <di:waypoint x="16347" y="747" />
@@ -4308,15 +4291,6 @@
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
-  <bpmndi:BPMNDiagram id="TidyDiagram_P03B" name="P03B 预约变更" />
-  <bpmndi:BPMNDiagram id="TidyDiagram_P09" name="P09 治疗方案变更" />
-  <bpmndi:BPMNDiagram id="TidyDiagram_P10" name="P10 取消、拒绝与未到诊" />
-  <bpmndi:BPMNDiagram id="TidyDiagram_P11" name="P11 退款处理" />
-  <bpmndi:BPMNDiagram id="TidyDiagram_P12" name="P12 患者咨询" />
-  <bpmndi:BPMNDiagram id="TidyDiagram_P13" name="P13 诊疗信" />
-  <bpmndi:BPMNDiagram id="TidyDiagram_P14" name="P14 复诊预约" />
-  <bpmndi:BPMNDiagram id="TidyDiagram_P15" name="P15 监控与报告" />
-  <bpmndi:BPMNDiagram id="TidyDiagram_P16" name="P16 权限、审计与停机" />
   <bpmndi:BPMNDiagram id="TidyDiagram_SP13_PrepareScope" name="P13A 医生准备及批准诊疗信">
     <bpmndi:BPMNPlane id="TidyPlane_SP13_PrepareScope" bpmnElement="SP13_PrepareScope">
       <bpmndi:BPMNShape xmlns:ns1="http://bpmn.io/schema/bpmn/biocolor/1.0" id="TidyShape_SP13_PrepareScope_SP13_PS_Start" bpmnElement="SP13_PS_Start" ns1:stroke="#365b54" ns1:fill="#ffffff">

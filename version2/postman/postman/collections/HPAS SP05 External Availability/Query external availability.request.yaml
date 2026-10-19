@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{mockBaseUrl}}/availability?referralId=DEMO-001&treatmentPlanId=PLAN-001"
+method: GET
+headers:
+  x-mock-response-name: available
+queryParams:
+  referralId: DEMO-001
+  treatmentPlanId: PLAN-001
+examples: ./.resources/Query external availability.resources/examples
+order: 1000

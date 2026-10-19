@@ -1,0 +1,4 @@
+$kind: collection
+description: Synthetic availability query for the redesign SP05 REST Connector. Saved examples power a Postman Desktop classic Mock Server.
+variables:
+  mockBaseUrl: https://REPLACE.mock.pstmn.io

@@ -63,6 +63,14 @@ for sp in branches:
                   f"{sid} node {ref} outside lane {lid}")
     for child in sp.xpath('.//*[@id]', namespaces=N):
         cid = child.get("id")
+        # Nested subprocesses can own their own valid drill-down plane.
+        scope = child.getparent()
+        if (scope is not sp and scope.get('id') in planes
+                and ET.QName(child).localname not in {'laneSet', 'extensionElements'}):
+            nested_plane = planes[scope.get('id')]
+            check(any(x.get('bpmnElement') == cid for x in nested_plane),
+                  f"{scope.get('id')} element {cid} missing from nested diagram")
+            continue
         if ET.QName(child).localname in {"sequenceFlow"}:
             check(child_plane is not None and any(e.get("bpmnElement") == cid
                                                    for e in child_plane.xpath('./d:BPMNEdge', namespaces=N)),
@@ -96,7 +104,11 @@ for t in tasks:
 job_types = set(process.xpath('.//z:taskDefinition/@type', namespaces=N))
 source = (ROOT / "java/src/main/java/io/camunda/demo/hpas/HpasJobWorkers.java").read_text(encoding="utf-8")
 registered = set(re.findall(r'@JobWorker\(type = "([^"]+)"\)', source))
-check(job_types == registered, f"worker mismatch: missing={job_types - registered}, extra={registered - job_types}")
+connector_types = {'io.camunda:http-json:1'}
+# The legacy worker remains registered for already deployed historical versions.
+legacy_types = {'hpas-sp05-request-availability'}
+check(job_types - connector_types == registered - legacy_types,
+      f"worker mismatch: missing={job_types - connector_types - registered}, extra={registered - legacy_types - job_types}")
 
 for p in r.xpath('//b:participant[@processRef!="Process_HPAS"]', namespaces=N):
     proc = r.xpath(f'//b:process[@id="{p.get("processRef")}"]', namespaces=N)[0]

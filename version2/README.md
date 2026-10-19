@@ -35,3 +35,9 @@ cd java
 ```
 
 Acceptance testing reuses version 1 AT-01 through AT-16. See [adapted plan](docs/ACCEPTANCE_TEST_PLAN_VERSION2.zh-CN.md) and [results](TEST_RESULTS_VERSION2.zh-CN.md). Run `mvnw.cmd -Pacceptance test` from `java/` against a resettable Camunda 8.9 test cluster; original unmet business criteria intentionally remain failing assertions. The acceptance profile uses the hashed, frozen snapshot in `evidence/acceptance-input/`.
+
+## SP05 REST integration
+
+External availability now uses an HTTP REST Connector. See the [Postman Desktop deployment guide](postman/README.zh-CN.md), [change report](docs/SP05_CHANGE_REPORT.zh-CN.md), [API tests](evidence/SP05_E2E.zh-CN.md), and [browser form verification](evidence/SP05_WEB_E2E.zh-CN.md). Camunda 8.9 uses `SECRET_SP05_AVAILABILITY_URL` (singular prefix). The verified local Mock is `http://localhost:4510/availability`.
+
+The main happy path completed with 12 browser submissions across 9 forms and no incidents. All-branch coverage and role isolation were not established. Inbound Runtime schema errors, cross-letter field reuse and Connector H2 audit limitations remain documented. Historical acceptance results describe a separate frozen snapshot.
