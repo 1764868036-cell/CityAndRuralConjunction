@@ -35,9 +35,11 @@ class RedesignAcceptanceContractTest {
     @BeforeAll
     static void loadModel() throws Exception {
         Path root = Path.of(ROOT).toAbsolutePath().normalize();
-        modelPath = Boolean.getBoolean("acceptance.snapshot")
-                ? root.resolve("evidence/acceptance-input/hospital-patient-pathway.bpmn.keep")
-                : root.resolve("hospital-patient-pathway.bpmn");
+        modelPath = Boolean.getBoolean("acceptance.candidate")
+                ? root.resolve("evidence/acceptance-candidate/hospital-patient-pathway.bpmn")
+                : Boolean.getBoolean("acceptance.snapshot")
+                    ? root.resolve("evidence/acceptance-input/hospital-patient-pathway.bpmn.keep")
+                    : root.resolve("hospital-patient-pathway.bpmn");
         assertThat(Files.isRegularFile(modelPath)).as("canonical deployment BPMN").isTrue();
         var factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
@@ -137,7 +139,7 @@ class RedesignAcceptanceContractTest {
                 if (annotation != null) workerTypes.add(annotation.type().isBlank() ? method.getName() : annotation.type());
             }
         }
-        assertThat(modelTypes).hasSize(55);
+        assertThat(modelTypes).hasSize(58);
         assertThat(modelTypes.remove("io.camunda:http-json:1")).isTrue();
         assertThat(workerTypes.remove("hpas-sp05-request-availability")).isTrue();
         Set<String> missingWorkers = new TreeSet<>(modelTypes);
@@ -184,7 +186,7 @@ class RedesignAcceptanceContractTest {
             assertThat(sp.getAttribute("id")).isNotBlank();
             assertThat(sp.getElementsByTagNameNS(B, "lane").getLength()).isGreaterThan(0);
         }
-        assertThat(branches).isEqualTo(9);
+        assertThat(branches).isEqualTo(10);
     }
 
     private static boolean uniqueIds(Document doc) {
@@ -202,8 +204,9 @@ class RedesignAcceptanceContractTest {
         Path folder = modelPath.getParent().resolve("forms");
         ObjectMapper mapper = new ObjectMapper();
         try (var files = Files.list(folder)) {
-            for (Path file : files.filter(p -> p.toString().endsWith(Boolean.getBoolean("acceptance.snapshot")
-                    ? ".form.keep" : ".form")).toList()) {
+            String suffix = Boolean.getBoolean("acceptance.snapshot") && !Boolean.getBoolean("acceptance.candidate")
+                    ? ".form.keep" : ".form";
+            for (Path file : files.filter(p -> p.toString().endsWith(suffix)).toList()) {
                 JsonNode form = mapper.readTree(file.toFile());
                 assertThat(result.put(form.path("id").asText(), form)).as(file.toString()).isNull();
             }

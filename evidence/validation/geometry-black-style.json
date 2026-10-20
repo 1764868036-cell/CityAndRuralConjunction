@@ -1,0 +1,77 @@
+{
+  "file": "D:\\Hospital_Patient_Pathway_Camunda_Forms_Bundle(1)\\1-17.bpmn",
+  "counts": {
+    "lane": 11,
+    "startEvent": 15,
+    "intermediateCatchEvent": 43,
+    "userTask": 81,
+    "exclusiveGateway": 79,
+    "intermediateThrowEvent": 31,
+    "sendTask": 54,
+    "sequenceFlow": 426,
+    "serviceTask": 29,
+    "eventBasedGateway": 7,
+    "manualTask": 4,
+    "receiveTask": 4,
+    "parallelGateway": 3,
+    "endEvent": 18,
+    "group": 17,
+    "participant": 9,
+    "messageFlow": 46
+  },
+  "hospital_bounds": [
+    60.0,
+    100.0,
+    31720.0,
+    7970.0
+  ],
+  "node_overlap_pairs": 0,
+  "hospital_node_overlap_pairs": 0,
+  "worst_node_overlaps": [],
+  "label_node_intersections": 0,
+  "label_node_examples": [],
+  "label_label_intersections": 0,
+  "label_label_examples": [],
+  "orthogonal_edge_node_intersections": 0,
+  "distinct_edges_through_nodes": 0,
+  "edge_node_examples": [],
+  "non_orthogonal_edges": 0,
+  "group_overlap_pairs": [],
+  "named_flows_without_explicit_label_bounds": 0,
+  "missing_edge_di_count": 0,
+  "missing_edge_di_examples": [],
+  "longest_routes": [
+    [
+      40066.0,
+      "UnifiedEnd_R2_NotSuitable"
+    ],
+    [
+      34998.0,
+      "UnifiedEnd_R3_Declined"
+    ],
+    [
+      34790.0,
+      "ExternalEntry_P17_Start_ChangeRequest"
+    ],
+    [
+      34266.0,
+      "ExternalEntry_P16_Start_Interruption"
+    ],
+    [
+      33274.0,
+      "ExternalEntry_P16_Start_Access"
+    ],
+    [
+      30010.0,
+      "ExternalEntry_P15_Start_RecordUpdate"
+    ],
+    [
+      29978.0,
+      "ExternalEntry_P15_Start_Monitor"
+    ],
+    [
+      27980.0,
+      "MF_Patient_ChangeToP17"
+    ]
+  ]
+}

@@ -1,0 +1,16 @@
+java/target/
+java/data/
+java/.idea/
+/java/
+/.workbuddy/
+/__pycache__/
+/_tmptest/
+/_subproc/
+/_*.py
+/_*.txt
+/_*.json
+/_*.png
+/_probe_*.bpmn
+_analysis/
+*.lock.db
+*.mv.db

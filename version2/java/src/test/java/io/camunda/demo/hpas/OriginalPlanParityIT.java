@@ -35,8 +35,10 @@ class OriginalPlanParityIT {
     static void readFrozenModel() throws Exception {
         var factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
-        model = factory.newDocumentBuilder().parse(Path.of("..", "evidence", "acceptance-input",
-            "hospital-patient-pathway.bpmn.keep").toFile());
+        Path bundle = Boolean.getBoolean("acceptance.candidate")
+            ? Path.of("..", "evidence", "acceptance-candidate", "hospital-patient-pathway.bpmn")
+            : Path.of("..", "evidence", "acceptance-input", "hospital-patient-pathway.bpmn.keep");
+        model = factory.newDocumentBuilder().parse(bundle.toFile());
     }
 
     @ParameterizedTest(name = "{0}: {1}")
@@ -48,7 +50,7 @@ class OriginalPlanParityIT {
         "AT-11-identity;rescheduling has an identity guard;SP03B;identityVerified",
         "AT-11-date;rescheduling validates the requested review deadline;SP03B;requestedReviewBy|reviewBy|deadline",
         "AT-11-contact;near-term rescheduling has a telephone-contact decision;SP03B;withinTwoWeeks|14|phone",
-        "AT-13-transfer;transfer is separate from refund/no-refund;SP11;refundOutcome.*transfer|transferRequired"
+        "AT-13-transfer;transfer is separate from refund/no-refund;SP11;refundScope.*transfer|fundTransferAuthorised"
     })
     void originalDecisionContractExists(String at, String criterion, String scope, String regex) {
         String conditions = conditions(scope);
@@ -110,6 +112,64 @@ class OriginalPlanParityIT {
         assertThat(executor().execute("hpas-sp16-apply-access",
             job(Map.of("referralId", "TEST-DENIED", "accessAuthorised", false))))
             .containsEntry("accessDecisionRecorded", "denied");
+    }
+
+    @Test @DisplayName("AT-08 — payment worker keeps an existing paid charge out of the new request route")
+    void at08_realWorkerMarksPriorCharge() {
+        assertThat(executor().execute("hpas-sp07-calculate-charge",
+            job(Map.of("referralId", "TEST-PRIOR", "chargeAmount", 25, "priorChargeFound", true))))
+            .containsEntry("priorChargeFound", true).containsEntry("paymentVerified", true);
+    }
+
+    @Test @DisplayName("AT-09 — treatment stop requires a recorded clinical reason")
+    void at09_stopWorkerRequiresReason() {
+        assertThatThrownBy(() -> executor().execute("hpas-sp08-stop-treatment",
+            job(Map.of("referralId", "TEST-STOP", "fitnessDecision", "stop"))))
+            .isInstanceOf(IllegalStateException.class);
+        assertThat(executor().execute("hpas-sp08-stop-treatment",
+            job(Map.of("referralId", "TEST-STOP", "fitnessDecision", "stop", "stopReason", "clinical"))))
+            .containsEntry("treatmentStopped", true);
+    }
+
+    @Test @DisplayName("AT-10 — financially affected treatment changes need finance recheck")
+    void at10_financeGuardRunsInWorker() {
+        assertThatThrownBy(() -> executor().execute("hpas-sp09-apply-change",
+            job(Map.of("referralId", "TEST-CHANGE", "formallyAuthorised", true,
+                "financialImpact", true, "financialReviewComplete", false))))
+            .isInstanceOf(IllegalStateException.class);
+        assertThat(executor().execute("hpas-sp09-apply-change",
+            job(Map.of("referralId", "TEST-CHANGE", "formallyAuthorised", true,
+                "financialImpact", true, "financialReviewComplete", true))))
+            .containsEntry("treatmentChangeApplied", true);
+    }
+
+    @Test @DisplayName("AT-11 — reschedule worker enforces identity, deadline and near-term contact")
+    void at11_rescheduleWorkerEnforcesEligibility() {
+        Map<String, Object> valid = Map.of("referralId", "TEST-RESCHEDULE", "identityVerified", true,
+            "requestedReviewBy", "2026-11-01", "offeredAppointmentDate", "2026-10-25",
+            "withinTwoWeeks", true, "phoneContactCompleted", true);
+        assertThat(executor().execute("hpas-sp03b-apply-reschedule", job(valid)))
+            .containsEntry("appointmentChanged", true);
+        Map<String, Object> noPhone = new java.util.HashMap<>(valid);
+        noPhone.put("phoneContactCompleted", false);
+        assertThatThrownBy(() -> executor().execute("hpas-sp03b-apply-reschedule", job(noPhone)))
+            .isInstanceOf(IllegalStateException.class);
+        Map<String, Object> wrongIdentity = new java.util.HashMap<>(valid);
+        wrongIdentity.put("identityVerified", false);
+        assertThatThrownBy(() -> executor().execute("hpas-sp03b-apply-reschedule", job(wrongIdentity)))
+            .isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test @DisplayName("AT-13 — fund transfer is separately authorised from a refund")
+    void at13_transferWorkerHasSeparateAuthorisation() {
+        assertThatThrownBy(() -> executor().execute("hpas-sp11-transfer-funds",
+            job(Map.of("referralId", "TEST-TRANSFER", "refundScope", "transfer",
+                "fundTransferAuthorised", false, "financeApprover", "TEST-FINANCE"))))
+            .isInstanceOf(IllegalStateException.class);
+        assertThat(executor().execute("hpas-sp11-transfer-funds",
+            job(Map.of("referralId", "TEST-TRANSFER", "refundScope", "transfer",
+                "fundTransferAuthorised", true, "financeApprover", "TEST-FINANCE"))))
+            .containsEntry("fundTransferRecorded", true).doesNotContainKey("refundRequestId");
     }
 
     private static HpasJobExecutor executor() {

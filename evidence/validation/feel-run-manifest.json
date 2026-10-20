@@ -1,0 +1,11 @@
+{
+  "recordedAtUtc": "2026-09-29T11:53:41.029971+00:00",
+  "model": "1-17.bpmn",
+  "modelSha256": "616af009cf00ec674ef7371d48071f8c015b44c1c65f0cf15bd550dc2e9a960b",
+  "cases": "evidence/validation/feel-cases-2026-09-29.json",
+  "casesSha256": "61ad07db1dbb7e43e07b2d7bee9407df62729a0878f08d968e7da606e8921b39",
+  "result": "evidence/validation/feel-2026-09-29.json",
+  "resultSha256": "3d8eb0c2a7cdd245666205796a5f1eba77d478187d55ecf3135a8d4ed534300b",
+  "engine": "Camunda FEEL 1.21.0 from local Camunda 8.9.19",
+  "scope": "Expression parsing and 53 design-time branch/mapping cases; not token execution"
+}

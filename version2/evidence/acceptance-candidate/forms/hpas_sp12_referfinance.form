@@ -1,0 +1,47 @@
+{
+  "type": "default",
+  "id": "hpas_sp12_referfinance",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "heading_SP12_ReferFinance",
+      "type": "text",
+      "text": "# Respond to financial enquiry"
+    },
+    {
+      "key": "enquiryResponse",
+      "label": "Finance Team response",
+      "type": "textarea",
+      "validate": {
+        "required": true,
+        "maxLength": 2000
+      },
+      "id": "SP12_ReferFinance_field_0",
+      "layout": {
+        "row": "SP12_ReferFinance_row_0",
+        "columns": null
+      }
+    },
+    {
+      "id": "audit_SP12_ReferFinance",
+      "type": "text",
+      "text": "Record the responsible person's identity; the system records the submission time and task audit."
+    },
+    {
+      "id": "actor_SP12_ReferFinance",
+      "type": "textfield",
+      "key": "SP12_ReferFinance_actor",
+      "label": "Responsible staff ID",
+      "validate": {
+        "required": true,
+        "maxLength": 80
+      },
+      "layout": {
+        "row": "SP12_ReferFinance_actor",
+        "columns": null
+      }
+    }
+  ]
+}

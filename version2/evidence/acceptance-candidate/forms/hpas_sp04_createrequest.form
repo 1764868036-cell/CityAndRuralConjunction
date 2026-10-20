@@ -1,0 +1,126 @@
+{
+  "type": "default",
+  "id": "hpas_sp04_createrequest",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "heading_SP04_CreateRequest",
+      "type": "text",
+      "text": "# Create authorised Treatment Booking Request"
+    },
+    {
+      "key": "treatmentPlanId",
+      "label": "Treatment plan ID",
+      "type": "textfield",
+      "validate": {
+        "required": true,
+        "maxLength": 160
+      },
+      "id": "SP04_CreateRequest_field_0",
+      "layout": {
+        "row": "SP04_CreateRequest_row_0",
+        "columns": null
+      }
+    },
+    {
+      "key": "treatmentDescription",
+      "label": "Treatment and resources",
+      "type": "textarea",
+      "validate": {
+        "required": true,
+        "maxLength": 2000
+      },
+      "id": "SP04_CreateRequest_field_1",
+      "layout": {
+        "row": "SP04_CreateRequest_row_1",
+        "columns": null
+      }
+    },
+    {
+      "key": "requiredStartDate",
+      "label": "Required start date (YYYY-MM-DD)",
+      "type": "textfield",
+      "validate": {
+        "required": true,
+        "maxLength": 160
+      },
+      "id": "SP04_CreateRequest_field_2",
+      "layout": {
+        "row": "SP04_CreateRequest_row_2",
+        "columns": null
+      }
+    },
+    {
+      "key": "cycleCount",
+      "label": "Number of cycles",
+      "type": "number",
+      "validate": {
+        "required": true,
+        "min": 0
+      },
+      "id": "SP04_CreateRequest_field_3",
+      "layout": {
+        "row": "SP04_CreateRequest_row_3",
+        "columns": null
+      }
+    },
+    {
+      "key": "resourceType",
+      "label": "Booking resource",
+      "type": "select",
+      "values": [
+        {
+          "label": "Hospital",
+          "value": "internal"
+        },
+        {
+          "label": "External",
+          "value": "external"
+        }
+      ],
+      "validate": {
+        "required": true
+      },
+      "id": "SP04_CreateRequest_field_4",
+      "layout": {
+        "row": "SP04_CreateRequest_row_4",
+        "columns": null
+      }
+    },
+    {
+      "key": "authorisingClinician",
+      "label": "Authorising clinician",
+      "type": "textfield",
+      "validate": {
+        "required": true,
+        "maxLength": 160
+      },
+      "id": "SP04_CreateRequest_field_5",
+      "layout": {
+        "row": "SP04_CreateRequest_row_5",
+        "columns": null
+      }
+    },
+    {
+      "id": "audit_SP04_CreateRequest",
+      "type": "text",
+      "text": "Record the responsible person's identity; the system records the submission time and task audit."
+    },
+    {
+      "id": "actor_SP04_CreateRequest",
+      "type": "textfield",
+      "key": "SP04_CreateRequest_actor",
+      "label": "Responsible staff ID",
+      "validate": {
+        "required": true,
+        "maxLength": 80
+      },
+      "layout": {
+        "row": "SP04_CreateRequest_actor",
+        "columns": null
+      }
+    }
+  ]
+}

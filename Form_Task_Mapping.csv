@@ -1,0 +1,82 @@
+stage,taskId,taskName,formId,file
+Receive Referral,R1_RegisterCheck,Register referral in PAS and check documents,hospital_01_receive_referral,01_receive_referral.form
+Receive Referral,R1_UpdateReferral,Update record and recheck,hospital_01_receive_referral,01_receive_referral.form
+Receive Referral,Referrer_PrepareReferral,Prepare referral package,hospital_01_receive_referral,01_receive_referral.form
+Receive Referral,Referrer_CollectDocs,Collect and check requested records,hospital_01_receive_referral,01_receive_referral.form
+Review and Referral,R2_Review,Consultant reviews clinical referral,hospital_02_review_referral,02_review_referral.form
+Review and Referral,R2_Route,Set priority and select service,hospital_02_review_referral,02_review_referral.form
+Arrange the Initial Consultation and Contact the Patient,R3_RecordAvailability,Bookings team confirms availability,hospital_03_initial_consultation,03_initial_consultation.form
+Arrange the Initial Consultation and Contact the Patient,Patient_RequestPreference,Request preferred clinician and date,hospital_03_initial_consultation,03_initial_consultation.form
+Arrange the Initial Consultation and Contact the Patient,Patient_ReviewOffer,Review proposed appointment,hospital_03_initial_consultation,03_initial_consultation.form
+Arrange the Initial Consultation and Contact the Patient,Patient_EnterAlternativeDate,Enter alternative date,hospital_03_initial_consultation,03_initial_consultation.form
+Diagnosis and Obtaining Informed Consent for Treatment,R4_Assess,Consultant examines Patient and reviews investigations,hospital_04_diagnosis_consent,04_diagnosis_consent.form
+Diagnosis and Obtaining Informed Consent for Treatment,R4_Explain,"Explain diagnosis, treatment risks and alternatives",hospital_04_diagnosis_consent,04_diagnosis_consent.form
+Diagnosis and Obtaining Informed Consent for Treatment,R4_RecordConsent,Record signed informed consent,hospital_04_diagnosis_consent,04_diagnosis_consent.form
+Diagnosis and Obtaining Informed Consent for Treatment,R4_RecordRefusal,Record refusal and discuss alternatives,hospital_04_diagnosis_consent,04_diagnosis_consent.form
+Diagnosis and Obtaining Informed Consent for Treatment,Patient_ReviewTreatmentOptions,"Review benefits, risks and alternatives",hospital_04_diagnosis_consent,04_diagnosis_consent.form
+Diagnosis and Obtaining Informed Consent for Treatment,Patient_DecideConsent,Decide whether to consent,hospital_04_diagnosis_consent,04_diagnosis_consent.form
+Arrange Treatment and External Services,R5_ReviewPlan,Review authorised treatment plan and resources,hospital_05_treatment_services,05_treatment_services.form
+Arrange Treatment and External Services,R5_ConfirmTreatment,Reserve provisional slots and record dependencies,hospital_05_treatment_services,05_treatment_services.form
+Arrange Treatment and External Services,Confirm_Treatment_Booking,Confirm treatment booking after financial clearance,hospital_05_treatment_services,05_treatment_services.form
+Arrange Treatment and External Services,Deliver_Treatment_Cycle,Provide authorised treatment cycle,hospital_05_treatment_services,05_treatment_services.form
+Verify Cost Allocation Method,R6_ClassifyFunding,Finance classifies payer and patient share,hospital_06_cost_allocation,06_cost_allocation.form
+Verify Cost Allocation Method,R6_RecordAllocation,"Record payer, reference, amount and limits",hospital_06_cost_allocation,06_cost_allocation.form
+Verify Cost Allocation Method,R6_ResolveGap,Resolve funding gap or hold treatment,hospital_06_cost_allocation,06_cost_allocation.form
+Verify Cost Allocation Method,Funder_CheckCoverage,Check coverage and contractual limits,hospital_06_cost_allocation,06_cost_allocation.form
+Process Payment Result,R7_CalculateCharge,Calculate charge and prepare payment request,hospital_07_payment_result,07_payment_result.form
+Process Payment Result,R7_RecordPayment,"Record status, reference, date and amount",hospital_07_payment_result,07_payment_result.form
+Process Payment Result,R7_NotifyRetry,Notify patient/admin; check status before retry,hospital_07_payment_result,07_payment_result.form
+Process Payment Result,R7_ReconcilePayment,Finance reconciles status with provider,hospital_07_payment_result,07_payment_result.form
+Process Payment Result,Finance_RefundReview,Finance reviews refund eligibility after clinical stop/change,hospital_07_payment_result,07_payment_result.form
+Process Payment Result,Finance_RecordRefund,Record refund status and amount,hospital_07_payment_result,07_payment_result.form
+Process Payment Result,Patient_ReviewPaymentIssue,Review payment options and contact instructions,hospital_07_payment_result,07_payment_result.form
+Process Payment Result,Patient_PaySecurely,Pay through the PSP secure channel,hospital_07_payment_result,07_payment_result.form
+Evaluate Whether to Continue Treatment,R8_ClinicalReview,Clinical review and blood test determine next step,hospital_08_continue_treatment,08_continue_treatment.form
+8 Continue Treatment,P8_Task_Review,Carry out the clinical review and blood test,hospital_08_continue_treatment,08_continue_treatment.form
+8 Continue Treatment,P8_Task_Evaluate,Decide whether the patient is fit to continue,hospital_08_continue_treatment,08_continue_treatment.form
+8 Continue Treatment,P8_Task_DecideAction,Decide to postpone or change the treatment plan,hospital_08_continue_treatment,08_continue_treatment.form
+9 Treatment Changes,P9_Task_DoNotProcess,Do not process the informal request,hospital_09_treatment_changes,09_treatment_changes.form
+9 Treatment Changes,P9_Task_RecordApproval,Record the clinician-approved postponement,hospital_09_treatment_changes,09_treatment_changes.form
+9 Treatment Changes,P9_Task_AdjustSchedule,Adjust the treatment plan and schedule,hospital_09_treatment_changes,09_treatment_changes.form
+9 Treatment Changes,P9_Task_FinanceReview,Review the financial implications,hospital_09_treatment_changes,09_treatment_changes.form
+10 Appointment Outcomes,P10_Task_Record,"Record the cancellation, refusal or no-show",hospital_10_appointment_outcomes,10_appointment_outcomes.form
+10 Appointment Outcomes,P10_Task_Rebook,Offer another appointment,hospital_10_appointment_outcomes,10_appointment_outcomes.form
+10 Appointment Outcomes,P10_Task_ClinicalReview,Obtain a clinical pathway decision,hospital_10_appointment_outcomes,10_appointment_outcomes.form
+10 Appointment Outcomes,P10_Task_Finance,Record the Finance decision for received payment,hospital_10_appointment_outcomes,10_appointment_outcomes.form
+11 Refunds and Fund Transfers,P11_Task_Decide,Decide whether to refund or transfer funds,hospital_11_refund_decisions,11_refund_decisions.form
+11 Refunds and Fund Transfers,P11_Task_RecordDecision,Record the refusal decision,hospital_11_refund_decisions,11_refund_decisions.form
+12 Patient Enquiries,P12_Activity_13m3bda,Record the enquiry and handler,hospital_12_patient_enquiries,12_patient_enquiries.form
+12 Patient Enquiries,P12_Activity_0qe6qfi,Assign a call handler,hospital_12_patient_enquiries,12_patient_enquiries.form
+12 Patient Enquiries,P12_Activity_1gk0gd9,Check urgency and priority,hospital_12_patient_enquiries,12_patient_enquiries.form
+12 Patient Enquiries,P12_Activity_1llzkmw,Flag urgent concern immediately,hospital_12_patient_enquiries,12_patient_enquiries.form
+12 Patient Enquiries,P12_Activity_0z9svo5,Classify the enquiry,hospital_12_patient_enquiries,12_patient_enquiries.form
+12 Patient Enquiries,P12_Activity_1rzh2hz,Transfer enquiry to the responsible administrative team,hospital_12_patient_enquiries,12_patient_enquiries.form
+12 Patient Enquiries,P12_Activity_16idm3v,Answer the straightforward administrative enquiry,hospital_12_patient_enquiries,12_patient_enquiries.form
+13 Clinic Letters,P13_Activity_0az5u78,Draft the clinic letter,hospital_13_clinic_letters,13_clinic_letters.form
+13 Clinic Letters,P13_Activity_1xgw427,Review the clinical content,hospital_13_clinic_letters,13_clinic_letters.form
+13 Clinic Letters,P13_Activity_1yti6jj,Check recipients and administrative details,hospital_13_clinic_letters,13_clinic_letters.form
+13 Clinic Letters,P13_Activity_0nwm6rp,Record overdue letter,hospital_13_clinic_letters,13_clinic_letters.form
+13 Clinic Letters,P13_Activity_0ba3vii,Escalate to senior management,hospital_13_clinic_letters,13_clinic_letters.form
+13 Clinic Letters,P13_Activity_0oe33ui,Stop reminders when complete,hospital_13_clinic_letters,13_clinic_letters.form
+13 Clinic Letters,P13_Activity_0wt7ysb,Retain reminder and escalation history,hospital_13_clinic_letters,13_clinic_letters.form
+13 Clinic Letters,P13_Task_SeniorReview,Review escalation and decide action,hospital_13_clinic_letters,13_clinic_letters.form
+14 Follow-up Appointments,P14_Task_Receive,Receive the follow-up request,hospital_14_follow_up_appointments,14_follow_up_appointments.form
+14 Follow-up Appointments,P14_Task_Mark,Mark the issue for attention,hospital_14_follow_up_appointments,14_follow_up_appointments.form
+14 Follow-up Appointments,P14_Task_Hand,Pass the case to the pathway team,hospital_14_follow_up_appointments,14_follow_up_appointments.form
+16 Identity and System Interruptions,P16_Task_Authenticate,Authenticate the user and verify the requested role,hospital_16_identity_interruptions,16_identity_interruptions.form
+16 Identity and System Interruptions,P16_Task_Grant,Grant only the permissions required for the role,hospital_16_identity_interruptions,16_identity_interruptions.form
+16 Identity and System Interruptions,P16_Task_RecordInterruption,Record the affected service and notify responsible teams,hospital_16_identity_interruptions,16_identity_interruptions.form
+16 Identity and System Interruptions,P16_Task_Downtime,Use the downtime procedure to record work completed,hospital_16_identity_interruptions,16_identity_interruptions.form
+Arrange Treatment and External Services,P5_Task_HoldTreatment,Keep treatment on hold and notify the pathway team,hospital_05_treatment_services,05_treatment_services.form
+Verify Cost Allocation Method,P6_Task_RespondFinanceInquiry,Review payment / funding enquiry and prepare response,hospital_06_cost_allocation,06_cost_allocation.form
+8 Continue Treatment,P8_Task_AssessPriority,Consultant assesses clinical priority for the scheduling conflict,hospital_08_continue_treatment,08_continue_treatment.form
+8 Continue Treatment,P8_Task_AnswerClinicalInquiry,Qualified clinical team prepares an enquiry response,hospital_08_continue_treatment,08_continue_treatment.form
+9 Treatment Changes,P9_Task_ConfirmClinicalApproval,Confirm formal clinical authorisation for the treatment change,hospital_09_treatment_changes,09_treatment_changes.form
+Handle Appointment Changes and Scheduling Conflicts,P17_Task_RecordRequest,"Record the request, timestamp, channel, and patient details",hospital_17_appointment_changes,17_appointment_changes.form
+Handle Appointment Changes and Scheduling Conflicts,P17_Task_VerifyIdentity,Verify patient identity before changing appointment data,hospital_17_appointment_changes,17_appointment_changes.form
+Handle Appointment Changes and Scheduling Conflicts,P17_Task_UpdateBooking,"Update the booking, release the old slot, and record both dates",hospital_17_appointment_changes,17_appointment_changes.form
+Handle Appointment Changes and Scheduling Conflicts,P17_Task_TelephonePatient,Telephone the patient and record the contact attempt,hospital_17_appointment_changes,17_appointment_changes.form
+Handle Appointment Changes and Scheduling Conflicts,P17_Task_KeepExisting,Keep the existing appointment; do not book outside the requested window,hospital_17_appointment_changes,17_appointment_changes.form
+Handle Appointment Changes and Scheduling Conflicts,P17_Task_EscalatePathway,Escalate to the pathway coordinator and record recipient and time,hospital_17_appointment_changes,17_appointment_changes.form
+Handle Appointment Changes and Scheduling Conflicts,P17_Task_RecordPriorityDecision,Record the clinical decision and handoff outcome,hospital_17_appointment_changes,17_appointment_changes.form
+Handle Appointment Changes and Scheduling Conflicts,Patient_RequestAppointmentChange,Request a change and provide a preferred date / time,hospital_17_appointment_changes,17_appointment_changes.form

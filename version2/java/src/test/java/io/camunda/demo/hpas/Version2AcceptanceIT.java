@@ -46,7 +46,7 @@ import org.w3c.dom.Element;
     "camunda.process-test.remote.client.enabled=true",
     "camunda.process-test.remote.client.grpc-address=${acceptance.grpc:http://127.0.0.1:26500}",
     "camunda.process-test.remote.client.rest-address=${acceptance.rest:http://127.0.0.1:8080}",
-    "camunda.process-test.remote.camunda-monitoring-api-address=http://127.0.0.1:9600",
+    "camunda.process-test.remote.camunda-monitoring-api-address=${acceptance.monitoring:http://127.0.0.1:9600}",
     "camunda.process-test.remote.client.deployment.enabled=false"})
 @CamundaSpringProcessTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -64,7 +64,8 @@ class Version2AcceptanceIT {
     private String caseName;
     private final String runId = UUID.randomUUID().toString();
     private static final Path BUNDLE = Path.of("..").toAbsolutePath().normalize();
-    private static final Path INPUT = BUNDLE.resolve("evidence/acceptance-input");
+    private static final Path INPUT = BUNDLE.resolve(Boolean.getBoolean("acceptance.candidate")
+        ? "evidence/acceptance-candidate" : "evidence/acceptance-input");
     private static final String B = "http://www.omg.org/spec/BPMN/20100524/MODEL";
     private static final String Z = "http://camunda.org/schema/zeebe/1.0";
 
@@ -75,10 +76,13 @@ class Version2AcceptanceIT {
         // CPT removes deployments owned by the preceding test during cleanup.
         deployment = null;
         if (deployment == null) {
+            Path bpmn = INPUT.resolve(Boolean.getBoolean("acceptance.candidate")
+                ? "hospital-patient-pathway.bpmn" : "hospital-patient-pathway.bpmn.keep");
             var command = client.newDeployResourceCommand().addResourceBytes(
-                Files.readAllBytes(INPUT.resolve("hospital-patient-pathway.bpmn.keep")), "hospital-patient-pathway.bpmn");
+                Files.readAllBytes(bpmn), "hospital-patient-pathway.bpmn");
             try (var paths = Files.list(INPUT.resolve("forms"))) {
-                for (Path form : paths.filter(p -> p.toString().endsWith(".form.keep")).sorted().toList())
+                String suffix = Boolean.getBoolean("acceptance.candidate") ? ".form" : ".form.keep";
+                for (Path form : paths.filter(p -> p.toString().endsWith(suffix)).sorted().toList())
                     command = command.addResourceBytes(Files.readAllBytes(form), form.getFileName().toString().replace(".keep", ""));
             }
             deployment = command.send().join();
@@ -86,7 +90,9 @@ class Version2AcceptanceIT {
         }
         var factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
-        var model = factory.newDocumentBuilder().parse(INPUT.resolve("hospital-patient-pathway.bpmn.keep").toFile());
+        Path modelFile = INPUT.resolve(Boolean.getBoolean("acceptance.candidate")
+            ? "hospital-patient-pathway.bpmn" : "hospital-patient-pathway.bpmn.keep");
+        var model = factory.newDocumentBuilder().parse(modelFile.toFile());
         var definitions = model.getElementsByTagNameNS(Z, "taskDefinition");
         var types = new LinkedHashSet<String>();
         for (int i = 0; i < definitions.getLength(); i++) types.add(((Element) definitions.item(i)).getAttribute("type"));
@@ -164,6 +170,7 @@ class Version2AcceptanceIT {
     @CsvSource({"true,false", "false,false", "false,true"})
     void at05_schedulingAvailabilityAndHumanEscalation(boolean found, boolean urgent) {
         long pi = start("SP03_GW_Urgent", Map.of("urgentReferral", urgent));
+        assertThat(byKey(pi)).hasActiveElements("SP03_Catch_Slot");
         publish(pi, "Scheduling result", Map.of("slotFound", found));
         if (!found) {
             assertThat(byKey(pi)).hasActiveElements("SP03_NoSlotReview");
@@ -201,9 +208,9 @@ class Version2AcceptanceIT {
 
     @Test @DisplayName("AT-07 — unavailable external service remains pending until availability is restored")
     void at07_serviceUnavailable() {
-        long pi = start("SP05_RequestAvailability", Map.of("resourceType", "external"));
-        publish(pi, "External availability result", Map.of("externalAvailable", false));
+        long pi = start("SP05_RequestAvailability", Map.of("resourceType", "external", "externalAvailable", false));
         assertThat(byKey(pi)).hasActiveElements("SP05_Catch_Released").hasNotActivatedElements("SP05_BookExternal", "SP08_Administer");
+        assertThat(byKey(pi)).isWaitingForMessage("HPAS: External slot released", referrals.get(pi));
         publish(pi, "External slot released", Map.of("externalAvailable", true));
         assertThat(byKey(pi)).hasCompletedElements("SP05_BookExternal").hasActiveElements("SP08_Catch_Lab");
         assertNoIncident(pi);
@@ -213,15 +220,31 @@ class Version2AcceptanceIT {
     @ValueSource(strings = {"completed", "confirmation-lost", "failed"})
     void at08_paymentRoutes(String status) {
         long pi = start("SP07_CalculateCharge", Map.of("fundingRoute", "patient-pay"));
+        // Do not publish against a process instance before the message catch event subscribes.
+        // A publish accepted before the subscription exists can leave this scenario on a different route.
+        assertThat(byKey(pi)).hasActiveElements("SP07_Catch_Status");
         publish(pi, "Payment status", Map.of("paymentStatus", status));
+        if (status.equals("confirmation-lost"))
+            assertThat(byKey(pi)).hasActiveElements("SP07_Investigate");
         if (status.equals("confirmation-lost"))
             complete(pi, "SP07_Investigate", Map.of("investigationOutcome", "taken"));
         if (status.equals("failed")) {
             complete(pi, "SP07_DecideRetry", Map.of("retryDecision", "urgent-override"));
             complete(pi, "SP07_RecordOverride", Map.of("urgentOverrideReason", "TEST clinician decision", "overrideClinician", "TEST-CONSULTANT"));
+            assertThat(byKey(pi)).hasCompletedElements("SP07_ReferFinance");
         }
-        assertThat(byKey(pi)).hasActiveElements("SP08_Catch_Lab").hasCompletedElement("SP07_SendPaymentRequest", 1);
+        assertThat(byKey(pi)).hasCompletedElement("SP07_SendPaymentRequest", 1)
+            .hasActiveElements("SP08_Catch_Lab").hasNotActivatedElements("SP08_Review");
         if (!status.equals("failed")) assertThat(byKey(pi)).hasCompletedElements("SP07_RecordTransaction", "SP07_ConfirmBooking");
+        assertNoIncident(pi);
+    }
+
+    @Test @DisplayName("AT-08 — an existing paid charge bypasses a duplicate payment request")
+    void at08_priorPaidChargeIsNotChargedAgain() {
+        long pi = start("SP07_CalculateCharge", Map.of("fundingRoute", "patient-pay",
+            "priorChargeFound", true, "paymentStatus", "completed", "chargeAmount", 125));
+        assertThat(byKey(pi)).hasActiveElements("SP08_Catch_Lab")
+            .hasNotActivatedElements("SP07_SendPaymentRequest");
         assertNoIncident(pi);
     }
 
@@ -245,6 +268,17 @@ class Version2AcceptanceIT {
         complete(pi, "SP08_Review", Map.of("fitnessDecision", "delay"));
         complete(pi, "SP08_DelayHandling", Map.of("delayReason", "TEST clinical decision"));
         assertThat(byKey(pi)).hasActiveElements("SP08_Catch_NextDue").hasNotActivatedElements("SP08_Administer");
+        assertNoIncident(pi);
+    }
+
+    @Test @DisplayName("AT-09 — a clinical stop decision prevents administration")
+    void at09_stopTreatment() {
+        long pi = start("SP08_Review", Map.of());
+        complete(pi, "SP08_Review", Map.of("fitnessDecision", "stop", "stopReason", "TEST clinical stop"));
+        assertThat(byKey(pi)).hasCompletedElements("SP08_StopTreatment")
+            .hasActiveElements("Top_WaitClosure").hasNotActivatedElements("SP08_Administer");
+        close(pi);
+        assertThat(byKey(pi)).isCompleted();
         assertNoIncident(pi);
     }
 
@@ -279,6 +313,20 @@ class Version2AcceptanceIT {
         assertNoIncident(pi);
     }
 
+    @Test @DisplayName("AT-15 — restoration correlates only to the matching incident reference")
+    void at15_restorationCorrelationIsIsolated() {
+        long matching = start(null, Map.of());
+        long other = start(null, Map.of("incidentReference", "OTHER-" + UUID.randomUUID()));
+        publishWithCorrelation(matching, "System restored", referrals.get(matching),
+            Map.of("incidentReference", referrals.get(matching)));
+        assertThat(byKey(matching)).hasCompletedElements("SP16R_Verify", "SP16R_Reconcile", "SP16R_Audit", "SP16R_End");
+        publishWithCorrelation(other, "System restored", referrals.get(matching),
+            Map.of("incidentReference", referrals.get(matching)));
+        assertThat(byKey(other)).hasNotActivatedElements("SP16R_Verify");
+        assertNoIncident(matching);
+        assertNoIncident(other);
+    }
+
     @Test @DisplayName("AT-04 — additional clinical information can be received before redirection")
     void at04_informationThenRedirect() {
         long pi = openReferral();
@@ -300,13 +348,26 @@ class Version2AcceptanceIT {
         assertNoIncident(pi);
     }
 
+    @Test @DisplayName("AT-05 — a valid requested review window retries slot search")
+    void at05_retriesWithinRequestedWindow() {
+        String deadline = java.time.LocalDate.now().plusDays(14).toString();
+        long pi = start("SP03_Catch_Slot", Map.of("requestedReviewBy", deadline, "slotSearchAttempts", 1));
+        publish(pi, "Scheduling result", Map.of("slotFound", false));
+        complete(pi, "SP03_NoSlotReview", Map.of("requestedReviewBy", deadline, "schedulingExceptionReason", "TEST no slot"));
+        assertThat(byKey(pi)).hasActiveElements("SP03_Catch_Slot").hasCompletedElement("SP03_RequestSlot", 1);
+        publish(pi, "Scheduling result", Map.of("slotFound", true));
+        assertThat(byKey(pi)).hasCompletedElements("SP03_ConfirmBooking")
+            .isWaitingForMessage("HPAS: Clinic visit completed", referrals.get(pi));
+        assertNoIncident(pi);
+    }
+
     @Test @DisplayName("AT-07 — invalid request returns for correction before an external booking")
     void at07_correctInvalidRequest() {
-        long pi = start("SP04_CreateRequest", Map.of("requestValid", false));
+        long pi = start("SP04_CreateRequest", Map.of("requestValid", false, "externalAvailable", true));
         complete(pi, "SP04_CreateRequest", Map.of("requestValid", false, "resourceType", "external"));
         assertThat(byKey(pi)).hasCompletedElement("SP04_CreateRequest", 1).hasActiveElements("SP04_CreateRequest");
         complete(pi, "SP04_CreateRequest", Map.of("requestValid", true, "resourceType", "external"));
-        publish(pi, "External availability result", Map.of("externalAvailable", true));
+        assertThat(byKey(pi)).hasCompletedElements("SP05_BookExternal").hasActiveElements("SP08_Catch_Lab");
         assertThat(byKey(pi)).hasActiveElements("SP08_Catch_Lab").hasCompletedElement("SP04_CreateRequest", 2);
         assertNoIncident(pi);
     }
@@ -316,11 +377,26 @@ class Version2AcceptanceIT {
     void at07_supportedFundingRoutes(String route) {
         long pi = start("SP06_Determine", Map.of("fundingRoute", route, "exemptionAuthorised", true));
         if (route.equals("insurer")) {
+            assertThat(byKey(pi)).hasActiveElements("SP06_Catch_Approval");
             publish(pi, "Funding approval received", Map.of("fundingAuthorised", true));
-            complete(pi, "SP06_RecordApproval", Map.of());
+            complete(pi, "SP06_RecordApproval", Map.of("fundingAuthorised", true));
         }
-        if (route.equals("patient-pay")) publish(pi, "Payment status", Map.of("paymentStatus", "completed"));
+        if (route.equals("patient-pay")) {
+            assertThat(byKey(pi)).hasActiveElements("SP07_Catch_Status");
+            publish(pi, "Payment status", Map.of("paymentStatus", "completed"));
+        }
         assertThat(byKey(pi)).hasActiveElements("SP08_Catch_Lab");
+        assertNoIncident(pi);
+    }
+
+    @Test @DisplayName("AT-07 — a funding denial stays pending and prevents payment and treatment")
+    void at07_deniedFundingDoesNotProceed() {
+        long pi = start("SP06_Determine", Map.of("fundingRoute", "insurer"));
+        assertThat(byKey(pi)).hasActiveElements("SP06_Catch_Approval");
+        publish(pi, "Funding approval received", Map.of("fundingAuthorised", false));
+        complete(pi, "SP06_RecordApproval", Map.of("fundingAuthorised", false));
+        assertThat(byKey(pi)).hasActiveElements("SP06_Catch_Approval")
+            .hasNotActivatedElements("SP07_SendPaymentRequest", "SP08_RequestBloods", "SP08_Administer");
         assertNoIncident(pi);
     }
 
@@ -405,7 +481,8 @@ class Version2AcceptanceIT {
         long pi = start(null, Map.of("urgentChange", urgent, "formallyAuthorised", authorised, "financialImpact", financial));
         publish(pi, "Treatment change requested", Map.of());
         if (urgent) complete(pi, "SP09_Retrospective", Map.of("formallyAuthorised", authorised));
-        if (authorised && financial) complete(pi, "SP09_FinanceReview", Map.of("refundRequired", false));
+        if (authorised && financial) complete(pi, "SP09_FinanceReview", Map.of(
+            "refundRequired", false, "financialImpact", true, "financialReviewComplete", true));
         assertThat(byKey(pi)).hasCompletedElements(authorised ? "SP09_End" : "SP09_End_Rejected");
         if (authorised) assertThat(byKey(pi)).hasCompletedElements("SP09_ApplyChange");
         else assertThat(byKey(pi)).hasNotActivatedElements("SP09_ApplyChange");
@@ -416,11 +493,41 @@ class Version2AcceptanceIT {
     void at11_appointmentChangeCurrentRoutes(boolean acceptable) {
         long pi = start(null, Map.of("changeKind", "reschedule"));
         publish(pi, "Appointment change requested", Map.of());
+        assertThat(byKey(pi)).hasActiveElements("SP03B_Catch_Result");
         publish(pi, "Scheduling result", Map.of("slotAcceptable", acceptable));
-        if (!acceptable) complete(pi, "SP03B_Review", Map.of());
+        complete(pi, "SP03B_Review", acceptable ? Map.of(
+            "identityVerified", true,
+            "requestedReviewBy", java.time.LocalDate.now().plusDays(30).toString(),
+            "offeredAppointmentDate", java.time.LocalDate.now().plusDays(14).toString(),
+            "withinTwoWeeks", false) : Map.of("identityVerified", false));
         assertThat(byKey(pi)).hasCompletedElements("SP03B_End");
         if (acceptable) assertThat(byKey(pi)).hasCompletedElements("SP03B_Rebook", "SP03B_Notify");
         else assertThat(byKey(pi)).hasNotActivatedElements("SP03B_Rebook");
+        assertNoIncident(pi);
+    }
+
+    @ParameterizedTest(name = "AT-11 rejected reschedule: {0}")
+    @CsvSource({"identity,false", "deadline,true", "phone,true"})
+    void at11_rescheduleEligibilityGuards(String reason, boolean identityVerified) {
+        long pi = start(null, Map.of("changeKind", "reschedule"));
+        publish(pi, "Appointment change requested", Map.of());
+        assertThat(byKey(pi)).hasActiveElements("SP03B_Catch_Result");
+        String offeredDate = java.time.LocalDate.now().plusDays(3).toString();
+        publish(pi, "Scheduling result", Map.of("slotAcceptable", true,
+            "offeredAppointmentDate", offeredDate, "withinTwoWeeks", true));
+        Map<String, Object> review = new HashMap<>();
+        review.put("identityVerified", identityVerified);
+        review.put("requestedReviewBy", reason.equals("deadline")
+            ? java.time.LocalDate.now().minusDays(1).toString() : java.time.LocalDate.now().plusDays(7).toString());
+        review.put("offeredAppointmentDate", offeredDate);
+        review.put("withinTwoWeeks", true);
+        review.put("phoneContactCompleted", reason.equals("phone"));
+        complete(pi, "SP03B_Review", review);
+        if (reason.equals("phone")) {
+            assertThat(byKey(pi)).hasCompletedElements("SP03B_Rebook", "SP03B_Notify", "SP03B_End");
+        } else {
+            assertThat(byKey(pi)).hasCompletedElements("SP03B_End").hasNotActivatedElements("SP03B_Rebook");
+        }
         assertNoIncident(pi);
     }
 
@@ -446,10 +553,25 @@ class Version2AcceptanceIT {
     void at13_refundCurrentRoutes(boolean due) {
         long pi = start(null, Map.of());
         publish(pi, "Refund case opened", Map.of());
-        complete(pi, "SP11_Determine", Map.of("refundDue", due, "financeApprover", "TEST-FINANCE"));
-        if (due) publish(pi, "Refund result", Map.of("refundStatus", "completed"));
+        complete(pi, "SP11_Determine", Map.of("refundDue", due, "refundScope", "full",
+            "refundAuthorised", due, "financeApprover", "TEST-FINANCE"));
+        if (due) {
+            assertThat(byKey(pi)).hasActiveElements("SP11_Catch_Result");
+            publish(pi, "Refund result", Map.of("refundStatus", "completed"));
+        }
         assertThat(byKey(pi)).hasCompletedElements("SP11_End", due ? "SP11_Record" : "SP11_RecordNone");
         if (!due) assertThat(byKey(pi)).hasNotActivatedElements("SP11_SendRefund");
+        assertNoIncident(pi);
+    }
+
+    @Test @DisplayName("AT-13 — authorised transfer uses the distinct transfer route")
+    void at13_authorisedTransferIsNotARefund() {
+        long pi = start(null, Map.of());
+        publish(pi, "Refund case opened", Map.of());
+        complete(pi, "SP11_Determine", Map.of("refundDue", false, "refundScope", "transfer",
+            "fundTransferAuthorised", true, "financeApprover", "TEST-FINANCE"));
+        assertThat(byKey(pi)).hasCompletedElements("SP11_TransferFunds", "SP11_End")
+            .hasNotActivatedElements("SP11_SendRefund", "SP11_Record");
         assertNoIncident(pi);
     }
 
@@ -494,12 +616,7 @@ class Version2AcceptanceIT {
         long pi = start(null, Map.of());
         publish(pi, "Clinic letter required", Map.of());
         assertThat(byKey(pi)).hasActiveElements("SP13_Draft");
-        try {
-            context.increaseTime(Duration.ofDays(8));
-        } catch (RuntimeException unavailable) {
-            org.junit.jupiter.api.Assumptions.assumeTrue(false,
-                "BLOCKED: remote Camunda clock is immutable; original P7D timer is not shortened. " + unavailable.getMessage());
-        }
+        context.increaseTime(Duration.ofDays(8));
         complete(pi, "SP13_Reminder", Map.of());
         assertThat(byKey(pi)).hasActiveElements("SP13_Draft").hasCompletedElements("SP13_End_Reminder");
         context.increaseTime(Duration.ofDays(7));
@@ -516,12 +633,7 @@ class Version2AcceptanceIT {
         complete(pi, "SP13_Approve", Map.of("letterApproved", true));
         complete(pi, "SP13_AdminProcess", Map.of("adminCheck", "ok", "followUpInstructed", false));
         assertThat(byKey(pi)).hasCompletedElements("SP13_End");
-        try {
-            context.increaseTime(Duration.ofDays(8));
-        } catch (RuntimeException unavailable) {
-            org.junit.jupiter.api.Assumptions.assumeTrue(false,
-                "BLOCKED: reminder cancellation requires a controllable test clock. " + unavailable.getMessage());
-        }
+        context.increaseTime(Duration.ofDays(8));
         assertThat(byKey(pi)).hasNotActivatedElements("SP13_Reminder");
         assertNoIncident(pi);
     }
@@ -544,10 +656,18 @@ class Version2AcceptanceIT {
 
     private long start(String element, Map<String, Object> overrides) {
         String referral = "TEST-AT-" + UUID.randomUUID();
-        Map<String, Object> variables = new HashMap<>(Map.of(
-            "referralId", referral, "patientId", "TEST-PATIENT", "urgentReferral", false,
-            "withinTwoWeeks", false, "requestValid", true, "resourceType", "internal",
-            "fundingRoute", "hospital", "moreCycles", false, "appointmentPaid", false, "consentGiven", true));
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("referralId", referral);
+        variables.put("incidentReference", referral);
+        variables.put("patientId", "TEST-PATIENT");
+        variables.put("urgentReferral", false);
+        variables.put("withinTwoWeeks", false);
+        variables.put("requestValid", true);
+        variables.put("resourceType", "internal");
+        variables.put("fundingRoute", "hospital");
+        variables.put("moreCycles", false);
+        variables.put("appointmentPaid", false);
+        variables.put("consentGiven", true);
         variables.putAll(overrides);
         var command = client.newCreateInstanceCommand().processDefinitionKey(definitionKey).variables(variables);
         if (element != null) command = command.startBeforeElement(element);
@@ -560,8 +680,9 @@ class Version2AcceptanceIT {
     private void complete(long pi, String task, Map<String, Object> variables) {
         Map<String, Object> submission = new HashMap<>();
         try {
+            String suffix = Boolean.getBoolean("acceptance.candidate") ? ".form" : ".form.keep";
             var form = new com.fasterxml.jackson.databind.ObjectMapper().readTree(
-                INPUT.resolve("forms/hpas_" + task.toLowerCase(java.util.Locale.ROOT) + ".form.keep").toFile());
+                INPUT.resolve("forms/hpas_" + task.toLowerCase(java.util.Locale.ROOT) + suffix).toFile());
             sampleFields(form.path("components"), submission);
         } catch (java.io.IOException failure) {
             throw new java.io.UncheckedIOException(failure);
@@ -586,7 +707,10 @@ class Version2AcceptanceIT {
         }
     }
     private void publish(long pi, String message, Map<String, Object> variables) {
-        client.newPublishMessageCommand().messageName("HPAS: " + message).correlationKey(referrals.get(pi))
+        publishWithCorrelation(pi, message, referrals.get(pi), variables);
+    }
+    private void publishWithCorrelation(long pi, String message, String correlationKey, Map<String, Object> variables) {
+        client.newPublishMessageCommand().messageName("HPAS: " + message).correlationKey(correlationKey)
             .messageId(UUID.randomUUID().toString()).timeToLive(Duration.ofMinutes(1)).variables(variables).send().join();
     }
     private void close(long pi) { publish(pi, "Pathway closure authorised", Map.of()); }

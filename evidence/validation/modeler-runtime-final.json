@@ -1,0 +1,8 @@
+{
+  "validator": "Official bundled bpmnlint-plugin-camunda-compat camunda-cloud-8-9 (Modeler 5.51.0)",
+  "file": "1-17.bpmn",
+  "parseWarnings": [],
+  "errors": 0,
+  "warnings": 0,
+  "reports": []
+}

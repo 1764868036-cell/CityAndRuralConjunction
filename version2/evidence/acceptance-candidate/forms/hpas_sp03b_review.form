@@ -1,0 +1,107 @@
+{
+  "type": "default",
+  "id": "hpas_sp03b_review",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "heading_SP03B_Review",
+      "type": "text",
+      "text": "# Pathway team review of change request"
+    },
+    {
+      "key": "changeReview",
+      "label": "Scheduling conflict and pathway review",
+      "type": "textarea",
+      "validate": {
+        "required": true,
+        "maxLength": 2000
+      },
+      "id": "SP03B_Review_field_0",
+      "layout": {
+        "row": "SP03B_Review_row_0",
+        "columns": null
+      }
+    },
+    {
+      "id": "audit_SP03B_Review",
+      "type": "text",
+      "text": "Record the responsible person's identity; the system records the submission time and task audit."
+    },
+    {
+      "id": "actor_SP03B_Review",
+      "type": "textfield",
+      "key": "SP03B_Review_actor",
+      "label": "Responsible staff ID",
+      "validate": {
+        "required": true,
+        "maxLength": 80
+      },
+      "layout": {
+        "row": "SP03B_Review_actor",
+        "columns": null
+      }
+    },
+    {
+      "id": "identityVerified_field",
+      "type": "checkbox",
+      "key": "identityVerified",
+      "label": "Patient identity verified",
+      "layout": {
+        "row": "row_0",
+        "columns": null
+      },
+      "defaultValue": false
+    },
+    {
+      "id": "requestedReviewBy_field",
+      "type": "datetime",
+      "key": "requestedReviewBy",
+      "label": "Requested review-by date",
+      "layout": {
+        "row": "row_1",
+        "columns": null
+      },
+      "subtype": "date",
+      "validate": {
+        "required": false
+      }
+    },
+    {
+      "id": "offeredAppointmentDate_field",
+      "type": "datetime",
+      "key": "offeredAppointmentDate",
+      "label": "Date offered by the scheduling service",
+      "layout": {
+        "row": "row_2",
+        "columns": null
+      },
+      "subtype": "date",
+      "readonly": true
+    },
+    {
+      "id": "withinTwoWeeks_field",
+      "type": "checkbox",
+      "key": "withinTwoWeeks",
+      "label": "Appointment is within 14 days",
+      "layout": {
+        "row": "row_3",
+        "columns": null
+      },
+      "readonly": true,
+      "defaultValue": false
+    },
+    {
+      "id": "phoneContactCompleted_field",
+      "type": "checkbox",
+      "key": "phoneContactCompleted",
+      "label": "Telephone contact completed for a near-term appointment",
+      "layout": {
+        "row": "row_4",
+        "columns": null
+      },
+      "defaultValue": false
+    }
+  ]
+}

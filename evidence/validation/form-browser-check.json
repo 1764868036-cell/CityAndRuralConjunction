@@ -1,0 +1,19 @@
+{
+  "date": "2026-09-28",
+  "renderer": "Official form-js 2.0.1",
+  "method": "Local browser UI batch rendering and sample submission via form-preview.html",
+  "tasks": 81,
+  "passed": 81,
+  "failures": [],
+  "assertions": [
+    "Each imported task form has no validation errors with the provided sample data",
+    "Each task renders exactly one corresponding task group",
+    "Each submission includes nonempty data under its taskData_<taskId> path"
+  ],
+  "additionalManualCheck": {
+    "taskId": "P8_Task_DecideAction",
+    "scenario": "clinicalDecision=stop",
+    "result": "Action selection hidden; stop explanation visible; local submission validates. FEEL output mapping separately tested to preserve stop."
+  },
+  "scope": "Local sample data only; no task submitted to a running Camunda instance"
+}

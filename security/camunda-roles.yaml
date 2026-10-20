@@ -1,0 +1,125 @@
+# Merge into the Camunda 8.9 CLUSTER configuration (not the Java worker configuration).
+# Supply users / OIDC mappings separately; this file contains no credentials.
+camunda:
+  security:
+    authentication:
+      unprotected-api: false
+    authorizations:
+      enabled: true
+    initialization:
+      groups:
+        - groupId: medical-secretaries
+          name: Medical Secretaries
+        - groupId: consultants
+          name: Consultants
+        - groupId: clinical-nurse-specialists
+          name: Clinical Nurse Specialist Team
+        - groupId: outpatient-bookings-team
+          name: Outpatient Bookings Team
+        - groupId: treatment-bookings-team
+          name: Treatment and Chemotherapy Bookings Team
+        - groupId: finance-team
+          name: Finance Team
+        - groupId: pathway-coordinators
+          name: Patient Pathway Coordinators
+        - groupId: call-handlers
+          name: Call Handling Team
+        - groupId: administrative-managers
+          name: Administrative Manager
+        - groupId: system-administrators
+          name: Hospital IT Support and System Administration
+        - groupId: senior-management
+          name: Hospital Senior Management
+      roles:
+        - roleId: hospital-medical-secretaries
+          name: Medical Secretaries
+          groups: [medical-secretaries]
+        - roleId: hospital-consultants
+          name: Consultants
+          groups: [consultants]
+        - roleId: hospital-clinical-nurse-specialists
+          name: Clinical Nurse Specialist Team
+          groups: [clinical-nurse-specialists]
+        - roleId: hospital-outpatient-bookings-team
+          name: Outpatient Bookings Team
+          groups: [outpatient-bookings-team]
+        - roleId: hospital-treatment-bookings-team
+          name: Treatment and Chemotherapy Bookings Team
+          groups: [treatment-bookings-team]
+        - roleId: hospital-finance-team
+          name: Finance Team
+          groups: [finance-team]
+        - roleId: hospital-pathway-coordinators
+          name: Patient Pathway Coordinators
+          groups: [pathway-coordinators]
+        - roleId: hospital-call-handlers
+          name: Call Handling Team
+          groups: [call-handlers]
+        - roleId: hospital-administrative-managers
+          name: Administrative Manager
+          groups: [administrative-managers]
+        - roleId: hospital-system-administrators
+          name: Hospital IT Support and System Administration
+          groups: [system-administrators]
+        - roleId: hospital-senior-management
+          name: Hospital Senior Management
+          groups: [senior-management]
+      default-roles:
+        task-worker:
+          groups: [medical-secretaries, consultants, clinical-nurse-specialists, outpatient-bookings-team, treatment-bookings-team, finance-team, pathway-coordinators, call-handlers, administrative-managers, system-administrators, senior-management]
+      authorizations:
+        - ownerType: ROLE
+          ownerId: hospital-medical-secretaries
+          resourceType: COMPONENT
+          resourceId: tasklist
+          permissions: [ACCESS]
+        - ownerType: ROLE
+          ownerId: hospital-consultants
+          resourceType: COMPONENT
+          resourceId: tasklist
+          permissions: [ACCESS]
+        - ownerType: ROLE
+          ownerId: hospital-clinical-nurse-specialists
+          resourceType: COMPONENT
+          resourceId: tasklist
+          permissions: [ACCESS]
+        - ownerType: ROLE
+          ownerId: hospital-outpatient-bookings-team
+          resourceType: COMPONENT
+          resourceId: tasklist
+          permissions: [ACCESS]
+        - ownerType: ROLE
+          ownerId: hospital-treatment-bookings-team
+          resourceType: COMPONENT
+          resourceId: tasklist
+          permissions: [ACCESS]
+        - ownerType: ROLE
+          ownerId: hospital-finance-team
+          resourceType: COMPONENT
+          resourceId: tasklist
+          permissions: [ACCESS]
+        - ownerType: ROLE
+          ownerId: hospital-pathway-coordinators
+          resourceType: COMPONENT
+          resourceId: tasklist
+          permissions: [ACCESS]
+        - ownerType: ROLE
+          ownerId: hospital-call-handlers
+          resourceType: COMPONENT
+          resourceId: tasklist
+          permissions: [ACCESS]
+        - ownerType: ROLE
+          ownerId: hospital-administrative-managers
+          resourceType: COMPONENT
+          resourceId: tasklist
+          permissions: [ACCESS]
+        - ownerType: ROLE
+          ownerId: hospital-system-administrators
+          resourceType: COMPONENT
+          resourceId: tasklist
+          permissions: [ACCESS]
+        - ownerType: ROLE
+          ownerId: hospital-senior-management
+          resourceType: COMPONENT
+          resourceId: tasklist
+          permissions: [ACCESS]

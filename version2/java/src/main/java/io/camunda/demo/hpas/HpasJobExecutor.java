@@ -4,6 +4,8 @@ import io.camunda.client.CamundaClient;
 import io.camunda.client.api.response.ActivatedJob;
 import io.camunda.demo.hpas.persistence.HospitalDatabase;
 import io.camunda.demo.hpas.persistence.model.EventLog;
+import io.camunda.demo.hpas.persistence.model.Payment;
+import java.math.BigDecimal;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Duration;
@@ -54,7 +56,8 @@ public class HpasJobExecutor {
       case "hpas-sp03-search-slot" ->
           reply("HPAS: Scheduling result", referralId,
               Map.of("slotFound", bool(input, "simulatedSlotFound", true),
-                     "appointmentDate", text(input, "simulatedAppointmentDate", LocalDate.now().plusDays(21).toString())));
+                     "appointmentDate", text(input, "simulatedAppointmentDate", LocalDate.now().plusDays(21).toString()),
+                     "slotSearchAttempts", number(input, "slotSearchAttempts", 0) + 1));
       case "hpas-sp03-book-next-available", "hpas-sp03-confirm-booking" -> {
         output.put("appointmentId", text(input, "appointmentId", "APT-" + referralId));
         output.put("withinTwoWeeks", Boolean.parseBoolean(text(input, "withinTwoWeeks", "false")));
@@ -76,8 +79,7 @@ public class HpasJobExecutor {
         output.put("bookingStatus", "provisional");
       }
       case "hpas-sp05-request-availability" ->
-          reply("HPAS: External availability result", referralId,
-              Map.of("externalAvailable", bool(input, "simulatedExternalAvailable", true)));
+          output.put("externalAvailable", bool(input, "simulatedExternalAvailable", true));
       case "hpas-sp05-notify-pending" -> {
         output.put("bookingStatus", "pending-external-service");
         reply("HPAS: External slot released", referralId, Map.of("externalAvailable", true));
@@ -99,11 +101,34 @@ public class HpasJobExecutor {
         if (!(input.get("chargeAmount") instanceof Number)) {
           throw new IllegalStateException("Finance must provide chargeAmount before payment");
         }
+        boolean alreadyPaid = database.payments().findPaidByReferralId(referralId).isPresent();
+        boolean priorCharge = alreadyPaid || bool(input, "priorChargeFound", false);
+        output.put("priorChargeFound", priorCharge);
+        if (priorCharge) {
+          output.put("paymentStatus", "completed");
+          output.put("paymentVerified", true);
+        }
         output.put("chargeCalculated", true);
       }
       case "hpas-sp07-send-payment-request" -> {
+        if (bool(input, "priorChargeFound", false)
+            || database.payments().findPaidByReferralId(referralId).isPresent()) {
+          throw new IllegalStateException("A prior paid charge exists; do not issue another payment request");
+        }
         required(input, "appointmentId");
         String requestId = text(input, "paymentRequestId", "PAY-" + referralId);
+        Payment existing = database.payments().findByReferralId(referralId).stream()
+            .filter(payment -> requestId.equals(payment.paymentId())).findFirst().orElse(null);
+        if (existing == null) {
+          BigDecimal amount = new BigDecimal(String.valueOf(input.getOrDefault("chargeAmount", "0")));
+          database.payments().insert(new Payment(requestId, referralId, text(input, "patientId", "UNKNOWN"),
+              text(input, "chargeReference", requestId), amount, text(input, "currency", "GBP"),
+              "requested", null, false, LocalDateTime.now(), null));
+        } else if (!"paid".equals(existing.status())) {
+          database.payments().update(new Payment(existing.paymentId(), existing.referralId(), existing.patientId(),
+              existing.chargeReference(), existing.amount(), existing.currency(), "requested", null,
+              existing.priorChargeFound(), existing.requestedOn(), null));
+        }
         output.put("paymentRequestId", requestId); // deterministic idempotency key
         reply("HPAS: Payment status", referralId,
             Map.of("paymentStatus", text(input, "simulatedPaymentStatus", "completed"),
@@ -112,14 +137,23 @@ public class HpasJobExecutor {
       }
       case "hpas-sp07-record-transaction" -> {
         String status = text(input, "paymentStatus", "");
-        if (!"completed".equals(status) && !"taken".equals(text(input, "investigationOutcome", ""))) {
+        if (!"completed".equals(status) && !"taken".equals(text(input, "investigationOutcome", ""))
+            && !bool(input, "priorChargeFound", false)) {
           throw new IllegalStateException("Do not clear treatment before PSP payment is verified");
         }
         output.put("paymentStatus", "completed");
         output.put("paymentVerified", true);
+        String requestId = text(input, "paymentRequestId", "PAY-" + referralId);
+        database.payments().findByReferralId(referralId).stream()
+            .filter(payment -> requestId.equals(payment.paymentId())).findFirst()
+            .ifPresent(payment -> database.payments().update(new Payment(payment.paymentId(), payment.referralId(),
+                payment.patientId(), payment.chargeReference(), payment.amount(), payment.currency(), "paid",
+                text(input, "transactionReference", null), payment.priorChargeFound(), payment.requestedOn(),
+                LocalDateTime.now())));
       }
       case "hpas-sp07-confirm-booking" -> {
-        if (!"completed".equals(text(input, "paymentStatus", ""))) {
+        if (!"completed".equals(text(input, "paymentStatus", ""))
+            && !bool(input, "priorChargeFound", false)) {
           throw new IllegalStateException("Advance payment has not been verified");
         }
         output.put("bookingStatus", "confirmed");
@@ -142,8 +176,21 @@ public class HpasJobExecutor {
               Map.of("changeSource", "clinical-review"));
       case "hpas-sp03b-search-slot" ->
           reply("HPAS: Scheduling result", referralId,
-              Map.of("slotAcceptable", bool(input, "simulatedSlotAcceptable", true)));
+              Map.of("slotAcceptable", bool(input, "simulatedSlotAcceptable", true),
+                     "offeredAppointmentDate", text(input, "simulatedAppointmentDate", LocalDate.now().plusDays(21).toString()),
+                     "withinTwoWeeks", bool(input, "simulatedWithinTwoWeeks", false)));
       case "hpas-sp03b-apply-reschedule" -> {
+        if (!bool(input, "identityVerified", false)) {
+          throw new IllegalStateException("Patient identity must be verified before rescheduling");
+        }
+        LocalDate deadline = date(input, "requestedReviewBy");
+        LocalDate offered = date(input, "offeredAppointmentDate");
+        if (offered.isAfter(deadline)) {
+          throw new IllegalStateException("Offered appointment is outside the requested review window");
+        }
+        if (bool(input, "withinTwoWeeks", false) && !bool(input, "phoneContactCompleted", false)) {
+          throw new IllegalStateException("Near-term rescheduling requires telephone contact");
+        }
         output.put("appointmentId", text(input, "appointmentId", "APT-" + referralId));
         output.put("appointmentChanged", true);
       }
@@ -154,6 +201,9 @@ public class HpasJobExecutor {
       case "hpas-sp09-apply-change" -> {
         if (!bool(input, "formallyAuthorised", false)) {
           throw new IllegalStateException("Treatment change lacks clinical authorisation");
+        }
+        if (bool(input, "financialImpact", false) && !bool(input, "financialReviewComplete", false)) {
+          throw new IllegalStateException("Financial implications must be rechecked before applying the change");
         }
         output.put("treatmentChangeApplied", true);
       }
@@ -166,12 +216,27 @@ public class HpasJobExecutor {
               Map.of("changeKind", "reschedule"));
       case "hpas-sp10-notify-referrer" -> output.put("referrerNotified", true);
       case "hpas-sp11-send-refund" -> {
-        if (!bool(input, "refundDue", false) || !has(input, "financeApprover")) {
+        if (!bool(input, "refundDue", false) || !bool(input, "refundAuthorised", false)
+            || !has(input, "financeApprover")) {
           throw new IllegalStateException("Finance approval required before refund");
         }
         output.put("refundRequestId", text(input, "refundRequestId", "REFUND-" + referralId));
         reply("HPAS: Refund result", referralId,
             Map.of("refundStatus", "completed", "refundReference", "RF-" + referralId));
+      }
+      case "hpas-sp11-transfer-funds" -> {
+        if (!"transfer".equals(text(input, "refundScope", ""))
+            || !bool(input, "fundTransferAuthorised", false) || !has(input, "financeApprover")) {
+          throw new IllegalStateException("An authorised finance transfer decision is required");
+        }
+        output.put("fundTransferId", text(input, "fundTransferId", "TRANSFER-" + referralId));
+        output.put("fundTransferRecorded", true);
+      }
+      case "hpas-sp08-stop-treatment" -> {
+        if (!"stop".equals(text(input, "fitnessDecision", "")) || !has(input, "stopReason")) {
+          throw new IllegalStateException("A recorded clinical stop decision and reason are required");
+        }
+        output.put("treatmentStopped", true);
       }
       case "hpas-sp11-record-refund" -> output.put("refundRecorded", true);
       case "hpas-sp11-record-no-refund" -> output.put("refundRecorded", false);
@@ -204,6 +269,10 @@ public class HpasJobExecutor {
       case "hpas-sp16-apply-access" -> output.put("accessDecisionRecorded",
           bool(input, "accessAuthorised", false) ? "approved" : "denied");
       case "hpas-sp16-reconcile" -> output.put("downtimeReconciledAt", Instant.now().toString());
+      case "hpas-sp16-verify-restoration" -> {
+        required(input, "incidentReference");
+        output.put("restorationVerified", true);
+      }
       case "hpas-sp16-audit" -> output.put("auditCheckpointAt", Instant.now().toString());
       case "hpas-notify-pathway-closure" -> output.put("closureNotifiedAt", Instant.now().toString());
       default -> throw new IllegalArgumentException("Unimplemented BPMN job type: " + type);
@@ -250,5 +319,18 @@ public class HpasJobExecutor {
   private static boolean bool(Map<String, Object> input, String key, boolean fallback) {
     Object value = input.get(key);
     return value == null ? fallback : Boolean.parseBoolean(String.valueOf(value));
+  }
+
+  private static int number(Map<String, Object> input, String key, int fallback) {
+    Object value = input.get(key);
+    if (value instanceof Number n) return n.intValue();
+    try { return value == null ? fallback : Integer.parseInt(String.valueOf(value)); }
+    catch (NumberFormatException ignored) { return fallback; }
+  }
+
+  private static LocalDate date(Map<String, Object> input, String key) {
+    String value = text(input, key, "");
+    if (value.isBlank()) throw new IllegalStateException("Missing required process variable: " + key);
+    return LocalDate.parse(value.length() >= 10 ? value.substring(0, 10) : value);
   }
 }

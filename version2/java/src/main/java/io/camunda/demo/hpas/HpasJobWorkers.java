@@ -177,6 +177,11 @@ public class HpasJobWorkers {
     return executor.execute("hpas-sp08-request-bloods", job);
   }
 
+  @JobWorker(type = "hpas-sp08-stop-treatment")
+  public Map<String, Object> hpas_sp08_stop_treatment(ActivatedJob job) {
+    return executor.execute("hpas-sp08-stop-treatment", job);
+  }
+
   @JobWorker(type = "hpas-sp09-apply-change")
   public Map<String, Object> hpas_sp09_apply_change(ActivatedJob job) {
     return executor.execute("hpas-sp09-apply-change", job);
@@ -220,6 +225,11 @@ public class HpasJobWorkers {
   @JobWorker(type = "hpas-sp11-send-refund")
   public Map<String, Object> hpas_sp11_send_refund(ActivatedJob job) {
     return executor.execute("hpas-sp11-send-refund", job);
+  }
+
+  @JobWorker(type = "hpas-sp11-transfer-funds")
+  public Map<String, Object> hpas_sp11_transfer_funds(ActivatedJob job) {
+    return executor.execute("hpas-sp11-transfer-funds", job);
   }
 
   @JobWorker(type = "hpas-sp12-close-record")
@@ -285,6 +295,11 @@ public class HpasJobWorkers {
   @JobWorker(type = "hpas-sp16-reconcile")
   public Map<String, Object> hpas_sp16_reconcile(ActivatedJob job) {
     return executor.execute("hpas-sp16-reconcile", job);
+  }
+
+  @JobWorker(type = "hpas-sp16-verify-restoration")
+  public Map<String, Object> hpas_sp16_verify_restoration(ActivatedJob job) {
+    return executor.execute("hpas-sp16-verify-restoration", job);
   }
 
 }

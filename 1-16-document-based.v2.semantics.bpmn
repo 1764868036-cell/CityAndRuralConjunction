@@ -1,0 +1,1370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  id="Definitions_Hospital_Pathway_v2"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_Hospital">
+    <bpmn:message id="Message_ReferralComplete" name="Complete referral package for clinical review" />
+    <bpmn:message id="Message_AcceptedReferral" name="Accepted referral released for initial consultation booking" />
+    <bpmn:message id="Message_ConsentGranted" name="Informed consent and authorised treatment plan" />
+    <bpmn:message id="Message_TreatmentReadyForFinance" name="Provisional treatment arrangements ready for funding verification" />
+    <bpmn:message id="Message_FundingClearance" name="Funding cleared; no advance payment message" />
+    <bpmn:message id="Message_FundingPending" name="Funding or payment unresolved message" />
+    <bpmn:message id="Message_AdvancePaymentRequired" name="Advance patient payment is required" />
+    <bpmn:message id="Message_PaymentConfirmed" name="Payment confirmed message" />
+    <bpmn:message id="Message_PaymentUnresolved" name="Payment unresolved; do not charge again" />
+    <bpmn:message id="Message_TreatmentBooked" name="Financially cleared treatment booking ready for care message" />
+    <bpmn:message id="Message_NextCycleRequested" name="Next cycle authorised by Consultant message" />
+    <bpmn:message id="Message_TreatmentPlanChanged" name="Clinically authorised plan change received message" />
+    <bpmn:message id="Message_ClinicalPriorityReview" name="Scheduling conflict requires clinical prioritisation message" />
+    <bpmn:message id="Message_PriorityDecision" name="Receive the clinical priority decision message" />
+    <bpmn:message id="Message_ClinicalInquiry" name="Clinical enquiry referred by Call Handling message" />
+    <bpmn:message id="Message_ClinicalInquiryResponse" name="Clinical enquiry response" />
+    <bpmn:message id="Message_FinanceInquiryResponse" name="Finance enquiry response" />
+    <bpmn:message id="Message_FollowupSchedulingConflict" name="Follow-up appointment cannot meet the authorised timeframe message" />
+    <bpmn:message id="Message_SchedulingConflict" name="No suitable slot in the requested window or urgent conflict message" />
+    <bpmn:message id="Message_SchedulingResponse" name="Appointment options returned by scheduling service" />
+    <bpmn:message id="Message_FundingChangeReview" name="Funding change requires reassessment message" />
+    <bpmn:message id="Message_CaseClinicalReview" name="Cancellation / no-show needs clinical review message" />
+    <bpmn:message id="P11_Message_RefundCaseReceived" name="RefundCaseReceivedMessage" />
+    <bpmn:message id="P13_Message_ClinicVisitCompleted" name="ClinicVisitCompletedMessage" />
+    <bpmn:message id="P14_Message_FollowUpRequested" name="FollowUpRequestedMessage" />
+    <bpmn:message id="Message_PatientChangeInitiated" name="Patient initiates an appointment-change request" />
+    <bpmn:participant id="Participant_Referrer" name="Referring Organisation" processRef="Process_Referrer"/>
+    <bpmn:participant id="Participant_Patient" name="Patient" processRef="Process_Patient"/>
+    <bpmn:participant id="Participant_Scheduling" name="Scheduling Service" processRef="Process_Scheduling"/>
+    <bpmn:participant id="Participant_TreatmentServices" name="Treatment / Laboratory / Imaging Service" processRef="Process_TreatmentServices"/>
+    <bpmn:participant id="Participant_Funder" name="Insurer / Funding Organisation" processRef="Process_Funder"/>
+    <bpmn:participant id="Participant_PSP" name="Payment Service Provider" processRef="Process_PSP"/>
+    <bpmn:participant id="P13_Participant_0la8jxn" name="External correspondence service" processRef="Process_Correspondence"/>
+    <bpmn:participant id="P13_Participant_0unpbhd" name="delay-tracking computer system" processRef="Process_DelayTracking"/>
+    <bpmn:participant id="Participant_Hospital" name="Hospital Patient Pathway System" processRef="Process_Hospital_Integrated"/>
+    <bpmn:messageFlow id="MessageFlow_Referral" sourceRef="Participant_Referrer" targetRef="R1_Start" messageRef="Message_Referral"/>
+    <bpmn:messageFlow id="MessageFlow_PatientPreference" sourceRef="Participant_Patient" targetRef="R3_PatientPreference" messageRef="Message_PatientPreference"/>
+    <bpmn:messageFlow id="MessageFlow_ScheduleRequest" sourceRef="R3_RequestSchedule" targetRef="Participant_Scheduling" messageRef="Message_SchedulingRequest"/>
+    <bpmn:messageFlow id="MessageFlow_TreatmentServiceRequest" sourceRef="R5_RequestService" targetRef="Participant_TreatmentServices" messageRef="Message_TreatmentServiceRequest"/>
+    <bpmn:messageFlow id="MessageFlow_FunderRequest" sourceRef="R6_RequestAuth" targetRef="Participant_Funder" messageRef="Message_FunderRequest"/>
+    <bpmn:messageFlow id="MessageFlow_PaymentRequest" sourceRef="R7_SendPaymentRequest" targetRef="Participant_PSP" messageRef="Message_PaymentRequest"/>
+    <bpmn:messageFlow id="P13_Flow_0vb3us2" name="delay record stored in the tracking system" sourceRef="P13_Activity_0nwm6rp" targetRef="P13_Participant_0unpbhd" messageRef="Message_DelayRecord"/>
+    <bpmn:messageFlow id="MF_P13_SendCorrespondence" name="Approved letter submitted for correspondence entry" sourceRef="P13_Task_SendToCorrespondence" targetRef="P13_Participant_0la8jxn" messageRef="Message_ApprovedLetter"/>
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Hospital_Integrated" name="Hospital Patient Pathway - Processes 1-16" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_Main">
+      <bpmn:lane id="Lane_Hospital_11" name="Hospital Senior Management">
+        <bpmn:flowNodeRef>P13_Event_1ljjocr</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Task_SeniorReview</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Hospital_10" name="Hospital IT Support and System Administration">
+        <bpmn:flowNodeRef>P16</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P16_Task_Grant</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P16_Gateway_AccessMerge</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P16_Task_Audit</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P16_End_Access</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P16_Task_RecordInterruption</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P16_Catch_Restored</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P16_Task_Reconcile</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P16_End_Restored</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P16_Gateway_Access</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P16_Task_Authenticate</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P16_Task_Downtime</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_016</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_017</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_076</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_077</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Hospital_09" name="Administrative Manager">
+        <bpmn:flowNodeRef>P13_Activity_0ae9rsk</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Activity_12183sr</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_End_ManagerContact</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Hospital_08" name="Call Handling Team">
+        <bpmn:flowNodeRef>P12</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_Activity_1ffpmgw</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_Activity_13m3bda</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_Activity_0qe6qfi</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_Activity_1gk0gd9</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_Gateway_12mkp6v</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_Activity_1llzkmw</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_Activity_0z9svo5</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_Gateway_01f3y4w</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_Gateway_11cqacy</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_Gateway_1jcgyli</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_Activity_1cxqg1o</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_Activity_0iv7m7o</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_Activity_1rzh2hz</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_Activity_16idm3v</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_Event_0qw1zi1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_End_ClinicalResponse</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Gateway_StartMerge</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Task_RecordRequest</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Task_VerifyIdentity</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Gateway_RouteType</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Task_ReferPlanChange</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Task_ReferFundingChange</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_End_FinanceRouted</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Merge_Entry_P17_Start_ChangeRequest</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Gateway_IdentityVerified</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_013</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_045</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_060</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_062</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_063</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_064</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_086</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_090</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Hospital_07" name="Patient Pathway Coordinators">
+        <bpmn:flowNodeRef>Hospital_End</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CompletionMerge_02</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CompletionMerge_03</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CompletionMerge_09</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CompletionMerge_10</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CompletionMerge_11</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CompletionMerge_12</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CompletionMerge_13</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CompletionMerge_14</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CompletionMerge_15</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CompletionMerge_16</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CompletionMerge_17</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P15</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XRoute_093</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XRoute_094</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XRoute_095</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XRoute_096</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XRoute_097</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XRoute_098</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XRoute_099</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XRoute_100</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XRoute_101</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XRoute_102</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XRoute_103</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P10_Gateway_Decide</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P10_Task_NotifyReferrer</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Gateway_0r6f1k1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Activity_0nwm6rp</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Activity_0aygpgf</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Gateway_0hhaw6j</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Activity_0ccs70w</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Event_1o398fk</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Event_13dkl6t</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Gateway_10dulol</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Event_0vf9q3w</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Activity_0oe33ui</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Activity_0wt7ysb</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Event_058txvk</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P14_Task_Hand</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P15_Task_Collect</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P15_Task_Generate</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P15_Task_Publish</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P15_End_Report</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P15_Task_UpdateMonitoringRecord</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P15_End_RecordUpdated</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Start_FollowUpConflict</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Task_KeepExisting</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Task_EscalatePathway</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Task_SendPriorityReview</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Catch_PriorityDecision</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Task_RecordPriorityDecision</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Gateway_WaitSevenDay</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Catch_CompletedSevenDay</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Gateway_WaitOneMonth</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Catch_CompletedOneMonth</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Gateway_CheckBeforeOneMonth</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Gateway_WaitThreeMonth</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Catch_CompletedThreeMonth</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Gateway_CheckBeforeThreeMonth</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_End_Escalated</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Activity_0ba3vii</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XSplit_001</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XSplit_002</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XSplit_004</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XSplit_005</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_014</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_015</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_065</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_066</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_067</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_068</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_072</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_074</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_075</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_085</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Hospital_06" name="Finance Team">
+        <bpmn:flowNodeRef>P06</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P07</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P11</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R6_Start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R6_AuthNeeded</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R6_RequestAuth</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R6_ReceiveAuth</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R6_AuthApproved</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R6_RecordAllocation</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R6_FundingReady</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R6_ResolveGap</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R6_FundingPending</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P6_Start_FundingChange</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P6_Task_RequestPayment</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R7_Start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R7_CalculateCharge</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R7_SendPaymentRequest</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R7_ReceivePaymentResult</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R7_PaymentPaid</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R7_RecordPayment</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R7_NotifyRetry</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R7_RetryAllowed</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R7_CheckPriorCharge</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R7_NoChargeFound</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R7_FlagInvestigation</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R7_ReconcilePayment</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R7_ReconciledPaid</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P7_Task_SendPaymentConfirmation</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P9_Task_FinanceReview</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P10_Task_Finance</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P11_Start_RefundCase</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P11_Task_Decide</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P11_Gateway_Outcome</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P11_Task_SendRequest</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P11_Task_RecordResult</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P11_End_Refunded</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P11_Task_RecordDecision</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P11_End_Rejected</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P11_Task_LinkRecords</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Finance_RefundReview</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_RefundAuthorized</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Finance_RecordRefund</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P11_Catch_RefundResult</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_Event_11yxbm9</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_End_FinanceResponse</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P6_Task_SendFinanceReply</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P6_Task_RespondFinanceInquiry</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R6_ClassifyFunding</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P6_Task_SendFundingClearance</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R7_PaymentPending</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P11_End_Transferred</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_009</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_027</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_031</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_034</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_037</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_038</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_039</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_040</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_058</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_059</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_083</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_087</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_089</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_091</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_092</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Hospital_05" name="Treatment and Chemotherapy Bookings Team">
+        <bpmn:flowNodeRef>P05</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P09</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R5_Start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R5_RequestService</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R5_ReceiveService</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R5_AllAvailable</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R5_ConfirmTreatment</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R5_TreatmentBooked</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Confirm_Treatment_Booking</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P5_Start_NextCycle</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P5_Start_ChangedPlan</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P5_Gateway_StartMerge</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P5_Gateway_ClearanceMerge</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P5_Task_HoldTreatment</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P9_Gateway_Type</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P9_End_NotProcessed</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P9_Task_AdjustSchedule</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P9_Gateway_Costs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P9_End_NoImpact</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P5_Gateway_FollowUpType</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Merge_Entry_P9_Start_ChangeRequest</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R5_ReviewPlan</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R5_KeepPending</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R5_RetryService</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P9_Task_DoNotProcess</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_011</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_029</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_030</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_032</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_035</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_036</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_041</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_047</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_050</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_051</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_052</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_053</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Hospital_04" name="Outpatient Bookings Team">
+        <bpmn:flowNodeRef>P03</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P10</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P14</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_Start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_PatientPreference</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_RequestSchedule</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_ReceiveSchedule</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_RecordAvailability</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_SlotAvailable</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_BookSendOffer</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_PatientResponse</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_Booked</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_Waitlist</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_AlternativeDate</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_Declined</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_PatientDeclined</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_WaitPatientDecision</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_Task_ForwardAlternative</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P10_Task_Record</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P10_Task_Rebook</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P10_Gateway_Paid</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P10_End_Closed</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P14_Gateway_Slot</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P14_Task_Book</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P14_Task_Mark</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P14_Task_Receive</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P14_EndEvent_Booked</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P14_Task_Notify</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P14_StartEvent_Request</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P14_Task_RequestSlot</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P14_Catch_SchedulingResponse</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Start_AppointmentConflict</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Task_RequestSlot</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Catch_SchedulingResponse</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Gateway_SlotSuitable</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Task_UpdateBooking</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Gateway_WithinTwoWeeks</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Task_TelephonePatient</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Task_NotifyPatient</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_Gateway_NotifyMerge</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P17_End_Rescheduled</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_Gateway_Escalate</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_RetryWait</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_Task_ForwardConflict</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XSplit_003</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_012</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_018</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_022</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_024</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_025</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_043</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_054</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_056</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_057</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_069</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_070</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_071</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_073</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_078</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_079</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_080</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_081</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_088</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Hospital_03" name="Clinical Nurse Specialist Team">
+        <bpmn:flowNodeRef>P8_Task_Review</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Catch_Results</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Start_ClinicalEnquiry</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Task_AnswerClinicalInquiry</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Task_SendClinicalReply</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P12_Event_09ty25j</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Hospital_02" name="Consultants">
+        <bpmn:flowNodeRef>P02</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P04</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P08</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R2_Start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R2_Review</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R2_Suitable</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R2_Route</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R2_Accepted</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R2_Decline</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R2_NotSuitable</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R2_SendAcceptedOutcome</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R4_Assess</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R4_Explain</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R4_Consent</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R4_RecordConsent</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R4_Consented</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R4_RecordRefusal</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R4_Declined</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R4_Gateway_WaitPatientDecision</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R4_Catch_Consent</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R4_Catch_Refusal</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Task_Evaluate</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Gateway_Fit</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Task_NextCycle</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Gateway_Action</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_End_Delayed</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Timer_Reassessment</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R8_ClinicalReview</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Deliver_Treatment_Cycle</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Start_TreatmentBooked</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Start_CaseReview</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Start_SchedulingPriority</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Task_AssessPriority</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Task_SendPriorityDecision</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Task_SendNextCycle</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Task_SendPlanChange</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Task_SendRefundCase</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P9_Task_Postpone</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P9_Task_RecordApproval</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P9_Task_ConfirmClinicalApproval</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P10_Task_ClinicalReview</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Activity_0az5u78</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Gateway_1vkb7lp</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Activity_1xgw427</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Gateway_0utxesn</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Activity_0m2occw</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Event_0g4lbns</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Gateway_ReviewFork</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P4_Gateway_ConsentFork</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Gateway_PreparationAndMonitoring</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P9_Gateway_ClinicalApproval</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Service_OpenLetter</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3_Catch_ClinicVisit</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Task_DecideAction</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P8_Gateway_ReviewEntry</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Activity_0f4hol4</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Activity_0wdxagy</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_008</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_010</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_020</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_021</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_023</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_026</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_028</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_033</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_042</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_044</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_046</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_048</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_049</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_055</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_061</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_082</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_084</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Hospital_01" name="Medical Secretaries">
+        <bpmn:flowNodeRef>Start_Tasklist</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R1_Start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Inbox_R4_Start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Inbox_P6_Start_FinanceInquiry</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Inbox_P8_Start_CycleDue</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Inbox_P8_Start_PatientArrives</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Inbox_P9_Start_ChangeRequest</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Inbox_P10_Start_Report</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Inbox_P12_StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Inbox_P15_Start_Monitor</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Inbox_P15_Start_RecordUpdate</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Inbox_P16_Start_Access</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Inbox_P16_Start_Interruption</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Inbox_P17_Start_ChangeRequest</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P01</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R1_RegisterCheck</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R1_Complete</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P1_Gateway_StartMerge</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Activity_0mfrh8d</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Activity_1yti6jj</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Gateway_1uxwgi9</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Activity_1t7mm3x</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R1_Ready</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R1_RequestDocs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R1_UpdateReferral</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R1_ReceiveDocs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Task_SendToCorrespondence</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Catch_CorrespondenceEntry</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P13_Activity_19r74id</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_006</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XEntry_007</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_019</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>XExit_104</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:exclusiveGateway  id="CompletionMerge_02" gatewayDirection="Converging"/>
+    <bpmn:exclusiveGateway  id="CompletionMerge_03" gatewayDirection="Converging"/>
+    <bpmn:exclusiveGateway  id="CompletionMerge_09" gatewayDirection="Converging"/>
+    <bpmn:exclusiveGateway  id="CompletionMerge_10" gatewayDirection="Converging"/>
+    <bpmn:exclusiveGateway  id="CompletionMerge_11" gatewayDirection="Converging"/>
+    <bpmn:exclusiveGateway  id="CompletionMerge_12" gatewayDirection="Converging"/>
+    <bpmn:exclusiveGateway  id="CompletionMerge_13" gatewayDirection="Converging"/>
+    <bpmn:exclusiveGateway  id="CompletionMerge_14" gatewayDirection="Converging"/>
+    <bpmn:exclusiveGateway  id="CompletionMerge_15" gatewayDirection="Converging"/>
+    <bpmn:exclusiveGateway  id="CompletionMerge_16" gatewayDirection="Converging"/>
+    <bpmn:exclusiveGateway  id="CompletionMerge_17" gatewayDirection="Converging"/>
+    <bpmn:endEvent  id="Hospital_End" name="Hospital pathway completed"/>
+    <bpmn:startEvent  id="Inbox_P10_Start_Report" name="Cancellation, refusal or no-show reported"/>
+    <bpmn:startEvent  id="Inbox_P12_StartEvent_1" name="Patient question received"/>
+    <bpmn:startEvent  id="Inbox_P15_Start_Monitor" name="Monitoring run or report request received"/>
+    <bpmn:startEvent  id="Inbox_P15_Start_RecordUpdate" name="A pathway record changes"/>
+    <bpmn:startEvent  id="Inbox_P16_Start_Access" name="Staff identity or access change request received"/>
+    <bpmn:startEvent  id="Inbox_P16_Start_Interruption" name="System or external-service interruption reported"/>
+    <bpmn:startEvent  id="Inbox_P17_Start_ChangeRequest" name="Patient requests a change to an existing appointment"/>
+    <bpmn:startEvent  id="Inbox_P6_Start_FinanceInquiry" name="Finance enquiry received"/>
+    <bpmn:startEvent  id="Inbox_P8_Start_CycleDue" name="Next treatment cycle due"/>
+    <bpmn:startEvent  id="Inbox_P8_Start_PatientArrives" name="Patient attends a treatment cycle"/>
+    <bpmn:startEvent  id="Inbox_P9_Start_ChangeRequest" name="Treatment change request received"/>
+    <bpmn:startEvent  id="Inbox_R4_Start" name="Clinic visit completed"/>
+    <bpmn:startEvent  id="R1_Start" name="Receive referral message"/>
+    <bpmn:startEvent  id="Start_Tasklist" name="Start referral in Tasklist"/>
+    <bpmn:exclusiveGateway id="XRoute_093" name="Where to next?" default="fMain_479"/>
+    <bpmn:exclusiveGateway id="XRoute_094" name="Where to next?" default="fMain_482"/>
+    <bpmn:exclusiveGateway id="XRoute_095" name="Where to next?" default="fMain_485"/>
+    <bpmn:exclusiveGateway id="XRoute_096" name="Where to next?" default="fMain_488"/>
+    <bpmn:exclusiveGateway id="XRoute_097" name="Where to next?" default="fMain_491"/>
+    <bpmn:exclusiveGateway id="XRoute_098" name="Where to next?" default="fMain_495"/>
+    <bpmn:exclusiveGateway id="XRoute_099" name="Where to next?" default="fMain_501"/>
+    <bpmn:exclusiveGateway id="XRoute_100" name="Where to next?" default="fMain_505"/>
+    <bpmn:exclusiveGateway id="XRoute_101" name="Where to next?" default="fMain_510"/>
+    <bpmn:exclusiveGateway id="XRoute_102" name="Where to next?" default="fMain_513"/>
+    <bpmn:exclusiveGateway id="XRoute_103" name="Where to next?" default="fMain_515"/>
+    <bpmn:exclusiveGateway id="XSplit_001" name=""/>
+    <bpmn:exclusiveGateway id="XSplit_002" name=""/>
+    <bpmn:subProcess id="P01" name="P01 Receive Referral">
+      <bpmn:exclusiveGateway  id="P1_Gateway_StartMerge" name="Start source"/>
+      <bpmn:exclusiveGateway  id="R1_Complete" name="Required information complete?"/>
+      <bpmn:intermediateThrowEvent  id="R1_Ready" name="Referral complete"/>
+      <bpmn:intermediateCatchEvent  id="R1_ReceiveDocs" name="Receive requested documents"/>
+      <bpmn:userTask  id="R1_RegisterCheck" name="Register referral in PAS and check documents"/>
+      <bpmn:sendTask  id="R1_RequestDocs" name="Request missing documents" messageRef="Message_MissingDocuments"/>
+      <bpmn:userTask  id="R1_UpdateReferral" name="Update record and recheck"/>
+      <bpmn:startEvent id="XEntry_006" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_007" name="Triggered by preceding process"/>
+      <bpmn:endEvent id="XExit_019" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_104" name="Process outcome ready"/>
+      <bpmn:sequenceFlow id="fSub_105" name="Tasklist referral" sourceRef="XEntry_006" targetRef="P1_Gateway_StartMerge"/>
+      <bpmn:sequenceFlow id="fSub_106" sourceRef="XEntry_007" targetRef="R1_Complete"/>
+      <bpmn:sequenceFlow id="fSub_107" sourceRef="P1_Gateway_StartMerge" targetRef="R1_RegisterCheck"/>
+      <bpmn:sequenceFlow id="fSub_108" name="Recheck" sourceRef="R1_UpdateReferral" targetRef="R1_Complete"/>
+      <bpmn:sequenceFlow id="fSub_109" name="Yes" sourceRef="R1_Complete" targetRef="R1_Ready"/>
+      <bpmn:sequenceFlow id="fSub_110" name="No" sourceRef="R1_Complete" targetRef="R1_RequestDocs"/>
+      <bpmn:sequenceFlow id="fSub_111" name="Complete referral package" sourceRef="R1_Ready" targetRef="XExit_019"/>
+      <bpmn:sequenceFlow id="fSub_112" sourceRef="R1_RequestDocs" targetRef="R1_ReceiveDocs"/>
+      <bpmn:sequenceFlow id="fSub_113" sourceRef="R1_ReceiveDocs" targetRef="R1_UpdateReferral"/>
+      <bpmn:sequenceFlow id="fSub_114" sourceRef="R1_RegisterCheck" targetRef="XExit_104"/>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="P02" name="P02 Review and Referral">
+      <bpmn:intermediateThrowEvent  id="R2_Accepted" name="Accepted for consultation"/>
+      <bpmn:sendTask  id="R2_Decline" name="Record reason and inform referrer" messageRef="Message_ReferralOutcome"/>
+      <bpmn:intermediateThrowEvent  id="R2_NotSuitable" name="Referral not accepted"/>
+      <bpmn:userTask  id="R2_Review" name="Review clinical suitability"/>
+      <bpmn:userTask  id="R2_Route" name="Set urgency and select service"/>
+      <bpmn:sendTask  id="R2_SendAcceptedOutcome" name="Send accepted referral outcome"/>
+      <bpmn:exclusiveGateway  id="R2_Start"/>
+      <bpmn:exclusiveGateway  id="R2_Suitable" name="Clinically suitable?"/>
+      <bpmn:startEvent id="XEntry_020" name="Triggered by preceding process"/>
+      <bpmn:endEvent id="XExit_021" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_023" name="Process outcome ready"/>
+      <bpmn:sequenceFlow id="fSub_115" name="Complete referral package" sourceRef="XEntry_020" targetRef="R2_Start"/>
+      <bpmn:sequenceFlow id="fSub_116" sourceRef="R2_Start" targetRef="R2_Review"/>
+      <bpmn:sequenceFlow id="fSub_117" sourceRef="R2_Review" targetRef="R2_Suitable"/>
+      <bpmn:sequenceFlow id="fSub_118" name="Yes" sourceRef="R2_Suitable" targetRef="R2_Route"/>
+      <bpmn:sequenceFlow id="fSub_119" name="No" sourceRef="R2_Suitable" targetRef="R2_Decline"/>
+      <bpmn:sequenceFlow id="fSub_120" sourceRef="R2_Route" targetRef="R2_SendAcceptedOutcome"/>
+      <bpmn:sequenceFlow id="fSub_121" sourceRef="R2_SendAcceptedOutcome" targetRef="R2_Accepted"/>
+      <bpmn:sequenceFlow id="fSub_122" name="Accepted referral for booking" sourceRef="R2_Accepted" targetRef="XExit_021"/>
+      <bpmn:sequenceFlow id="fSub_123" sourceRef="R2_Decline" targetRef="R2_NotSuitable"/>
+      <bpmn:sequenceFlow id="fSub_124" sourceRef="R2_NotSuitable" targetRef="XExit_023"/>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="P03" name="P03 Arrange Initial Consultation and Contact Patient">
+      <bpmn:exclusiveGateway  id="Merge_Entry_P17_Start_ChangeRequest" name="Internal hand-off or external request"/>
+      <bpmn:exclusiveGateway  id="P17_Catch_PriorityDecision" name="Receive the clinical priority decision"/>
+      <bpmn:intermediateCatchEvent  id="P17_Catch_SchedulingResponse" name="Receive appointment options"/>
+      <bpmn:intermediateThrowEvent  id="P17_End_Escalated" name="Scheduling conflict escalated and recorded"/>
+      <bpmn:intermediateThrowEvent  id="P17_End_Rescheduled" name="Appointment changed and patient notified"/>
+      <bpmn:exclusiveGateway  id="P17_Gateway_IdentityVerified" name="Identity verified?"/>
+      <bpmn:exclusiveGateway  id="P17_Gateway_NotifyMerge" name="Contact completed"/>
+      <bpmn:exclusiveGateway  id="P17_Gateway_RouteType" name="Treatment plan, funding, or appointment-only change?"/>
+      <bpmn:exclusiveGateway  id="P17_Gateway_SlotSuitable" name="Suitable time within the requested clinical window?"/>
+      <bpmn:exclusiveGateway  id="P17_Gateway_StartMerge" name="Appointment-change request received"/>
+      <bpmn:exclusiveGateway  id="P17_Gateway_WithinTwoWeeks" name="Appointment is within two weeks?"/>
+      <bpmn:exclusiveGateway  id="P17_Start_AppointmentConflict" name="No suitable slot in the requested window or urgent conflict"/>
+      <bpmn:exclusiveGateway  id="P17_Start_FollowUpConflict" name="Follow-up appointment cannot meet the authorised timeframe"/>
+      <bpmn:userTask  id="P17_Task_EscalatePathway" name="Escalate to the pathway coordinator and record recipient and time"/>
+      <bpmn:userTask  id="P17_Task_KeepExisting" name="Keep the existing appointment; do not book outside the requested window"/>
+      <bpmn:sendTask  id="P17_Task_NotifyPatient" name="Send the updated appointment details to the patient"/>
+      <bpmn:userTask  id="P17_Task_RecordPriorityDecision" name="Record the clinical decision and handoff outcome"/>
+      <bpmn:userTask  id="P17_Task_RecordRequest" name="Record the request, timestamp, channel, and patient details"/>
+      <bpmn:sendTask  id="P17_Task_ReferFundingChange" name="Refer payment, funding, or exemption change to Finance"/>
+      <bpmn:sendTask  id="P17_Task_ReferPlanChange" name="Refer treatment-plan change for clinical authorisation"/>
+      <bpmn:sendTask  id="P17_Task_RequestSlot" name="Request new appointment options from the scheduling service"/>
+      <bpmn:sendTask  id="P17_Task_SendPriorityReview" name="Request a Consultant priority decision"/>
+      <bpmn:userTask  id="P17_Task_TelephonePatient" name="Telephone the patient and record the contact attempt"/>
+      <bpmn:userTask  id="P17_Task_UpdateBooking" name="Update the booking, release the old slot, and record both dates"/>
+      <bpmn:userTask  id="P17_Task_VerifyIdentity" name="Verify patient identity before changing appointment data"/>
+      <bpmn:intermediateCatchEvent  id="R3_AlternativeDate" name="Receive Patient alternative date"/>
+      <bpmn:sendTask  id="R3_BookSendOffer" name="Book slot and send appointment details" messageRef="Message_AppointmentOffer"/>
+      <bpmn:intermediateThrowEvent  id="R3_Booked" name="Consultation confirmed"/>
+      <bpmn:intermediateCatchEvent  id="R3_Catch_ClinicVisit" name="Confirmed clinic visit completed"/>
+      <bpmn:intermediateThrowEvent  id="R3_Declined" name="Patient declines consultation"/>
+      <bpmn:exclusiveGateway  id="R3_Gateway_Escalate" name="Can a retry still meet the requested timeframe?"/>
+      <bpmn:intermediateCatchEvent  id="R3_PatientDeclined" name="Receive Patient decline"/>
+      <bpmn:intermediateCatchEvent  id="R3_PatientPreference" name="Receive Patient appointment preferences"/>
+      <bpmn:intermediateCatchEvent  id="R3_PatientResponse" name="Receive patient confirmation"/>
+      <bpmn:intermediateCatchEvent  id="R3_ReceiveSchedule" name="Receive scheduling response"/>
+      <bpmn:userTask  id="R3_RecordAvailability" name="Bookings team confirms availability"/>
+      <bpmn:sendTask  id="R3_RequestSchedule" name="Request available slot" messageRef="Message_SchedulingRequest"/>
+      <bpmn:intermediateCatchEvent  id="R3_RetryWait" name="Retry after configured interval"/>
+      <bpmn:exclusiveGateway  id="R3_SlotAvailable" name="Slot available?"/>
+      <bpmn:exclusiveGateway  id="R3_Start"/>
+      <bpmn:sendTask  id="R3_Task_ForwardAlternative" name="Forward requested alternative date to appointment-change process"/>
+      <bpmn:sendTask  id="R3_Task_ForwardConflict" name="Escalate urgent or out-of-window booking"/>
+      <bpmn:eventBasedGateway  id="R3_WaitPatientDecision" name="Wait for patient response"/>
+      <bpmn:serviceTask  id="R3_Waitlist" name="Keep pending, notify patient and log retry"/>
+      <bpmn:startEvent id="XEntry_018" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_022" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_043" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_070" name="Triggered by preceding process"/>
+      <bpmn:endEvent id="XExit_024" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_025" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_078" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_079" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_080" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_081" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_088" name="Process outcome ready"/>
+      <bpmn:sequenceFlow id="fSub_125" sourceRef="XEntry_018" targetRef="Merge_Entry_P17_Start_ChangeRequest"/>
+      <bpmn:sequenceFlow id="fSub_126" name="Accepted referral for booking" sourceRef="XEntry_022" targetRef="R3_Start"/>
+      <bpmn:sequenceFlow id="fSub_127" sourceRef="R3_Start" targetRef="R3_PatientPreference"/>
+      <bpmn:sequenceFlow id="fSub_128" sourceRef="R3_PatientPreference" targetRef="R3_RequestSchedule"/>
+      <bpmn:sequenceFlow id="fSub_129" name="Retry" sourceRef="R3_RetryWait" targetRef="R3_RequestSchedule"/>
+      <bpmn:sequenceFlow id="fSub_130" sourceRef="R3_RequestSchedule" targetRef="R3_ReceiveSchedule"/>
+      <bpmn:sequenceFlow id="fSub_131" sourceRef="R3_ReceiveSchedule" targetRef="R3_RecordAvailability"/>
+      <bpmn:sequenceFlow id="fSub_132" sourceRef="R3_RecordAvailability" targetRef="R3_SlotAvailable"/>
+      <bpmn:sequenceFlow id="fSub_133" name="Yes" sourceRef="R3_SlotAvailable" targetRef="R3_BookSendOffer"/>
+      <bpmn:sequenceFlow id="fSub_134" name="No" sourceRef="R3_SlotAvailable" targetRef="R3_Waitlist"/>
+      <bpmn:sequenceFlow id="fSub_135" sourceRef="R3_BookSendOffer" targetRef="R3_WaitPatientDecision"/>
+      <bpmn:sequenceFlow id="fSub_136" name="Accept" sourceRef="R3_WaitPatientDecision" targetRef="R3_PatientResponse"/>
+      <bpmn:sequenceFlow id="fSub_137" sourceRef="R3_PatientResponse" targetRef="R3_Booked"/>
+      <bpmn:sequenceFlow id="fSub_138" name="Await the confirmed consultation" sourceRef="R3_Booked" targetRef="R3_Catch_ClinicVisit"/>
+      <bpmn:sequenceFlow id="fSub_139" sourceRef="R3_Waitlist" targetRef="R3_Gateway_Escalate"/>
+      <bpmn:sequenceFlow id="fSub_140" name="Another date" sourceRef="R3_WaitPatientDecision" targetRef="R3_AlternativeDate"/>
+      <bpmn:sequenceFlow id="fSub_141" sourceRef="R3_AlternativeDate" targetRef="R3_Task_ForwardAlternative"/>
+      <bpmn:sequenceFlow id="fSub_142" sourceRef="R3_PatientDeclined" targetRef="R3_Declined"/>
+      <bpmn:sequenceFlow id="fSub_143" sourceRef="R3_Declined" targetRef="XExit_024"/>
+      <bpmn:sequenceFlow id="fSub_144" name="Decline" sourceRef="R3_WaitPatientDecision" targetRef="R3_PatientDeclined"/>
+      <bpmn:sequenceFlow id="fSub_145" sourceRef="R3_Task_ForwardAlternative" targetRef="Merge_Entry_P17_Start_ChangeRequest"/>
+      <bpmn:sequenceFlow id="fSub_146" sourceRef="R3_Catch_ClinicVisit" targetRef="XExit_025"/>
+      <bpmn:sequenceFlow id="fSub_147" sourceRef="XEntry_043" targetRef="P17_Catch_PriorityDecision"/>
+      <bpmn:sequenceFlow id="fSub_148" sourceRef="XEntry_070" targetRef="P17_Start_FollowUpConflict"/>
+      <bpmn:sequenceFlow id="fSub_149" sourceRef="P17_Start_AppointmentConflict" targetRef="P17_Gateway_StartMerge"/>
+      <bpmn:sequenceFlow id="fSub_150" sourceRef="P17_Start_FollowUpConflict" targetRef="P17_Gateway_StartMerge"/>
+      <bpmn:sequenceFlow id="fSub_151" sourceRef="Merge_Entry_P17_Start_ChangeRequest" targetRef="P17_Gateway_StartMerge"/>
+      <bpmn:sequenceFlow id="fSub_152" sourceRef="P17_Gateway_StartMerge" targetRef="P17_Task_RecordRequest"/>
+      <bpmn:sequenceFlow id="fSub_153" name="No - correct identity details" sourceRef="P17_Gateway_IdentityVerified" targetRef="P17_Task_RecordRequest"/>
+      <bpmn:sequenceFlow id="fSub_154" sourceRef="P17_Task_RecordRequest" targetRef="P17_Task_VerifyIdentity"/>
+      <bpmn:sequenceFlow id="fSub_155" sourceRef="P17_Task_VerifyIdentity" targetRef="P17_Gateway_IdentityVerified"/>
+      <bpmn:sequenceFlow id="fSub_156" name="Yes" sourceRef="P17_Gateway_IdentityVerified" targetRef="P17_Gateway_RouteType"/>
+      <bpmn:sequenceFlow id="fSub_157" name="Treatment-plan change" sourceRef="P17_Gateway_RouteType" targetRef="P17_Task_ReferPlanChange"/>
+      <bpmn:sequenceFlow id="fSub_158" name="Funding / payment change" sourceRef="P17_Gateway_RouteType" targetRef="P17_Task_ReferFundingChange"/>
+      <bpmn:sequenceFlow id="fSub_159" name="Appointment date only" sourceRef="P17_Gateway_RouteType" targetRef="P17_Task_RequestSlot"/>
+      <bpmn:sequenceFlow id="fSub_160" sourceRef="P17_Task_ReferPlanChange" targetRef="XExit_078"/>
+      <bpmn:sequenceFlow id="fSub_161" sourceRef="P17_Task_ReferFundingChange" targetRef="XExit_079"/>
+      <bpmn:sequenceFlow id="fSub_162" sourceRef="P17_Task_RequestSlot" targetRef="P17_Catch_SchedulingResponse"/>
+      <bpmn:sequenceFlow id="fSub_163" sourceRef="P17_Catch_SchedulingResponse" targetRef="P17_Gateway_SlotSuitable"/>
+      <bpmn:sequenceFlow id="fSub_164" name="Yes" sourceRef="P17_Gateway_SlotSuitable" targetRef="P17_Task_UpdateBooking"/>
+      <bpmn:sequenceFlow id="fSub_165" name="No" sourceRef="P17_Gateway_SlotSuitable" targetRef="P17_Task_KeepExisting"/>
+      <bpmn:sequenceFlow id="fSub_166" sourceRef="P17_Task_UpdateBooking" targetRef="P17_Gateway_WithinTwoWeeks"/>
+      <bpmn:sequenceFlow id="fSub_167" name="Yes" sourceRef="P17_Gateway_WithinTwoWeeks" targetRef="P17_Task_TelephonePatient"/>
+      <bpmn:sequenceFlow id="fSub_168" name="No" sourceRef="P17_Gateway_WithinTwoWeeks" targetRef="P17_Task_NotifyPatient"/>
+      <bpmn:sequenceFlow id="fSub_169" sourceRef="P17_Task_TelephonePatient" targetRef="P17_Task_NotifyPatient"/>
+      <bpmn:sequenceFlow id="fSub_170" sourceRef="P17_Task_NotifyPatient" targetRef="P17_Gateway_NotifyMerge"/>
+      <bpmn:sequenceFlow id="fSub_171" sourceRef="P17_Gateway_NotifyMerge" targetRef="P17_End_Rescheduled"/>
+      <bpmn:sequenceFlow id="fSub_172" sourceRef="P17_End_Rescheduled" targetRef="XExit_080"/>
+      <bpmn:sequenceFlow id="fSub_173" sourceRef="P17_Task_KeepExisting" targetRef="P17_Task_EscalatePathway"/>
+      <bpmn:sequenceFlow id="fSub_174" sourceRef="P17_Task_EscalatePathway" targetRef="P17_Task_SendPriorityReview"/>
+      <bpmn:sequenceFlow id="fSub_175" sourceRef="P17_Task_SendPriorityReview" targetRef="XExit_081"/>
+      <bpmn:sequenceFlow id="fSub_176" sourceRef="P17_Catch_PriorityDecision" targetRef="P17_Task_RecordPriorityDecision"/>
+      <bpmn:sequenceFlow id="fSub_177" sourceRef="P17_Task_RecordPriorityDecision" targetRef="P17_End_Escalated"/>
+      <bpmn:sequenceFlow id="fSub_178" sourceRef="P17_End_Escalated" targetRef="XExit_088"/>
+      <bpmn:sequenceFlow id="fSub_179" name="Retry remains within the requested window" sourceRef="R3_Gateway_Escalate" targetRef="R3_RetryWait"/>
+      <bpmn:sequenceFlow id="fSub_180" name="Urgent / outside the requested window" sourceRef="R3_Gateway_Escalate" targetRef="R3_Task_ForwardConflict"/>
+      <bpmn:sequenceFlow id="fSub_181" sourceRef="R3_Task_ForwardConflict" targetRef="P17_Start_AppointmentConflict"/>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="P04" name="P04 Diagnosis and Obtaining Informed Consent">
+      <bpmn:parallelGateway  id="P4_Gateway_ConsentFork" name="Consent recorded: treatment and clinic letter"/>
+      <bpmn:userTask  id="R4_Assess" name="Consultant examines Patient and reviews investigations"/>
+      <bpmn:intermediateCatchEvent  id="R4_Catch_Consent" name="Patient consents"/>
+      <bpmn:intermediateCatchEvent  id="R4_Catch_Refusal" name="Patient refuses treatment"/>
+      <bpmn:exclusiveGateway  id="R4_Consent" name="Informed consent?"/>
+      <bpmn:intermediateThrowEvent  id="R4_Consented" name="Consent recorded"/>
+      <bpmn:intermediateThrowEvent  id="R4_Declined" name="Treatment not authorised"/>
+      <bpmn:userTask  id="R4_Explain" name="Explain diagnosis, treatment risks and alternatives"/>
+      <bpmn:eventBasedGateway  id="R4_Gateway_WaitPatientDecision" name="Wait for consent decision"/>
+      <bpmn:userTask  id="R4_RecordConsent" name="Record signed informed consent"/>
+      <bpmn:userTask  id="R4_RecordRefusal" name="Record refusal and discuss alternatives"/>
+      <bpmn:startEvent id="XEntry_008" name="Triggered by preceding process"/>
+      <bpmn:endEvent id="XExit_026" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_028" name="Process outcome ready"/>
+      <bpmn:sequenceFlow id="fSub_182" sourceRef="XEntry_008" targetRef="R4_Assess"/>
+      <bpmn:sequenceFlow id="fSub_183" sourceRef="R4_Assess" targetRef="R4_Explain"/>
+      <bpmn:sequenceFlow id="fSub_184" sourceRef="R4_Explain" targetRef="R4_Gateway_WaitPatientDecision"/>
+      <bpmn:sequenceFlow id="fSub_185" sourceRef="R4_Catch_Consent" targetRef="R4_Consent"/>
+      <bpmn:sequenceFlow id="fSub_186" sourceRef="R4_Catch_Refusal" targetRef="R4_Consent"/>
+      <bpmn:sequenceFlow id="fSub_187" name="Yes" sourceRef="R4_Consent" targetRef="R4_RecordConsent"/>
+      <bpmn:sequenceFlow id="fSub_188" name="No" sourceRef="R4_Consent" targetRef="R4_RecordRefusal"/>
+      <bpmn:sequenceFlow id="fSub_189" sourceRef="R4_RecordConsent" targetRef="R4_Consented"/>
+      <bpmn:sequenceFlow id="fSub_190" sourceRef="R4_Consented" targetRef="P4_Gateway_ConsentFork"/>
+      <bpmn:sequenceFlow id="fSub_191" sourceRef="R4_RecordRefusal" targetRef="R4_Declined"/>
+      <bpmn:sequenceFlow id="fSub_192" sourceRef="R4_Declined" targetRef="XExit_026"/>
+      <bpmn:sequenceFlow id="fSub_193" sourceRef="R4_Gateway_WaitPatientDecision" targetRef="R4_Catch_Consent"/>
+      <bpmn:sequenceFlow id="fSub_194" sourceRef="R4_Gateway_WaitPatientDecision" targetRef="R4_Catch_Refusal"/>
+      <bpmn:sequenceFlow id="fSub_195" sourceRef="P4_Gateway_ConsentFork" targetRef="XExit_028"/>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="P05" name="P05 Arrange Treatment and External Services">
+      <bpmn:userTask  id="Confirm_Treatment_Booking" name="Confirm treatment booking after financial clearance"/>
+      <bpmn:exclusiveGateway  id="P5_Gateway_ClearanceMerge" name="Clearance received"/>
+      <bpmn:exclusiveGateway  id="P5_Gateway_FollowUpType" name="Choose the required follow-up"/>
+      <bpmn:exclusiveGateway  id="P5_Gateway_StartMerge" name="Treatment booking request received"/>
+      <bpmn:exclusiveGateway  id="P5_Start_ChangedPlan" name="Clinically authorised plan change received"/>
+      <bpmn:exclusiveGateway  id="P5_Start_NextCycle" name="Next cycle authorised by Consultant"/>
+      <bpmn:userTask  id="P5_Task_HoldTreatment" name="Keep treatment on hold and notify the pathway team"/>
+      <bpmn:exclusiveGateway  id="R5_AllAvailable" name="All required services available?"/>
+      <bpmn:userTask  id="R5_ConfirmTreatment" name="Reserve provisional slots and record dependencies"/>
+      <bpmn:serviceTask  id="R5_KeepPending" name="Keep pending; notify team and log retry"/>
+      <bpmn:intermediateCatchEvent  id="R5_ReceiveService" name="Receive external service availability"/>
+      <bpmn:sendTask  id="R5_RequestService" name="Request external treatment or service slot" messageRef="Message_TreatmentServiceRequest"/>
+      <bpmn:intermediateCatchEvent  id="R5_RetryService" name="Retry after configured interval"/>
+      <bpmn:userTask  id="R5_ReviewPlan" name="Review authorised treatment plan and resources"/>
+      <bpmn:exclusiveGateway  id="R5_Start"/>
+      <bpmn:sendTask  id="R5_TreatmentBooked" name="Services provisionally arranged"/>
+      <bpmn:startEvent id="XEntry_029" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_035" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_041" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_047" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_053" name="Triggered by preceding process"/>
+      <bpmn:endEvent id="XExit_030" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_032" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_036" name="Process outcome ready"/>
+      <bpmn:sequenceFlow id="fSub_196" sourceRef="XEntry_029" targetRef="R5_Start"/>
+      <bpmn:sequenceFlow id="fSub_197" sourceRef="R5_Start" targetRef="P5_Gateway_StartMerge"/>
+      <bpmn:sequenceFlow id="fSub_198" sourceRef="R5_ReviewPlan" targetRef="R5_RequestService"/>
+      <bpmn:sequenceFlow id="fSub_199" name="Retry" sourceRef="R5_RetryService" targetRef="R5_RequestService"/>
+      <bpmn:sequenceFlow id="fSub_200" sourceRef="R5_RequestService" targetRef="R5_ReceiveService"/>
+      <bpmn:sequenceFlow id="fSub_201" sourceRef="R5_ReceiveService" targetRef="R5_AllAvailable"/>
+      <bpmn:sequenceFlow id="fSub_202" name="Yes" sourceRef="R5_AllAvailable" targetRef="R5_ConfirmTreatment"/>
+      <bpmn:sequenceFlow id="fSub_203" name="No" sourceRef="R5_AllAvailable" targetRef="R5_KeepPending"/>
+      <bpmn:sequenceFlow id="fSub_204" sourceRef="R5_ConfirmTreatment" targetRef="R5_TreatmentBooked"/>
+      <bpmn:sequenceFlow id="fSub_205" name="Verify funding for provisionally arranged treatment" sourceRef="R5_TreatmentBooked" targetRef="XExit_030"/>
+      <bpmn:sequenceFlow id="fSub_206" sourceRef="P5_Gateway_ClearanceMerge" targetRef="Confirm_Treatment_Booking"/>
+      <bpmn:sequenceFlow id="fSub_207" sourceRef="Confirm_Treatment_Booking" targetRef="XExit_032"/>
+      <bpmn:sequenceFlow id="fSub_208" sourceRef="P5_Start_NextCycle" targetRef="P5_Gateway_StartMerge"/>
+      <bpmn:sequenceFlow id="fSub_209" sourceRef="P5_Start_ChangedPlan" targetRef="P5_Gateway_StartMerge"/>
+      <bpmn:sequenceFlow id="fSub_210" sourceRef="P5_Gateway_StartMerge" targetRef="R5_ReviewPlan"/>
+      <bpmn:sequenceFlow id="fSub_211" sourceRef="P5_Task_HoldTreatment" targetRef="P5_Gateway_FollowUpType"/>
+      <bpmn:sequenceFlow id="fSub_212" sourceRef="XEntry_035" targetRef="P5_Task_HoldTreatment"/>
+      <bpmn:sequenceFlow id="fSub_213" name="Funding follow-up" sourceRef="P5_Gateway_FollowUpType" targetRef="XExit_036"/>
+      <bpmn:sequenceFlow id="fSub_214" sourceRef="XEntry_041" targetRef="P5_Gateway_ClearanceMerge"/>
+      <bpmn:sequenceFlow id="fSub_215" sourceRef="XEntry_047" targetRef="P5_Start_NextCycle"/>
+      <bpmn:sequenceFlow id="fSub_216" sourceRef="XEntry_053" targetRef="P5_Start_ChangedPlan"/>
+      <bpmn:sequenceFlow id="fSub_217" sourceRef="R5_KeepPending" targetRef="R5_RetryService"/>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="P06" name="P06 Verify Cost Allocation Method">
+      <bpmn:exclusiveGateway  id="P6_Start_FundingChange" name="Funding change requires reassessment"/>
+      <bpmn:sendTask  id="P6_Task_RequestPayment" name="Request required advance patient payment"/>
+      <bpmn:userTask  id="P6_Task_RespondFinanceInquiry" name="Review payment / funding enquiry and prepare response"/>
+      <bpmn:sendTask  id="P6_Task_SendFinanceReply" name="Return the Finance response to Call Handling"/>
+      <bpmn:sendTask  id="P6_Task_SendFundingClearance" name="Record and send funding clearance"/>
+      <bpmn:exclusiveGateway  id="R6_AuthApproved" name="Approved within limits?"/>
+      <bpmn:exclusiveGateway  id="R6_AuthNeeded" name="External authorisation required?"/>
+      <bpmn:userTask  id="R6_ClassifyFunding" name="Finance classifies payer and patient share"/>
+      <bpmn:intermediateThrowEvent  id="R6_FundingPending" name="Funding not yet approved"/>
+      <bpmn:exclusiveGateway  id="R6_FundingReady" name="Advance patient payment required?"/>
+      <bpmn:intermediateCatchEvent  id="R6_ReceiveAuth" name="Receive funding decision and limits"/>
+      <bpmn:userTask  id="R6_RecordAllocation" name="Record payer, reference, amount and limits"/>
+      <bpmn:sendTask  id="R6_RequestAuth" name="Request insurer or funder authorisation" messageRef="Message_FunderRequest"/>
+      <bpmn:userTask  id="R6_ResolveGap" name="Resolve funding gap or hold treatment"/>
+      <bpmn:exclusiveGateway  id="R6_Start"/>
+      <bpmn:startEvent id="XEntry_009" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_031" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_037" name="Triggered by preceding process"/>
+      <bpmn:endEvent id="XExit_034" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_038" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_089" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_091" name="Process outcome ready"/>
+      <bpmn:sequenceFlow id="fSub_218" sourceRef="XEntry_009" targetRef="P6_Task_RespondFinanceInquiry"/>
+      <bpmn:sequenceFlow id="fSub_219" name="Verify funding for provisionally arranged treatment" sourceRef="XEntry_031" targetRef="R6_Start"/>
+      <bpmn:sequenceFlow id="fSub_220" sourceRef="R6_Start" targetRef="R6_ClassifyFunding"/>
+      <bpmn:sequenceFlow id="fSub_221" sourceRef="R6_ClassifyFunding" targetRef="R6_AuthNeeded"/>
+      <bpmn:sequenceFlow id="fSub_222" name="Yes" sourceRef="R6_AuthNeeded" targetRef="R6_RequestAuth"/>
+      <bpmn:sequenceFlow id="fSub_223" name="No" sourceRef="R6_AuthNeeded" targetRef="R6_RecordAllocation"/>
+      <bpmn:sequenceFlow id="fSub_224" sourceRef="R6_RequestAuth" targetRef="R6_ReceiveAuth"/>
+      <bpmn:sequenceFlow id="fSub_225" sourceRef="R6_ReceiveAuth" targetRef="R6_AuthApproved"/>
+      <bpmn:sequenceFlow id="fSub_226" name="Yes" sourceRef="R6_AuthApproved" targetRef="R6_RecordAllocation"/>
+      <bpmn:sequenceFlow id="fSub_227" name="No" sourceRef="R6_AuthApproved" targetRef="R6_ResolveGap"/>
+      <bpmn:sequenceFlow id="fSub_228" sourceRef="R6_RecordAllocation" targetRef="R6_FundingReady"/>
+      <bpmn:sequenceFlow id="fSub_229" name="No advance payment required" sourceRef="R6_FundingReady" targetRef="P6_Task_SendFundingClearance"/>
+      <bpmn:sequenceFlow id="fSub_230" name="Advance payment required" sourceRef="R6_FundingReady" targetRef="P6_Task_RequestPayment"/>
+      <bpmn:sequenceFlow id="fSub_231" sourceRef="R6_ResolveGap" targetRef="R6_FundingPending"/>
+      <bpmn:sequenceFlow id="fSub_232" sourceRef="R6_FundingPending" targetRef="XExit_034"/>
+      <bpmn:sequenceFlow id="fSub_233" name="Funding follow-up" sourceRef="XEntry_037" targetRef="P6_Start_FundingChange"/>
+      <bpmn:sequenceFlow id="fSub_234" sourceRef="P6_Start_FundingChange" targetRef="R6_ClassifyFunding"/>
+      <bpmn:sequenceFlow id="fSub_235" name="Advance payment required" sourceRef="P6_Task_RequestPayment" targetRef="XExit_038"/>
+      <bpmn:sequenceFlow id="fSub_236" sourceRef="P6_Task_SendFinanceReply" targetRef="XExit_089"/>
+      <bpmn:sequenceFlow id="fSub_237" sourceRef="P6_Task_RespondFinanceInquiry" targetRef="P6_Task_SendFinanceReply"/>
+      <bpmn:sequenceFlow id="fSub_238" sourceRef="P6_Task_SendFundingClearance" targetRef="XExit_091"/>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="P07" name="P07 Process Payment Result">
+      <bpmn:sendTask  id="P7_Task_SendPaymentConfirmation" name="Send confirmed payment status to Treatment Bookings"/>
+      <bpmn:userTask  id="R7_CalculateCharge" name="Calculate charge and prepare payment request"/>
+      <bpmn:serviceTask  id="R7_CheckPriorCharge" name="Check prior transaction and idempotency"/>
+      <bpmn:serviceTask  id="R7_FlagInvestigation" name="Flag for Finance investigation; do not recharge"/>
+      <bpmn:exclusiveGateway  id="R7_NoChargeFound" name="No prior charge found?"/>
+      <bpmn:userTask  id="R7_NotifyRetry" name="Notify patient/admin; check status before retry"/>
+      <bpmn:exclusiveGateway  id="R7_PaymentPaid" name="Payment confirmed?"/>
+      <bpmn:intermediateThrowEvent  id="R7_PaymentPending" name="Payment unresolved; treatment on hold"/>
+      <bpmn:intermediateCatchEvent  id="R7_ReceivePaymentResult" name="Receive provider payment result"/>
+      <bpmn:userTask  id="R7_ReconcilePayment" name="Finance reconciles status with provider"/>
+      <bpmn:exclusiveGateway  id="R7_ReconciledPaid" name="Provider confirms paid?"/>
+      <bpmn:userTask  id="R7_RecordPayment" name="Record status, reference, date and amount"/>
+      <bpmn:exclusiveGateway  id="R7_RetryAllowed" name="Safe retry authorised?"/>
+      <bpmn:sendTask  id="R7_SendPaymentRequest" name="Send secure payment request" messageRef="Message_PaymentRequest"/>
+      <bpmn:exclusiveGateway  id="R7_Start"/>
+      <bpmn:startEvent id="XEntry_039" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_083" name="Triggered by preceding process"/>
+      <bpmn:endEvent id="XExit_040" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_092" name="Process outcome ready"/>
+      <bpmn:sequenceFlow id="fSub_239" name="Advance payment required" sourceRef="XEntry_039" targetRef="R7_Start"/>
+      <bpmn:sequenceFlow id="fSub_240" sourceRef="R7_Start" targetRef="R7_CalculateCharge"/>
+      <bpmn:sequenceFlow id="fSub_241" sourceRef="R7_CalculateCharge" targetRef="R7_SendPaymentRequest"/>
+      <bpmn:sequenceFlow id="fSub_242" name="No prior charge" sourceRef="R7_NoChargeFound" targetRef="R7_SendPaymentRequest"/>
+      <bpmn:sequenceFlow id="fSub_243" sourceRef="R7_SendPaymentRequest" targetRef="R7_ReceivePaymentResult"/>
+      <bpmn:sequenceFlow id="fSub_244" sourceRef="R7_ReceivePaymentResult" targetRef="R7_PaymentPaid"/>
+      <bpmn:sequenceFlow id="fSub_245" name="Yes" sourceRef="R7_PaymentPaid" targetRef="R7_RecordPayment"/>
+      <bpmn:sequenceFlow id="fSub_246" name="No / unclear" sourceRef="R7_PaymentPaid" targetRef="R7_NotifyRetry"/>
+      <bpmn:sequenceFlow id="fSub_247" name="Paid" sourceRef="R7_ReconciledPaid" targetRef="R7_RecordPayment"/>
+      <bpmn:sequenceFlow id="fSub_248" sourceRef="R7_RecordPayment" targetRef="P7_Task_SendPaymentConfirmation"/>
+      <bpmn:sequenceFlow id="fSub_249" sourceRef="R7_NotifyRetry" targetRef="R7_RetryAllowed"/>
+      <bpmn:sequenceFlow id="fSub_250" name="Yes" sourceRef="R7_RetryAllowed" targetRef="R7_CheckPriorCharge"/>
+      <bpmn:sequenceFlow id="fSub_251" name="No / unclear" sourceRef="R7_RetryAllowed" targetRef="R7_FlagInvestigation"/>
+      <bpmn:sequenceFlow id="fSub_252" sourceRef="R7_CheckPriorCharge" targetRef="R7_NoChargeFound"/>
+      <bpmn:sequenceFlow id="fSub_253" name="Existing charge" sourceRef="R7_NoChargeFound" targetRef="R7_FlagInvestigation"/>
+      <bpmn:sequenceFlow id="fSub_254" sourceRef="R7_FlagInvestigation" targetRef="R7_ReconcilePayment"/>
+      <bpmn:sequenceFlow id="fSub_255" sourceRef="R7_ReconcilePayment" targetRef="R7_ReconciledPaid"/>
+      <bpmn:sequenceFlow id="fSub_256" name="Unresolved" sourceRef="R7_ReconciledPaid" targetRef="R7_PaymentPending"/>
+      <bpmn:sequenceFlow id="fSub_257" sourceRef="P7_Task_SendPaymentConfirmation" targetRef="XExit_040"/>
+      <bpmn:sequenceFlow id="fSub_258" name="Payment follow-up" sourceRef="XEntry_083" targetRef="R7_ReconcilePayment"/>
+      <bpmn:sequenceFlow id="fSub_259" sourceRef="R7_PaymentPending" targetRef="XExit_092"/>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="P08" name="P08 Evaluate Whether to Continue Treatment">
+      <bpmn:userTask  id="Deliver_Treatment_Cycle" name="Provide authorised treatment cycle"/>
+      <bpmn:intermediateCatchEvent  id="P8_Catch_Results" name="Test results received"/>
+      <bpmn:intermediateThrowEvent  id="P8_End_Delayed" name="Treatment postponed"/>
+      <bpmn:exclusiveGateway  id="P8_Gateway_Action" name="Postpone or change?"/>
+      <bpmn:exclusiveGateway  id="P8_Gateway_Fit" name="Fit to continue?"/>
+      <bpmn:exclusiveGateway  id="P8_Gateway_ReviewEntry" name="Enter continuation review"/>
+      <bpmn:parallelGateway  id="P8_Gateway_ReviewFork" name="Record clinical findings and assess continuation"/>
+      <bpmn:exclusiveGateway  id="P8_Start_CaseReview" name="Cancellation / no-show needs clinical review"/>
+      <bpmn:exclusiveGateway  id="P8_Start_ClinicalEnquiry" name="Clinical enquiry referred by Call Handling"/>
+      <bpmn:exclusiveGateway  id="P8_Start_SchedulingPriority" name="Scheduling conflict requires clinical prioritisation"/>
+      <bpmn:exclusiveGateway  id="P8_Start_TreatmentBooked" name="Financially cleared treatment booking ready for care"/>
+      <bpmn:userTask  id="P8_Task_AnswerClinicalInquiry" name="Qualified clinical team prepares an enquiry response"/>
+      <bpmn:userTask  id="P8_Task_AssessPriority" name="Consultant assesses clinical priority for the scheduling conflict"/>
+      <bpmn:userTask  id="P8_Task_DecideAction" name="Decide: postpone treatment or change the treatment plan"/>
+      <bpmn:userTask  id="P8_Task_Evaluate" name="Decide whether the patient is fit to continue"/>
+      <bpmn:manualTask  id="P8_Task_NextCycle" name="Go ahead with the next treatment cycle"/>
+      <bpmn:userTask  id="P8_Task_Review" name="Carry out clinical review and take the required blood sample"/>
+      <bpmn:sendTask  id="P8_Task_SendClinicalReply" name="Return clinical response to Call Handling"/>
+      <bpmn:sendTask  id="P8_Task_SendNextCycle" name="Send Consultant-authorised next-cycle request to Treatment Bookings"/>
+      <bpmn:sendTask  id="P8_Task_SendPlanChange" name="Send clinically authorised treatment-plan change"/>
+      <bpmn:sendTask  id="P8_Task_SendPriorityDecision" name="Return the clinical priority decision to the pathway team"/>
+      <bpmn:sendTask  id="P8_Task_SendRefundCase" name="Refer treatment stop to Finance for refund review"/>
+      <bpmn:userTask  id="R8_ClinicalReview" name="Clinical review and blood test determine next step"/>
+      <bpmn:intermediateCatchEvent  id="Timer_Reassessment" name="Wait until clinical reassessment date"/>
+      <bpmn:startEvent id="XEntry_010" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_033" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_055" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_061" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_082" name="Triggered by preceding process"/>
+      <bpmn:endEvent id="XExit_042" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_044" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_046" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_048" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_049" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_084" name="Process outcome ready"/>
+      <bpmn:sequenceFlow id="fSub_260" sourceRef="XEntry_010" targetRef="P8_Gateway_ReviewEntry"/>
+      <bpmn:sequenceFlow id="fSub_261" sourceRef="XEntry_033" targetRef="P8_Start_TreatmentBooked"/>
+      <bpmn:sequenceFlow id="fSub_262" sourceRef="P8_Gateway_ReviewEntry" targetRef="P8_Task_Review"/>
+      <bpmn:sequenceFlow id="fSub_263" sourceRef="P8_Task_Review" targetRef="P8_Catch_Results"/>
+      <bpmn:sequenceFlow id="fSub_264" sourceRef="P8_Catch_Results" targetRef="R8_ClinicalReview"/>
+      <bpmn:sequenceFlow id="fSub_265" sourceRef="P8_Gateway_ReviewFork" targetRef="P8_Task_Evaluate"/>
+      <bpmn:sequenceFlow id="fSub_266" sourceRef="P8_Task_Evaluate" targetRef="P8_Gateway_Fit"/>
+      <bpmn:sequenceFlow id="fSub_267" name="suitable" sourceRef="P8_Gateway_Fit" targetRef="P8_Task_NextCycle"/>
+      <bpmn:sequenceFlow id="fSub_268" name="not suitable" sourceRef="P8_Gateway_Fit" targetRef="P8_Task_DecideAction"/>
+      <bpmn:sequenceFlow id="fSub_269" sourceRef="P8_Task_NextCycle" targetRef="P8_Task_SendNextCycle"/>
+      <bpmn:sequenceFlow id="fSub_270" sourceRef="P8_Task_DecideAction" targetRef="P8_Gateway_Action"/>
+      <bpmn:sequenceFlow id="fSub_271" name="Postpone" sourceRef="P8_Gateway_Action" targetRef="P8_End_Delayed"/>
+      <bpmn:sequenceFlow id="fSub_272" name="Change treatment plan" sourceRef="P8_Gateway_Action" targetRef="P8_Task_SendPlanChange"/>
+      <bpmn:sequenceFlow id="fSub_273" name="Stop treatment" sourceRef="P8_Gateway_Action" targetRef="P8_Task_SendRefundCase"/>
+      <bpmn:sequenceFlow id="fSub_274" sourceRef="P8_End_Delayed" targetRef="Timer_Reassessment"/>
+      <bpmn:sequenceFlow id="fSub_275" sourceRef="Timer_Reassessment" targetRef="P8_Gateway_ReviewEntry"/>
+      <bpmn:sequenceFlow id="fSub_276" sourceRef="R8_ClinicalReview" targetRef="P8_Gateway_ReviewFork"/>
+      <bpmn:sequenceFlow id="fSub_277" sourceRef="P8_Start_TreatmentBooked" targetRef="Deliver_Treatment_Cycle"/>
+      <bpmn:sequenceFlow id="fSub_278" sourceRef="Deliver_Treatment_Cycle" targetRef="P8_Gateway_ReviewEntry"/>
+      <bpmn:sequenceFlow id="fSub_279" sourceRef="P8_Start_CaseReview" targetRef="P8_Gateway_ReviewEntry"/>
+      <bpmn:sequenceFlow id="fSub_280" sourceRef="P8_Start_SchedulingPriority" targetRef="P8_Task_AssessPriority"/>
+      <bpmn:sequenceFlow id="fSub_281" sourceRef="P8_Start_ClinicalEnquiry" targetRef="P8_Task_AnswerClinicalInquiry"/>
+      <bpmn:sequenceFlow id="fSub_282" sourceRef="P8_Task_AssessPriority" targetRef="P8_Task_SendPriorityDecision"/>
+      <bpmn:sequenceFlow id="fSub_283" sourceRef="P8_Task_SendPriorityDecision" targetRef="XExit_042"/>
+      <bpmn:sequenceFlow id="fSub_284" sourceRef="P8_Task_AnswerClinicalInquiry" targetRef="P8_Task_SendClinicalReply"/>
+      <bpmn:sequenceFlow id="fSub_285" sourceRef="P8_Task_SendClinicalReply" targetRef="XExit_044"/>
+      <bpmn:sequenceFlow id="fSub_286" sourceRef="P8_Task_SendNextCycle" targetRef="XExit_046"/>
+      <bpmn:sequenceFlow id="fSub_287" name="Clinically authorised treatment-plan change" sourceRef="P8_Task_SendPlanChange" targetRef="XExit_048"/>
+      <bpmn:sequenceFlow id="fSub_288" sourceRef="P8_Task_SendRefundCase" targetRef="XExit_049"/>
+      <bpmn:sequenceFlow id="fSub_289" sourceRef="XEntry_055" targetRef="P8_Start_CaseReview"/>
+      <bpmn:sequenceFlow id="fSub_290" sourceRef="XEntry_061" targetRef="P8_Start_ClinicalEnquiry"/>
+      <bpmn:sequenceFlow id="fSub_291" sourceRef="XEntry_082" targetRef="P8_Start_SchedulingPriority"/>
+      <bpmn:sequenceFlow id="fSub_292" sourceRef="P8_Gateway_ReviewFork" targetRef="XExit_084"/>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="P09" name="P09 Manage Treatment Changes">
+      <bpmn:exclusiveGateway  id="Merge_Entry_P9_Start_ChangeRequest" name="Internal hand-off or external request"/>
+      <bpmn:intermediateThrowEvent  id="P9_End_NoImpact" name="Change made, no finance review needed"/>
+      <bpmn:intermediateThrowEvent  id="P9_End_NotProcessed" name="Request not processed"/>
+      <bpmn:exclusiveGateway  id="P9_Gateway_ClinicalApproval" name="Clinical authorisation confirmed?"/>
+      <bpmn:exclusiveGateway  id="P9_Gateway_Costs" name="Affects an existing charge or funding approval?"/>
+      <bpmn:exclusiveGateway  id="P9_Gateway_Type" name="How should the request be handled?"/>
+      <bpmn:userTask  id="P9_Task_AdjustSchedule" name="Adjust the treatment plan and schedule"/>
+      <bpmn:userTask  id="P9_Task_ConfirmClinicalApproval" name="Confirm formal clinical authorisation for the treatment change"/>
+      <bpmn:userTask  id="P9_Task_DoNotProcess" name="Do not process the informal request"/>
+      <bpmn:userTask  id="P9_Task_FinanceReview" name="Review the financial implications"/>
+      <bpmn:manualTask  id="P9_Task_Postpone" name="Postpone treatment at once for patient safety"/>
+      <bpmn:userTask  id="P9_Task_RecordApproval" name="Responsible clinician records and approves the postponement"/>
+      <bpmn:startEvent id="XEntry_011" name="Triggered by preceding process"/>
+      <bpmn:endEvent id="XExit_050" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_051" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_052" name="Process outcome ready"/>
+      <bpmn:sequenceFlow id="fSub_293" sourceRef="XEntry_011" targetRef="Merge_Entry_P9_Start_ChangeRequest"/>
+      <bpmn:sequenceFlow id="fSub_294" sourceRef="Merge_Entry_P9_Start_ChangeRequest" targetRef="P9_Gateway_Type"/>
+      <bpmn:sequenceFlow id="fSub_295" name="urgent safety postponement" sourceRef="P9_Gateway_Type" targetRef="P9_Task_Postpone"/>
+      <bpmn:sequenceFlow id="fSub_296" name="informal request" sourceRef="P9_Gateway_Type" targetRef="P9_Task_DoNotProcess"/>
+      <bpmn:sequenceFlow id="fSub_297" name="Formally approved" sourceRef="P9_Gateway_Type" targetRef="P9_Task_ConfirmClinicalApproval"/>
+      <bpmn:sequenceFlow id="fSub_298" sourceRef="P9_Task_DoNotProcess" targetRef="P9_End_NotProcessed"/>
+      <bpmn:sequenceFlow id="fSub_299" sourceRef="P9_End_NotProcessed" targetRef="XExit_050"/>
+      <bpmn:sequenceFlow id="fSub_300" sourceRef="P9_Task_Postpone" targetRef="P9_Task_RecordApproval"/>
+      <bpmn:sequenceFlow id="fSub_301" sourceRef="P9_Task_RecordApproval" targetRef="P9_Task_AdjustSchedule"/>
+      <bpmn:sequenceFlow id="fSub_302" name="Yes" sourceRef="P9_Gateway_ClinicalApproval" targetRef="P9_Task_AdjustSchedule"/>
+      <bpmn:sequenceFlow id="fSub_303" sourceRef="P9_Task_AdjustSchedule" targetRef="P9_Gateway_Costs"/>
+      <bpmn:sequenceFlow id="fSub_304" name="yes" sourceRef="P9_Gateway_Costs" targetRef="P9_Task_FinanceReview"/>
+      <bpmn:sequenceFlow id="fSub_305" name="no" sourceRef="P9_Gateway_Costs" targetRef="P9_End_NoImpact"/>
+      <bpmn:sequenceFlow id="fSub_306" sourceRef="P9_Task_FinanceReview" targetRef="XExit_051"/>
+      <bpmn:sequenceFlow id="fSub_307" sourceRef="P9_End_NoImpact" targetRef="XExit_052"/>
+      <bpmn:sequenceFlow id="fSub_308" sourceRef="P9_Task_ConfirmClinicalApproval" targetRef="P9_Gateway_ClinicalApproval"/>
+      <bpmn:sequenceFlow id="fSub_309" name="No - request formal authorisation" sourceRef="P9_Gateway_ClinicalApproval" targetRef="P9_Task_DoNotProcess"/>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="P10" name="P10 Manage Appointment Cancellation, Rejection, and No-shows">
+      <bpmn:intermediateThrowEvent  id="P10_End_Closed" name="Case closed, no payment to resolve"/>
+      <bpmn:exclusiveGateway  id="P10_Gateway_Decide" name="What should happen to the case?"/>
+      <bpmn:exclusiveGateway  id="P10_Gateway_Paid" name="Payment already made?"/>
+      <bpmn:userTask  id="P10_Task_ClinicalReview" name="Clinical review: continue treatment, delay care or discharge"/>
+      <bpmn:userTask  id="P10_Task_Finance" name="Decide: retain, transfer or refund the payment"/>
+      <bpmn:sendTask  id="P10_Task_NotifyReferrer" name="Inform the referring organisation"/>
+      <bpmn:userTask  id="P10_Task_Rebook" name="Offer another appointment"/>
+      <bpmn:userTask  id="P10_Task_Record" name="Record the cancellation, refusal or no-show"/>
+      <bpmn:startEvent id="XEntry_012" name="Triggered by preceding process"/>
+      <bpmn:endEvent id="XExit_054" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_056" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_057" name="Process outcome ready"/>
+      <bpmn:exclusiveGateway id="XSplit_003" name=""/>
+      <bpmn:sequenceFlow id="fSub_310" sourceRef="XEntry_012" targetRef="P10_Task_Record"/>
+      <bpmn:sequenceFlow id="fSub_311" sourceRef="P10_Task_Record" targetRef="P10_Gateway_Decide"/>
+      <bpmn:sequenceFlow id="fSub_312" name="reschedule" sourceRef="P10_Gateway_Decide" targetRef="P10_Task_Rebook"/>
+      <bpmn:sequenceFlow id="fSub_313" name="clinical review" sourceRef="P10_Gateway_Decide" targetRef="P10_Task_ClinicalReview"/>
+      <bpmn:sequenceFlow id="fSub_314" name="notify referrer" sourceRef="P10_Gateway_Decide" targetRef="P10_Task_NotifyReferrer"/>
+      <bpmn:sequenceFlow id="fSub_315" sourceRef="P10_Task_Rebook" targetRef="P10_Gateway_Paid"/>
+      <bpmn:sequenceFlow id="fSub_316" sourceRef="XSplit_003" targetRef="XExit_054"/>
+      <bpmn:sequenceFlow id="fSub_317" sourceRef="XSplit_003" targetRef="P10_Gateway_Paid"/>
+      <bpmn:sequenceFlow id="fSub_318" sourceRef="P10_Task_NotifyReferrer" targetRef="P10_Gateway_Paid"/>
+      <bpmn:sequenceFlow id="fSub_319" name="yes" sourceRef="P10_Gateway_Paid" targetRef="P10_Task_Finance"/>
+      <bpmn:sequenceFlow id="fSub_320" name="no" sourceRef="P10_Gateway_Paid" targetRef="P10_End_Closed"/>
+      <bpmn:sequenceFlow id="fSub_321" name="Finance decision requires refund / transfer processing" sourceRef="P10_Task_Finance" targetRef="XExit_056"/>
+      <bpmn:sequenceFlow id="fSub_322" sourceRef="P10_End_Closed" targetRef="XExit_057"/>
+      <bpmn:sequenceFlow id="fSub_323" sourceRef="P10_Task_ClinicalReview" targetRef="XSplit_003"/>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="P11" name="P11 Process Refunds and Fund Transfers">
+      <bpmn:userTask  id="Finance_RecordRefund" name="Record refund status and amount"/>
+      <bpmn:userTask  id="Finance_RefundReview" name="Verify refund eligibility and available amount"/>
+      <bpmn:exclusiveGateway  id="Gateway_RefundAuthorized" name="Refund authorised?"/>
+      <bpmn:intermediateCatchEvent  id="P11_Catch_RefundResult" name="Receive PSP refund result"/>
+      <bpmn:intermediateThrowEvent  id="P11_End_Refunded" name="Refund completed and recorded"/>
+      <bpmn:intermediateThrowEvent  id="P11_End_Rejected" name="Refund refused and recorded"/>
+      <bpmn:intermediateThrowEvent  id="P11_End_Transferred" name="Money moved and records linked"/>
+      <bpmn:exclusiveGateway  id="P11_Gateway_Outcome" name="Outcome?"/>
+      <bpmn:exclusiveGateway  id="P11_Start_RefundCase" name="Refund or fund-transfer case received"/>
+      <bpmn:userTask  id="P11_Task_Decide" name="Decide whether a full or partial refund is appropriate"/>
+      <bpmn:serviceTask  id="P11_Task_LinkRecords" name="Record the link to the other booking"/>
+      <bpmn:userTask  id="P11_Task_RecordDecision" name="Record the refusal decision"/>
+      <bpmn:serviceTask  id="P11_Task_RecordResult" name="Record the outcome against the patient account"/>
+      <bpmn:sendTask  id="P11_Task_SendRequest" name="Send the refund request to the payment service provider"/>
+      <bpmn:startEvent id="XEntry_027" name="Triggered by preceding process"/>
+      <bpmn:endEvent id="XExit_058" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_059" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_087" name="Process outcome ready"/>
+      <bpmn:sequenceFlow id="fSub_324" sourceRef="XEntry_027" targetRef="P11_Start_RefundCase"/>
+      <bpmn:sequenceFlow id="fSub_325" sourceRef="P11_Start_RefundCase" targetRef="P11_Task_Decide"/>
+      <bpmn:sequenceFlow id="fSub_326" sourceRef="P11_Task_Decide" targetRef="P11_Gateway_Outcome"/>
+      <bpmn:sequenceFlow id="fSub_327" name="refund approved" sourceRef="P11_Gateway_Outcome" targetRef="Finance_RefundReview"/>
+      <bpmn:sequenceFlow id="fSub_328" name="refund denied" sourceRef="P11_Gateway_Outcome" targetRef="P11_Task_RecordDecision"/>
+      <bpmn:sequenceFlow id="fSub_329" name="transfer to another booking" sourceRef="P11_Gateway_Outcome" targetRef="P11_Task_LinkRecords"/>
+      <bpmn:sequenceFlow id="fSub_330" name="Yes" sourceRef="Gateway_RefundAuthorized" targetRef="P11_Task_SendRequest"/>
+      <bpmn:sequenceFlow id="fSub_331" sourceRef="P11_Task_SendRequest" targetRef="P11_Catch_RefundResult"/>
+      <bpmn:sequenceFlow id="fSub_332" sourceRef="P11_Catch_RefundResult" targetRef="P11_Task_RecordResult"/>
+      <bpmn:sequenceFlow id="fSub_333" sourceRef="P11_Task_RecordResult" targetRef="Finance_RecordRefund"/>
+      <bpmn:sequenceFlow id="fSub_334" sourceRef="Finance_RecordRefund" targetRef="P11_End_Refunded"/>
+      <bpmn:sequenceFlow id="fSub_335" sourceRef="P11_End_Refunded" targetRef="XExit_058"/>
+      <bpmn:sequenceFlow id="fSub_336" sourceRef="P11_Task_RecordDecision" targetRef="P11_End_Rejected"/>
+      <bpmn:sequenceFlow id="fSub_337" name="No" sourceRef="Gateway_RefundAuthorized" targetRef="P11_End_Rejected"/>
+      <bpmn:sequenceFlow id="fSub_338" sourceRef="P11_End_Rejected" targetRef="XExit_059"/>
+      <bpmn:sequenceFlow id="fSub_339" sourceRef="P11_Task_LinkRecords" targetRef="P11_End_Transferred"/>
+      <bpmn:sequenceFlow id="fSub_340" sourceRef="Finance_RefundReview" targetRef="Gateway_RefundAuthorized"/>
+      <bpmn:sequenceFlow id="fSub_341" sourceRef="P11_End_Transferred" targetRef="XExit_087"/>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="P12" name="P12 Handle Patient Inquiries">
+      <bpmn:sendTask  id="P12_Activity_0iv7m7o" name="Refer payment or funding enquiry to Finance"/>
+      <bpmn:userTask  id="P12_Activity_0qe6qfi" name="Assign a call handler"/>
+      <bpmn:userTask  id="P12_Activity_0z9svo5" name="Classify the enquiry"/>
+      <bpmn:userTask  id="P12_Activity_13m3bda" name="Record the enquiry and handler"/>
+      <bpmn:userTask  id="P12_Activity_16idm3v" name="Answer the straightforward administrative enquiry"/>
+      <bpmn:sendTask  id="P12_Activity_1cxqg1o" name="Refer clinical enquiry to a qualified clinical team"/>
+      <bpmn:manualTask  id="P12_Activity_1ffpmgw" name="Receive the patient enquiry"/>
+      <bpmn:userTask  id="P12_Activity_1gk0gd9" name="Check urgency and priority"/>
+      <bpmn:userTask  id="P12_Activity_1llzkmw" name="Flag urgent concern immediately"/>
+      <bpmn:userTask  id="P12_Activity_1rzh2hz" name="Transfer enquiry to the responsible administrative team"/>
+      <bpmn:intermediateThrowEvent  id="P12_End_ClinicalResponse" name="Clinical enquiry answered"/>
+      <bpmn:intermediateThrowEvent  id="P12_End_FinanceResponse" name="Finance enquiry answered"/>
+      <bpmn:intermediateThrowEvent  id="P12_End_FinanceRouted" name="Finance enquiry routed"/>
+      <bpmn:exclusiveGateway  id="P12_Event_09ty25j" name="Receive clinical enquiry response"/>
+      <bpmn:intermediateThrowEvent  id="P12_Event_0qw1zi1" name="Administrative enquiry answered or routed"/>
+      <bpmn:exclusiveGateway  id="P12_Event_11yxbm9" name="Receive Finance enquiry response"/>
+      <bpmn:exclusiveGateway  id="P12_Gateway_01f3y4w" name="Straightforward administrative enquiry?"/>
+      <bpmn:exclusiveGateway  id="P12_Gateway_11cqacy" name="Needs transfer to another administrative team?"/>
+      <bpmn:exclusiveGateway  id="P12_Gateway_12mkp6v" name="Urgent or time-sensitive concern?"/>
+      <bpmn:exclusiveGateway  id="P12_Gateway_1jcgyli" name="Payment or funding enquiry requiring Finance?"/>
+      <bpmn:startEvent id="XEntry_013" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_045" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_090" name="Triggered by preceding process"/>
+      <bpmn:endEvent id="XExit_060" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_062" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_063" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_064" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_086" name="Process outcome ready"/>
+      <bpmn:sequenceFlow id="fSub_342" sourceRef="XEntry_013" targetRef="P12_Activity_1ffpmgw"/>
+      <bpmn:sequenceFlow id="fSub_343" sourceRef="XEntry_045" targetRef="P12_Event_09ty25j"/>
+      <bpmn:sequenceFlow id="fSub_344" sourceRef="P12_Activity_1ffpmgw" targetRef="P12_Activity_13m3bda"/>
+      <bpmn:sequenceFlow id="fSub_345" sourceRef="P12_Activity_13m3bda" targetRef="P12_Activity_0qe6qfi"/>
+      <bpmn:sequenceFlow id="fSub_346" sourceRef="P12_Activity_0qe6qfi" targetRef="P12_Activity_1gk0gd9"/>
+      <bpmn:sequenceFlow id="fSub_347" sourceRef="P12_Activity_1gk0gd9" targetRef="P12_Gateway_12mkp6v"/>
+      <bpmn:sequenceFlow id="fSub_348" name="yes" sourceRef="P12_Gateway_12mkp6v" targetRef="P12_Activity_1llzkmw"/>
+      <bpmn:sequenceFlow id="fSub_349" name="no" sourceRef="P12_Gateway_12mkp6v" targetRef="P12_Activity_0z9svo5"/>
+      <bpmn:sequenceFlow id="fSub_350" sourceRef="P12_Activity_1llzkmw" targetRef="P12_Activity_0z9svo5"/>
+      <bpmn:sequenceFlow id="fSub_351" sourceRef="P12_Activity_0z9svo5" targetRef="P12_Gateway_01f3y4w"/>
+      <bpmn:sequenceFlow id="fSub_352" name="yes" sourceRef="P12_Gateway_01f3y4w" targetRef="P12_Activity_16idm3v"/>
+      <bpmn:sequenceFlow id="fSub_353" name="no" sourceRef="P12_Gateway_01f3y4w" targetRef="P12_Gateway_11cqacy"/>
+      <bpmn:sequenceFlow id="fSub_354" name="yes" sourceRef="P12_Gateway_11cqacy" targetRef="P12_Activity_1rzh2hz"/>
+      <bpmn:sequenceFlow id="fSub_355" name="no" sourceRef="P12_Gateway_11cqacy" targetRef="P12_Gateway_1jcgyli"/>
+      <bpmn:sequenceFlow id="fSub_356" name="yes" sourceRef="P12_Gateway_1jcgyli" targetRef="P12_Activity_0iv7m7o"/>
+      <bpmn:sequenceFlow id="fSub_357" name="no" sourceRef="P12_Gateway_1jcgyli" targetRef="P12_Activity_1cxqg1o"/>
+      <bpmn:sequenceFlow id="fSub_358" sourceRef="P12_Activity_1cxqg1o" targetRef="XExit_060"/>
+      <bpmn:sequenceFlow id="fSub_359" sourceRef="P12_Activity_0iv7m7o" targetRef="P12_End_FinanceRouted"/>
+      <bpmn:sequenceFlow id="fSub_360" sourceRef="P12_Activity_1rzh2hz" targetRef="P12_Event_0qw1zi1"/>
+      <bpmn:sequenceFlow id="fSub_361" sourceRef="P12_Activity_16idm3v" targetRef="P12_Event_0qw1zi1"/>
+      <bpmn:sequenceFlow id="fSub_362" sourceRef="P12_Event_09ty25j" targetRef="P12_End_ClinicalResponse"/>
+      <bpmn:sequenceFlow id="fSub_363" sourceRef="P12_Event_0qw1zi1" targetRef="XExit_062"/>
+      <bpmn:sequenceFlow id="fSub_364" sourceRef="P12_Event_11yxbm9" targetRef="P12_End_FinanceResponse"/>
+      <bpmn:sequenceFlow id="fSub_365" sourceRef="P12_End_ClinicalResponse" targetRef="XExit_063"/>
+      <bpmn:sequenceFlow id="fSub_366" sourceRef="P12_End_FinanceResponse" targetRef="XExit_064"/>
+      <bpmn:sequenceFlow id="fSub_367" sourceRef="P12_End_FinanceRouted" targetRef="XExit_086"/>
+      <bpmn:sequenceFlow id="fSub_368" sourceRef="XEntry_090" targetRef="P12_Event_11yxbm9"/>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="P13" name="P13 Handle Medical Correspondence">
+      <bpmn:receiveTask  id="P13_Activity_0ae9rsk" name="Receive escalation" messageRef="Msg_P13_Activity_0ae9rsk"/>
+      <bpmn:sendTask  id="P13_Activity_0aygpgf" name="Send weekly Consultant reminders"/>
+      <bpmn:userTask  id="P13_Activity_0az5u78" name="Draft the clinic letter"/>
+      <bpmn:userTask  id="P13_Activity_0ba3vii" name="Escalate to senior management"/>
+      <bpmn:sendTask  id="P13_Activity_0ccs70w" name="Escalate to Administrative Manager"/>
+      <bpmn:receiveTask  id="P13_Activity_0f4hol4" name="Receive corrected letter" messageRef="Msg_P13_Activity_0f4hol4"/>
+      <bpmn:receiveTask  id="P13_Activity_0m2occw" name="Receive the Consultant response" messageRef="Msg_P13_Activity_0m2occw"/>
+      <bpmn:receiveTask  id="P13_Activity_0mfrh8d" name="Receive approved letter" messageRef="Msg_P13_Activity_0mfrh8d"/>
+      <bpmn:userTask  id="P13_Activity_0nwm6rp" name="Record overdue letter"/>
+      <bpmn:userTask  id="P13_Activity_0oe33ui" name="Stop reminders when complete"/>
+      <bpmn:sendTask  id="P13_Activity_0wdxagy" name="Send approved letter to Medical Secretaries"/>
+      <bpmn:userTask  id="P13_Activity_0wt7ysb" name="Retain reminder and escalation history"/>
+      <bpmn:manualTask  id="P13_Activity_12183sr" name="Contact the Consultant"/>
+      <bpmn:sendTask  id="P13_Activity_19r74id" name="Distribute approved letter"/>
+      <bpmn:sendTask  id="P13_Activity_1t7mm3x" name="Return suspected error to Consultant"/>
+      <bpmn:userTask  id="P13_Activity_1xgw427" name="Review the clinical content"/>
+      <bpmn:userTask  id="P13_Activity_1yti6jj" name="Check recipients and admin details"/>
+      <bpmn:intermediateCatchEvent  id="P13_Catch_CompletedOneMonth" name="Clinic letter completed"/>
+      <bpmn:intermediateCatchEvent  id="P13_Catch_CompletedSevenDay" name="Clinic letter completed"/>
+      <bpmn:intermediateCatchEvent  id="P13_Catch_CompletedThreeMonth" name="Clinic letter completed"/>
+      <bpmn:intermediateCatchEvent  id="P13_Catch_CorrespondenceEntry" name="Receive letter entry for release"/>
+      <bpmn:intermediateThrowEvent  id="P13_End_ManagerContact" name="Consultant contacted by Administrative Manager"/>
+      <bpmn:intermediateThrowEvent  id="P13_Event_058txvk" name="Monitoring closed"/>
+      <bpmn:intermediateThrowEvent  id="P13_Event_0g4lbns" name="Consultant response received"/>
+      <bpmn:intermediateCatchEvent  id="P13_Event_0vf9q3w" name="Wait 2 months"/>
+      <bpmn:intermediateCatchEvent  id="P13_Event_13dkl6t" name="Wait 23 days"/>
+      <bpmn:intermediateThrowEvent  id="P13_Event_1ljjocr" name="Senior-management review completed"/>
+      <bpmn:intermediateCatchEvent  id="P13_Event_1o398fk" name="Wait 7 days"/>
+      <bpmn:exclusiveGateway  id="P13_Gateway_0hhaw6j" name="Still outstanding at 1 month?"/>
+      <bpmn:exclusiveGateway  id="P13_Gateway_0r6f1k1" name="Still outstanding after 7 days?"/>
+      <bpmn:exclusiveGateway  id="P13_Gateway_0utxesn" name="Consultant approves?"/>
+      <bpmn:exclusiveGateway  id="P13_Gateway_10dulol" name="Still outstanding at 3 months?"/>
+      <bpmn:exclusiveGateway  id="P13_Gateway_1uxwgi9" name="No suspected clinical error?"/>
+      <bpmn:exclusiveGateway  id="P13_Gateway_1vkb7lp" name="Continue review cycle"/>
+      <bpmn:exclusiveGateway  id="P13_Gateway_CheckBeforeOneMonth" name="Letter already completed?"/>
+      <bpmn:exclusiveGateway  id="P13_Gateway_CheckBeforeThreeMonth" name="Letter already completed?"/>
+      <bpmn:parallelGateway  id="P13_Gateway_PreparationAndMonitoring"/>
+      <bpmn:eventBasedGateway  id="P13_Gateway_WaitOneMonth" name="Letter completed or deadline reached?"/>
+      <bpmn:eventBasedGateway  id="P13_Gateway_WaitSevenDay" name="Letter completed or deadline reached?"/>
+      <bpmn:eventBasedGateway  id="P13_Gateway_WaitThreeMonth" name="Letter completed or deadline reached?"/>
+      <bpmn:serviceTask  id="P13_Service_OpenLetter" name="Open clinic-letter record for this visit"/>
+      <bpmn:exclusiveGateway  id="P13_StartEvent_1" name="Appointment completed"/>
+      <bpmn:sendTask  id="P13_Task_SendToCorrespondence" name="Send approved letter to the correspondence service"/>
+      <bpmn:userTask  id="P13_Task_SeniorReview" name="Review escalation and decide action"/>
+      <bpmn:startEvent id="XEntry_085" name="Triggered by preceding process"/>
+      <bpmn:endEvent id="XExit_065" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_066" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_067" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_068" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_072" name="Process outcome ready"/>
+      <bpmn:exclusiveGateway id="XSplit_004" name=""/>
+      <bpmn:exclusiveGateway id="XSplit_005" name=""/>
+      <bpmn:sequenceFlow id="fSub_369" sourceRef="P13_Activity_0wdxagy" targetRef="P13_Activity_0mfrh8d"/>
+      <bpmn:sequenceFlow id="fSub_370" sourceRef="P13_Activity_0mfrh8d" targetRef="P13_Activity_1yti6jj"/>
+      <bpmn:sequenceFlow id="fSub_371" sourceRef="P13_Activity_1yti6jj" targetRef="P13_Gateway_1uxwgi9"/>
+      <bpmn:sequenceFlow id="fSub_372" name="no" sourceRef="P13_Gateway_1uxwgi9" targetRef="P13_Activity_1t7mm3x"/>
+      <bpmn:sequenceFlow id="fSub_373" name="No suspected clinical error" sourceRef="P13_Gateway_1uxwgi9" targetRef="P13_Task_SendToCorrespondence"/>
+      <bpmn:sequenceFlow id="fSub_374" sourceRef="P13_Activity_1t7mm3x" targetRef="P13_Activity_0f4hol4"/>
+      <bpmn:sequenceFlow id="fSub_375" sourceRef="P13_StartEvent_1" targetRef="P13_Service_OpenLetter"/>
+      <bpmn:sequenceFlow id="fSub_376" sourceRef="P13_Gateway_PreparationAndMonitoring" targetRef="P13_Activity_0az5u78"/>
+      <bpmn:sequenceFlow id="fSub_377" sourceRef="P13_Activity_0az5u78" targetRef="P13_Gateway_1vkb7lp"/>
+      <bpmn:sequenceFlow id="fSub_378" name="no" sourceRef="P13_Gateway_0utxesn" targetRef="P13_Gateway_1vkb7lp"/>
+      <bpmn:sequenceFlow id="fSub_379" sourceRef="P13_Gateway_1vkb7lp" targetRef="P13_Activity_1xgw427"/>
+      <bpmn:sequenceFlow id="fSub_380" sourceRef="P13_Activity_1xgw427" targetRef="P13_Gateway_0utxesn"/>
+      <bpmn:sequenceFlow id="fSub_381" sourceRef="P13_Activity_0f4hol4" targetRef="P13_Gateway_0utxesn"/>
+      <bpmn:sequenceFlow id="fSub_382" name="yes" sourceRef="P13_Gateway_0utxesn" targetRef="P13_Activity_0wdxagy"/>
+      <bpmn:sequenceFlow id="fSub_383" sourceRef="P13_Event_1o398fk" targetRef="P13_Gateway_0r6f1k1"/>
+      <bpmn:sequenceFlow id="fSub_384" name="yes" sourceRef="P13_Gateway_0r6f1k1" targetRef="P13_Activity_0nwm6rp"/>
+      <bpmn:sequenceFlow id="fSub_385" name="no" sourceRef="P13_Gateway_0r6f1k1" targetRef="P13_Activity_0oe33ui"/>
+      <bpmn:sequenceFlow id="fSub_386" sourceRef="P13_Activity_0nwm6rp" targetRef="P13_Activity_0aygpgf"/>
+      <bpmn:sequenceFlow id="fSub_387" sourceRef="XSplit_004" targetRef="P13_Activity_0m2occw"/>
+      <bpmn:sequenceFlow id="fSub_388" sourceRef="XSplit_004" targetRef="P13_Gateway_CheckBeforeOneMonth"/>
+      <bpmn:sequenceFlow id="fSub_389" sourceRef="P13_Activity_0m2occw" targetRef="P13_Event_0g4lbns"/>
+      <bpmn:sequenceFlow id="fSub_390" sourceRef="P13_Event_13dkl6t" targetRef="P13_Gateway_0hhaw6j"/>
+      <bpmn:sequenceFlow id="fSub_391" name="yes" sourceRef="P13_Gateway_0hhaw6j" targetRef="P13_Activity_0ccs70w"/>
+      <bpmn:sequenceFlow id="fSub_392" name="no" sourceRef="P13_Gateway_0hhaw6j" targetRef="P13_Activity_0oe33ui"/>
+      <bpmn:sequenceFlow id="fSub_393" sourceRef="XSplit_005" targetRef="P13_Activity_0ae9rsk"/>
+      <bpmn:sequenceFlow id="fSub_394" sourceRef="XSplit_005" targetRef="P13_Gateway_CheckBeforeThreeMonth"/>
+      <bpmn:sequenceFlow id="fSub_395" sourceRef="P13_Activity_0ae9rsk" targetRef="P13_Activity_12183sr"/>
+      <bpmn:sequenceFlow id="fSub_396" name="Deadline" sourceRef="P13_Gateway_WaitSevenDay" targetRef="P13_Event_1o398fk"/>
+      <bpmn:sequenceFlow id="fSub_397" name="Deadline" sourceRef="P13_Gateway_WaitOneMonth" targetRef="P13_Event_13dkl6t"/>
+      <bpmn:sequenceFlow id="fSub_398" sourceRef="P13_Activity_12183sr" targetRef="P13_End_ManagerContact"/>
+      <bpmn:sequenceFlow id="fSub_399" name="check status at 3-month threshold" sourceRef="P13_Event_0vf9q3w" targetRef="P13_Gateway_10dulol"/>
+      <bpmn:sequenceFlow id="fSub_400" name="yes" sourceRef="P13_Gateway_10dulol" targetRef="P13_Activity_0ba3vii"/>
+      <bpmn:sequenceFlow id="fSub_401" name="no" sourceRef="P13_Gateway_10dulol" targetRef="P13_Activity_0oe33ui"/>
+      <bpmn:sequenceFlow id="fSub_402" name="Deadline" sourceRef="P13_Gateway_WaitThreeMonth" targetRef="P13_Event_0vf9q3w"/>
+      <bpmn:sequenceFlow id="fSub_403" sourceRef="P13_Catch_CompletedSevenDay" targetRef="P13_Activity_0oe33ui"/>
+      <bpmn:sequenceFlow id="fSub_404" sourceRef="P13_Catch_CompletedOneMonth" targetRef="P13_Activity_0oe33ui"/>
+      <bpmn:sequenceFlow id="fSub_405" name="Already completed" sourceRef="P13_Gateway_CheckBeforeOneMonth" targetRef="P13_Activity_0oe33ui"/>
+      <bpmn:sequenceFlow id="fSub_406" sourceRef="P13_Catch_CompletedThreeMonth" targetRef="P13_Activity_0oe33ui"/>
+      <bpmn:sequenceFlow id="fSub_407" name="Already completed" sourceRef="P13_Gateway_CheckBeforeThreeMonth" targetRef="P13_Activity_0oe33ui"/>
+      <bpmn:sequenceFlow id="fSub_408" sourceRef="P13_Activity_0oe33ui" targetRef="P13_Activity_0wt7ysb"/>
+      <bpmn:sequenceFlow id="fSub_409" sourceRef="P13_Activity_0wt7ysb" targetRef="P13_Event_058txvk"/>
+      <bpmn:sequenceFlow id="fSub_410" sourceRef="P13_Event_058txvk" targetRef="XExit_065"/>
+      <bpmn:sequenceFlow id="fSub_411" sourceRef="P13_Task_SeniorReview" targetRef="P13_Event_1ljjocr"/>
+      <bpmn:sequenceFlow id="fSub_412" sourceRef="P13_Event_1ljjocr" targetRef="XExit_066"/>
+      <bpmn:sequenceFlow id="fSub_413" sourceRef="P13_Activity_0ba3vii" targetRef="P13_Task_SeniorReview"/>
+      <bpmn:sequenceFlow id="fSub_414" sourceRef="P13_Event_0g4lbns" targetRef="XExit_067"/>
+      <bpmn:sequenceFlow id="fSub_415" sourceRef="P13_End_ManagerContact" targetRef="XExit_068"/>
+      <bpmn:sequenceFlow id="fSub_416" name="Authorised follow-up instruction in the clinic letter" sourceRef="P13_Activity_19r74id" targetRef="XExit_072"/>
+      <bpmn:sequenceFlow id="fSub_417" sourceRef="XEntry_085" targetRef="P13_StartEvent_1"/>
+      <bpmn:sequenceFlow id="fSub_418" sourceRef="P13_Service_OpenLetter" targetRef="P13_Gateway_PreparationAndMonitoring"/>
+      <bpmn:sequenceFlow id="fSub_419" name="start monitoring clock" sourceRef="P13_Gateway_PreparationAndMonitoring" targetRef="P13_Gateway_WaitSevenDay"/>
+      <bpmn:sequenceFlow id="fSub_420" name="Completed" sourceRef="P13_Gateway_WaitSevenDay" targetRef="P13_Catch_CompletedSevenDay"/>
+      <bpmn:sequenceFlow id="fSub_421" name="Still pending" sourceRef="P13_Gateway_CheckBeforeOneMonth" targetRef="P13_Gateway_WaitOneMonth"/>
+      <bpmn:sequenceFlow id="fSub_422" name="Completed" sourceRef="P13_Gateway_WaitOneMonth" targetRef="P13_Catch_CompletedOneMonth"/>
+      <bpmn:sequenceFlow id="fSub_423" name="Still pending" sourceRef="P13_Gateway_CheckBeforeThreeMonth" targetRef="P13_Gateway_WaitThreeMonth"/>
+      <bpmn:sequenceFlow id="fSub_424" name="Completed" sourceRef="P13_Gateway_WaitThreeMonth" targetRef="P13_Catch_CompletedThreeMonth"/>
+      <bpmn:sequenceFlow id="fSub_425" sourceRef="P13_Task_SendToCorrespondence" targetRef="P13_Catch_CorrespondenceEntry"/>
+      <bpmn:sequenceFlow id="fSub_426" sourceRef="P13_Catch_CorrespondenceEntry" targetRef="P13_Activity_19r74id"/>
+      <bpmn:sequenceFlow id="fSub_427" sourceRef="P13_Activity_0aygpgf" targetRef="XSplit_004"/>
+      <bpmn:sequenceFlow id="fSub_428" sourceRef="P13_Activity_0ccs70w" targetRef="XSplit_005"/>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="P14" name="P14 Arrange Follow-up Appointment">
+      <bpmn:intermediateCatchEvent  id="P14_Catch_SchedulingResponse" name="Receive follow-up slot options"/>
+      <bpmn:intermediateThrowEvent  id="P14_EndEvent_Booked" name="Follow-up booked"/>
+      <bpmn:exclusiveGateway  id="P14_Gateway_Slot" name="Approved request &amp;#38; free slot&amp;#10;within required period?"/>
+      <bpmn:exclusiveGateway  id="P14_StartEvent_Request" name="Follow-up request received&amp;#10;(time limit stated)"/>
+      <bpmn:serviceTask  id="P14_Task_Book" name="Book follow-up appointment"/>
+      <bpmn:userTask  id="P14_Task_Hand" name="Pass case to pathway team"/>
+      <bpmn:userTask  id="P14_Task_Mark" name="Mark issue for attention"/>
+      <bpmn:sendTask  id="P14_Task_Notify" name="Notify patient of appointment"/>
+      <bpmn:userTask  id="P14_Task_Receive" name="Receive follow-up request"/>
+      <bpmn:sendTask  id="P14_Task_RequestSlot" name="Request follow-up slot within the clinically required timeframe"/>
+      <bpmn:startEvent id="XEntry_073" name="Triggered by preceding process"/>
+      <bpmn:endEvent id="XExit_069" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_071" name="Process outcome ready"/>
+      <bpmn:sequenceFlow id="fSub_429" sourceRef="P14_Catch_SchedulingResponse" targetRef="P14_Gateway_Slot"/>
+      <bpmn:sequenceFlow id="fSub_430" name="Yes" sourceRef="P14_Gateway_Slot" targetRef="P14_Task_Book"/>
+      <bpmn:sequenceFlow id="fSub_431" name="No" sourceRef="P14_Gateway_Slot" targetRef="P14_Task_Mark"/>
+      <bpmn:sequenceFlow id="fSub_432" sourceRef="P14_Task_Book" targetRef="P14_Task_Notify"/>
+      <bpmn:sequenceFlow id="fSub_433" sourceRef="P14_Task_Mark" targetRef="P14_Task_Hand"/>
+      <bpmn:sequenceFlow id="fSub_434" sourceRef="P14_Task_Hand" targetRef="XExit_069"/>
+      <bpmn:sequenceFlow id="fSub_435" sourceRef="P14_StartEvent_Request" targetRef="P14_Task_Receive"/>
+      <bpmn:sequenceFlow id="fSub_436" sourceRef="P14_Task_Receive" targetRef="P14_Task_RequestSlot"/>
+      <bpmn:sequenceFlow id="fSub_437" sourceRef="P14_Task_Notify" targetRef="P14_EndEvent_Booked"/>
+      <bpmn:sequenceFlow id="fSub_438" sourceRef="P14_EndEvent_Booked" targetRef="XExit_071"/>
+      <bpmn:sequenceFlow id="fSub_439" name="Authorised follow-up instruction in the clinic letter" sourceRef="XEntry_073" targetRef="P14_StartEvent_Request"/>
+      <bpmn:sequenceFlow id="fSub_440" sourceRef="P14_Task_RequestSlot" targetRef="P14_Catch_SchedulingResponse"/>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="P15" name="P15 Monitoring Workflow and Report Generation">
+      <bpmn:intermediateThrowEvent  id="P15_End_RecordUpdated" name="Monitoring record updated"/>
+      <bpmn:intermediateThrowEvent  id="P15_End_Report" name="Reports available to authorised users"/>
+      <bpmn:serviceTask  id="P15_Task_Collect" name="Collect current pathway and exception data"/>
+      <bpmn:serviceTask  id="P15_Task_Generate" name="Generate pathway and operational reports"/>
+      <bpmn:serviceTask  id="P15_Task_Publish" name="Apply role-based access and publish reports securely"/>
+      <bpmn:serviceTask  id="P15_Task_UpdateMonitoringRecord" name="Update the monitoring dataset and audit trail"/>
+      <bpmn:startEvent id="XEntry_014" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_015" name="Triggered by preceding process"/>
+      <bpmn:endEvent id="XExit_074" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_075" name="Process outcome ready"/>
+      <bpmn:sequenceFlow id="fSub_441" sourceRef="XEntry_014" targetRef="P15_Task_Collect"/>
+      <bpmn:sequenceFlow id="fSub_442" sourceRef="XEntry_015" targetRef="P15_Task_UpdateMonitoringRecord"/>
+      <bpmn:sequenceFlow id="fSub_443" sourceRef="P15_Task_Collect" targetRef="P15_Task_Generate"/>
+      <bpmn:sequenceFlow id="fSub_444" sourceRef="P15_Task_Generate" targetRef="P15_Task_Publish"/>
+      <bpmn:sequenceFlow id="fSub_445" sourceRef="P15_Task_Publish" targetRef="P15_End_Report"/>
+      <bpmn:sequenceFlow id="fSub_446" sourceRef="P15_End_Report" targetRef="XExit_074"/>
+      <bpmn:sequenceFlow id="fSub_447" sourceRef="P15_Task_UpdateMonitoringRecord" targetRef="P15_End_RecordUpdated"/>
+      <bpmn:sequenceFlow id="fSub_448" sourceRef="P15_End_RecordUpdated" targetRef="XExit_075"/>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="P16" name="P16 Manage Identities, Permissions, and System Interruptions">
+      <bpmn:intermediateCatchEvent  id="P16_Catch_Restored" name="System or external service restored"/>
+      <bpmn:intermediateThrowEvent  id="P16_End_Access" name="Access request resolved and audited"/>
+      <bpmn:intermediateThrowEvent  id="P16_End_Restored" name="Offline work reconciled"/>
+      <bpmn:exclusiveGateway  id="P16_Gateway_Access" name="Role-based access authorised?"/>
+      <bpmn:exclusiveGateway  id="P16_Gateway_AccessMerge" name="Access decision merged"/>
+      <bpmn:serviceTask  id="P16_Task_Audit" name="Record the access decision in the protected audit log"/>
+      <bpmn:userTask  id="P16_Task_Authenticate" name="Authenticate the user and verify the requested role"/>
+      <bpmn:userTask  id="P16_Task_Downtime" name="Use the downtime procedure to record work completed"/>
+      <bpmn:userTask  id="P16_Task_Grant" name="Grant only the permissions required for the role"/>
+      <bpmn:serviceTask  id="P16_Task_Reconcile" name="Reconcile offline work and preserve its audit history"/>
+      <bpmn:userTask  id="P16_Task_RecordInterruption" name="Record the affected service and notify responsible teams"/>
+      <bpmn:startEvent id="XEntry_016" name="Triggered by preceding process"/>
+      <bpmn:startEvent id="XEntry_017" name="Triggered by preceding process"/>
+      <bpmn:endEvent id="XExit_076" name="Process outcome ready"/>
+      <bpmn:endEvent id="XExit_077" name="Process outcome ready"/>
+      <bpmn:sequenceFlow id="fSub_449" sourceRef="XEntry_016" targetRef="P16_Task_Authenticate"/>
+      <bpmn:sequenceFlow id="fSub_450" sourceRef="XEntry_017" targetRef="P16_Task_RecordInterruption"/>
+      <bpmn:sequenceFlow id="fSub_451" name="yes" sourceRef="P16_Gateway_Access" targetRef="P16_Task_Grant"/>
+      <bpmn:sequenceFlow id="fSub_452" sourceRef="P16_Task_Grant" targetRef="P16_Gateway_AccessMerge"/>
+      <bpmn:sequenceFlow id="fSub_453" name="no - deny access" sourceRef="P16_Gateway_Access" targetRef="P16_Gateway_AccessMerge"/>
+      <bpmn:sequenceFlow id="fSub_454" sourceRef="P16_Gateway_AccessMerge" targetRef="P16_Task_Audit"/>
+      <bpmn:sequenceFlow id="fSub_455" sourceRef="P16_Task_Audit" targetRef="P16_End_Access"/>
+      <bpmn:sequenceFlow id="fSub_456" sourceRef="P16_End_Access" targetRef="XExit_076"/>
+      <bpmn:sequenceFlow id="fSub_457" sourceRef="P16_Task_RecordInterruption" targetRef="P16_Task_Downtime"/>
+      <bpmn:sequenceFlow id="fSub_458" sourceRef="P16_Task_Downtime" targetRef="P16_Catch_Restored"/>
+      <bpmn:sequenceFlow id="fSub_459" sourceRef="P16_Catch_Restored" targetRef="P16_Task_Reconcile"/>
+      <bpmn:sequenceFlow id="fSub_460" sourceRef="P16_Task_Reconcile" targetRef="P16_End_Restored"/>
+      <bpmn:sequenceFlow id="fSub_461" sourceRef="P16_End_Restored" targetRef="XExit_077"/>
+      <bpmn:sequenceFlow id="fSub_462" sourceRef="P16_Task_Authenticate" targetRef="P16_Gateway_Access"/>
+    </bpmn:subProcess>
+    <bpmn:sequenceFlow id="fMain_463" name="Tasklist referral" sourceRef="XSplit_001" targetRef="P01"/>
+    <bpmn:sequenceFlow id="fMain_464" name="Referral message received" sourceRef="XSplit_002" targetRef="P01"/>
+    <bpmn:sequenceFlow id="fMain_465" sourceRef="Inbox_R4_Start" targetRef="P04"/>
+    <bpmn:sequenceFlow id="fMain_466" sourceRef="Inbox_P6_Start_FinanceInquiry" targetRef="P06"/>
+    <bpmn:sequenceFlow id="fMain_467" sourceRef="Inbox_P8_Start_CycleDue" targetRef="P08"/>
+    <bpmn:sequenceFlow id="fMain_468" sourceRef="Inbox_P8_Start_PatientArrives" targetRef="P08"/>
+    <bpmn:sequenceFlow id="fMain_469" sourceRef="Inbox_P9_Start_ChangeRequest" targetRef="P09"/>
+    <bpmn:sequenceFlow id="fMain_470" sourceRef="Inbox_P10_Start_Report" targetRef="P10"/>
+    <bpmn:sequenceFlow id="fMain_471" sourceRef="Inbox_P12_StartEvent_1" targetRef="P12"/>
+    <bpmn:sequenceFlow id="fMain_472" sourceRef="Inbox_P15_Start_Monitor" targetRef="P15"/>
+    <bpmn:sequenceFlow id="fMain_473" sourceRef="Inbox_P15_Start_RecordUpdate" targetRef="P15"/>
+    <bpmn:sequenceFlow id="fMain_474" sourceRef="Inbox_P16_Start_Access" targetRef="P16"/>
+    <bpmn:sequenceFlow id="fMain_475" sourceRef="Inbox_P16_Start_Interruption" targetRef="P16"/>
+    <bpmn:sequenceFlow id="fMain_476" sourceRef="Inbox_P17_Start_ChangeRequest" targetRef="P03"/>
+    <bpmn:sequenceFlow id="fMain_477" name="Complete referral package" sourceRef="P01" targetRef="P02"/>
+    <bpmn:sequenceFlow id="fMain_478" sourceRef="P02" targetRef="XRoute_093"/>
+    <bpmn:sequenceFlow id="fMain_479" name="Accepted referral for booking" sourceRef="XRoute_093" targetRef="P03"/>
+    <bpmn:sequenceFlow id="fMain_480" sourceRef="XRoute_093" targetRef="CompletionMerge_02"/>
+    <bpmn:sequenceFlow id="fMain_481" sourceRef="P03" targetRef="XRoute_094"/>
+    <bpmn:sequenceFlow id="fMain_482" sourceRef="XRoute_094" targetRef="CompletionMerge_03"/>
+    <bpmn:sequenceFlow id="fMain_483" sourceRef="XRoute_094" targetRef="P04"/>
+    <bpmn:sequenceFlow id="fMain_484" sourceRef="P04" targetRef="XRoute_095"/>
+    <bpmn:sequenceFlow id="fMain_485" sourceRef="XRoute_095" targetRef="P11"/>
+    <bpmn:sequenceFlow id="fMain_486" sourceRef="XRoute_095" targetRef="P05"/>
+    <bpmn:sequenceFlow id="fMain_487" sourceRef="P05" targetRef="XRoute_096"/>
+    <bpmn:sequenceFlow id="fMain_488" name="Verify funding for provisionally arranged treatment" sourceRef="XRoute_096" targetRef="P06"/>
+    <bpmn:sequenceFlow id="fMain_489" sourceRef="XRoute_096" targetRef="P08"/>
+    <bpmn:sequenceFlow id="fMain_490" sourceRef="P06" targetRef="XRoute_097"/>
+    <bpmn:sequenceFlow id="fMain_491" sourceRef="XRoute_097" targetRef="P05"/>
+    <bpmn:sequenceFlow id="fMain_492" name="Advance payment required" sourceRef="XRoute_097" targetRef="P07"/>
+    <bpmn:sequenceFlow id="fMain_493" sourceRef="P07" targetRef="P05"/>
+    <bpmn:sequenceFlow id="fMain_494" sourceRef="P08" targetRef="XRoute_098"/>
+    <bpmn:sequenceFlow id="fMain_495" sourceRef="XRoute_098" targetRef="P03"/>
+    <bpmn:sequenceFlow id="fMain_496" sourceRef="XRoute_098" targetRef="P12"/>
+    <bpmn:sequenceFlow id="fMain_497" sourceRef="XRoute_098" targetRef="P05"/>
+    <bpmn:sequenceFlow id="fMain_498" name="Clinically authorised treatment-plan change" sourceRef="XRoute_098" targetRef="P09"/>
+    <bpmn:sequenceFlow id="fMain_499" sourceRef="XRoute_098" targetRef="P11"/>
+    <bpmn:sequenceFlow id="fMain_500" sourceRef="P09" targetRef="XRoute_099"/>
+    <bpmn:sequenceFlow id="fMain_501" sourceRef="XRoute_099" targetRef="CompletionMerge_09"/>
+    <bpmn:sequenceFlow id="fMain_502" sourceRef="XRoute_099" targetRef="P06"/>
+    <bpmn:sequenceFlow id="fMain_503" sourceRef="XRoute_099" targetRef="P05"/>
+    <bpmn:sequenceFlow id="fMain_504" sourceRef="P10" targetRef="XRoute_100"/>
+    <bpmn:sequenceFlow id="fMain_505" sourceRef="XRoute_100" targetRef="P08"/>
+    <bpmn:sequenceFlow id="fMain_506" name="Finance decision requires refund / transfer processing" sourceRef="XRoute_100" targetRef="P11"/>
+    <bpmn:sequenceFlow id="fMain_507" sourceRef="XRoute_100" targetRef="CompletionMerge_10"/>
+    <bpmn:sequenceFlow id="fMain_508" sourceRef="P11" targetRef="CompletionMerge_11"/>
+    <bpmn:sequenceFlow id="fMain_509" sourceRef="P12" targetRef="XRoute_101"/>
+    <bpmn:sequenceFlow id="fMain_510" sourceRef="XRoute_101" targetRef="P08"/>
+    <bpmn:sequenceFlow id="fMain_511" sourceRef="XRoute_101" targetRef="CompletionMerge_12"/>
+    <bpmn:sequenceFlow id="fMain_512" sourceRef="P13" targetRef="XRoute_102"/>
+    <bpmn:sequenceFlow id="fMain_513" sourceRef="XRoute_102" targetRef="CompletionMerge_13"/>
+    <bpmn:sequenceFlow id="fMain_514" sourceRef="P14" targetRef="XRoute_103"/>
+    <bpmn:sequenceFlow id="fMain_515" sourceRef="XRoute_103" targetRef="P03"/>
+    <bpmn:sequenceFlow id="fMain_516" sourceRef="XRoute_103" targetRef="CompletionMerge_14"/>
+    <bpmn:sequenceFlow id="fMain_517" name="Authorised follow-up instruction in the clinic letter" sourceRef="XRoute_102" targetRef="P14"/>
+    <bpmn:sequenceFlow id="fMain_518" sourceRef="P15" targetRef="CompletionMerge_15"/>
+    <bpmn:sequenceFlow id="fMain_519" sourceRef="P16" targetRef="CompletionMerge_16"/>
+    <bpmn:sequenceFlow id="fMain_520" sourceRef="XRoute_094" targetRef="P09"/>
+    <bpmn:sequenceFlow id="fMain_521" sourceRef="XRoute_094" targetRef="P06"/>
+    <bpmn:sequenceFlow id="fMain_522" sourceRef="XRoute_094" targetRef="CompletionMerge_17"/>
+    <bpmn:sequenceFlow id="fMain_523" sourceRef="XRoute_094" targetRef="P08"/>
+    <bpmn:sequenceFlow id="fMain_524" name="Payment follow-up" sourceRef="XRoute_096" targetRef="P07"/>
+    <bpmn:sequenceFlow id="fMain_525" sourceRef="XRoute_098" targetRef="P13"/>
+    <bpmn:sequenceFlow id="fMain_526" sourceRef="XRoute_095" targetRef="P13"/>
+    <bpmn:sequenceFlow id="fMain_527" sourceRef="CompletionMerge_17" targetRef="Hospital_End"/>
+    <bpmn:sequenceFlow id="fMain_528" sourceRef="CompletionMerge_02" targetRef="CompletionMerge_03"/>
+    <bpmn:sequenceFlow id="fMain_529" sourceRef="CompletionMerge_03" targetRef="CompletionMerge_09"/>
+    <bpmn:sequenceFlow id="fMain_530" sourceRef="CompletionMerge_09" targetRef="CompletionMerge_10"/>
+    <bpmn:sequenceFlow id="fMain_531" sourceRef="CompletionMerge_10" targetRef="CompletionMerge_11"/>
+    <bpmn:sequenceFlow id="fMain_532" sourceRef="CompletionMerge_11" targetRef="CompletionMerge_12"/>
+    <bpmn:sequenceFlow id="fMain_533" sourceRef="CompletionMerge_12" targetRef="CompletionMerge_13"/>
+    <bpmn:sequenceFlow id="fMain_534" sourceRef="CompletionMerge_13" targetRef="CompletionMerge_14"/>
+    <bpmn:sequenceFlow id="fMain_535" sourceRef="CompletionMerge_14" targetRef="CompletionMerge_15"/>
+    <bpmn:sequenceFlow id="fMain_536" sourceRef="CompletionMerge_15" targetRef="CompletionMerge_16"/>
+    <bpmn:sequenceFlow id="fMain_537" sourceRef="CompletionMerge_16" targetRef="CompletionMerge_17"/>
+    <bpmn:sequenceFlow id="fMain_538" sourceRef="XRoute_097" targetRef="P12"/>
+    <bpmn:sequenceFlow id="fMain_539" sourceRef="Start_Tasklist" targetRef="XSplit_001"/>
+    <bpmn:sequenceFlow id="fMain_540" sourceRef="R1_Start" targetRef="XSplit_002"/>
+    <bpmn:textAnnotation id="P8_Ann_84">
+      <bpmn:text>Clinical decision only: administrative and finance staff must not decide whether the patient can continue treatment.</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="P13_TextAnnotation_0dlfeg7">
+      <bpmn:text>This letter covers visit notes, diagnosis, test findings, treatment choices and future check-up plans. The doctor also writes who should receive this letter.</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="P13_TextAnnotation_1rnf7g3">
+      <bpmn:text>You may fix small formatting mistakes, but never change its medical meaning.</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="P13_TextAnnotation_0nuc5th">
+      <bpmn:text>all reminders, replies and previous problem-escalation records</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="LinkNotationLegend">
+      <bpmn:text>Same-file navigation: matching INBOX, E01–E13 and Lxx link codes continue within this process. Links do not start or end a process and do not wait for another message. All 17 workflow groups remain in this BPMN.</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="P8_Assoc_84" sourceRef="P8_Task_Evaluate" targetRef="P8_Ann_84"/>
+    <bpmn:association id="P13_TextAnnotation_0dlfeg7_auto" sourceRef="P13_TextAnnotation_0dlfeg7" targetRef="P13"/>
+    <bpmn:association id="P13_TextAnnotation_1rnf7g3_auto" sourceRef="P13_TextAnnotation_1rnf7g3" targetRef="P13"/>
+    <bpmn:association id="P13_TextAnnotation_0nuc5th_auto" sourceRef="P13_TextAnnotation_0nuc5th" targetRef="P13"/>
+  </bpmn:process>
+</bpmn:definitions>

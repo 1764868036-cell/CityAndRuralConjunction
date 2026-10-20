@@ -1,0 +1,47 @@
+{
+  "type": "default",
+  "id": "hpas_sp15_escalatemanager",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "heading_SP15_EscalateManager",
+      "type": "text",
+      "text": "# Administrative Manager contacts responsible Consultant"
+    },
+    {
+      "key": "managerContact",
+      "label": "Manager contact with Consultant",
+      "type": "textarea",
+      "validate": {
+        "required": true,
+        "maxLength": 2000
+      },
+      "id": "SP15_EscalateManager_field_0",
+      "layout": {
+        "row": "SP15_EscalateManager_row_0",
+        "columns": null
+      }
+    },
+    {
+      "id": "audit_SP15_EscalateManager",
+      "type": "text",
+      "text": "Record the responsible person's identity; the system records the submission time and task audit."
+    },
+    {
+      "id": "actor_SP15_EscalateManager",
+      "type": "textfield",
+      "key": "SP15_EscalateManager_actor",
+      "label": "Responsible staff ID",
+      "validate": {
+        "required": true,
+        "maxLength": 80
+      },
+      "layout": {
+        "row": "SP15_EscalateManager_actor",
+        "columns": null
+      }
+    }
+  ]
+}

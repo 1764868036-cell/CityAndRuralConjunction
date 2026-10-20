@@ -1,0 +1,193 @@
+{
+  "appliedAt": "2026-10-20T13:47:16+08:00",
+  "sourceEnvironment": "http://127.0.0.1:8180",
+  "requestedSourcePort": 8081,
+  "requestedSourcePortStatus": "not listening; used the active candidate environment on 8180",
+  "targetEnvironment": "http://127.0.0.1:8080",
+  "deploymentKey": "2251799813731936",
+  "processDefinitionId": "Process_HPAS",
+  "processDefinitionVersion": 1,
+  "processDefinitionKey": "2251799813731949",
+  "bpmnSha256": "754F92FA06C8F4C18FE18C9C0A50524C43AE537385913CCD837E724B16499FDF",
+  "formCount": 37,
+  "forms": [
+    {
+      "sha256": "4C5920D31408D910ECC9D23084FC1842C4FBB5B9E6D9827E85BBE05D1C2BA766",
+      "name": "hpas_sp01_checkdocuments.form"
+    },
+    {
+      "sha256": "961F8BE60FD636D4427AC0799BA92120AB56F318FFFAA139C02CAAD21ACC04A6",
+      "name": "hpas_sp02_clinicalreview.form"
+    },
+    {
+      "sha256": "A5899F46B54EE2477885F467277F8D7CC10F405800EE75EF4B3C5E04C77FF47B",
+      "name": "hpas_sp03_escalatecontact.form"
+    },
+    {
+      "sha256": "B09D15F8AE9E1C1DC6E3EAF33A39BF4B6642D4F278278BAA8FBDCE4704471F69",
+      "name": "hpas_sp03_noslotreview.form"
+    },
+    {
+      "sha256": "472448C43948FFE3EF63616893E14F03F1B1B1E9D703407208D5C02AB3A2E7AB",
+      "name": "hpas_sp03_phonecontact.form"
+    },
+    {
+      "sha256": "7DD0AD6A2470AAA8D8F4264134A8753993EE75C52B6AEDBA7DE4157CCBA0AD86",
+      "name": "hpas_sp03b_review.form"
+    },
+    {
+      "sha256": "85DDCC0654D71497575F48880BD48257FE1F7E9476040D02B34DF759DE3BDD52",
+      "name": "hpas_sp04_assess.form"
+    },
+    {
+      "sha256": "4F5BADE860E7BAC0ACFA98D6A18D076BB585627F3B014ADBB74F9FA5375BA7B8",
+      "name": "hpas_sp04_createrequest.form"
+    },
+    {
+      "sha256": "F8885D1CB6979CB6552BA5D202D32784B5925AFB8391C9A4F9448FCC26E4B195",
+      "name": "hpas_sp04_recordconsent.form"
+    },
+    {
+      "sha256": "385FF8CAB565C333879EB6F62DDAB908C2D4B960D9A915E685FA0BD8D0AE1B98",
+      "name": "hpas_sp06_recordapproval.form"
+    },
+    {
+      "sha256": "F96D73887EA6D1AFA3A6A3458AC7FCC4411C005B73390309BB6C695340398C02",
+      "name": "hpas_sp07_decideretry.form"
+    },
+    {
+      "sha256": "EE6001E0FBEE6B1714A0A28AEEF546EAECEA844BD37C679783642C165160D16A",
+      "name": "hpas_sp07_investigate.form"
+    },
+    {
+      "sha256": "BF0862912C36AFB6759465B8059EE66C523987C2A71A4E09661AF954750ECC56",
+      "name": "hpas_sp07_recordoverride.form"
+    },
+    {
+      "sha256": "709573FF35711FBDC97D38F6F5866FE36930A602EB4F75A805005E80C032B1AD",
+      "name": "hpas_sp08_delayhandling.form"
+    },
+    {
+      "sha256": "B1B23574201C70F76F5CCEA5FE68D5A68CEA8A8D9BAB6D1B2E550072BFA44A4C",
+      "name": "hpas_sp08_review.form"
+    },
+    {
+      "sha256": "81F3A3E9DC01BDA2CAD729A6E719D6FAC3739B3AD381658CFA0C9C6D58964A61",
+      "name": "hpas_sp09_financereview.form"
+    },
+    {
+      "sha256": "418E0F2DE4CEC891F0EAFF67398A72BC8C7BCB240EE368EEBAB668A364F672A4",
+      "name": "hpas_sp09_retrospective.form"
+    },
+    {
+      "sha256": "4A5BC9485C50E6083973F05FCBAED5E647988FC15A0B6D295EF47C29E3CFC07B",
+      "name": "hpas_sp10_clinicalreview.form"
+    },
+    {
+      "sha256": "1DAC5C128C12033BD51A08B56253409B8982C71ABAA2878D63372CD1DDCDDA36",
+      "name": "hpas_sp10_decide.form"
+    },
+    {
+      "sha256": "9F7C018AA7B286FC40F02B0F35C872FBFD2CC73345F4483EE15E818D7112AB15",
+      "name": "hpas_sp10_record.form"
+    },
+    {
+      "sha256": "6DF700269ED14EFFC8FBCA3FAFC26AD0E490E6701EFEB3BD366F4B8838696F7B",
+      "name": "hpas_sp11_determine.form"
+    },
+    {
+      "sha256": "45E21E7119385378E7C96B2862BA661060F744BED29AD1A0575D1685520E6EBF",
+      "name": "hpas_sp12_answer.form"
+    },
+    {
+      "sha256": "E795FF868095D0DB93C7EA6EBBAC5B3E1D8B4FE3FD60D613A9E5D1E25A70A48E",
+      "name": "hpas_sp12_answerfin.form"
+    },
+    {
+      "sha256": "4FBE11ECDE305C3AA402B3BA3779675F1DCA827E459DEBC17FEEBFF0B547BAD8",
+      "name": "hpas_sp12_assesspriority.form"
+    },
+    {
+      "sha256": "73F5384D251862C2AA62A2449D5302629CB94BC3C19ADAB3ABF439FC6B066C99",
+      "name": "hpas_sp12_record.form"
+    },
+    {
+      "sha256": "E070803707D70A81423ACC60BB91D7E2AF1BC7D28B046AC180ED29FFC33D82EE",
+      "name": "hpas_sp12_refercns.form"
+    },
+    {
+      "sha256": "0F32475275B8DFA484D07527C0A9C86F8019B7008873A147D4C3D0ED3FC35EE5",
+      "name": "hpas_sp12_referfinance.form"
+    },
+    {
+      "sha256": "2DC94FFB07B370E0635E8E33E921B0330906A20590DD59A224610B893C0B9485",
+      "name": "hpas_sp12_transfer.form"
+    },
+    {
+      "sha256": "23186C4B7456473C0439087EBCF4C47AFD48EA462C3C9EDBA99182BB41D2F476",
+      "name": "hpas_sp13_adminprocess.form"
+    },
+    {
+      "sha256": "56CB60D76666330937A07ADC67541FC3EC0BE0FDD42DB6F25919680B549B59C2",
+      "name": "hpas_sp13_approve.form"
+    },
+    {
+      "sha256": "95EAEC74C3FFA6CB71A775A32EE05C0845EFE07B4DFEDC3C3F0117C4776C478C",
+      "name": "hpas_sp13_draft.form"
+    },
+    {
+      "sha256": "8968EE76557FBE672B879079E06FC1E46BCDA8A8A946EF56FCEBFDC4D70A0D73",
+      "name": "hpas_sp13_reminder.form"
+    },
+    {
+      "sha256": "7D212BDD1A70B352AD6734D75FD5C702B8915507E017147DAFEF6AD158FD2FF8",
+      "name": "hpas_sp14_highlight.form"
+    },
+    {
+      "sha256": "1F1172B822162FC57F4356EC334261790A1461331FE718533759EC4A3E8DCF1E",
+      "name": "hpas_sp15_escalatehigher.form"
+    },
+    {
+      "sha256": "84B7E1BCCABEFF3A72A0E577B139CB2EE247AD54540B53CB8345C31903E36ADC",
+      "name": "hpas_sp15_escalatemanager.form"
+    },
+    {
+      "sha256": "DB4941D6FFFFF89D532A91BC889DAC35E43560242D010FC1DF41938D90C3D267",
+      "name": "hpas_sp16_recorddowntime.form"
+    },
+    {
+      "sha256": "F541E340C4B10E2EFEE622D7FF2EC1323485DDA6CDAE5153D922A78AC1F19184",
+      "name": "hpas_sp16_verifyauth.form"
+    }
+  ],
+  "worker": {
+    "pid": 30296,
+    "grpc": "http://127.0.0.1:26500",
+    "rest": "http://127.0.0.1:8080",
+    "isolatedDatabase": "jdbc:h2:mem:hpas-8080-worker",
+    "registeredJobWorkers": 58
+  },
+  "targetSmoke": {
+    "processInstanceKey": "2251799813732823",
+    "state": "ACTIVE",
+    "hasIncident": false,
+    "completedHumanTasks": [
+      "SP01_CheckDocuments",
+      "SP02_ClinicalReview"
+    ],
+    "currentHumanTask": "SP04_Assess",
+    "tasklistHttp": 200,
+    "formApiAssertionsPassed": 3,
+    "globalActiveIncidents": 0
+  },
+  "acceptanceSuite": {
+    "candidateEnvironment": "8180",
+    "version2Acceptance": 67,
+    "parity": 19,
+    "passed": 86,
+    "failed": 0,
+    "skipped": 0
+  },
+  "browserTasklistFullFlowVerified": false,
+  "browserVerificationNote": "Tasklist REST user-task/form flow and worker progression verified; browser automation unavailable in this session"
+}

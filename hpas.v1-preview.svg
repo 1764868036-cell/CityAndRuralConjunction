@@ -1,0 +1,1461 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 5842 9728" font-family="Segoe UI, Arial, sans-serif">
+<defs>
+<marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#475569" stroke-width="1.6"/></marker>
+<marker id="arrm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#0F766E" stroke-width="1.6"/></marker>
+</defs>
+<rect x="-20" y="-20" width="5842" height="9728" fill="#FDFDFE"/>
+<text x="10" y="8" font-size="20" font-weight="600" fill="#0F172A">HPAS - Hospital Patient Administration System (hpas.v1 framework, Camunda 8)</text>
+<rect x="0" y="0" width="3289" height="550" rx="6" fill="#EEF2FF" stroke="#6366F1" stroke-width="1.2"/>
+<rect x="0" y="0" width="30" height="550" fill="#E0E7FF" stroke="#6366F1" stroke-width="1.2"/>
+<text x="19" y="275" font-size="12.5" font-weight="600" fill="#334155" text-anchor="middle" transform="rotate(-90 19 275)">Hospital Patient Administration System</text>
+<rect x="40" y="700" width="760" height="382" rx="6" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+<rect x="40" y="700" width="30" height="382" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1.2"/>
+<text x="59" y="891" font-size="12.5" font-weight="600" fill="#334155" text-anchor="middle" transform="rotate(-90 59 891)">Patient</text>
+<rect x="870" y="700" width="760" height="382" rx="6" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+<rect x="870" y="700" width="30" height="382" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1.2"/>
+<text x="889" y="891" font-size="12.5" font-weight="600" fill="#334155" text-anchor="middle" transform="rotate(-90 889 891)">Referring Organisation</text>
+<rect x="1700" y="700" width="760" height="382" rx="6" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+<rect x="1700" y="700" width="30" height="382" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1.2"/>
+<text x="1719" y="891" font-size="12.5" font-weight="600" fill="#334155" text-anchor="middle" transform="rotate(-90 1719 891)">External Scheduling Service</text>
+<rect x="2530" y="700" width="760" height="382" rx="6" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+<rect x="2530" y="700" width="30" height="382" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1.2"/>
+<text x="2549" y="891" font-size="12.5" font-weight="600" fill="#334155" text-anchor="middle" transform="rotate(-90 2549 891)">External Correspondence Service</text>
+<rect x="3360" y="700" width="760" height="382" rx="6" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+<rect x="3360" y="700" width="30" height="382" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1.2"/>
+<text x="3379" y="891" font-size="12.5" font-weight="600" fill="#334155" text-anchor="middle" transform="rotate(-90 3379 891)">Payment Service Provider</text>
+<rect x="4190" y="700" width="760" height="382" rx="6" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+<rect x="4190" y="700" width="30" height="382" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1.2"/>
+<text x="4209" y="891" font-size="12.5" font-weight="600" fill="#334155" text-anchor="middle" transform="rotate(-90 4209 891)">Insurer / Funding Organisation</text>
+<rect x="5020" y="700" width="760" height="382" rx="6" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.2"/>
+<rect x="5020" y="700" width="30" height="382" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1.2"/>
+<text x="5039" y="891" font-size="12.5" font-weight="600" fill="#334155" text-anchor="middle" transform="rotate(-90 5039 891)">External Treatment / Laboratory / Imaging Service</text>
+<rect x="80" y="1206" width="1136" height="176" rx="10" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="94" y="1198" font-size="13.5" font-weight="600" fill="#334155">P01 Receive and check referral  <tspan font-weight="400" fill="#94A3B8" font-size="11">(subprocess internal view)</tspan></text>
+<rect x="80" y="1492" width="1336" height="316" rx="10" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="94" y="1484" font-size="13.5" font-weight="600" fill="#334155">P02 Consultant clinical review  <tspan font-weight="400" fill="#94A3B8" font-size="11">(subprocess internal view)</tspan></text>
+<rect x="80" y="1918" width="2736" height="394" rx="10" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="94" y="1910" font-size="13.5" font-weight="600" fill="#334155">P03 Arrange new patient appointment  <tspan font-weight="400" fill="#94A3B8" font-size="11">(subprocess internal view)</tspan></text>
+<rect x="80" y="2422" width="1250" height="316" rx="10" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="94" y="2414" font-size="13.5" font-weight="600" fill="#334155">P04 Assessment, diagnosis and consent  <tspan font-weight="400" fill="#94A3B8" font-size="11">(subprocess internal view)</tspan></text>
+<rect x="80" y="2848" width="1336" height="316" rx="10" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="94" y="2840" font-size="13.5" font-weight="600" fill="#334155">P05 Arrange treatment and external services  <tspan font-weight="400" fill="#94A3B8" font-size="11">(subprocess internal view)</tspan></text>
+<rect x="80" y="3274" width="1336" height="316" rx="10" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="94" y="3266" font-size="13.5" font-weight="600" fill="#334155">P06 Verify funding and cost allocation  <tspan font-weight="400" fill="#94A3B8" font-size="11">(subprocess internal view)</tspan></text>
+<rect x="80" y="3700" width="2336" height="268" rx="10" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="94" y="3692" font-size="13.5" font-weight="600" fill="#334155">P07 Process payment  <tspan font-weight="400" fill="#94A3B8" font-size="11">(subprocess internal view)</tspan></text>
+<rect x="80" y="4078" width="1936" height="360" rx="10" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="94" y="4070" font-size="13.5" font-weight="600" fill="#334155">P08 Treatment cycles and continuation review  <tspan font-weight="400" fill="#94A3B8" font-size="11">(subprocess internal view)</tspan></text>
+<rect x="80" y="4548" width="1536" height="268" rx="10" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="94" y="4540" font-size="13.5" font-weight="600" fill="#334155">P03B Appointment changes (event-driven)  <tspan font-weight="400" fill="#94A3B8" font-size="11">(event subprocess internal view)</tspan></text>
+<rect x="80" y="4926" width="2136" height="520" rx="10" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="94" y="4918" font-size="13.5" font-weight="600" fill="#334155">P09 Manage treatment changes  <tspan font-weight="400" fill="#94A3B8" font-size="11">(event subprocess internal view)</tspan></text>
+<rect x="80" y="5556" width="1536" height="646" rx="10" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="94" y="5548" font-size="13.5" font-weight="600" fill="#334155">P10 Cancellation, refusal and no-shows  <tspan font-weight="400" fill="#94A3B8" font-size="11">(event subprocess internal view)</tspan></text>
+<rect x="80" y="6312" width="1336" height="268" rx="10" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="94" y="6304" font-size="13.5" font-weight="600" fill="#334155">P11 Refunds and fund transfers  <tspan font-weight="400" fill="#94A3B8" font-size="11">(event subprocess internal view)</tspan></text>
+<rect x="80" y="6690" width="1336" height="674" rx="10" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="94" y="6682" font-size="13.5" font-weight="600" fill="#334155">P12 Patient enquiries  <tspan font-weight="400" fill="#94A3B8" font-size="11">(event subprocess internal view)</tspan></text>
+<rect x="80" y="7474" width="1500" height="914" rx="10" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="94" y="7466" font-size="13.5" font-weight="600" fill="#334155">P13 Clinic letters  <tspan font-weight="400" fill="#94A3B8" font-size="11">(event subprocess internal view)</tspan></text>
+<rect x="80" y="8532" width="1336" height="302" rx="10" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="94" y="8524" font-size="13.5" font-weight="600" fill="#334155">P14 Follow-up appointments  <tspan font-weight="400" fill="#94A3B8" font-size="11">(event subprocess internal view)</tspan></text>
+<rect x="80" y="8944" width="1136" height="394" rx="10" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="94" y="8936" font-size="13.5" font-weight="600" fill="#334155">P15 Monitoring and reports  <tspan font-weight="400" fill="#94A3B8" font-size="11">(event subprocess internal view)</tspan></text>
+<rect x="80" y="9448" width="1136" height="268" rx="10" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="94" y="9440" font-size="13.5" font-weight="600" fill="#334155">P16 Access, audit and downtime  <tspan font-weight="400" fill="#94A3B8" font-size="11">(event subprocess internal view)</tspan></text>
+<polyline points="116,120 161,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="197,120 242,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="452,120 522,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="732,120 802,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="852,120 897,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="874" y="116" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">accepted</text>
+<polyline points="827,145 827,381 800,381 800,290" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="814" y="214" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">not accepted</text>
+<polyline points="1107,120 1177,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1227,120 1272,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1250" y="116" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">attended</text>
+<polyline points="1227,120 3148,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="2188" y="116" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">closed</text>
+<polyline points="1482,120 1552,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1602,120 1647,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1624" y="116" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">consent</text>
+<polyline points="1602,120 2862,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="2232" y="116" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">no treatment</text>
+<polyline points="1857,120 1927,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="2137,120 2207,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="2257,120 2302,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="2280" y="116" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">payment</text>
+<polyline points="2257,120 2582,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="2420" y="116" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">no payment</text>
+<polyline points="2512,120 2582,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="2792,120 2862,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="2898,120 2943,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="3093,120 3148,120" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="176,1280 458,1280 458,1302 740,1302" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="890,1302 915,1302 915,1287 940,1287" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="990,1287 1065,1287 1065,1280 1140,1280" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1065" y="1280" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">complete</text>
+<polyline points="965,1312 965,1397 415,1397 415,1262" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="690" y="1283" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">missing</text>
+<polyline points="490,1302 515,1302 515,1280 540,1280" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="576,1280 658,1280 658,1302 740,1302" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="176,1566 458,1566 458,1588 740,1588" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="890,1588 915,1588 915,1573 940,1573" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="990,1573 1065,1573 1065,1750 1140,1750" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1065" y="1658" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">accept</text>
+<polyline points="990,1573 1065,1573 1065,1588 1140,1588" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1065" y="1576" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">reject</text>
+<polyline points="965,1598 965,1683 415,1683 415,1548" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="690" y="1569" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">information</text>
+<polyline points="990,1573 1065,1573 1065,1680 1140,1680" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1065" y="1622" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">redirect</text>
+<polyline points="1290,1588 1315,1588 1315,1566 1340,1566" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="490,1588 515,1588 515,1566 540,1566" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="576,1566 658,1566 658,1588 740,1588" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1290,1680 1315,1680 1315,1658 1340,1658" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="176,1992 258,1992 258,1999 340,1999" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="390,1999 465,1999 465,2014 540,2014" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="465" y="2002" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">urgent</text>
+<polyline points="390,1999 565,1999 565,2014 740,2014" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="565" y="2002" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">routine</text>
+<polyline points="690,2014 740,2014" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="890,2014 915,2014 915,1992 940,1992" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="976,1992 1058,1992 1058,1999 1140,1999" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1190,1999 1465,1999 1465,2014 1740,2014" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1465" y="2002" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">found</text>
+<polyline points="1190,1999 1265,1999 1265,2014 1340,2014" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1265" y="2002" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">none</text>
+<polyline points="1490,2014 1540,2014" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1690,2014 1740,2014" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1890,2014 1915,2014 1915,1999 1940,1999" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1990,1999 2065,1999 2065,2232 2140,2232" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="2065" y="2112" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">within 2 weeks</text>
+<polyline points="1990,1999 2065,1999 2065,2014 2140,2014" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="2065" y="2002" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">later</text>
+<polyline points="2215,2272 2215,2327 365,2327 365,2036" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="390,2061 1265,2061 1265,2014 2140,2014" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1265" y="2034" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">reached</text>
+<polyline points="390,2061 540,2061" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="465" y="2057" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">not reached</text>
+<polyline points="590,2061 1365,2061 1365,2232 2140,2232" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1365" y="2142" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">retry</text>
+<polyline points="590,2061 665,2061 665,2076 740,2076" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="665" y="2064" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">escalate</text>
+<polyline points="890,2076 1515,2076 1515,2014 2140,2014" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="2290,2014 2315,2014 2315,1999 2340,1999" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="2390,1999 2465,1999 2465,1992 2540,1992" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="2390,1999 2465,1999 2465,2054 2540,2054" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="2576,1992 2740,1992" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="2576,2054 2740,2054" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="176,4622 258,4622 258,4629 340,4629" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="390,4629 465,4629 465,4644 540,4644" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="465" y="4632" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">reschedule</text>
+<polyline points="390,4629 765,4629 765,4736 1140,4736" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="765" y="4678" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">other</text>
+<polyline points="690,4644 715,4644 715,4622 740,4622" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="776,4622 858,4622 858,4629 940,4629" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="990,4629 1065,4629 1065,4644 1140,4644" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1065" y="4632" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">acceptable</text>
+<polyline points="990,4629 1065,4629 1065,4736 1140,4736" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1065" y="4678" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">conflict</text>
+<polyline points="1290,4644 1340,4644" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1490,4644 1515,4644 1515,4622 1540,4622" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1290,4736 1415,4736 1415,4622 1540,4622" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="176,2496 258,2496 258,2518 340,2518" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="490,2518 515,2518 515,2503 540,2503" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="590,2503 665,2503 665,2518 740,2518" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="665" y="2506" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">consent</text>
+<polyline points="590,2503 665,2503 665,2610 740,2610" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="665" y="2552" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">no consent</text>
+<polyline points="890,2518 940,2518" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1090,2518 1140,2518" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1215,2558 1215,2675 365,2675 365,2570" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="390,2595 565,2595 565,2610 740,2610" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="565" y="2598" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">valid</text>
+<polyline points="390,2595 665,2595 665,2518 940,2518" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="665" y="2552" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">invalid</text>
+<polyline points="890,2610 915,2610 915,2595 940,2595" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="990,2595 1065,2595 1065,2588 1140,2588" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1065" y="2588" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">yes</text>
+<polyline points="990,2595 1065,2595 1065,2680 1140,2680" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1065" y="2634" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">no</text>
+<polyline points="176,2922 258,2922 258,2929 340,2929" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="390,2929 465,2929 465,2944 540,2944" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="465" y="2932" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">hospital</text>
+<polyline points="390,2929 465,2929 465,3006 540,3006" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="465" y="2964" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">external</text>
+<polyline points="690,2944 1015,2944 1015,2922 1340,2922" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="690,3006 715,3006 715,2922 740,2922" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="776,2922 858,2922 858,2929 940,2929" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="990,2929 1065,2929 1065,2944 1140,2944" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1065" y="2932" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">available</text>
+<polyline points="965,2954 965,3101 415,3101 415,2966" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="690" y="2956" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">unavailable</text>
+<polyline points="1290,2944 1315,2944 1315,2922 1340,2922" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="490,3006 515,3006 515,3106 540,3106" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="576,3106 758,3106 758,2929 940,2929" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="176,3348 258,3348 258,3370 340,3370" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="490,3370 515,3370 515,3355 540,3355" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="590,3355 965,3355 965,3348 1340,3348" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="965" y="3348" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">hospital</text>
+<polyline points="590,3355 665,3355 665,3370 740,3370" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="665" y="3358" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">exempt</text>
+<polyline points="590,3355 665,3355 665,3462 740,3462" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="665" y="3404" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">insurer</text>
+<polyline points="590,3355 665,3355 665,3532 740,3532" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="665" y="3440" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">patient-pay</text>
+<polyline points="890,3370 1115,3370 1115,3348 1340,3348" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="890,3462 915,3462 915,3348 940,3348" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="976,3348 1058,3348 1058,3370 1140,3370" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1290,3370 1315,3370 1315,3348 1340,3348" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="176,3774 258,3774 258,3796 340,3796" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="490,3796 740,3796" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="890,3796 915,3796 915,3774 940,3774" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="976,3774 1058,3774 1058,3781 1140,3781" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1190,3781 1565,3781 1565,3796 1940,3796" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1565" y="3784" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">completed</text>
+<polyline points="1190,3781 1265,3781 1265,3796 1340,3796" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1265" y="3784" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">confirmation lost</text>
+<polyline points="1165,3806 1165,3983 415,3983 415,3848" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="790" y="3823" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">declined / incomplete</text>
+<polyline points="2090,3796 2140,3796" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="2290,3796 2315,3796 2315,3774 2340,3774" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="490,3888 515,3888 515,3781 540,3781" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="590,3781 665,3781 665,3796 740,3796" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="665" y="3784" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">new attempt</text>
+<polyline points="590,3781 665,3781 665,3888 740,3888" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="665" y="3830" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">urgent override</text>
+<polyline points="890,3888 940,3888" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1090,3888 1115,3888 1115,3866 1140,3866" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1490,3796 1540,3796" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1690,3796 1715,3796 1715,3781 1740,3781" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1790,3781 1865,3781 1865,3796 1940,3796" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1865" y="3784" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">taken</text>
+<polyline points="1765,3806 1765,3891 815,3891 815,3756" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1290" y="3777" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">not taken</text>
+<polyline points="176,4152 258,4152 258,4174 340,4174" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="490,4174 515,4174 515,4152 540,4152" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="576,4152 658,4152 658,4174 740,4174" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="890,4174 915,4174 915,4159 940,4159" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="990,4159 1065,4159 1065,4174 1140,4174" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1065" y="4162" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">fit</text>
+<polyline points="990,4159 1065,4159 1065,4266 1140,4266" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1065" y="4208" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">delay</text>
+<polyline points="990,4159 1065,4159 1065,4358 1140,4358" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1065" y="4254" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">change plan</text>
+<polyline points="1290,4174 1415,4174 1415,4159 1540,4159" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1590,4159 1665,4159 1665,4152 1740,4152" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1665" y="4152" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">more</text>
+<polyline points="1590,4159 1665,4159 1665,4266 1740,4266" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1665" y="4208" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">complete</text>
+<polyline points="1758,4170 1758,4269 415,4269 415,4134" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1290,4266 1515,4266 1515,4152 1740,4152" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1290,4358 1315,4358 1315,4152 1340,4152" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1376,4152 1458,4152 1458,4159 1540,4159" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1890,4266 1915,4266 1915,4152 1940,4152" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="176,5000 258,5000 258,5007 340,5007" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="390,5007 465,5007 465,5022 540,5022" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="465" y="5010" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">urgent</text>
+<polyline points="390,5007 465,5007 465,5114 540,5114" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="465" y="5056" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">normal</text>
+<polyline points="690,5022 715,5022 715,5240 740,5240" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="890,5240 915,5240 915,5022 940,5022" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="690,5114 715,5114 715,5007 740,5007" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="790,5007 865,5007 865,5022 940,5022" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="865" y="5010" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">valid</text>
+<polyline points="790,5007 865,5007 865,5092 940,5092" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="865" y="5046" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">invalid</text>
+<polyline points="1090,5022 1140,5022" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1290,5022 1315,5022 1315,5007 1340,5007" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1390,5007 1465,5007 1465,5366 1540,5366" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1465" y="5182" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">yes</text>
+<polyline points="1390,5007 1765,5007 1765,5000 2140,5000" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1765" y="5000" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">no</text>
+<polyline points="1690,5366 1715,5366 1715,5007 1740,5007" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1790,5007 1865,5007 1865,5022 1940,5022" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1865" y="5010" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">yes</text>
+<polyline points="1790,5007 1965,5007 1965,5000 2140,5000" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1965" y="5000" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">no</text>
+<polyline points="2090,5022 2115,5022 2115,5000 2140,5000" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="176,5630 258,5630 258,5652 340,5652" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="490,5652 515,5652 515,5637 540,5637" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="590,5637 665,5637 665,5870 740,5870" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="665" y="5750" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">paid</text>
+<polyline points="590,5637 765,5637 765,5996 940,5996" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="765" y="5812" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">unpaid</text>
+<polyline points="890,5870 915,5870 915,5996 940,5996" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1090,5996 1115,5996 1115,5637 1140,5637" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1190,5637 1265,5637 1265,5652 1340,5652" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1265" y="5640" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">re-offer</text>
+<polyline points="1190,5637 1265,5637 1265,6122 1340,6122" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1265" y="5876" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">clinical review</text>
+<polyline points="1190,5637 1265,5637 1265,5744 1340,5744" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1265" y="5686" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">close</text>
+<polyline points="1490,5652 1515,5652 1515,5630 1540,5630" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1490,6122 1515,6122 1515,5630 1540,5630" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1490,5744 1515,5744 1515,5630 1540,5630" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="176,6386 258,6386 258,6408 340,6408" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="490,6408 515,6408 515,6393 540,6393" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="590,6393 665,6393 665,6408 740,6408" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="665" y="6396" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">refund due</text>
+<polyline points="590,6393 665,6393 665,6500 740,6500" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="665" y="6442" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">no refund</text>
+<polyline points="890,6408 915,6408 915,6386 940,6386" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="976,6386 1058,6386 1058,6408 1140,6408" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1290,6408 1315,6408 1315,6386 1340,6386" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="890,6500 1115,6500 1115,6386 1340,6386" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="176,6764 258,6764 258,6786 340,6786" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="490,6786 515,6786 515,6771 540,6771" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="590,6771 665,6771 665,6786 740,6786" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="665" y="6774" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">admin simple</text>
+<polyline points="590,6771 665,6771 665,6878 740,6878" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="665" y="6820" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">admin transfer</text>
+<polyline points="590,6771 665,6771 665,6955 740,6955" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="665" y="6859" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">financial</text>
+<polyline points="590,6771 665,6771 665,7032 740,7032" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="665" y="6898" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">clinical</text>
+<polyline points="890,6786 1140,6786" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="890,6878 1015,6878 1015,6786 1140,6786" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="790,6955 865,6955 865,6786 940,6786" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="865" y="6866" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">authorised info</text>
+<polyline points="790,6955 865,6955 865,7158 940,7158" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="865" y="7052" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">beyond authorised info</text>
+<polyline points="1090,6786 1140,6786" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1090,7158 1115,7158 1115,6786 1140,6786" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="890,7032 915,7032 915,7284 940,7284" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1090,7284 1115,7284 1115,6786 1140,6786" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1290,6786 1315,6786 1315,6764 1340,6764" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="676,8206 758,8206 758,8228 840,8228" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="990,8228 1040,8228" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1190,8228 1215,8228 1215,8206 1240,8206" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="176,7548 358,7548 358,8223 540,8223" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1040,8348 1040,8403 815,8403 815,7830" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="543,8332 543,8387 415,8387 415,7704" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="490,7744 515,7744 515,7596 540,7596" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="815,7910 815,7965 365,7965 365,7530" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="390,7555 465,7555 465,7870 540,7870" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="465" y="7708" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">ok</text>
+<polyline points="390,7555 465,7555 465,8223 540,8223" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="465" y="7885" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">suspected clinical error</text>
+<polyline points="690,7870 715,7870 715,7962 740,7962" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="890,7962 915,7962 915,7555 940,7555" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="990,7555 1065,7555 1065,7570 1140,7570" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1065" y="7558" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">yes</text>
+<polyline points="990,7555 1165,7555 1165,7548 1340,7548" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="1165" y="7548" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">no</text>
+<polyline points="1290,7570 1315,7570 1315,7548 1340,7548" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="176,8606 258,8606 258,8628 340,8628" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="490,8628 515,8628 515,8606 540,8606" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="576,8606 658,8606 658,8613 740,8613" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="790,8613 865,8613 865,8628 940,8628" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="865" y="8616" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">within period</text>
+<polyline points="790,8613 865,8613 865,8754 940,8754" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="865" y="8680" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">outside period</text>
+<polyline points="1090,8628 1140,8628" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1290,8628 1315,8628 1315,8606 1340,8606" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1090,8754 1215,8754 1215,8606 1340,8606" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="176,9018 258,9018 258,9040 340,9040" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="490,9040 515,9040 515,9025 540,9025" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="590,9025 665,9025 665,9166 740,9166" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="665" y="9092" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">letter &gt; 1 month</text>
+<polyline points="590,9025 665,9025 665,9258 740,9258" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="665" y="9138" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">letter &gt; 3 months</text>
+<polyline points="590,9025 765,9025 765,9040 940,9040" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="765" y="9028" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">routine</text>
+<polyline points="890,9166 915,9166 915,9040 940,9040" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="890,9258 915,9258 915,9040 940,9040" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1090,9040 1115,9040 1115,9018 1140,9018" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="176,9522 258,9522 258,9529 340,9529" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="390,9529 465,9529 465,9544 540,9544" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="465" y="9532" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">access change</text>
+<polyline points="390,9529 465,9529 465,9636 540,9636" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="465" y="9578" font-size="9.5" fill="#64748B" font-style="italic" text-anchor="middle">interruption</text>
+<polyline points="690,9544 740,9544" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="890,9544 940,9544" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="690,9636 740,9636" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="890,9636 915,9636 915,9544 940,9544" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1090,9544 1115,9544 1115,9522 1140,9522" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="952,742 1004,742 1004,754 1056,754" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1176,754 1186,754 1186,742 1196,742" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1232,742 1336,742" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="952,842 1004,842 1004,854 1056,854" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1176,854 1186,854 1186,842 1196,842" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1232,842 1336,842" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="952,942 1004,942 1004,954 1056,954" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1176,954 1186,954 1186,942 1196,942" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="122,742 174,742 174,754 226,754" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="346,754 356,754 356,742 366,742" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="402,742 506,742" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="122,842 174,842 174,854 226,854" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="346,854 366,849" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="416,849 461,849 461,842 506,842" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="416,849 461,849 461,916 506,916" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="542,842 646,842" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="542,916 594,916 594,842 646,842" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="122,992 174,992 174,1004 226,1004" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="346,1004 356,1004 356,992 366,992" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="402,992 506,992" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1782,742 1834,742 1834,754 1886,754" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="2006,754 2016,754 2016,742 2026,742" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="2062,742 2166,742" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="2612,742 2664,742 2664,754 2716,754" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="2612,792 2664,792 2664,754 2716,754" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="2612,842 2664,842 2664,754 2716,754" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="2836,754 2846,754 2846,742 2856,742" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="3442,742 3494,742 3494,754 3546,754" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="3666,754 3676,754 3676,742 3686,742" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="3722,742 3826,742" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="3442,842 3494,842 3494,854 3546,854" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="3666,854 3676,854 3676,842 3686,842" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="3722,842 3826,842" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="4272,742 4324,742 4324,754 4376,754" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="4496,754 4506,754 4506,742 4516,742" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="4552,742 4656,742" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="5102,742 5154,742 5154,754 5206,754" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="5326,754 5346,749" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="5396,749 5441,749 5441,742 5486,742" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="5396,749 5441,749 5441,828 5486,828" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="5606,828 5616,828 5616,742 5626,742" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="5522,742 5766,742" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="5662,742 5766,742" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="5102,916 5154,916 5154,928 5206,928" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="5326,928 5336,928 5336,916 5346,916" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="5382,916 5486,916" fill="none" stroke="#475569" stroke-width="1.3" marker-end="url(#arr)"/>
+<polyline points="1214,724 1214,622 179,622 179,138" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="3018,160 3018,631 934,631 934,924" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="347,170 347,640 934,640 934,824" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="1214,824 1214,649 347,649 347,170" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="627,170 627,658 934,658 934,924" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="627,170 627,667 934,667 934,824" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="1214,824 1214,676 627,676 627,170" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="627,170 627,622 934,622 934,924" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="1002,170 1002,631 1764,631 1764,724" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="2044,724 2044,640 1002,640 1002,170" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="1002,170 1002,649 2594,649 2594,724" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="384,724 384,658 1002,658 1002,170" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="524,824 524,667 185,667 185,490" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="185,490 185,676 1764,676 1764,724" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="2044,724 2044,622 185,622 185,490" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="185,490 185,631 2594,631 2594,724" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="1752,170 1752,640 5084,640 5084,724" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="5504,724 5504,649 1752,649 1752,170" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="5644,724 5644,658 1752,658 1752,170" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="2032,170 2032,667 4254,667 4254,724" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="4534,724 4534,676 2032,676 2032,170" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="2407,170 2407,622 3424,622 3424,724" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="3704,724 3704,631 2407,631 2407,170" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="2407,170 2407,640 2594,640 2594,824" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="2687,170 2687,649 5084,649 5084,898" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="5364,898 5364,658 2687,658 2687,170" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="524,898 524,667 745,667 745,490" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="745,490 745,676 934,676 934,924" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="1025,490 1025,622 3424,622 3424,824" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="3704,824 3704,631 1025,631 1025,490" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="384,974 384,640 1305,640 1305,490" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="1585,490 1585,649 2594,649 2594,774" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="1865,490 1865,658 1764,658 1764,724" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="2044,724 2044,667 1865,667 1865,490" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<polyline points="1865,490 1865,676 2594,676 2594,724" fill="none" stroke="#0F766E" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrm)"/>
+<circle cx="98" cy="120" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M92 119 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="98.0" y="142.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Referral case opened</text>
+<circle cx="179" cy="120" r="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+<circle cx="179" cy="120" r="12" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<path d="M173 119 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<text x="179.0" y="136.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Receive referral from</text>
+<text x="179.0" y="148.0" font-size="10.0" fill="#1E293B" text-anchor="middle">referring organisation</text>
+<polygon points="827,95 852,120 827,145 802,120" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M819 112 L835 128 M819 128 L835 112" stroke="#B45309" stroke-width="1.8"/>
+<text x="857.0" y="147.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Referral accepted?</text>
+<circle cx="800" cy="308" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="800.0" y="318.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Referral closed</text>
+<text x="800.0" y="330.0" font-size="10.0" fill="#1E293B" text-anchor="middle">(declined /</text>
+<text x="800.0" y="342.0" font-size="10.0" fill="#1E293B" text-anchor="middle">redirected)</text>
+<polygon points="1202,95 1227,120 1202,145 1177,120" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M1194 112 L1210 128 M1194 128 L1210 112" stroke="#B45309" stroke-width="1.8"/>
+<text x="1232.0" y="147.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Visit outcome?</text>
+<polygon points="1577,95 1602,120 1577,145 1552,120" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M1569 112 L1585 128 M1569 128 L1585 112" stroke="#B45309" stroke-width="1.8"/>
+<text x="1607.0" y="147.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Consent to treatment?</text>
+<polygon points="2232,95 2257,120 2232,145 2207,120" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M2224 112 L2240 128 M2224 128 L2240 112" stroke="#B45309" stroke-width="1.8"/>
+<text x="2262.0" y="141.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Advance payment</text>
+<text x="2262.0" y="153.0" font-size="10.0" fill="#1E293B" text-anchor="middle">required?</text>
+<circle cx="2880" cy="120" r="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+<circle cx="2880" cy="120" r="12" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<path d="M2874 119 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<text x="2880.0" y="136.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Wait for authorised</text>
+<text x="2880.0" y="148.0" font-size="10.0" fill="#1E293B" text-anchor="middle">pathway closure</text>
+<rect x="2943" y="80" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="2948" y="86" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="3018.0" y="84.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Notify referring</text>
+<text x="3018.0" y="96.0" font-size="10.5" fill="#1E293B" text-anchor="middle">organisation of</text>
+<text x="3018.0" y="108.0" font-size="10.5" fill="#1E293B" text-anchor="middle">pathway closure</text>
+<circle cx="3166" cy="120" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="3166.0" y="142.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Patient pathway closed</text>
+<rect x="242" y="70" width="210" height="100" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.6"/>
+<rect x="242" y="70" width="210" height="16" rx="8" fill="#7C3AED" fill-opacity="0.25"/>
+<text x="247" y="82" font-size="9" fill="#7C3AED">[+] expanded below</text>
+<text x="347.0" y="84.0" font-size="11.0" fill="#1E293B" text-anchor="middle">P01 Receive and check</text>
+<text x="347.0" y="96.0" font-size="11.0" fill="#1E293B" text-anchor="middle">referral</text>
+<rect x="522" y="70" width="210" height="100" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.6"/>
+<rect x="522" y="70" width="210" height="16" rx="8" fill="#7C3AED" fill-opacity="0.25"/>
+<text x="527" y="82" font-size="9" fill="#7C3AED">[+] expanded below</text>
+<text x="627.0" y="84.0" font-size="11.0" fill="#1E293B" text-anchor="middle">P02 Consultant clinical</text>
+<text x="627.0" y="96.0" font-size="11.0" fill="#1E293B" text-anchor="middle">review</text>
+<rect x="897" y="70" width="210" height="100" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.6"/>
+<rect x="897" y="70" width="210" height="16" rx="8" fill="#7C3AED" fill-opacity="0.25"/>
+<text x="902" y="82" font-size="9" fill="#7C3AED">[+] expanded below</text>
+<text x="1002.0" y="84.0" font-size="11.0" fill="#1E293B" text-anchor="middle">P03 Arrange new patient</text>
+<text x="1002.0" y="96.0" font-size="11.0" fill="#1E293B" text-anchor="middle">appointment</text>
+<rect x="1272" y="70" width="210" height="100" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.6"/>
+<rect x="1272" y="70" width="210" height="16" rx="8" fill="#7C3AED" fill-opacity="0.25"/>
+<text x="1277" y="82" font-size="9" fill="#7C3AED">[+] expanded below</text>
+<text x="1377.0" y="84.0" font-size="11.0" fill="#1E293B" text-anchor="middle">P04 Assessment, diagnosis</text>
+<text x="1377.0" y="96.0" font-size="11.0" fill="#1E293B" text-anchor="middle">and consent</text>
+<rect x="1647" y="70" width="210" height="100" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.6"/>
+<rect x="1647" y="70" width="210" height="16" rx="8" fill="#7C3AED" fill-opacity="0.25"/>
+<text x="1652" y="82" font-size="9" fill="#7C3AED">[+] expanded below</text>
+<text x="1752.0" y="84.0" font-size="11.0" fill="#1E293B" text-anchor="middle">P05 Arrange treatment and</text>
+<text x="1752.0" y="96.0" font-size="11.0" fill="#1E293B" text-anchor="middle">external services</text>
+<rect x="1927" y="70" width="210" height="100" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.6"/>
+<rect x="1927" y="70" width="210" height="16" rx="8" fill="#7C3AED" fill-opacity="0.25"/>
+<text x="1932" y="82" font-size="9" fill="#7C3AED">[+] expanded below</text>
+<text x="2032.0" y="84.0" font-size="11.0" fill="#1E293B" text-anchor="middle">P06 Verify funding and</text>
+<text x="2032.0" y="96.0" font-size="11.0" fill="#1E293B" text-anchor="middle">cost allocation</text>
+<rect x="2302" y="70" width="210" height="100" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.6"/>
+<rect x="2302" y="70" width="210" height="16" rx="8" fill="#7C3AED" fill-opacity="0.25"/>
+<text x="2307" y="82" font-size="9" fill="#7C3AED">[+] expanded below</text>
+<text x="2407.0" y="90.0" font-size="11.0" fill="#1E293B" text-anchor="middle">P07 Process payment</text>
+<rect x="2582" y="70" width="210" height="100" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.6"/>
+<rect x="2582" y="70" width="210" height="16" rx="8" fill="#7C3AED" fill-opacity="0.25"/>
+<text x="2587" y="82" font-size="9" fill="#7C3AED">[+] expanded below</text>
+<text x="2687.0" y="84.0" font-size="11.0" fill="#1E293B" text-anchor="middle">P08 Treatment cycles and</text>
+<text x="2687.0" y="96.0" font-size="11.0" fill="#1E293B" text-anchor="middle">continuation review</text>
+<rect x="80" y="390" width="210" height="100" rx="8" fill="#FCE7F3" stroke="#DB2777" stroke-width="1.6" stroke-dasharray="6 4"/>
+<rect x="80" y="390" width="210" height="16" rx="8" fill="#DB2777" fill-opacity="0.25"/>
+<text x="85" y="402" font-size="9" fill="#DB2777">[+] expanded below</text>
+<text x="185.0" y="404.0" font-size="11.0" fill="#1E293B" text-anchor="middle">P03B Appointment changes</text>
+<text x="185.0" y="416.0" font-size="11.0" fill="#1E293B" text-anchor="middle">(event-driven)</text>
+<rect x="360" y="390" width="210" height="100" rx="8" fill="#FCE7F3" stroke="#DB2777" stroke-width="1.6" stroke-dasharray="6 4"/>
+<rect x="360" y="390" width="210" height="16" rx="8" fill="#DB2777" fill-opacity="0.25"/>
+<text x="365" y="402" font-size="9" fill="#DB2777">[+] expanded below</text>
+<text x="465.0" y="404.0" font-size="11.0" fill="#1E293B" text-anchor="middle">P09 Manage treatment</text>
+<text x="465.0" y="416.0" font-size="11.0" fill="#1E293B" text-anchor="middle">changes</text>
+<rect x="640" y="390" width="210" height="100" rx="8" fill="#FCE7F3" stroke="#DB2777" stroke-width="1.6" stroke-dasharray="6 4"/>
+<rect x="640" y="390" width="210" height="16" rx="8" fill="#DB2777" fill-opacity="0.25"/>
+<text x="645" y="402" font-size="9" fill="#DB2777">[+] expanded below</text>
+<text x="745.0" y="404.0" font-size="11.0" fill="#1E293B" text-anchor="middle">P10 Cancellation, refusal</text>
+<text x="745.0" y="416.0" font-size="11.0" fill="#1E293B" text-anchor="middle">and no-shows</text>
+<rect x="920" y="390" width="210" height="100" rx="8" fill="#FCE7F3" stroke="#DB2777" stroke-width="1.6" stroke-dasharray="6 4"/>
+<rect x="920" y="390" width="210" height="16" rx="8" fill="#DB2777" fill-opacity="0.25"/>
+<text x="925" y="402" font-size="9" fill="#DB2777">[+] expanded below</text>
+<text x="1025.0" y="404.0" font-size="11.0" fill="#1E293B" text-anchor="middle">P11 Refunds and fund</text>
+<text x="1025.0" y="416.0" font-size="11.0" fill="#1E293B" text-anchor="middle">transfers</text>
+<rect x="1200" y="390" width="210" height="100" rx="8" fill="#FCE7F3" stroke="#DB2777" stroke-width="1.6" stroke-dasharray="6 4"/>
+<rect x="1200" y="390" width="210" height="16" rx="8" fill="#DB2777" fill-opacity="0.25"/>
+<text x="1205" y="402" font-size="9" fill="#DB2777">[+] expanded below</text>
+<text x="1305.0" y="410.0" font-size="11.0" fill="#1E293B" text-anchor="middle">P12 Patient enquiries</text>
+<rect x="1480" y="390" width="210" height="100" rx="8" fill="#FCE7F3" stroke="#DB2777" stroke-width="1.6" stroke-dasharray="6 4"/>
+<rect x="1480" y="390" width="210" height="16" rx="8" fill="#DB2777" fill-opacity="0.25"/>
+<text x="1485" y="402" font-size="9" fill="#DB2777">[+] expanded below</text>
+<text x="1585.0" y="410.0" font-size="11.0" fill="#1E293B" text-anchor="middle">P13 Clinic letters</text>
+<rect x="1760" y="390" width="210" height="100" rx="8" fill="#FCE7F3" stroke="#DB2777" stroke-width="1.6" stroke-dasharray="6 4"/>
+<rect x="1760" y="390" width="210" height="16" rx="8" fill="#DB2777" fill-opacity="0.25"/>
+<text x="1765" y="402" font-size="9" fill="#DB2777">[+] expanded below</text>
+<text x="1865.0" y="410.0" font-size="11.0" fill="#1E293B" text-anchor="middle">P14 Follow-up appointments</text>
+<rect x="2040" y="390" width="210" height="100" rx="8" fill="#FCE7F3" stroke="#DB2777" stroke-width="1.6" stroke-dasharray="6 4"/>
+<rect x="2040" y="390" width="210" height="16" rx="8" fill="#DB2777" fill-opacity="0.25"/>
+<text x="2045" y="402" font-size="9" fill="#DB2777">[+] expanded below</text>
+<text x="2145.0" y="410.0" font-size="11.0" fill="#1E293B" text-anchor="middle">P15 Monitoring and reports</text>
+<rect x="2320" y="390" width="210" height="100" rx="8" fill="#FCE7F3" stroke="#DB2777" stroke-width="1.6" stroke-dasharray="6 4"/>
+<rect x="2320" y="390" width="210" height="16" rx="8" fill="#DB2777" fill-opacity="0.25"/>
+<text x="2325" y="402" font-size="9" fill="#DB2777">[+] expanded below</text>
+<text x="2425.0" y="404.0" font-size="11.0" fill="#1E293B" text-anchor="middle">P16 Access, audit and</text>
+<text x="2425.0" y="416.0" font-size="11.0" fill="#1E293B" text-anchor="middle">downtime</text>
+<circle cx="158" cy="1280" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M152 1279 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="158.0" y="1302.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<rect x="740" y="1262" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="745" y="1268" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="815.0" y="1272.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Check referral</text>
+<text x="815.0" y="1284.0" font-size="10.5" fill="#1E293B" text-anchor="middle">supporting documents</text>
+<polygon points="965,1262 990,1287 965,1312 940,1287" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M957 1279 L973 1295 M957 1295 L973 1279" stroke="#B45309" stroke-width="1.8"/>
+<text x="995.0" y="1314.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Documents complete?</text>
+<rect x="340" y="1262" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="345" y="1268" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="415.0" y="1266.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Request missing</text>
+<text x="415.0" y="1278.0" font-size="10.5" fill="#1E293B" text-anchor="middle">information from</text>
+<text x="415.0" y="1290.0" font-size="10.5" fill="#1E293B" text-anchor="middle">referrer</text>
+<circle cx="558" cy="1280" r="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+<circle cx="558" cy="1280" r="12" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<path d="M552 1279 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<text x="558.0" y="1296.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Supplementary</text>
+<text x="558.0" y="1308.0" font-size="10.0" fill="#1E293B" text-anchor="middle">information received</text>
+<circle cx="1158" cy="1280" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1158.0" y="1296.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Referral ready for</text>
+<text x="1158.0" y="1308.0" font-size="10.0" fill="#1E293B" text-anchor="middle">clinical review</text>
+<circle cx="158" cy="1566" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M152 1565 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="158.0" y="1588.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<rect x="740" y="1548" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="745" y="1554" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="815.0" y="1558.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Review referral and</text>
+<text x="815.0" y="1570.0" font-size="10.5" fill="#1E293B" text-anchor="middle">record decision</text>
+<polygon points="965,1548 990,1573 965,1598 940,1573" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M957 1565 L973 1581 M957 1581 L973 1565" stroke="#B45309" stroke-width="1.8"/>
+<text x="995.0" y="1600.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Consultant decision?</text>
+<rect x="1140" y="1548" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="1145" y="1554" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="1215.0" y="1552.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Send rejection with</text>
+<text x="1215.0" y="1564.0" font-size="10.5" fill="#1E293B" text-anchor="middle">reason and</text>
+<text x="1215.0" y="1576.0" font-size="10.5" fill="#1E293B" text-anchor="middle">decision-maker</text>
+<rect x="340" y="1548" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="345" y="1554" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="415.0" y="1558.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Request further</text>
+<text x="415.0" y="1570.0" font-size="10.5" fill="#1E293B" text-anchor="middle">clinical information</text>
+<circle cx="558" cy="1566" r="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+<circle cx="558" cy="1566" r="12" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<path d="M552 1565 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<text x="558.0" y="1582.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Further information</text>
+<text x="558.0" y="1594.0" font-size="10.0" fill="#1E293B" text-anchor="middle">received</text>
+<rect x="1140" y="1640" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="1145" y="1646" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="1215.0" y="1644.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Notify redirection to</text>
+<text x="1215.0" y="1656.0" font-size="10.5" fill="#1E293B" text-anchor="middle">another specialist</text>
+<text x="1215.0" y="1668.0" font-size="10.5" fill="#1E293B" text-anchor="middle">service</text>
+<circle cx="1158" cy="1750" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1158.0" y="1772.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Referral accepted</text>
+<circle cx="1358" cy="1566" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1358.0" y="1588.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Referral rejected</text>
+<circle cx="1358" cy="1658" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1358.0" y="1680.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Referral redirected</text>
+<circle cx="158" cy="1992" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M152 1991 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="158.0" y="2014.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<polygon points="365,1974 390,1999 365,2024 340,1999" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M357 1991 L373 2007 M357 2007 L373 1991" stroke="#B45309" stroke-width="1.8"/>
+<text x="395.0" y="2026.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Urgent referral?</text>
+<rect x="540" y="1974" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="545" y="1980" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="615.0" y="1984.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Flag priority and</text>
+<text x="615.0" y="1996.0" font-size="10.5" fill="#1E293B" text-anchor="middle">expedite timescales</text>
+<rect x="740" y="1974" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="745" y="1980" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="815.0" y="1978.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Search appointment via</text>
+<text x="815.0" y="1990.0" font-size="10.5" fill="#1E293B" text-anchor="middle">external scheduling</text>
+<text x="815.0" y="2002.0" font-size="10.5" fill="#1E293B" text-anchor="middle">service</text>
+<circle cx="958" cy="1992" r="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+<circle cx="958" cy="1992" r="12" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<path d="M952 1991 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<text x="958.0" y="2008.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Scheduling result</text>
+<text x="958.0" y="2020.0" font-size="10.0" fill="#1E293B" text-anchor="middle">received</text>
+<polygon points="1165,1974 1190,1999 1165,2024 1140,1999" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M1157 1991 L1173 2007 M1157 2007 L1173 1991" stroke="#B45309" stroke-width="1.8"/>
+<text x="1195.0" y="2020.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Slot within requested</text>
+<text x="1195.0" y="2032.0" font-size="10.0" fill="#1E293B" text-anchor="middle">period?</text>
+<rect x="1340" y="1974" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="1345" y="1980" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="1415.0" y="1978.0" font-size="10.5" fill="#1E293B" text-anchor="middle">No slot in period:</text>
+<text x="1415.0" y="1990.0" font-size="10.5" fill="#1E293B" text-anchor="middle">highlight and refer to</text>
+<text x="1415.0" y="2002.0" font-size="10.5" fill="#1E293B" text-anchor="middle">pathway team</text>
+<rect x="1540" y="1974" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="1545" y="1980" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="1615.0" y="1978.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Book next available</text>
+<text x="1615.0" y="1990.0" font-size="10.5" fill="#1E293B" text-anchor="middle">slot with recorded</text>
+<text x="1615.0" y="2002.0" font-size="10.5" fill="#1E293B" text-anchor="middle">exception</text>
+<rect x="1740" y="1974" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="1745" y="1980" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="1815.0" y="1984.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Confirm booking in</text>
+<text x="1815.0" y="1996.0" font-size="10.5" fill="#1E293B" text-anchor="middle">system</text>
+<polygon points="1965,1974 1990,1999 1965,2024 1940,1999" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M1957 1991 L1973 2007 M1957 2007 L1973 1991" stroke="#B45309" stroke-width="1.8"/>
+<text x="1995.0" y="2020.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Appointment within two</text>
+<text x="1995.0" y="2032.0" font-size="10.0" fill="#1E293B" text-anchor="middle">weeks?</text>
+<rect x="2140" y="2192" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="2145" y="2198" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="2215.0" y="2202.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Telephone the patient</text>
+<text x="2215.0" y="2214.0" font-size="10.5" fill="#1E293B" text-anchor="middle">and record outcome</text>
+<polygon points="365,2036 390,2061 365,2086 340,2061" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M357 2053 L373 2069 M357 2069 L373 2053" stroke="#B45309" stroke-width="1.8"/>
+<text x="395.0" y="2088.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Contact outcome?</text>
+<polygon points="565,2036 590,2061 565,2086 540,2061" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M557 2053 L573 2069 M557 2069 L573 2053" stroke="#B45309" stroke-width="1.8"/>
+<text x="595.0" y="2088.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Attempts &lt; 3?</text>
+<rect x="740" y="2036" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="745" y="2042" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="815.0" y="2040.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Escalate failed</text>
+<text x="815.0" y="2052.0" font-size="10.5" fill="#1E293B" text-anchor="middle">contact to Pathway</text>
+<text x="815.0" y="2064.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Coordinator</text>
+<rect x="2140" y="1974" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="2145" y="1980" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="2215.0" y="1978.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Send appointment</text>
+<text x="2215.0" y="1990.0" font-size="10.5" fill="#1E293B" text-anchor="middle">letter via</text>
+<text x="2215.0" y="2002.0" font-size="10.5" fill="#1E293B" text-anchor="middle">correspondence service</text>
+<polygon points="2365,1974 2390,1999 2365,2024 2340,1999" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<circle cx="2365" cy="1999" r="9" fill="none" stroke="#B45309" stroke-width="1.4"/>
+<path d="M2360 1998 l5 -3 l5 3 l-5 3 z" fill="#B45309"/>
+<text x="2395.0" y="2020.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Wait for clinic visit</text>
+<text x="2395.0" y="2032.0" font-size="10.0" fill="#1E293B" text-anchor="middle">or closure</text>
+<circle cx="2558" cy="1992" r="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+<circle cx="2558" cy="1992" r="12" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<path d="M2552 1991 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<text x="2558.0" y="2014.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Clinic visit completed</text>
+<circle cx="2558" cy="2054" r="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+<circle cx="2558" cy="2054" r="12" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<path d="M2552 2053 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<text x="2558.0" y="2070.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Pathway closure</text>
+<text x="2558.0" y="2082.0" font-size="10.0" fill="#1E293B" text-anchor="middle">authorised</text>
+<circle cx="2758" cy="1992" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="2758.0" y="2014.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Patient attended</text>
+<circle cx="2758" cy="2054" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="2758.0" y="2076.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Pathway closed</text>
+<circle cx="158" cy="2496" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M152 2495 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="158.0" y="2518.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<rect x="340" y="2478" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="345" y="2484" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="415.0" y="2482.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Assess patient,</text>
+<text x="415.0" y="2494.0" font-size="10.5" fill="#1E293B" text-anchor="middle">discuss diagnosis and</text>
+<text x="415.0" y="2506.0" font-size="10.5" fill="#1E293B" text-anchor="middle">options</text>
+<polygon points="565,2478 590,2503 565,2528 540,2503" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M557 2495 L573 2511 M557 2511 L573 2495" stroke="#B45309" stroke-width="1.8"/>
+<text x="595.0" y="2524.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Patient consents to</text>
+<text x="595.0" y="2536.0" font-size="10.0" fill="#1E293B" text-anchor="middle">treatment?</text>
+<rect x="740" y="2478" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="745" y="2484" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="815.0" y="2488.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Record informed</text>
+<text x="815.0" y="2500.0" font-size="10.5" fill="#1E293B" text-anchor="middle">consent</text>
+<rect x="940" y="2478" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="945" y="2484" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="1015.0" y="2482.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Create authorised</text>
+<text x="1015.0" y="2494.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Treatment Booking</text>
+<text x="1015.0" y="2506.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Request</text>
+<rect x="1140" y="2478" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="1145" y="2484" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="1215.0" y="2482.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Validate request</text>
+<text x="1215.0" y="2494.0" font-size="10.5" fill="#1E293B" text-anchor="middle">completeness and</text>
+<text x="1215.0" y="2506.0" font-size="10.5" fill="#1E293B" text-anchor="middle">clinical authorisation</text>
+<polygon points="365,2570 390,2595 365,2620 340,2595" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M357 2587 L373 2603 M357 2603 L373 2587" stroke="#B45309" stroke-width="1.8"/>
+<text x="395.0" y="2622.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Request valid?</text>
+<rect x="740" y="2570" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="745" y="2576" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="815.0" y="2580.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Trigger clinic letter</text>
+<text x="815.0" y="2592.0" font-size="10.5" fill="#1E293B" text-anchor="middle">preparation</text>
+<polygon points="965,2570 990,2595 965,2620 940,2595" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M957 2587 L973 2603 M957 2603 L973 2587" stroke="#B45309" stroke-width="1.8"/>
+<text x="995.0" y="2622.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Treatment agreed?</text>
+<circle cx="1158" cy="2588" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1158.0" y="2610.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Treatment authorised</text>
+<circle cx="1158" cy="2680" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1158.0" y="2702.0" font-size="10.0" fill="#1E293B" text-anchor="middle">No treatment agreed</text>
+<circle cx="158" cy="2922" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M152 2921 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="158.0" y="2944.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<polygon points="365,2904 390,2929 365,2954 340,2929" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M357 2921 L373 2937 M357 2937 L373 2921" stroke="#B45309" stroke-width="1.8"/>
+<text x="395.0" y="2956.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Resource type?</text>
+<rect x="540" y="2904" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="545" y="2910" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="615.0" y="2920.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Book hospital facility</text>
+<rect x="540" y="2966" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="545" y="2972" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="615.0" y="2976.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Request availability</text>
+<text x="615.0" y="2988.0" font-size="10.5" fill="#1E293B" text-anchor="middle">from external service</text>
+<circle cx="758" cy="2922" r="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+<circle cx="758" cy="2922" r="12" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<path d="M752 2921 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<text x="758.0" y="2938.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Availability result</text>
+<text x="758.0" y="2950.0" font-size="10.0" fill="#1E293B" text-anchor="middle">received</text>
+<polygon points="965,2904 990,2929 965,2954 940,2929" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M957 2921 L973 2937 M957 2937 L973 2921" stroke="#B45309" stroke-width="1.8"/>
+<text x="995.0" y="2950.0" font-size="10.0" fill="#1E293B" text-anchor="middle">External slot</text>
+<text x="995.0" y="2962.0" font-size="10.0" fill="#1E293B" text-anchor="middle">available?</text>
+<rect x="1140" y="2904" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="1145" y="2910" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="1215.0" y="2908.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Create provisional</text>
+<text x="1215.0" y="2920.0" font-size="10.5" fill="#1E293B" text-anchor="middle">booking with external</text>
+<text x="1215.0" y="2932.0" font-size="10.5" fill="#1E293B" text-anchor="middle">service</text>
+<rect x="340" y="2966" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="345" y="2972" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="415.0" y="2970.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Notify responsible</text>
+<text x="415.0" y="2982.0" font-size="10.5" fill="#1E293B" text-anchor="middle">team, keep pending (no</text>
+<text x="415.0" y="2994.0" font-size="10.5" fill="#1E293B" text-anchor="middle">duplicates)</text>
+<circle cx="558" cy="3106" r="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+<circle cx="558" cy="3106" r="12" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<path d="M552 3105 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<text x="558.0" y="3122.0" font-size="10.0" fill="#1E293B" text-anchor="middle">External service</text>
+<text x="558.0" y="3134.0" font-size="10.0" fill="#1E293B" text-anchor="middle">available again</text>
+<circle cx="1358" cy="2922" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1358.0" y="2938.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Treatment</text>
+<text x="1358.0" y="2950.0" font-size="10.0" fill="#1E293B" text-anchor="middle">provisionally booked</text>
+<circle cx="158" cy="3348" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M152 3347 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="158.0" y="3370.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<rect x="340" y="3330" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="345" y="3336" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="415.0" y="3340.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Determine funding</text>
+<text x="415.0" y="3352.0" font-size="10.5" fill="#1E293B" text-anchor="middle">route</text>
+<polygon points="565,3330 590,3355 565,3380 540,3355" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M557 3347 L573 3363 M557 3363 L573 3347" stroke="#B45309" stroke-width="1.8"/>
+<text x="595.0" y="3382.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Funding route?</text>
+<rect x="740" y="3330" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="745" y="3336" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="815.0" y="3340.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Record authorised</text>
+<text x="815.0" y="3352.0" font-size="10.5" fill="#1E293B" text-anchor="middle">exemption</text>
+<rect x="740" y="3422" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="745" y="3428" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="815.0" y="3432.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Request funding</text>
+<text x="815.0" y="3444.0" font-size="10.5" fill="#1E293B" text-anchor="middle">approval from insurer</text>
+<circle cx="958" cy="3348" r="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+<circle cx="958" cy="3348" r="12" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<path d="M952 3347 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<text x="958.0" y="3364.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Funding approval</text>
+<text x="958.0" y="3376.0" font-size="10.0" fill="#1E293B" text-anchor="middle">received</text>
+<rect x="1140" y="3330" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="1145" y="3336" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="1215.0" y="3328.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Record organisation,</text>
+<text x="1215.0" y="3340.0" font-size="10.5" fill="#1E293B" text-anchor="middle">authorisation</text>
+<text x="1215.0" y="3352.0" font-size="10.5" fill="#1E293B" text-anchor="middle">reference, amount,</text>
+<text x="1215.0" y="3364.0" font-size="10.5" fill="#1E293B" text-anchor="middle">limits</text>
+<circle cx="1358" cy="3348" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1358.0" y="3364.0" font-size="10.0" fill="#1E293B" text-anchor="middle">No advance payment</text>
+<text x="1358.0" y="3376.0" font-size="10.0" fill="#1E293B" text-anchor="middle">required</text>
+<circle cx="758" cy="3532" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="758.0" y="3548.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Advance payment</text>
+<text x="758.0" y="3560.0" font-size="10.0" fill="#1E293B" text-anchor="middle">required</text>
+<circle cx="158" cy="3774" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M152 3773 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="158.0" y="3796.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<rect x="340" y="3756" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="345" y="3762" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="415.0" y="3766.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Calculate or obtain</text>
+<text x="415.0" y="3778.0" font-size="10.5" fill="#1E293B" text-anchor="middle">applicable charge</text>
+<rect x="740" y="3756" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="745" y="3762" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="815.0" y="3766.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Send secure payment</text>
+<text x="815.0" y="3778.0" font-size="10.5" fill="#1E293B" text-anchor="middle">request to PSP</text>
+<circle cx="958" cy="3774" r="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+<circle cx="958" cy="3774" r="12" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<path d="M952 3773 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<text x="958.0" y="3790.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Payment status</text>
+<text x="958.0" y="3802.0" font-size="10.0" fill="#1E293B" text-anchor="middle">received</text>
+<polygon points="1165,3756 1190,3781 1165,3806 1140,3781" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M1157 3773 L1173 3789 M1157 3789 L1173 3773" stroke="#B45309" stroke-width="1.8"/>
+<text x="1195.0" y="3808.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Payment status?</text>
+<rect x="1940" y="3756" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="1945" y="3762" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="2015.0" y="3760.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Record status,</text>
+<text x="2015.0" y="3772.0" font-size="10.5" fill="#1E293B" text-anchor="middle">reference, date and</text>
+<text x="2015.0" y="3784.0" font-size="10.5" fill="#1E293B" text-anchor="middle">amount (no card data)</text>
+<rect x="2140" y="3756" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="2145" y="3762" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="2215.0" y="3760.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Confirm treatment</text>
+<text x="2215.0" y="3772.0" font-size="10.5" fill="#1E293B" text-anchor="middle">booking (payment</text>
+<text x="2215.0" y="3784.0" font-size="10.5" fill="#1E293B" text-anchor="middle">complete)</text>
+<rect x="340" y="3848" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="345" y="3854" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="415.0" y="3852.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Notify patient and</text>
+<text x="415.0" y="3864.0" font-size="10.5" fill="#1E293B" text-anchor="middle">responsible team of</text>
+<text x="415.0" y="3876.0" font-size="10.5" fill="#1E293B" text-anchor="middle">payment issue</text>
+<polygon points="565,3756 590,3781 565,3806 540,3781" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M557 3773 L573 3789 M557 3789 L573 3773" stroke="#B45309" stroke-width="1.8"/>
+<text x="595.0" y="3808.0" font-size="10.0" fill="#1E293B" text-anchor="middle">How to proceed?</text>
+<rect x="740" y="3848" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="745" y="3854" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="815.0" y="3852.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Record reason for</text>
+<text x="815.0" y="3864.0" font-size="10.5" fill="#1E293B" text-anchor="middle">proceeding without</text>
+<text x="815.0" y="3876.0" font-size="10.5" fill="#1E293B" text-anchor="middle">confirmed payment</text>
+<rect x="940" y="3848" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="945" y="3854" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="1015.0" y="3852.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Refer to Finance Team</text>
+<text x="1015.0" y="3864.0" font-size="10.5" fill="#1E293B" text-anchor="middle">for subsequent</text>
+<text x="1015.0" y="3876.0" font-size="10.5" fill="#1E293B" text-anchor="middle">resolution</text>
+<rect x="1340" y="3756" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="1345" y="3762" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="1415.0" y="3760.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Mark transaction for</text>
+<text x="1415.0" y="3772.0" font-size="10.5" fill="#1E293B" text-anchor="middle">investigation (no</text>
+<text x="1415.0" y="3784.0" font-size="10.5" fill="#1E293B" text-anchor="middle">automatic re-request)</text>
+<rect x="1540" y="3756" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="1545" y="3762" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="1615.0" y="3766.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Investigate</text>
+<text x="1615.0" y="3778.0" font-size="10.5" fill="#1E293B" text-anchor="middle">transaction with PSP</text>
+<polygon points="1765,3756 1790,3781 1765,3806 1740,3781" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M1757 3773 L1773 3789 M1757 3789 L1773 3773" stroke="#B45309" stroke-width="1.8"/>
+<text x="1795.0" y="3808.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Investigation outcome?</text>
+<circle cx="2358" cy="3774" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="2358.0" y="3790.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Payment complete,</text>
+<text x="2358.0" y="3802.0" font-size="10.0" fill="#1E293B" text-anchor="middle">booking confirmed</text>
+<circle cx="1158" cy="3866" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1158.0" y="3876.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Urgent treatment</text>
+<text x="1158.0" y="3888.0" font-size="10.0" fill="#1E293B" text-anchor="middle">authorised without</text>
+<text x="1158.0" y="3900.0" font-size="10.0" fill="#1E293B" text-anchor="middle">confirmed payment</text>
+<circle cx="158" cy="4152" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M152 4151 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="158.0" y="4174.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<rect x="340" y="4134" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="345" y="4140" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="415.0" y="4144.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Request pre-cycle</text>
+<text x="415.0" y="4156.0" font-size="10.5" fill="#1E293B" text-anchor="middle">blood test</text>
+<circle cx="558" cy="4152" r="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+<circle cx="558" cy="4152" r="12" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<path d="M552 4151 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<text x="558.0" y="4168.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Blood test results</text>
+<text x="558.0" y="4180.0" font-size="10.0" fill="#1E293B" text-anchor="middle">received</text>
+<rect x="740" y="4134" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="745" y="4140" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="815.0" y="4144.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Clinical review of</text>
+<text x="815.0" y="4156.0" font-size="10.5" fill="#1E293B" text-anchor="middle">fitness to continue</text>
+<polygon points="965,4134 990,4159 965,4184 940,4159" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M957 4151 L973 4167 M957 4167 L973 4151" stroke="#B45309" stroke-width="1.8"/>
+<text x="995.0" y="4186.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Fit to continue?</text>
+<rect x="1140" y="4134" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="1145" y="4140" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="1215.0" y="4144.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Record cycle</text>
+<text x="1215.0" y="4156.0" font-size="10.5" fill="#1E293B" text-anchor="middle">administration</text>
+<polygon points="1565,4134 1590,4159 1565,4184 1540,4159" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M1557 4151 L1573 4167 M1557 4167 L1573 4151" stroke="#B45309" stroke-width="1.8"/>
+<text x="1595.0" y="4186.0" font-size="10.0" fill="#1E293B" text-anchor="middle">More cycles required?</text>
+<circle cx="1758" cy="4152" r="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+<circle cx="1758" cy="4152" r="12" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<path d="M1752 4151 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<text x="1758.0" y="4174.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Next cycle due</text>
+<rect x="1140" y="4226" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="1145" y="4232" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="1215.0" y="4236.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Record treatment delay</text>
+<text x="1215.0" y="4248.0" font-size="10.5" fill="#1E293B" text-anchor="middle">decision</text>
+<rect x="1140" y="4318" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="1145" y="4324" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="1215.0" y="4328.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Submit treatment</text>
+<text x="1215.0" y="4340.0" font-size="10.5" fill="#1E293B" text-anchor="middle">change for processing</text>
+<circle cx="1358" cy="4152" r="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+<circle cx="1358" cy="4152" r="12" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<path d="M1352 4151 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<text x="1358.0" y="4174.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Treatment plan updated</text>
+<rect x="1740" y="4226" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="1745" y="4232" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="1815.0" y="4236.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Trigger clinic letter</text>
+<text x="1815.0" y="4248.0" font-size="10.5" fill="#1E293B" text-anchor="middle">(treatment review)</text>
+<circle cx="1958" cy="4152" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1958.0" y="4168.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Treatment course</text>
+<text x="1958.0" y="4180.0" font-size="10.0" fill="#1E293B" text-anchor="middle">completed</text>
+<circle cx="158" cy="4622" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M152 4621 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="158.0" y="4638.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Appointment change</text>
+<text x="158.0" y="4650.0" font-size="10.0" fill="#1E293B" text-anchor="middle">requested</text>
+<polygon points="365,4604 390,4629 365,4654 340,4629" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M357 4621 L373 4637 M357 4637 L373 4621" stroke="#B45309" stroke-width="1.8"/>
+<text x="395.0" y="4656.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Change kind?</text>
+<rect x="540" y="4604" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="545" y="4610" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="615.0" y="4614.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Search new slot via</text>
+<text x="615.0" y="4626.0" font-size="10.5" fill="#1E293B" text-anchor="middle">scheduling service</text>
+<circle cx="758" cy="4622" r="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+<circle cx="758" cy="4622" r="12" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<path d="M752 4621 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<text x="758.0" y="4644.0" font-size="10.0" fill="#1E293B" text-anchor="middle">New slot offered</text>
+<polygon points="965,4604 990,4629 965,4654 940,4629" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M957 4621 L973 4637 M957 4637 L973 4621" stroke="#B45309" stroke-width="1.8"/>
+<text x="995.0" y="4656.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Slot acceptable?</text>
+<rect x="1140" y="4604" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="1145" y="4610" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="1215.0" y="4608.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Apply reschedule</text>
+<text x="1215.0" y="4620.0" font-size="10.5" fill="#1E293B" text-anchor="middle">without duplicate</text>
+<text x="1215.0" y="4632.0" font-size="10.5" fill="#1E293B" text-anchor="middle">booking</text>
+<rect x="1340" y="4604" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="1345" y="4610" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="1415.0" y="4614.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Notify patient of</text>
+<text x="1415.0" y="4626.0" font-size="10.5" fill="#1E293B" text-anchor="middle">changed appointment</text>
+<rect x="1140" y="4696" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="1145" y="4702" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="1215.0" y="4706.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Pathway team review of</text>
+<text x="1215.0" y="4718.0" font-size="10.5" fill="#1E293B" text-anchor="middle">change request</text>
+<circle cx="1558" cy="4622" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1558.0" y="4644.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Change handled</text>
+<circle cx="158" cy="5000" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M152 4999 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="158.0" y="5016.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Treatment change</text>
+<text x="158.0" y="5028.0" font-size="10.0" fill="#1E293B" text-anchor="middle">requested</text>
+<polygon points="365,4982 390,5007 365,5032 340,5007" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M357 4999 L373 5015 M357 5015 L373 4999" stroke="#B45309" stroke-width="1.8"/>
+<text x="395.0" y="5034.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Urgent postponement?</text>
+<rect x="540" y="4982" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="545" y="4988" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="615.0" y="4986.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Execute immediate</text>
+<text x="615.0" y="4998.0" font-size="10.5" fill="#1E293B" text-anchor="middle">postponement (patient</text>
+<text x="615.0" y="5010.0" font-size="10.5" fill="#1E293B" text-anchor="middle">safety)</text>
+<rect x="740" y="5200" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="745" y="5206" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="815.0" y="5204.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Record and authorise</text>
+<text x="815.0" y="5216.0" font-size="10.5" fill="#1E293B" text-anchor="middle">decision</text>
+<text x="815.0" y="5228.0" font-size="10.5" fill="#1E293B" text-anchor="middle">retrospectively</text>
+<rect x="540" y="5074" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="545" y="5080" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="615.0" y="5078.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Validate formal</text>
+<text x="615.0" y="5090.0" font-size="10.5" fill="#1E293B" text-anchor="middle">authorisation and</text>
+<text x="615.0" y="5102.0" font-size="10.5" fill="#1E293B" text-anchor="middle">traceability</text>
+<polygon points="765,4982 790,5007 765,5032 740,5007" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M757 4999 L773 5015 M757 5015 L773 4999" stroke="#B45309" stroke-width="1.8"/>
+<text x="795.0" y="5034.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Formally authorised?</text>
+<rect x="940" y="4982" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="945" y="4988" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="1015.0" y="4992.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Apply treatment</text>
+<text x="1015.0" y="5004.0" font-size="10.5" fill="#1E293B" text-anchor="middle">modification</text>
+<rect x="1140" y="4982" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="1145" y="4988" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="1215.0" y="4992.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Notify updated</text>
+<text x="1215.0" y="5004.0" font-size="10.5" fill="#1E293B" text-anchor="middle">treatment plan</text>
+<polygon points="1365,4982 1390,5007 1365,5032 1340,5007" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M1357 4999 L1373 5015 M1357 5015 L1373 4999" stroke="#B45309" stroke-width="1.8"/>
+<text x="1395.0" y="5028.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Affects charges /</text>
+<text x="1395.0" y="5040.0" font-size="10.0" fill="#1E293B" text-anchor="middle">funding / payment?</text>
+<rect x="1540" y="5326" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="1545" y="5332" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="1615.0" y="5336.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Review financial</text>
+<text x="1615.0" y="5348.0" font-size="10.5" fill="#1E293B" text-anchor="middle">implications</text>
+<polygon points="1765,4982 1790,5007 1765,5032 1740,5007" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M1757 4999 L1773 5015 M1757 5015 L1773 4999" stroke="#B45309" stroke-width="1.8"/>
+<text x="1795.0" y="5028.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Refund or transfer</text>
+<text x="1795.0" y="5040.0" font-size="10.0" fill="#1E293B" text-anchor="middle">required?</text>
+<rect x="1940" y="4982" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="1945" y="4988" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="2015.0" y="4998.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Open refund case</text>
+<circle cx="2158" cy="5000" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="2158.0" y="5022.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Change processed</text>
+<circle cx="958" cy="5092" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="958.0" y="5108.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Informal request not</text>
+<text x="958.0" y="5120.0" font-size="10.0" fill="#1E293B" text-anchor="middle">processed</text>
+<circle cx="158" cy="5630" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M152 5629 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="158.0" y="5646.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Cancellation, refusal</text>
+<text x="158.0" y="5658.0" font-size="10.0" fill="#1E293B" text-anchor="middle">or no-show reported</text>
+<rect x="340" y="5612" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="345" y="5618" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="415.0" y="5616.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Record cancellation /</text>
+<text x="415.0" y="5628.0" font-size="10.5" fill="#1E293B" text-anchor="middle">refusal /</text>
+<text x="415.0" y="5640.0" font-size="10.5" fill="#1E293B" text-anchor="middle">non-attendance event</text>
+<polygon points="565,5612 590,5637 565,5662 540,5637" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M557 5629 L573 5645 M557 5645 L573 5629" stroke="#B45309" stroke-width="1.8"/>
+<text x="595.0" y="5658.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Paid appointment</text>
+<text x="595.0" y="5670.0" font-size="10.0" fill="#1E293B" text-anchor="middle">affected?</text>
+<rect x="740" y="5830" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="745" y="5836" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="815.0" y="5834.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Refer to Finance for</text>
+<text x="815.0" y="5846.0" font-size="10.5" fill="#1E293B" text-anchor="middle">retain / transfer /</text>
+<text x="815.0" y="5858.0" font-size="10.5" fill="#1E293B" text-anchor="middle">refund</text>
+<rect x="940" y="5956" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="945" y="5962" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="1015.0" y="5960.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Decide pathway</text>
+<text x="1015.0" y="5972.0" font-size="10.5" fill="#1E293B" text-anchor="middle">response (clinical</text>
+<text x="1015.0" y="5984.0" font-size="10.5" fill="#1E293B" text-anchor="middle">responsibility)</text>
+<polygon points="1165,5612 1190,5637 1165,5662 1140,5637" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M1157 5629 L1173 5645 M1157 5645 L1173 5629" stroke="#B45309" stroke-width="1.8"/>
+<text x="1195.0" y="5664.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Pathway response?</text>
+<rect x="1340" y="5612" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="1345" y="5618" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="1415.0" y="5628.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Request re-booking</text>
+<rect x="1340" y="6082" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="1345" y="6088" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="1415.0" y="6098.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Review patient pathway</text>
+<rect x="1340" y="5704" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="1345" y="5710" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="1415.0" y="5714.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Inform referring</text>
+<text x="1415.0" y="5726.0" font-size="10.5" fill="#1E293B" text-anchor="middle">organisation</text>
+<circle cx="1558" cy="5630" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1558.0" y="5652.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Cancellation handled</text>
+<circle cx="158" cy="6386" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M152 6385 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="158.0" y="6408.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Refund case opened</text>
+<rect x="340" y="6368" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="345" y="6374" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="415.0" y="6372.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Determine full /</text>
+<text x="415.0" y="6384.0" font-size="10.5" fill="#1E293B" text-anchor="middle">partial refund</text>
+<text x="415.0" y="6396.0" font-size="10.5" fill="#1E293B" text-anchor="middle">(financial authority)</text>
+<polygon points="565,6368 590,6393 565,6418 540,6393" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M557 6385 L573 6401 M557 6401 L573 6385" stroke="#B45309" stroke-width="1.8"/>
+<text x="595.0" y="6420.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Refund appropriate?</text>
+<rect x="740" y="6368" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="745" y="6374" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="815.0" y="6378.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Send approved refund</text>
+<text x="815.0" y="6390.0" font-size="10.5" fill="#1E293B" text-anchor="middle">request to PSP</text>
+<circle cx="958" cy="6386" r="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+<circle cx="958" cy="6386" r="12" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<path d="M952 6385 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<text x="958.0" y="6408.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Refund result received</text>
+<rect x="1140" y="6368" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="1145" y="6374" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="1215.0" y="6378.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Record refund against</text>
+<text x="1215.0" y="6390.0" font-size="10.5" fill="#1E293B" text-anchor="middle">patient account</text>
+<rect x="740" y="6460" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="745" y="6466" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="815.0" y="6470.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Record no-refund</text>
+<text x="815.0" y="6482.0" font-size="10.5" fill="#1E293B" text-anchor="middle">decision with reason</text>
+<circle cx="1358" cy="6386" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1358.0" y="6408.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Refund case processed</text>
+<circle cx="158" cy="6764" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M152 6763 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="158.0" y="6780.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Patient enquiry</text>
+<text x="158.0" y="6792.0" font-size="10.0" fill="#1E293B" text-anchor="middle">received</text>
+<rect x="340" y="6746" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="345" y="6752" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="415.0" y="6756.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Record and classify</text>
+<text x="415.0" y="6768.0" font-size="10.5" fill="#1E293B" text-anchor="middle">enquiry</text>
+<polygon points="565,6746 590,6771 565,6796 540,6771" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M557 6763 L573 6779 M557 6779 L573 6763" stroke="#B45309" stroke-width="1.8"/>
+<text x="595.0" y="6792.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Enquiry</text>
+<text x="595.0" y="6804.0" font-size="10.0" fill="#1E293B" text-anchor="middle">classification?</text>
+<rect x="740" y="6746" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="745" y="6752" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="815.0" y="6756.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Answer administrative</text>
+<text x="815.0" y="6768.0" font-size="10.5" fill="#1E293B" text-anchor="middle">question directly</text>
+<rect x="740" y="6838" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="745" y="6844" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="815.0" y="6842.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Transfer to</text>
+<text x="815.0" y="6854.0" font-size="10.5" fill="#1E293B" text-anchor="middle">responsible</text>
+<text x="815.0" y="6866.0" font-size="10.5" fill="#1E293B" text-anchor="middle">administrative team</text>
+<polygon points="765,6930 790,6955 765,6980 740,6955" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M757 6947 L773 6963 M757 6963 L773 6947" stroke="#B45309" stroke-width="1.8"/>
+<text x="795.0" y="6970.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Answerable with</text>
+<text x="795.0" y="6982.0" font-size="10.0" fill="#1E293B" text-anchor="middle">authorised</text>
+<text x="795.0" y="6994.0" font-size="10.0" fill="#1E293B" text-anchor="middle">information?</text>
+<rect x="940" y="6746" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="945" y="6752" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="1015.0" y="6750.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Answer financial</text>
+<text x="1015.0" y="6762.0" font-size="10.5" fill="#1E293B" text-anchor="middle">enquiry from</text>
+<text x="1015.0" y="6774.0" font-size="10.5" fill="#1E293B" text-anchor="middle">authorised information</text>
+<rect x="940" y="7118" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="945" y="7124" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="1015.0" y="7128.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Respond to financial</text>
+<text x="1015.0" y="7140.0" font-size="10.5" fill="#1E293B" text-anchor="middle">enquiry</text>
+<rect x="740" y="6992" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="745" y="6998" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="815.0" y="6996.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Flag urgent clinical</text>
+<text x="815.0" y="7008.0" font-size="10.5" fill="#1E293B" text-anchor="middle">concern (type-based</text>
+<text x="815.0" y="7020.0" font-size="10.5" fill="#1E293B" text-anchor="middle">auto-classification)</text>
+<rect x="940" y="7244" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="945" y="7250" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="1015.0" y="7254.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Respond to clinical</text>
+<text x="1015.0" y="7266.0" font-size="10.5" fill="#1E293B" text-anchor="middle">enquiry (CNS team)</text>
+<rect x="1140" y="6746" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="1145" y="6752" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="1215.0" y="6750.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Record handling, team</text>
+<text x="1215.0" y="6762.0" font-size="10.5" fill="#1E293B" text-anchor="middle">assignment, response,</text>
+<text x="1215.0" y="6774.0" font-size="10.5" fill="#1E293B" text-anchor="middle">resolution</text>
+<circle cx="1358" cy="6764" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1358.0" y="6786.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Enquiry handled</text>
+<circle cx="158" cy="7548" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M152 7547 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="158.0" y="7570.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Clinic letter required</text>
+<rect x="540" y="8098" width="1000" height="250" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.6"/>
+<rect x="540" y="8098" width="1000" height="16" rx="8" fill="#7C3AED" fill-opacity="0.25"/>
+<text x="545" y="8110" font-size="9" fill="#7C3AED"></text>
+<text x="1040.0" y="8112.0" font-size="11.0" fill="#1E293B" text-anchor="middle">Letter preparation (7-day</text>
+<text x="1040.0" y="8124.0" font-size="11.0" fill="#1E293B" text-anchor="middle">SLA)</text>
+<circle cx="543" cy="8314" r="15" fill="#FEF9C3" stroke="#CA8A04" stroke-width="1.6" stroke-dasharray="4 3"/>
+<circle cx="543" cy="8314" r="8" fill="none" stroke="#CA8A04" stroke-width="1.2"/>
+<path d="M543 8314 L543 8309 M543 8314 L547 8314" stroke="#CA8A04" stroke-width="1.2"/>
+<text x="543.0" y="8336.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Overdue after 7 days</text>
+<rect x="340" y="7704" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="345" y="7710" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="415.0" y="7714.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Issue weekly reminder</text>
+<text x="415.0" y="7726.0" font-size="10.5" fill="#1E293B" text-anchor="middle">to Consultant</text>
+<circle cx="558" cy="7596" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="558.0" y="7618.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Reminder issued</text>
+<rect x="740" y="7830" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="745" y="7836" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="815.0" y="7840.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Administrative checks,</text>
+<text x="815.0" y="7852.0" font-size="10.5" fill="#1E293B" text-anchor="middle">confirm recipients</text>
+<polygon points="365,7530 390,7555 365,7580 340,7555" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M357 7547 L373 7563 M357 7563 L373 7547" stroke="#B45309" stroke-width="1.8"/>
+<text x="395.0" y="7582.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Check outcome?</text>
+<rect x="540" y="7830" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="545" y="7836" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="615.0" y="7840.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Arrange distribution</text>
+<text x="615.0" y="7852.0" font-size="10.5" fill="#1E293B" text-anchor="middle">via approved channels</text>
+<rect x="740" y="7922" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="745" y="7928" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="815.0" y="7932.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Record dates and</text>
+<text x="815.0" y="7944.0" font-size="10.5" fill="#1E293B" text-anchor="middle">method of distribution</text>
+<polygon points="965,7530 990,7555 965,7580 940,7555" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M957 7547 L973 7563 M957 7563 L973 7547" stroke="#B45309" stroke-width="1.8"/>
+<text x="995.0" y="7576.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Authorised follow-up</text>
+<text x="995.0" y="7588.0" font-size="10.0" fill="#1E293B" text-anchor="middle">instruction?</text>
+<rect x="1140" y="7530" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="1145" y="7536" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="1215.0" y="7534.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Send follow-up</text>
+<text x="1215.0" y="7546.0" font-size="10.5" fill="#1E293B" text-anchor="middle">appointment</text>
+<text x="1215.0" y="7558.0" font-size="10.5" fill="#1E293B" text-anchor="middle">instruction</text>
+<circle cx="1358" cy="7548" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1358.0" y="7570.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Letter processed</text>
+<circle cx="158" cy="8606" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M152 8605 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="158.0" y="8622.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Follow-up instruction</text>
+<text x="158.0" y="8634.0" font-size="10.0" fill="#1E293B" text-anchor="middle">authorised</text>
+<rect x="340" y="8588" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="345" y="8594" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="415.0" y="8592.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Search follow-up slot</text>
+<text x="415.0" y="8604.0" font-size="10.5" fill="#1E293B" text-anchor="middle">within requested</text>
+<text x="415.0" y="8616.0" font-size="10.5" fill="#1E293B" text-anchor="middle">period</text>
+<circle cx="558" cy="8606" r="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.6"/>
+<circle cx="558" cy="8606" r="12" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<path d="M552 8605 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#2563EB" stroke-width="1.2"/>
+<text x="558.0" y="8628.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Slot offered</text>
+<polygon points="765,8588 790,8613 765,8638 740,8613" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M757 8605 L773 8621 M757 8621 L773 8605" stroke="#B45309" stroke-width="1.8"/>
+<text x="795.0" y="8634.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Slot within requested</text>
+<text x="795.0" y="8646.0" font-size="10.0" fill="#1E293B" text-anchor="middle">period?</text>
+<rect x="940" y="8588" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="945" y="8594" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="1015.0" y="8598.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Record follow-up</text>
+<text x="1015.0" y="8610.0" font-size="10.5" fill="#1E293B" text-anchor="middle">booking</text>
+<rect x="1140" y="8588" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+<rect x="1145" y="8594" width="12" height="9" fill="none" stroke="#D97706" stroke-width="1.1"/>
+<text x="1215.0" y="8598.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Inform patient via</text>
+<text x="1215.0" y="8610.0" font-size="10.5" fill="#1E293B" text-anchor="middle">appropriate channel</text>
+<rect x="940" y="8714" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="945" y="8720" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="1015.0" y="8724.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Highlight case and</text>
+<text x="1015.0" y="8736.0" font-size="10.5" fill="#1E293B" text-anchor="middle">refer to pathway team</text>
+<circle cx="1358" cy="8606" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1358.0" y="8628.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Follow-up handled</text>
+<circle cx="158" cy="9018" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M152 9017 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="158.0" y="9028.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Monitoring run or</text>
+<text x="158.0" y="9040.0" font-size="10.0" fill="#1E293B" text-anchor="middle">report request</text>
+<text x="158.0" y="9052.0" font-size="10.0" fill="#1E293B" text-anchor="middle">received</text>
+<rect x="340" y="9000" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="345" y="9006" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="415.0" y="8998.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Scan outstanding items</text>
+<text x="415.0" y="9010.0" font-size="10.5" fill="#1E293B" text-anchor="middle">(letters, referrals,</text>
+<text x="415.0" y="9022.0" font-size="10.5" fill="#1E293B" text-anchor="middle">contacts, bookings,</text>
+<text x="415.0" y="9034.0" font-size="10.5" fill="#1E293B" text-anchor="middle">funding, payments,</text>
+<polygon points="565,9000 590,9025 565,9050 540,9025" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M557 9017 L573 9033 M557 9033 L573 9017" stroke="#B45309" stroke-width="1.8"/>
+<text x="595.0" y="9052.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Findings?</text>
+<rect x="740" y="9126" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="745" y="9132" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="815.0" y="9130.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Administrative Manager</text>
+<text x="815.0" y="9142.0" font-size="10.5" fill="#1E293B" text-anchor="middle">contacts responsible</text>
+<text x="815.0" y="9154.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Consultant</text>
+<rect x="740" y="9218" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="745" y="9224" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="815.0" y="9228.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Escalate to higher</text>
+<text x="815.0" y="9240.0" font-size="10.5" fill="#1E293B" text-anchor="middle">management team</text>
+<rect x="940" y="9000" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="945" y="9006" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="1015.0" y="8998.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Generate management</text>
+<text x="1015.0" y="9010.0" font-size="10.5" fill="#1E293B" text-anchor="middle">reports (volumes,</text>
+<text x="1015.0" y="9022.0" font-size="10.5" fill="#1E293B" text-anchor="middle">delays, pathway</text>
+<text x="1015.0" y="9034.0" font-size="10.5" fill="#1E293B" text-anchor="middle">progress)</text>
+<circle cx="1158" cy="9018" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1158.0" y="9034.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Monitoring run</text>
+<text x="1158.0" y="9046.0" font-size="10.0" fill="#1E293B" text-anchor="middle">complete</text>
+<circle cx="158" cy="9522" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M152 9521 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="158.0" y="9532.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Access change or</text>
+<text x="158.0" y="9544.0" font-size="10.0" fill="#1E293B" text-anchor="middle">service interruption</text>
+<text x="158.0" y="9556.0" font-size="10.0" fill="#1E293B" text-anchor="middle">reported</text>
+<polygon points="365,9504 390,9529 365,9554 340,9529" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M357 9521 L373 9537 M357 9537 L373 9521" stroke="#B45309" stroke-width="1.8"/>
+<text x="395.0" y="9556.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Event kind?</text>
+<rect x="540" y="9504" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="545" y="9510" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="615.0" y="9514.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Verify staff identity</text>
+<text x="615.0" y="9526.0" font-size="10.5" fill="#1E293B" text-anchor="middle">and authorisation</text>
+<rect x="740" y="9504" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="745" y="9510" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="815.0" y="9514.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Apply role-based</text>
+<text x="815.0" y="9526.0" font-size="10.5" fill="#1E293B" text-anchor="middle">access change</text>
+<rect x="540" y="9596" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="545" y="9602" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="615.0" y="9600.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Record activities</text>
+<text x="615.0" y="9612.0" font-size="10.5" fill="#1E293B" text-anchor="middle">completed during</text>
+<text x="615.0" y="9624.0" font-size="10.5" fill="#1E293B" text-anchor="middle">unavailability</text>
+<rect x="740" y="9596" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="745" y="9602" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="815.0" y="9606.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Reconcile records</text>
+<text x="815.0" y="9618.0" font-size="10.5" fill="#1E293B" text-anchor="middle">after restoration</text>
+<rect x="940" y="9504" width="150" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+<rect x="945" y="9510" width="12" height="9" fill="none" stroke="#16A34A" stroke-width="1.1"/>
+<text x="1015.0" y="9508.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Write audit record</text>
+<text x="1015.0" y="9520.0" font-size="10.5" fill="#1E293B" text-anchor="middle">(user, date, time,</text>
+<text x="1015.0" y="9532.0" font-size="10.5" fill="#1E293B" text-anchor="middle">nature)</text>
+<circle cx="1158" cy="9522" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1158.0" y="9544.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Event handled</text>
+<circle cx="658" cy="8206" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M652 8205 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="658.0" y="8228.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<rect x="840" y="8188" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="845" y="8194" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="915.0" y="8198.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Prepare clinic letter</text>
+<text x="915.0" y="8210.0" font-size="10.5" fill="#1E293B" text-anchor="middle">(clinical content)</text>
+<rect x="1040" y="8188" width="150" height="80" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4"/>
+<rect x="1045" y="8194" width="12" height="9" fill="none" stroke="#0284C7" stroke-width="1.1"/>
+<text x="1115.0" y="8198.0" font-size="10.5" fill="#1E293B" text-anchor="middle">Approve clinical</text>
+<text x="1115.0" y="8210.0" font-size="10.5" fill="#1E293B" text-anchor="middle">content</text>
+<circle cx="1258" cy="8206" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1258.0" y="8228.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Letter prepared</text>
+<circle cx="104" cy="742" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M98 741 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="104.0" y="764.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<rect x="226" y="724" width="120" height="60" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="1.3"/>
+<text x="286.0" y="734.0" font-size="9.5" fill="#1E293B" text-anchor="middle">Attend appointment /</text>
+<text x="286.0" y="746.0" font-size="9.5" fill="#1E293B" text-anchor="middle">treatment cycle</text>
+<circle cx="384" cy="742" r="16" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<path d="M378 741 l6 -4 l6 4 l-6 4 z" fill="#B45309" stroke="#B45309" stroke-width="1.2"/>
+<text x="384.0" y="764.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Confirm attendance</text>
+<circle cx="524" cy="742" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="524.0" y="764.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<circle cx="104" cy="842" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M98 841 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="104.0" y="864.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<rect x="226" y="824" width="120" height="60" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="1.3"/>
+<text x="286.0" y="834.0" font-size="9.5" fill="#1E293B" text-anchor="middle">Change or cancel</text>
+<text x="286.0" y="846.0" font-size="9.5" fill="#1E293B" text-anchor="middle">appointment</text>
+<polygon points="391,824 416,849 391,874 366,849" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M383 841 L399 857 M383 857 L399 841" stroke="#B45309" stroke-width="1.8"/>
+<text x="421.0" y="876.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Change?</text>
+<circle cx="524" cy="842" r="16" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<path d="M518 841 l6 -4 l6 4 l-6 4 z" fill="#B45309" stroke="#B45309" stroke-width="1.2"/>
+<text x="524.0" y="864.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Request change</text>
+<circle cx="524" cy="916" r="16" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<path d="M518 915 l6 -4 l6 4 l-6 4 z" fill="#B45309" stroke="#B45309" stroke-width="1.2"/>
+<text x="524.0" y="938.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Report cancellation</text>
+<circle cx="664" cy="842" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="664.0" y="864.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<circle cx="104" cy="992" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M98 991 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="104.0" y="1014.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<rect x="226" y="974" width="120" height="60" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="1.3"/>
+<text x="286.0" y="984.0" font-size="9.5" fill="#1E293B" text-anchor="middle">Seek clinical advice /</text>
+<text x="286.0" y="996.0" font-size="9.5" fill="#1E293B" text-anchor="middle">ask question</text>
+<circle cx="384" cy="992" r="16" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<path d="M378 991 l6 -4 l6 4 l-6 4 z" fill="#B45309" stroke="#B45309" stroke-width="1.2"/>
+<text x="384.0" y="1014.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Raise enquiry</text>
+<circle cx="524" cy="992" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="524.0" y="1014.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<circle cx="934" cy="742" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M928 741 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="934.0" y="764.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<rect x="1056" y="724" width="120" height="60" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="1.3"/>
+<text x="1116.0" y="734.0" font-size="9.5" fill="#1E293B" text-anchor="middle">Prepare referral</text>
+<text x="1116.0" y="746.0" font-size="9.5" fill="#1E293B" text-anchor="middle">package</text>
+<circle cx="1214" cy="742" r="16" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<path d="M1208 741 l6 -4 l6 4 l-6 4 z" fill="#B45309" stroke="#B45309" stroke-width="1.2"/>
+<text x="1214.0" y="764.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Send referral</text>
+<circle cx="1354" cy="742" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1354.0" y="764.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<circle cx="934" cy="842" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M928 841 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="934.0" y="858.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Missing information</text>
+<text x="934.0" y="870.0" font-size="10.0" fill="#1E293B" text-anchor="middle">request</text>
+<rect x="1056" y="824" width="120" height="60" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="1.3"/>
+<text x="1116.0" y="834.0" font-size="9.5" fill="#1E293B" text-anchor="middle">Provide missing</text>
+<text x="1116.0" y="846.0" font-size="9.5" fill="#1E293B" text-anchor="middle">information</text>
+<circle cx="1214" cy="842" r="16" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<path d="M1208 841 l6 -4 l6 4 l-6 4 z" fill="#B45309" stroke="#B45309" stroke-width="1.2"/>
+<text x="1214.0" y="858.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Send supplementary</text>
+<text x="1214.0" y="870.0" font-size="10.0" fill="#1E293B" text-anchor="middle">information</text>
+<circle cx="1354" cy="842" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1354.0" y="864.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<circle cx="934" cy="942" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M928 941 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="934.0" y="958.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Referral outcome</text>
+<text x="934.0" y="970.0" font-size="10.0" fill="#1E293B" text-anchor="middle">notification</text>
+<rect x="1056" y="924" width="120" height="60" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="1.3"/>
+<text x="1116.0" y="934.0" font-size="9.5" fill="#1E293B" text-anchor="middle">Record outcome and</text>
+<text x="1116.0" y="946.0" font-size="9.5" fill="#1E293B" text-anchor="middle">close loop</text>
+<circle cx="1214" cy="942" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="1214.0" y="964.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<circle cx="1764" cy="742" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M1758 741 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="1764.0" y="764.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Slot search request</text>
+<rect x="1886" y="724" width="120" height="60" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="1.3"/>
+<text x="1946.0" y="740.0" font-size="9.5" fill="#1E293B" text-anchor="middle">Search available slots</text>
+<circle cx="2044" cy="742" r="16" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<path d="M2038 741 l6 -4 l6 4 l-6 4 z" fill="#B45309" stroke="#B45309" stroke-width="1.2"/>
+<text x="2044.0" y="764.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Return proposed slot</text>
+<circle cx="2184" cy="742" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="2184.0" y="764.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<circle cx="2594" cy="742" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M2588 741 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="2594.0" y="758.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Appointment letter</text>
+<text x="2594.0" y="770.0" font-size="10.0" fill="#1E293B" text-anchor="middle">dispatch</text>
+<circle cx="2594" cy="792" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M2588 791 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="2594.0" y="814.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Letter dispatch</text>
+<circle cx="2594" cy="842" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M2588 841 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="2594.0" y="864.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Payment issue notice</text>
+<rect x="2716" y="724" width="120" height="60" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="1.3"/>
+<text x="2776.0" y="734.0" font-size="9.5" fill="#1E293B" text-anchor="middle">Print and despatch</text>
+<text x="2776.0" y="746.0" font-size="9.5" fill="#1E293B" text-anchor="middle">correspondence</text>
+<circle cx="2874" cy="742" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="2874.0" y="764.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<circle cx="3424" cy="742" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M3418 741 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="3424.0" y="764.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Secure payment request</text>
+<rect x="3546" y="724" width="120" height="60" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="1.3"/>
+<text x="3606.0" y="740.0" font-size="9.5" fill="#1E293B" text-anchor="middle">Process secure payment</text>
+<circle cx="3704" cy="742" r="16" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<path d="M3698 741 l6 -4 l6 4 l-6 4 z" fill="#B45309" stroke="#B45309" stroke-width="1.2"/>
+<text x="3704.0" y="764.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Return payment status</text>
+<circle cx="3844" cy="742" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="3844.0" y="764.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<circle cx="3424" cy="842" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M3418 841 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="3424.0" y="864.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Refund request</text>
+<rect x="3546" y="824" width="120" height="60" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="1.3"/>
+<text x="3606.0" y="840.0" font-size="9.5" fill="#1E293B" text-anchor="middle">Execute refund</text>
+<circle cx="3704" cy="842" r="16" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<path d="M3698 841 l6 -4 l6 4 l-6 4 z" fill="#B45309" stroke="#B45309" stroke-width="1.2"/>
+<text x="3704.0" y="864.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Return refund result</text>
+<circle cx="3844" cy="842" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="3844.0" y="864.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<circle cx="4254" cy="742" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M4248 741 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="4254.0" y="758.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Funding approval</text>
+<text x="4254.0" y="770.0" font-size="10.0" fill="#1E293B" text-anchor="middle">request</text>
+<rect x="4376" y="724" width="120" height="60" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="1.3"/>
+<text x="4436.0" y="734.0" font-size="9.5" fill="#1E293B" text-anchor="middle">Assess funding</text>
+<text x="4436.0" y="746.0" font-size="9.5" fill="#1E293B" text-anchor="middle">application</text>
+<circle cx="4534" cy="742" r="16" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<path d="M4528 741 l6 -4 l6 4 l-6 4 z" fill="#B45309" stroke="#B45309" stroke-width="1.2"/>
+<text x="4534.0" y="758.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Return approval</text>
+<text x="4534.0" y="770.0" font-size="10.0" fill="#1E293B" text-anchor="middle">decision</text>
+<circle cx="4674" cy="742" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="4674.0" y="764.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<circle cx="5084" cy="742" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M5078 741 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="5084.0" y="758.0" font-size="10.0" fill="#1E293B" text-anchor="middle">External availability</text>
+<text x="5084.0" y="770.0" font-size="10.0" fill="#1E293B" text-anchor="middle">request</text>
+<rect x="5206" y="724" width="120" height="60" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="1.3"/>
+<text x="5266.0" y="734.0" font-size="9.5" fill="#1E293B" text-anchor="middle">Check service</text>
+<text x="5266.0" y="746.0" font-size="9.5" fill="#1E293B" text-anchor="middle">availability</text>
+<polygon points="5371,724 5396,749 5371,774 5346,749" fill="#FFFBEB" stroke="#B45309" stroke-width="1.4"/>
+<path d="M5363 741 L5379 757 M5363 757 L5379 741" stroke="#B45309" stroke-width="1.8"/>
+<text x="5401.0" y="776.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Available?</text>
+<circle cx="5504" cy="742" r="16" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<path d="M5498 741 l6 -4 l6 4 l-6 4 z" fill="#B45309" stroke="#B45309" stroke-width="1.2"/>
+<text x="5504.0" y="764.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Confirm availability</text>
+<rect x="5486" y="798" width="120" height="60" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="1.3"/>
+<text x="5546.0" y="808.0" font-size="9.5" fill="#1E293B" text-anchor="middle">Queue request and</text>
+<text x="5546.0" y="820.0" font-size="9.5" fill="#1E293B" text-anchor="middle">monitor</text>
+<circle cx="5644" cy="742" r="16" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<path d="M5638 741 l6 -4 l6 4 l-6 4 z" fill="#B45309" stroke="#B45309" stroke-width="1.2"/>
+<text x="5644.0" y="764.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Notify slot released</text>
+<circle cx="5784" cy="742" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="5784.0" y="764.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+<circle cx="5084" cy="916" r="16" fill="#ECFDF5" stroke="#059669" stroke-width="1.6"/>
+<path d="M5078 915 l6 -4 l6 4 l-6 4 z" fill="none" stroke="#059669" stroke-width="1.2"/>
+<text x="5084.0" y="938.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Blood test request</text>
+<rect x="5206" y="898" width="120" height="60" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="1.3"/>
+<text x="5266.0" y="914.0" font-size="9.5" fill="#1E293B" text-anchor="middle">Perform blood test</text>
+<circle cx="5364" cy="916" r="16" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<path d="M5358 915 l6 -4 l6 4 l-6 4 z" fill="#B45309" stroke="#B45309" stroke-width="1.2"/>
+<text x="5364.0" y="938.0" font-size="10.0" fill="#1E293B" text-anchor="middle">Return lab result</text>
+<circle cx="5504" cy="916" r="16" fill="#FEF2F2" stroke="#B91C1C" stroke-width="3.5"/>
+<text x="5504.0" y="938.0" font-size="10.0" fill="#1E293B" text-anchor="middle"></text>
+</svg>
