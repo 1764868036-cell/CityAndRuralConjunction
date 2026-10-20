@@ -3,8 +3,9 @@
 """One-off patch: add lane assignments to event-subprocess nodes in build_framework.py"""
 import io
 import sys
+from pathlib import Path
 
-P = "build_framework.py"
+P = Path(__file__).resolve().with_name("build_framework.py")
 src = io.open(P, encoding="utf-8").read()
 
 LANE = {

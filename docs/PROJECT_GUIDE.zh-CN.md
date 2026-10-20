@@ -20,7 +20,7 @@
 
 V2 的主模型和表单位于 `version2/` 顶层与 `version2/forms/`。主模型中有 9 个事件子流程，内部任务和泳道在 BPMN 图层中；在 Camunda Modeler 中点击折叠子流程的“+”可下钻。`version2/evidence/acceptance-candidate/` 是单独保存的候选快照，带有不同的模型/表单契约，只用于隔离验证，不是 canonical BPMN，也不应与规范模型混合部署。
 
-根目录也保留了早期交付文件、材料和一个历史 `java/` 副本。对流程或 Worker 做当前改动时，先选定 V1 或 V2，再只在相应版本目录内检查和修改。
+早期根目录的模型、表单、交付文件和证据保存在 `archive/legacy-root/`；案例和课程资料保存在 `docs/`。完整位置见[目录地图](REPOSITORY_STRUCTURE.zh-CN.md)。本文代码块中的路径以仓库根目录为基准。对流程或 Worker 做当前改动时，先选定 V1 或 V2，再只在相应版本目录内检查和修改。
 
 ## 3. BPMN、Form、Worker 如何协作
 
@@ -49,7 +49,7 @@ V2 的消息与模拟外部响应通常使用 `referralId` 作为 correlation ke
 
 建议按以下顺序了解项目：
 
-1. 本文与根目录 [README.zh-CN.md](README.zh-CN.md)：先理解版本边界。
+1. 本文与根目录 [README.zh-CN.md](../README.zh-CN.md)：先理解版本边界。
 2. 选定版本，打开其 README 和 BPMN：V1 看 `version1/1-17.bpmn`；V2 看 `version2/hospital-patient-pathway.bpmn`。
 3. 查表单映射和表单文件：V1 查看 `version1/Form_Task_Mapping.csv`；V2 查看 `version2/forms/`，并以 BPMN 的 form reference 为准。
 4. 查 Worker job type 和实现：V1 查看 `version1/java/README.md`、`WORKER_MAP.md`；V2 查看 `version2/java/src/main/java/` 与 `version2/tools/`。V2 REST 与 Postman 操作见 `version2/postman/README.zh-CN.md`。

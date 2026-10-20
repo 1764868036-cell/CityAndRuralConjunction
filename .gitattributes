@@ -7,4 +7,4 @@
 *.sh text eol=lf
 mvnw text eol=lf
 mvnw.cmd text eol=crlf
-evidence/tests/*.log -text -diff
+archive/legacy-root/evidence/tests/*.log -text -diff

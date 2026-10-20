@@ -4,7 +4,8 @@
 
 ## 从这里开始
 
-- [项目理解与阅读路线](learn.md)
+- [项目理解与阅读路线](docs/PROJECT_GUIDE.zh-CN.md)
+- [目录结构与文件位置](docs/REPOSITORY_STRUCTURE.zh-CN.md)
 - [Version 1 项目说明](version1/README.md)
 - [Version 2 项目说明](version2/README.zh-CN.md) · [英文版](version2/README.md)
 - [V1 / V2 测试差异对比](version2/TEST_COMPARISON_VERSION1_VERSION2.zh-CN.md)
@@ -25,7 +26,7 @@ V2 当前 canonical BPMN 是 `version2/hospital-patient-pathway.bpmn`：P01–P0
 
 ## 架构和测试
 
-两个版本均以 BPMN 编排流程，以 Camunda Form 承载人工任务，以 Java Job Worker 执行自动化步骤并模拟外部参与者应答。V2 另用 Camunda REST Connector 请求外部资源可用性。关联键、部署边界和测试结果解读见 [learn.md](learn.md)。
+两个版本均以 BPMN 编排流程，以 Camunda Form 承载人工任务，以 Java Job Worker 执行自动化步骤并模拟外部参与者应答。V2 另用 Camunda REST Connector 请求外部资源可用性。关联键、部署边界和测试结果解读见[项目阅读指南](docs/PROJECT_GUIDE.zh-CN.md)。
 
 从仓库根目录运行常用检查：
 
@@ -50,11 +51,10 @@ V2 已发布的验收结果来自固定快照：86 项中 74 项通过、12 项�
 ## 仓库目录
 
 ```text
-version1/   集成基线：BPMN、表单、Java Worker、指南和证据
-version2/   独立重设计：BPMN、表单、Java Worker、工具、Postman 和测试
-deliverables/ 原始验收测试计划
-evidence/   V1 测试及运行证据
-java/       保留的旧副本/归档；当前开发请使用对应版本目录下的 java/
+version1/             集成基线：BPMN、表单、Java Worker 和证据
+version2/             重设计版：BPMN、表单、Java Worker、Postman 和测试
+docs/                 阅读指南、目录地图、案例和课程资料
+archive/legacy-root/  原根目录的历史模型、表单、交付文件、工具和证据
 ```
 
-不要把仓库根目录的 `java/` 当作当前规范源；改动时请进入 `version1/java/` 或 `version2/java/`。
+Java 开发请进入 `version1/java/` 或 `version2/java/`。原根目录文件完整保存在[历史归档](archive/legacy-root/ARCHIVE.md)中，不作为当前部署源。

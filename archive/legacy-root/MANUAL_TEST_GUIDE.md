@@ -14,7 +14,7 @@ Every element id, message name, correlation key and field name below comes from
 | Component | How to check | Command |
 | --- | --- | --- |
 | Cluster | gRPC 26500 / REST 8080 listening | `netstat -ano \| findstr "26500 8080"` |
-| Model + 15 forms | deployment returns 200 | deployment command in [`README.md`](README.md) |
+| Model + 15 forms | deployment returns 200 | deployment command in [`README.md`](../../README.md) |
 | Worker application (required) | process is running | `jps -l \| findstr HospitalPathway` |
 
 Two UIs: **Tasklist** <http://localhost:8080/tasklist> (human tasks) and **Operate**

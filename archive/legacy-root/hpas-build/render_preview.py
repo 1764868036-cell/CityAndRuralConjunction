@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """Render a BPMN overview DI plane to a light-theme SVG preview."""
 import sys
+from pathlib import Path
 import html
 import xml.etree.ElementTree as ET
 
@@ -11,8 +12,9 @@ DC = "http://www.omg.org/spec/DD/20100524/DC"
 DINS = "http://www.omg.org/spec/DD/20100524/DI"
 Q = lambda ns, t: "{%s}%s" % (ns, t)
 
-SRC = sys.argv[1] if len(sys.argv) > 1 else "hpas.v1.bpmn"
-OUT = sys.argv[2] if len(sys.argv) > 2 else "hpas.v1-preview.svg"
+ROOT = Path(__file__).resolve().parent.parent
+SRC = sys.argv[1] if len(sys.argv) > 1 else ROOT / "hpas.v1.bpmn"
+OUT = sys.argv[2] if len(sys.argv) > 2 else ROOT / "hpas.v1-preview.svg"
 
 root = ET.parse(SRC).getroot()
 

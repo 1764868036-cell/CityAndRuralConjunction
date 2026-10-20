@@ -11,4 +11,4 @@ Architecture: local Camunda 8.9 + Java worker + Tasklist UI; REST only for fixtu
 - [x] Verify 37/37 form task completions from engine state, capture screenshots and route outcomes, investigate incidents.
 - [x] Cancel leftover fixtures and stop only services launched for this test; publish coverage matrix and limitations.
 
-Results: [full E2E report](../../evidence/FULL_E2E_TEST.zh-CN.md).
+Results: [full E2E report](../../../evidence/FULL_E2E_TEST.zh-CN.md).
