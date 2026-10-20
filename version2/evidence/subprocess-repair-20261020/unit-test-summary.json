@@ -1,0 +1,30 @@
+[
+  {
+    "name": "io.camunda.demo.hpas.persistence.HospitalDatabaseTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "io.camunda.demo.hpas.RedesignAcceptanceContractTest",
+    "tests": "9",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "io.camunda.demo.hpas.SubprocessWorkerTest",
+    "tests": "11",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  {
+    "name": "io.camunda.demo.hpas.worker.HpasJobAuditPersistenceTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  }
+]

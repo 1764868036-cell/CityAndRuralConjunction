@@ -1,0 +1,129 @@
+{
+  "checkedAt": "2026-10-20T17:20:21.477383",
+  "processInstanceKey": "2251799813695785",
+  "runtimePid": 6700,
+  "secretEnvironmentName": "SECRET_SP05_AVAILABILITY_URL",
+  "availabilityUrl": "http://localhost:4510/availability",
+  "repairOperations": [
+    {
+      "method": "PATCH",
+      "path": "/jobs/2251799813702262",
+      "body": {
+        "changeset": {
+          "retries": 3
+        }
+      },
+      "status": 204
+    },
+    {
+      "method": "POST",
+      "path": "/incidents/2251799813702293/resolution",
+      "status": 204
+    }
+  ],
+  "incidents": [
+    {
+      "processDefinitionId": "Process_HPAS",
+      "errorType": "JOB_NO_RETRIES",
+      "errorMessage": "Secret with name 'SP05_AVAILABILITY_URL' is not available | Error variables: {error={message=Secret with name 'SP05_AVAILABILITY_URL' is not available, type=io.camunda.connector.api.error.ConnectorInputException}}",
+      "elementId": "SP05_RequestAvailability",
+      "creationTime": "2026-10-20T09:06:47.166Z",
+      "state": "RESOLVED",
+      "tenantId": "<default>",
+      "incidentKey": "2251799813702293",
+      "processDefinitionKey": "2251799813692583",
+      "processInstanceKey": "2251799813695785",
+      "rootProcessInstanceKey": "2251799813695785",
+      "elementInstanceKey": "2251799813702252",
+      "jobKey": "2251799813702262"
+    }
+  ],
+  "element-instances": [
+    {
+      "processDefinitionId": "Process_HPAS",
+      "startDate": "2026-10-20T09:06:45.875Z",
+      "endDate": null,
+      "elementId": "SP13_Draft",
+      "elementName": "Prepare clinic letter (clinical content)",
+      "type": "USER_TASK",
+      "state": "ACTIVE",
+      "hasIncident": false,
+      "tenantId": "<default>",
+      "elementInstanceKey": "2251799813702244",
+      "processInstanceKey": "2251799813695785",
+      "rootProcessInstanceKey": "2251799813695785",
+      "processDefinitionKey": "2251799813692583",
+      "incidentKey": null
+    },
+    {
+      "processDefinitionId": "Process_HPAS",
+      "startDate": "2026-10-20T09:06:45.888Z",
+      "endDate": "2026-10-20T09:19:56.109Z",
+      "elementId": "SP05_RequestAvailability",
+      "elementName": "Request availability from external service",
+      "type": "SERVICE_TASK",
+      "state": "COMPLETED",
+      "hasIncident": false,
+      "tenantId": "<default>",
+      "elementInstanceKey": "2251799813702252",
+      "processInstanceKey": "2251799813695785",
+      "rootProcessInstanceKey": "2251799813695785",
+      "processDefinitionKey": "2251799813692583",
+      "incidentKey": null
+    },
+    {
+      "processDefinitionId": "Process_HPAS",
+      "startDate": "2026-10-20T09:19:56.109Z",
+      "endDate": "2026-10-20T09:19:56.129Z",
+      "elementId": "SP05_BookExternal",
+      "elementName": "Create provisional booking with external service",
+      "type": "SERVICE_TASK",
+      "state": "COMPLETED",
+      "hasIncident": false,
+      "tenantId": "<default>",
+      "elementInstanceKey": "2251799813711603",
+      "processInstanceKey": "2251799813695785",
+      "rootProcessInstanceKey": "2251799813695785",
+      "processDefinitionKey": "2251799813692583",
+      "incidentKey": null
+    },
+    {
+      "processDefinitionId": "Process_HPAS",
+      "startDate": "2026-10-20T09:19:56.167Z",
+      "endDate": null,
+      "elementId": "SP08_Review",
+      "elementName": "Clinical review of fitness to continue",
+      "type": "USER_TASK",
+      "state": "ACTIVE",
+      "hasIncident": false,
+      "tenantId": "<default>",
+      "elementInstanceKey": "2251799813711638",
+      "processInstanceKey": "2251799813695785",
+      "rootProcessInstanceKey": "2251799813695785",
+      "processDefinitionKey": "2251799813692583",
+      "incidentKey": null
+    }
+  ],
+  "variables": [
+    {
+      "name": "externalAvailable",
+      "tenantId": "<default>",
+      "variableKey": "2251799813711599",
+      "scopeKey": "2251799813695785",
+      "processInstanceKey": "2251799813695785",
+      "rootProcessInstanceKey": "2251799813695785",
+      "value": "true",
+      "isTruncated": false
+    },
+    {
+      "name": "provisionalBookingId",
+      "tenantId": "<default>",
+      "variableKey": "2251799813711608",
+      "scopeKey": "2251799813695785",
+      "processInstanceKey": "2251799813695785",
+      "rootProcessInstanceKey": "2251799813695785",
+      "value": "\"TRT-111\"",
+      "isTruncated": false
+    }
+  ]
+}

@@ -1539,7 +1539,7 @@
       <bpmn:boundaryEvent id="SP13_Timer7d" name="Overdue after 7 days" cancelActivity="false" attachedToRef="SP13_PrepareScope">
         <bpmn:outgoing>Flow_193</bpmn:outgoing>
         <bpmn:timerEventDefinition>
-          <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P7D</bpmn:timeDuration>
+          <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">R/P7D</bpmn:timeCycle>
         </bpmn:timerEventDefinition>
       </bpmn:boundaryEvent>
       <bpmn:userTask id="SP13_Reminder" name="Issue weekly reminder to Consultant">

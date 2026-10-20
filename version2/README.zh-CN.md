@@ -4,7 +4,9 @@
 
 [可编辑 TXT](goalModel.txt) · [单张绿色 SVG](istar/Hospital_SD_SR_Version2.svg) · [PNG](istar/Hospital_SD_SR_Version2.png) · [角色精简、连线含义与验证说明](istar/README.md)。
 
-以 VERSION2 为基础，按修订后的院内业务边界建模：15 个 Actor（其中 4 个外部 Actor）、86 个内部意图元素、27 条连接到具体任务的跨角色依赖。Clinical support services 归为院内服务，院内资源预订任务依赖其可用性。当前 BPMN 仍将相关检验和治疗服务定义为外部参与者，此处是明确记录的业务边界修订，尚未改动可执行 BPMN。排班和信函服务在战略图中隐藏为实现细节；顾问与临床执行团队按新版职责分开。VERSION1 保持不变。
+另有按战略流程建模课件提炼的[端到端战略 BPMN](strategic-model.bpmn)：单 Pool、7 条责任泳道、10 个主视图流程对象和 6 个工件，覆盖“收到转诊”至“传达结果”的 happy path；资金/资源确认和治疗/评估细节收进两个子流程。该模型标记为不可执行；详细 i* 模型与可部署操作 BPMN 保持独立。
+
+战略模型以当前 BPMN 协作为责任边界：17 个 Actor，其中包含 BPMN 中全部 7 个外部参与者；模型含 94 个意图元素和 34 条连接具体任务的跨角色依赖。医院泳道映射为院内角色；患者、转诊方、排班、信函、支付、资助和外部治疗服务均保留为外部 Actor。每个 Actor 都映射到 BPMN 参与者，来源 ID 均按当前 BPMN 校验。SP05 可用性查询依据 HTTP JSON Connector 建模，外部提供方任务标明为 API 响应的战略抽象。先运行 `python tools/build_istar.py` 生成可编辑模型与结构报告，再运行 `python tools/render_istar.py` 生成 SVG、PNG 和本地查看器。
 
 ## BPMN 结构
 ## SP05 REST Connector

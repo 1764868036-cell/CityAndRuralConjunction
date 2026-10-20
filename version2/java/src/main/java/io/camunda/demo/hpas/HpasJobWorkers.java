@@ -12,6 +12,16 @@ public class HpasJobWorkers {
 
   public HpasJobWorkers(HpasJobExecutor executor) { this.executor = executor; }
 
+  @JobWorker(type = "hpas-sp03b-validate-slot")
+  public Map<String, Object> hpas_sp03b_validate_slot(ActivatedJob job) {
+    return executor.execute("hpas-sp03b-validate-slot", job);
+  }
+
+  @JobWorker(type = "hpas-sp11-transfer")
+  public Map<String, Object> hpas_sp11_transfer(ActivatedJob job) {
+    return executor.execute("hpas-sp11-transfer", job);
+  }
+
   @JobWorker(type = "hpas-notify-clinic-letter")
   public Map<String, Object> hpas_notify_clinic_letter(ActivatedJob job) {
     return executor.execute("hpas-notify-clinic-letter", job);

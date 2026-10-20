@@ -1,0 +1,76 @@
+{
+  "type": "default",
+  "id": "hpas_sp03b_verify",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "SP03B_Verify_heading",
+      "type": "text",
+      "text": "# Verify appointment change"
+    },
+    {
+      "id": "SP03B_Verify_field_0",
+      "type": "checkbox",
+      "key": "identityVerified",
+      "label": "Patient identity verified",
+      "layout": {
+        "row": "SP03B_Verify_row_0",
+        "columns": null
+      },
+      "defaultValue": false
+    },
+    {
+      "id": "SP03B_Verify_field_1",
+      "type": "datetime",
+      "key": "requestedReviewBy",
+      "label": "Latest acceptable review date (YYYY-MM-DD)",
+      "layout": {
+        "row": "SP03B_Verify_row_1",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "subtype": "date",
+      "dateLabel": "Latest acceptable date"
+    },
+    {
+      "id": "SP03B_Verify_field_2",
+      "type": "select",
+      "key": "changeKind",
+      "label": "Requested action",
+      "layout": {
+        "row": "SP03B_Verify_row_2",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "values": [
+        {
+          "label": "Reschedule",
+          "value": "reschedule"
+        },
+        {
+          "label": "Other / manual review",
+          "value": "other"
+        }
+      ]
+    },
+    {
+      "id": "SP03B_Verify_actor",
+      "type": "textfield",
+      "key": "SP03B_Verify_actor",
+      "label": "Responsible staff ID",
+      "validate": {
+        "required": true
+      },
+      "layout": {
+        "row": "SP03B_Verify_actor_row",
+        "columns": null
+      }
+    }
+  ]
+}

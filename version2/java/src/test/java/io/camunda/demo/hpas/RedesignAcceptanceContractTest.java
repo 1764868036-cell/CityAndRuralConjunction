@@ -37,7 +37,8 @@ class RedesignAcceptanceContractTest {
         Path root = Path.of(ROOT).toAbsolutePath().normalize();
         modelPath = Boolean.getBoolean("acceptance.snapshot")
                 ? root.resolve("evidence/acceptance-input/hospital-patient-pathway.bpmn.keep")
-                : root.resolve("hospital-patient-pathway.bpmn");
+                : (Files.isRegularFile(root.resolve("bpmn/hospital-patient-pathway.bpmn"))
+                    ? root.resolve("bpmn/hospital-patient-pathway.bpmn") : root.resolve("hospital-patient-pathway.bpmn"));
         assertThat(Files.isRegularFile(modelPath)).as("canonical deployment BPMN").isTrue();
         var factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
@@ -73,8 +74,8 @@ class RedesignAcceptanceContractTest {
         Set<String> hospitalForms = new TreeSet<>();
         for (var binding : taskFormBindings().entrySet())
             if (isInsideExecutable(binding.getKey())) hospitalForms.add(binding.getValue());
-        assertThat(hospitalForms).as("redesign executable hospital forms").hasSize(37);
-        assertThat(executableTaskFormCount()).as("hospital tasks with deployment-bound forms").isEqualTo(37);
+        assertThat(hospitalForms).as("redesign executable hospital forms").hasSize(Boolean.getBoolean("acceptance.snapshot") ? 37 : 41);
+        assertThat(executableTaskFormCount()).as("hospital tasks with deployment-bound forms").isEqualTo(Boolean.getBoolean("acceptance.snapshot") ? 37 : 41);
     }
 
     @Test
@@ -82,8 +83,8 @@ class RedesignAcceptanceContractTest {
     void formsMatchTheirUserTasksAndHaveUniqueIds() throws Exception {
         Map<String, JsonNode> forms = forms();
         Map<String, String> taskToForm = taskFormBindings();
-        assertThat(taskToForm).hasSize(37);
-        assertThat(new HashSet<>(taskToForm.values())).as("one form id per hospital user task").hasSize(37);
+        assertThat(taskToForm).hasSize(Boolean.getBoolean("acceptance.snapshot") ? 37 : 41);
+        assertThat(new HashSet<>(taskToForm.values())).as("one form id per hospital user task").hasSize(Boolean.getBoolean("acceptance.snapshot") ? 37 : 41);
         for (var binding : taskToForm.entrySet()) {
             if (!isInsideExecutable(binding.getKey())) continue;
             JsonNode form = forms.get(binding.getValue());
@@ -120,7 +121,7 @@ class RedesignAcceptanceContractTest {
                 if (annotation != null) workerTypes.add(annotation.type().isBlank() ? method.getName() : annotation.type());
             }
         }
-        assertThat(modelTypes).hasSize(55);
+        assertThat(modelTypes).hasSize(Boolean.getBoolean("acceptance.snapshot") ? 55 : 57);
         assertThat(modelTypes.remove("io.camunda:http-json:1")).isTrue();
         assertThat(workerTypes.remove("hpas-sp05-request-availability")).isTrue();
         assertThat(workerTypes).isEqualTo(modelTypes);
@@ -165,6 +166,74 @@ class RedesignAcceptanceContractTest {
         assertThat(branches).isEqualTo(9);
     }
 
+    @Test
+    @DisplayName("AT-07: unavailable external service waits for recovery and retries availability routing")
+    void externalAvailabilityRecoveryRouteIsConnected() {
+        Element notifyPending = elementById("SP05_NotifyPending");
+        Element catchReleased = elementById("SP05_Catch_Released");
+        Element gateway = elementById("SP05_GW_Available");
+        Element pendingFlow = elementById("Flow_092");
+        Element recoveryFlow = elementById("Flow_093");
+
+        assertThat(pendingFlow.getAttribute("sourceRef")).isEqualTo("SP05_NotifyPending");
+        assertThat(pendingFlow.getAttribute("targetRef")).isEqualTo("SP05_Catch_Released");
+        assertThat(hasFlowRef(notifyPending, "outgoing", "Flow_092")).isTrue();
+        assertThat(hasFlowRef(catchReleased, "incoming", "Flow_092")).isTrue();
+        assertThat(hasFlowRef(catchReleased, "outgoing", "Flow_093")).isTrue();
+        assertThat(recoveryFlow.getAttribute("sourceRef")).isEqualTo("SP05_Catch_Released");
+        assertThat(recoveryFlow.getAttribute("targetRef")).isEqualTo("SP05_GW_Available");
+        assertThat(hasFlowRef(gateway, "incoming", "Flow_093")).isTrue();
+        assertThat(firstChild(elementById("SP05_Catch_Released"), "messageEventDefinition")
+                .getAttribute("messageRef")).isEqualTo("Msg_ExternalSlotReleased");
+    }
+
+    @Test
+    @DisplayName("AT-16: collaboration message flows have visible overview endpoints and diagram edges")
+    void collaborationMessageFlowsSurviveModelerImport() {
+        String diagramNamespace = "http://www.omg.org/spec/BPMN/20100524/DI";
+        NodeList planes = model.getElementsByTagNameNS(diagramNamespace, "BPMNPlane");
+        Element overview = null;
+        for (int i = 0; i < planes.getLength(); i++) {
+            Element plane = (Element) planes.item(i);
+            if ("Collaboration_HPAS".equals(plane.getAttribute("bpmnElement"))) overview = plane;
+        }
+        assertThat(overview).as("collaboration overview plane").isNotNull();
+        Set<String> visible = new HashSet<>();
+        Set<String> edges = new HashSet<>();
+        for (Node child = overview.getFirstChild(); child != null; child = child.getNextSibling()) {
+            if (child instanceof Element element) {
+                if ("BPMNShape".equals(element.getLocalName())) visible.add(element.getAttribute("bpmnElement"));
+                if ("BPMNEdge".equals(element.getLocalName())) edges.add(element.getAttribute("bpmnElement"));
+            }
+        }
+        NodeList flows = model.getElementsByTagNameNS(B, "messageFlow");
+        for (int i = 0; i < flows.getLength(); i++) {
+            Element flow = (Element) flows.item(i);
+            assertThat(visible).as(flow.getAttribute("id") + " visible endpoints")
+                    .contains(flow.getAttribute("sourceRef"), flow.getAttribute("targetRef"));
+            assertThat(edges).as(flow.getAttribute("id") + " BPMN DI").contains(flow.getAttribute("id"));
+        }
+    }
+
+    @Test
+    @DisplayName("Tasklist start collects correlation identifiers and enters document checks without a message")
+    void tasklistStartProvidesCorrelationAndDirectIntake() throws Exception {
+        org.junit.jupiter.api.Assumptions.assumeFalse(Boolean.getBoolean("acceptance.snapshot"));
+        Element start = elementById("Top_Start");
+        Element definition = firstChild(firstChild(start, "extensionElements"), "formDefinition");
+        assertThat(definition.getAttribute("formId")).isEqualTo("hpas_start_referral");
+        assertThat(definition.getAttribute("bindingType")).isEqualTo("deployment");
+        JsonNode form = forms().get("hpas_start_referral");
+        Set<String> required = new HashSet<>();
+        for (JsonNode field : form.path("components"))
+            if (field.path("validate").path("required").asBoolean()) required.add(field.path("key").asText());
+        assertThat(required).contains("referralId", "patientId", "intakeStaffId");
+        assertThat(elementById("Flow_001").getAttribute("targetRef")).isEqualTo("Top_GW_ReferralEntry");
+        assertThat(elementById("Flow_Entry_Tasklist").getAttribute("targetRef")).isEqualTo("SP01_CheckDocuments");
+        assertThat(elementById("Flow_Entry_WaitMessage").getAttribute("targetRef")).isEqualTo("Top_Catch_Referral");
+        assertThat(elementById("Top_GW_ReferralEntry").getAttribute("default")).isEqualTo("Flow_Entry_WaitMessage");
+    }
+
     private static boolean uniqueIds(Document doc) {
         Set<String> ids = new HashSet<>();
         NodeList all = doc.getElementsByTagName("*");
@@ -175,9 +244,26 @@ class RedesignAcceptanceContractTest {
         return true;
     }
 
+    private static Element elementById(String id) {
+        NodeList all = model.getElementsByTagName("*");
+        for (int i = 0; i < all.getLength(); i++) {
+            Node node = all.item(i);
+            if (node instanceof Element element && id.equals(element.getAttribute("id"))) return element;
+        }
+        throw new AssertionError("BPMN element not found: " + id);
+    }
+
+    private static boolean hasFlowRef(Element node, String tag, String flowId) {
+        NodeList children = node.getElementsByTagNameNS(B, tag);
+        for (int i = 0; i < children.getLength(); i++)
+            if (flowId.equals(children.item(i).getTextContent().trim())) return true;
+        return false;
+    }
+
     private static Map<String, JsonNode> forms() throws Exception {
         Map<String, JsonNode> result = new HashMap<>();
-        Path folder = modelPath.getParent().resolve("forms");
+        Path folder = Boolean.getBoolean("acceptance.snapshot") || !"bpmn".equals(modelPath.getParent().getFileName().toString())
+                ? modelPath.getParent().resolve("forms") : modelPath.getParent();
         ObjectMapper mapper = new ObjectMapper();
         try (var files = Files.list(folder)) {
             for (Path file : files.filter(p -> p.toString().endsWith(Boolean.getBoolean("acceptance.snapshot")
@@ -186,7 +272,7 @@ class RedesignAcceptanceContractTest {
                 assertThat(result.put(form.path("id").asText(), form)).as(file.toString()).isNull();
             }
         }
-        assertThat(result).hasSize(37);
+        assertThat(result).hasSize(Boolean.getBoolean("acceptance.snapshot") ? 37 : 42);
         return result;
     }
 

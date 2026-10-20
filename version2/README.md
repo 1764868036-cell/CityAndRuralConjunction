@@ -6,7 +6,9 @@ Independent Camunda 8.9 project. See [Chinese guide](README.zh-CN.md).
 
 [Editable piStar TXT](goalModel.txt) · [Single green SVG](istar/Hospital_SD_SR_Version2.svg) · [PNG](istar/Hospital_SD_SR_Version2.png) · [Scope and notation](istar/README.md).
 
-The model adapts the VERSION2 BPMN to the revised hospital boundary: 15 actors, including 4 external actors, 86 intentional elements and 27 task-to-task dependencies. Scheduling and correspondence providers are hidden implementation details in this strategic view; they remain external participants in BPMN. Clinical support services are internal under the revised business scope, while the current BPMN still models the laboratory and treatment provider as external. Consultants and the Clinical Team retain separate responsibilities. Rebuild the TXT with `python version2/tools/build_istar.py` from the repository root.
+The compact strategic process view is available as [BPMN](strategic-model.bpmn). It follows the course guidance with one pool, a referral-to-outcome happy path, seven responsibility lanes, ten main flow objects and six artifacts. Two subprocesses group funding and treatment details. The file is non-executable; the detailed i* model and deployable operational BPMN remain separate.
+
+The model follows the current BPMN collaboration boundary: 17 actors, including all 7 external participants, 94 intentional elements and 34 task-to-task dependencies. Hospital lanes are represented as internal roles; patient, referrer, scheduling, correspondence, payment, funding and external treatment services remain external. Each actor maps to a BPMN participant, and every source ID is checked against the current BPMN. SP05 availability follows the HTTP JSON Connector; the strategic provider task is an abstraction of the API response. Rebuild the editable TXT and structural report with `python version2/tools/build_istar.py`, then render SVG, PNG and the local viewer with `python version2/tools/render_istar.py`.
 
 ## Postman
 
@@ -16,6 +18,7 @@ The model adapts the VERSION2 BPMN to the revised hospital boundary: 15 actors, 
 
 ```text
 hospital-patient-pathway.bpmn   Deployable BPMN with drill-down planes
+strategic-model.bpmn            Compact non-executable strategic process
 forms/                         Camunda Forms
 java/                          Java workers and Maven wrapper
 tools/                         Build, layout, rendering and validation

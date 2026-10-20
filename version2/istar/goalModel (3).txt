@@ -1,0 +1,3518 @@
+{
+  "actors": [
+    {
+      "id": "actor_refOrg",
+      "text": "Referring organisation",
+      "type": "istar.Actor",
+      "x": 110,
+      "y": 140,
+      "customProperties": {
+        "Full actor name": "Referring organisation",
+        "Scope": "External"
+      },
+      "nodes": [
+        {
+          "id": "n_refOrg_goal",
+          "text": "Referral loop completed",
+          "type": "istar.Goal",
+          "x": 390,
+          "y": 240,
+          "customProperties": {
+            "Source BPMN IDs": "XRef_Prepare; XRef_ProvideInfo; XRef_Record",
+            "Full wording": "Referral loop completed"
+          }
+        },
+        {
+          "id": "n_refOrg_send",
+          "text": "Submit referral and missing details",
+          "type": "istar.Task",
+          "x": 140,
+          "y": 390,
+          "customProperties": {
+            "Source BPMN IDs": "XRef_Prepare; XRef_ProvideInfo",
+            "Full wording": "Submit referral and missing details"
+          }
+        },
+        {
+          "id": "n_refOrg_outcome",
+          "text": "Receive and record outcome",
+          "type": "istar.Task",
+          "x": 390,
+          "y": 390,
+          "customProperties": {
+            "Source BPMN IDs": "XRef_Record",
+            "Full wording": "Receive and record outcome"
+          }
+        }
+      ]
+    },
+    {
+      "id": "actor_medsec",
+      "text": "Medical secretaries",
+      "type": "istar.Actor",
+      "x": 110,
+      "y": 920,
+      "customProperties": {
+        "Full actor name": "Medical secretaries",
+        "Scope": "Hospital"
+      },
+      "nodes": [
+        {
+          "id": "n_medsec_goal",
+          "text": "Referral and letter support",
+          "type": "istar.Goal",
+          "x": 390,
+          "y": 1020,
+          "customProperties": {
+            "Source BPMN IDs": "SP01_CheckDocuments; SP01_RequestMissing; SP01_Catch_Supplementary; SP13_AdminProcess; SP13_Distribute; SP13_RecordDates",
+            "Full wording": "Referral and letter support"
+          }
+        },
+        {
+          "id": "n_medsec_check",
+          "text": "Check referral documents",
+          "type": "istar.Task",
+          "x": 140,
+          "y": 1170,
+          "customProperties": {
+            "Source BPMN IDs": "SP01_CheckDocuments",
+            "Full wording": "Check referral documents"
+          }
+        },
+        {
+          "id": "n_medsec_missing",
+          "text": "Obtain missing information",
+          "type": "istar.Task",
+          "x": 390,
+          "y": 1170,
+          "customProperties": {
+            "Source BPMN IDs": "SP01_RequestMissing; SP01_Catch_Supplementary",
+            "Full wording": "Obtain missing information",
+            "Applicability": "Only when referral documents are incomplete."
+          }
+        },
+        {
+          "id": "n_medsec_distribute",
+          "text": "Check recipients and arrange dispatch",
+          "type": "istar.Task",
+          "x": 640,
+          "y": 1170,
+          "customProperties": {
+            "Source BPMN IDs": "SP13_AdminProcess; SP13_Distribute",
+            "Full wording": "Check recipients and arrange dispatch"
+          }
+        },
+        {
+          "id": "n_medsec_record",
+          "text": "Record distribution evidence",
+          "type": "istar.Task",
+          "x": 890,
+          "y": 1170,
+          "customProperties": {
+            "Source BPMN IDs": "SP13_RecordDates",
+            "Full wording": "Record distribution evidence"
+          }
+        }
+      ]
+    },
+    {
+      "id": "actor_consult",
+      "text": "Consultants",
+      "type": "istar.Actor",
+      "x": 1750,
+      "y": 921,
+      "customProperties": {
+        "Full actor name": "Consultants",
+        "Scope": "Hospital"
+      },
+      "nodes": [
+        {
+          "id": "n_consult_goal",
+          "text": "Clinical decisions governed",
+          "type": "istar.Goal",
+          "x": 2030,
+          "y": 1021,
+          "customProperties": {
+            "Source BPMN IDs": "SP02_ClinicalReview; SP02_RequestInfo; SP02_NotifyRejected; SP02_NotifyRedirected; SP04_Assess; SP04_RecordConsent; SP04_GW_Consent; SP10_Decide; SP04_CreateRequest; SP04_Validate; SP13_Draft; SP13_Approve; SP13_NotifyFollowUp; SP10_Decide; SP09_Retrospective",
+            "Full wording": "Clinical decisions governed"
+          }
+        },
+        {
+          "id": "n_consult_referral",
+          "text": "Review referral and record decision",
+          "type": "istar.Task",
+          "x": 1780,
+          "y": 1171,
+          "customProperties": {
+            "Source BPMN IDs": "SP02_ClinicalReview; SP02_RequestInfo; SP02_NotifyRejected; SP02_NotifyRedirected",
+            "Full wording": "Review referral and record decision"
+          }
+        },
+        {
+          "id": "n_consult_assess",
+          "text": "Assess patient and explain options",
+          "type": "istar.Task",
+          "x": 2062,
+          "y": 1177,
+          "customProperties": {
+            "Source BPMN IDs": "SP04_Assess",
+            "Full wording": "Assess patient and explain options"
+          }
+        },
+        {
+          "id": "n_consult_consent",
+          "text": "Record consent or refusal",
+          "type": "istar.Task",
+          "x": 2427,
+          "y": 1111,
+          "customProperties": {
+            "Source BPMN IDs": "SP04_RecordConsent; SP04_GW_Consent; SP10_Decide",
+            "Full wording": "Record consent or refusal",
+            "Applicability": "Consent permits request creation. Refusal is handled through P10; it is not simultaneous consent."
+          }
+        },
+        {
+          "id": "n_consult_request",
+          "text": "Create authorised treatment request",
+          "type": "istar.Task",
+          "x": 2644,
+          "y": 976,
+          "customProperties": {
+            "Source BPMN IDs": "SP04_CreateRequest; SP04_Validate",
+            "Full wording": "Create authorised treatment request",
+            "Applicability": "Only with consent and a valid, complete request."
+          }
+        },
+        {
+          "id": "n_consult_letter",
+          "text": "Prepare and approve clinic letter",
+          "type": "istar.Task",
+          "x": 1780,
+          "y": 1311,
+          "customProperties": {
+            "Source BPMN IDs": "SP13_Draft; SP13_Approve",
+            "Full wording": "Prepare and approve clinic letter"
+          }
+        },
+        {
+          "id": "n_consult_followup",
+          "text": "Request indicated follow-up",
+          "type": "istar.Task",
+          "x": 1996,
+          "y": 1300,
+          "customProperties": {
+            "Source BPMN IDs": "SP13_NotifyFollowUp",
+            "Full wording": "Request indicated follow-up",
+            "Applicability": "Only when follow-up is instructed. Preparing and approving the letter does not depend on booking completion."
+          }
+        },
+        {
+          "id": "n_consult_decision",
+          "text": "Review cancellation and safety cases",
+          "type": "istar.Task",
+          "x": 2267,
+          "y": 1269,
+          "customProperties": {
+            "Source BPMN IDs": "SP10_Decide; SP09_Retrospective",
+            "Full wording": "Review cancellation and safety cases",
+            "Applicability": "Cancellation decisions and retrospective authorisation after an urgent safety hold are separate conditional responsibilities."
+          }
+        }
+      ]
+    },
+    {
+      "id": "actor_patient",
+      "text": "Patient",
+      "type": "istar.Actor",
+      "x": 1750,
+      "y": 2480,
+      "customProperties": {
+        "Full actor name": "Patient",
+        "Scope": "External"
+      },
+      "nodes": [
+        {
+          "id": "n_patient_goal",
+          "text": "Patient participation supported",
+          "type": "istar.Goal",
+          "x": 2030,
+          "y": 2580,
+          "customProperties": {
+            "Source BPMN IDs": "XPat_Attend; SP04_Assess; SP04_RecordConsent; SP10_Record; XPat_Decide; XPat_SendChange; XPat_Decide; XPat_SendCancel; XPat_Enquire",
+            "Full wording": "Patient participation supported"
+          }
+        },
+        {
+          "id": "n_patient_attend",
+          "text": "Receive details and attend appointment",
+          "type": "istar.Task",
+          "x": 1780,
+          "y": 2730,
+          "customProperties": {
+            "Source BPMN IDs": "XPat_Attend",
+            "Full wording": "Receive details and attend appointment"
+          }
+        },
+        {
+          "id": "n_patient_decision",
+          "text": "Communicate consent decision",
+          "type": "istar.Task",
+          "x": 2030,
+          "y": 2730,
+          "customProperties": {
+            "Source BPMN IDs": "SP04_Assess; SP04_RecordConsent; SP10_Record",
+            "Full wording": "Communicate consent decision",
+            "Applicability": "Inferred patient responsibility from the hospital consent or refusal interaction, not an added executable BPMN task."
+          }
+        },
+        {
+          "id": "n_patient_change",
+          "text": "Request appointment change",
+          "type": "istar.Task",
+          "x": 2280,
+          "y": 2730,
+          "customProperties": {
+            "Source BPMN IDs": "XPat_Decide; XPat_SendChange",
+            "Full wording": "Request appointment change"
+          }
+        },
+        {
+          "id": "n_patient_cancel",
+          "text": "Report appointment cancellation",
+          "type": "istar.Task",
+          "x": 2530,
+          "y": 2730,
+          "customProperties": {
+            "Source BPMN IDs": "XPat_Decide; XPat_SendCancel",
+            "Full wording": "Report appointment cancellation"
+          }
+        },
+        {
+          "id": "n_patient_enquire",
+          "text": "Raise question or concern",
+          "type": "istar.Task",
+          "x": 1780,
+          "y": 2870,
+          "customProperties": {
+            "Source BPMN IDs": "XPat_Enquire",
+            "Full wording": "Raise question or concern"
+          }
+        }
+      ]
+    },
+    {
+      "id": "actor_outpt",
+      "text": "Outpatient bookings",
+      "type": "istar.Actor",
+      "x": 1750,
+      "y": 1700,
+      "customProperties": {
+        "Full actor name": "Outpatient bookings",
+        "Scope": "Hospital"
+      },
+      "nodes": [
+        {
+          "id": "n_outpt_goal",
+          "text": "Appointment service supported",
+          "type": "istar.Goal",
+          "x": 2030,
+          "y": 1800,
+          "customProperties": {
+            "Source BPMN IDs": "SP03_RequestSlot; SP03_Catch_Slot; SP03_NoSlotReview; SP03_BookNextAvailable; SP03_ConfirmBooking; SP03_SendLetter; SP03_GW_TwoWeek; SP03_EscalateContact; SP03B_RequestSlot; SP03B_Rebook; SP03B_Notify; SP03B_Review; SP14_RequestSlot; SP14_Book; SP14_Inform; SP03_NoSlotReview; SP03_EscalateContact; SP14_Highlight",
+            "Full wording": "Appointment service supported"
+          }
+        },
+        {
+          "id": "n_outpt_slot",
+          "text": "Search and handle slot outcome",
+          "type": "istar.Task",
+          "x": 1780,
+          "y": 1950,
+          "customProperties": {
+            "Source BPMN IDs": "SP03_RequestSlot; SP03_Catch_Slot; SP03_NoSlotReview; SP03_BookNextAvailable",
+            "Full wording": "Search and handle slot outcome",
+            "Applicability": "Coordinate external scheduling. Book normally or record and escalate an exception according to availability."
+          }
+        },
+        {
+          "id": "n_outpt_confirm",
+          "text": "Confirm booking and send details",
+          "type": "istar.Task",
+          "x": 2030,
+          "y": 1950,
+          "customProperties": {
+            "Source BPMN IDs": "SP03_ConfirmBooking; SP03_SendLetter",
+            "Full wording": "Confirm booking and send details"
+          }
+        },
+        {
+          "id": "n_outpt_contact",
+          "text": "Arrange timely patient contact",
+          "type": "istar.Task",
+          "x": 2280,
+          "y": 1950,
+          "customProperties": {
+            "Source BPMN IDs": "SP03_GW_TwoWeek; SP03_EscalateContact",
+            "Full wording": "Arrange timely patient contact",
+            "Applicability": "Telephone contact is performed by Call Handling when required; failed attempts are escalated."
+          }
+        },
+        {
+          "id": "n_outpt_change",
+          "text": "Rebook or review change request",
+          "type": "istar.Task",
+          "x": 2530,
+          "y": 1950,
+          "customProperties": {
+            "Source BPMN IDs": "SP03B_RequestSlot; SP03B_Rebook; SP03B_Notify; SP03B_Review",
+            "Full wording": "Rebook or review change request",
+            "Applicability": "P03B event branch; avoid duplicate bookings and review unresolved requests."
+          }
+        },
+        {
+          "id": "n_outpt_followup",
+          "text": "Book requested follow-up",
+          "type": "istar.Task",
+          "x": 1780,
+          "y": 2090,
+          "customProperties": {
+            "Source BPMN IDs": "SP14_RequestSlot; SP14_Book; SP14_Inform",
+            "Full wording": "Book requested follow-up"
+          }
+        },
+        {
+          "id": "n_outpt_exception",
+          "text": "Escalate booking and contact issues",
+          "type": "istar.Task",
+          "x": 2080,
+          "y": 2087,
+          "customProperties": {
+            "Source BPMN IDs": "SP03_NoSlotReview; SP03_EscalateContact; SP14_Highlight",
+            "Full wording": "Escalate booking and contact issues"
+          }
+        }
+      ]
+    },
+    {
+      "id": "actor_callteam",
+      "text": "Call handling",
+      "type": "istar.Actor",
+      "x": 1752,
+      "y": 3259,
+      "customProperties": {
+        "Full actor name": "Call handling",
+        "Scope": "Hospital"
+      },
+      "nodes": [
+        {
+          "id": "n_callteam_goal",
+          "text": "Patient contact supported",
+          "type": "istar.Goal",
+          "x": 2044,
+          "y": 3338,
+          "customProperties": {
+            "Source BPMN IDs": "SP03_PhoneContact; SP12_Record; SP12_Answer; SP12_Transfer; SP12_GW_Class; SP12_ReferCNS; SP12_AnswerFin; SP12_GW_Info; SP12_ReferFinance; SP10_Record; SP10_NotifyRebook; SP10_NotifyReferrer; SP12_Close",
+            "Full wording": "Patient contact supported"
+          }
+        },
+        {
+          "id": "n_callteam_phone",
+          "text": "Call patient and record outcome",
+          "type": "istar.Task",
+          "x": 1782,
+          "y": 3509,
+          "customProperties": {
+            "Source BPMN IDs": "SP03_PhoneContact",
+            "Full wording": "Call patient and record outcome"
+          }
+        },
+        {
+          "id": "n_callteam_classify",
+          "text": "Record and classify enquiry",
+          "type": "istar.Task",
+          "x": 1793,
+          "y": 3336,
+          "customProperties": {
+            "Source BPMN IDs": "SP12_Record",
+            "Full wording": "Record and classify enquiry"
+          }
+        },
+        {
+          "id": "n_callteam_answer",
+          "text": "Answer or route administrative query",
+          "type": "istar.Task",
+          "x": 2339,
+          "y": 3333,
+          "customProperties": {
+            "Source BPMN IDs": "SP12_Answer; SP12_Transfer",
+            "Full wording": "Answer or route administrative query"
+          }
+        },
+        {
+          "id": "n_callteam_clinical",
+          "text": "Route clinical enquiry to CNS",
+          "type": "istar.Task",
+          "x": 2388,
+          "y": 3492,
+          "customProperties": {
+            "Source BPMN IDs": "SP12_GW_Class; SP12_ReferCNS",
+            "Full wording": "Route clinical enquiry to CNS",
+            "Applicability": "Routing abstraction: CNS, not Call Handling, assesses clinical urgency."
+          }
+        },
+        {
+          "id": "n_callteam_financial",
+          "text": "Answer or refer financial query",
+          "type": "istar.Task",
+          "x": 1898,
+          "y": 3615,
+          "customProperties": {
+            "Source BPMN IDs": "SP12_AnswerFin; SP12_GW_Info; SP12_ReferFinance",
+            "Full wording": "Answer or refer financial query",
+            "Applicability": "Answer only from authorised information; otherwise obtain Finance response."
+          }
+        },
+        {
+          "id": "n_callteam_cancel",
+          "text": "Record cancellation and route response",
+          "type": "istar.Task",
+          "x": 2578,
+          "y": 3637,
+          "customProperties": {
+            "Source BPMN IDs": "SP10_Record; SP10_NotifyRebook; SP10_NotifyReferrer",
+            "Full wording": "Record cancellation and route response"
+          }
+        },
+        {
+          "id": "n_callteam_close",
+          "text": "Record handling and resolution",
+          "type": "istar.Task",
+          "x": 2096,
+          "y": 3558,
+          "customProperties": {
+            "Source BPMN IDs": "SP12_Close",
+            "Full wording": "Record handling and resolution"
+          }
+        }
+      ]
+    },
+    {
+      "id": "actor_trtsvc",
+      "text": "Clinical support services",
+      "type": "istar.Actor",
+      "x": 3390,
+      "y": 140,
+      "customProperties": {
+        "Full actor name": "Clinical support services",
+        "Scope": "Hospital"
+      },
+      "nodes": [
+        {
+          "id": "n_trtsvc_goal",
+          "text": "Hospital clinical support available",
+          "type": "istar.Goal",
+          "x": 3545,
+          "y": 228,
+          "customProperties": {
+            "Source BPMN IDs": "SP05_BookInternal; SP08_RequestBloods; SP08_Catch_Lab",
+            "Full wording": "Hospital clinical support available"
+          }
+        },
+        {
+          "id": "n_trtsvc_capacity",
+          "text": "Report hospital service availability",
+          "type": "istar.Task",
+          "x": 3420,
+          "y": 390,
+          "customProperties": {
+            "Source BPMN IDs": "SP05_BookInternal",
+            "Full wording": "Report hospital service availability",
+            "Applicability": "Internal support responsibility inferred from hospital resource booking under the revised business scope. The external capacity interaction remains a separate implementation detail."
+          }
+        },
+        {
+          "id": "n_trtsvc_lab",
+          "text": "Perform test and return lab result",
+          "type": "istar.Task",
+          "x": 3670,
+          "y": 390,
+          "customProperties": {
+            "Source BPMN IDs": "SP08_RequestBloods; SP08_Catch_Lab",
+            "Full wording": "Perform test and return lab result",
+            "Applicability": "Hospital laboratory responsibility under the revised business scope. The current BPMN routes this interaction to an external laboratory; source IDs trace the interaction, not an unchanged provider boundary."
+          }
+        }
+      ]
+    },
+    {
+      "id": "actor_trtbook",
+      "text": "Treatment bookings",
+      "type": "istar.Actor",
+      "x": 1759,
+      "y": 141,
+      "customProperties": {
+        "Full actor name": "Treatment bookings",
+        "Scope": "Hospital"
+      },
+      "nodes": [
+        {
+          "id": "n_trtbook_goal",
+          "text": "Treatment resources coordinated",
+          "type": "istar.Goal",
+          "x": 2039,
+          "y": 241,
+          "customProperties": {
+            "Source BPMN IDs": "SP04_Validate; SP05_GW_Resource; SP05_BookInternal; SP05_RequestAvailability; SP05_Catch_Availability; SP05_BookExternal; SP05_NotifyPending; SP05_Catch_Released",
+            "Full wording": "Treatment resources coordinated"
+          }
+        },
+        {
+          "id": "n_trtbook_validate",
+          "text": "Accept validated booking request",
+          "type": "istar.Task",
+          "x": 1789,
+          "y": 391,
+          "customProperties": {
+            "Source BPMN IDs": "SP04_Validate; SP05_GW_Resource",
+            "Full wording": "Accept validated booking request",
+            "Applicability": "Booking intake uses the Consultants lane validation result; it does not take clinical authorisation ownership."
+          }
+        },
+        {
+          "id": "n_trtbook_internal",
+          "text": "Book hospital facility",
+          "type": "istar.Task",
+          "x": 2039,
+          "y": 531,
+          "customProperties": {
+            "Source BPMN IDs": "SP05_BookInternal",
+            "Full wording": "Book hospital facility",
+            "Applicability": "Internal resource route only."
+          }
+        },
+        {
+          "id": "n_trtbook_external",
+          "text": "Coordinate external availability",
+          "type": "istar.Task",
+          "x": 2289,
+          "y": 531,
+          "customProperties": {
+            "Source BPMN IDs": "SP05_RequestAvailability; SP05_Catch_Availability; SP05_BookExternal",
+            "Full wording": "Coordinate external availability",
+            "Applicability": "External resource route only; creates a provisional booking."
+          }
+        },
+        {
+          "id": "n_trtbook_pending",
+          "text": "Keep pending and prevent duplicates",
+          "type": "istar.Task",
+          "x": 2539,
+          "y": 531,
+          "customProperties": {
+            "Source BPMN IDs": "SP05_NotifyPending; SP05_Catch_Released",
+            "Full wording": "Keep pending and prevent duplicates",
+            "Applicability": "When external capacity is unavailable; resume after slot release."
+          }
+        },
+        {
+          "id": "n_trtbook_resource",
+          "text": "Required resource arranged",
+          "type": "istar.Goal",
+          "x": 2164,
+          "y": 391,
+          "customProperties": {
+            "Source BPMN IDs": "SP05_GW_Resource",
+            "Full wording": "Required resource arranged",
+            "Applicability": "Internal and external resource routes are alternative means selected by resourceType; OR does not itself encode BPMN exclusivity."
+          }
+        }
+      ]
+    },
+    {
+      "id": "actor_clinical",
+      "text": "Clinical team",
+      "type": "istar.Actor",
+      "x": 3390,
+      "y": 920,
+      "customProperties": {
+        "Full actor name": "Clinical team",
+        "Scope": "Hospital"
+      },
+      "nodes": [
+        {
+          "id": "n_clinical_goal",
+          "text": "Treatment safety supported",
+          "type": "istar.Goal",
+          "x": 3678,
+          "y": 1010,
+          "customProperties": {
+            "Source BPMN IDs": "SP08_RequestBloods; SP08_Catch_Lab; SP08_Review; SP08_Administer; SP08_GW_More; SP08_Catch_NextDue; SP08_DelayHandling; SP08_NotifyChange; SP08_Catch_PlanUpdated; SP09_ExecuteHold; SP09_ExecuteHold; SP09_Retrospective; SP09_ValidateFormal; SP09_ApplyChange; SP09_NotifyPlanUpdated; SP09_GW_Financial; SP09_FinanceReview; SP09_NotifyRefund; SP10_ClinicalReview; SP08_NotifyLetter",
+            "Full wording": "Treatment safety supported"
+          }
+        },
+        {
+          "id": "n_clinical_fitness",
+          "text": "Obtain bloods and assess fitness",
+          "type": "istar.Task",
+          "x": 3420,
+          "y": 1170,
+          "customProperties": {
+            "Source BPMN IDs": "SP08_RequestBloods; SP08_Catch_Lab; SP08_Review",
+            "Full wording": "Obtain bloods and assess fitness"
+          }
+        },
+        {
+          "id": "n_clinical_cycle",
+          "text": "Record cycle and review continuation",
+          "type": "istar.Task",
+          "x": 3670,
+          "y": 1170,
+          "customProperties": {
+            "Source BPMN IDs": "SP08_Administer; SP08_GW_More; SP08_Catch_NextDue",
+            "Full wording": "Record cycle and review continuation",
+            "Applicability": "Administer only when fit; continue only when another cycle is required."
+          }
+        },
+        {
+          "id": "n_clinical_delay",
+          "text": "Record delay and request plan change",
+          "type": "istar.Task",
+          "x": 3920,
+          "y": 1170,
+          "customProperties": {
+            "Source BPMN IDs": "SP08_DelayHandling; SP08_NotifyChange; SP08_Catch_PlanUpdated",
+            "Full wording": "Record delay and request plan change"
+          }
+        },
+        {
+          "id": "n_clinical_hold",
+          "text": "Apply immediate safety hold",
+          "type": "istar.Task",
+          "x": 4170,
+          "y": 1170,
+          "customProperties": {
+            "Source BPMN IDs": "SP09_ExecuteHold",
+            "Full wording": "Apply immediate safety hold",
+            "Applicability": "Apply immediately on the urgent route. Obtain Consultant authorisation separately afterwards."
+          }
+        },
+        {
+          "id": "n_clinical_authorise",
+          "text": "Obtain retrospective authorisation",
+          "type": "istar.Task",
+          "x": 3420,
+          "y": 1310,
+          "customProperties": {
+            "Source BPMN IDs": "SP09_ExecuteHold; SP09_Retrospective",
+            "Full wording": "Obtain retrospective authorisation",
+            "Applicability": "After the immediate safety hold. The hold itself does not wait for this authorisation; this receiving task abstracts the clinical team obtaining the Consultant decision."
+          }
+        },
+        {
+          "id": "n_clinical_change",
+          "text": "Validate and apply treatment change",
+          "type": "istar.Task",
+          "x": 3670,
+          "y": 1310,
+          "customProperties": {
+            "Source BPMN IDs": "SP09_ValidateFormal; SP09_ApplyChange; SP09_NotifyPlanUpdated",
+            "Full wording": "Validate and apply treatment change",
+            "Applicability": "Apply only when formal authorisation is valid; invalid requests are rejected."
+          }
+        },
+        {
+          "id": "n_clinical_financial",
+          "text": "Refer financial changes and refunds",
+          "type": "istar.Task",
+          "x": 3920,
+          "y": 1310,
+          "customProperties": {
+            "Source BPMN IDs": "SP09_GW_Financial; SP09_FinanceReview; SP09_NotifyRefund",
+            "Full wording": "Refer financial changes and refunds",
+            "Applicability": "Coordination only; Finance owns the financial review and refund decision."
+          }
+        },
+        {
+          "id": "n_clinical_review",
+          "text": "Review pathway and request clinic letter",
+          "type": "istar.Task",
+          "x": 4170,
+          "y": 1310,
+          "customProperties": {
+            "Source BPMN IDs": "SP10_ClinicalReview; SP08_NotifyLetter",
+            "Full wording": "Review pathway and request clinic letter"
+          }
+        },
+        {
+          "id": "n_clinical_quality",
+          "text": "Patient safety",
+          "type": "istar.Quality",
+          "x": 4428,
+          "y": 1246,
+          "customProperties": {
+            "Source BPMN IDs": "SP09_ExecuteHold",
+            "Full wording": "Patient safety"
+          }
+        }
+      ]
+    },
+    {
+      "id": "actor_fundorg",
+      "text": "Funding organisation",
+      "type": "istar.Actor",
+      "x": 3396,
+      "y": 1678,
+      "customProperties": {
+        "Full actor name": "Funding organisation",
+        "Scope": "External"
+      },
+      "nodes": [
+        {
+          "id": "n_fundorg_goal",
+          "text": "Funding decision available",
+          "type": "istar.Goal",
+          "x": 3676,
+          "y": 1778,
+          "customProperties": {
+            "Source BPMN IDs": "XFund_Assess; XFund_Send",
+            "Full wording": "Funding decision available"
+          }
+        },
+        {
+          "id": "n_fundorg_assess",
+          "text": "Assess funding application",
+          "type": "istar.Task",
+          "x": 3426,
+          "y": 1928,
+          "customProperties": {
+            "Source BPMN IDs": "XFund_Assess",
+            "Full wording": "Assess funding application"
+          }
+        },
+        {
+          "id": "n_fundorg_approval",
+          "text": "Return funding approval decision",
+          "type": "istar.Task",
+          "x": 3647,
+          "y": 1911,
+          "customProperties": {
+            "Source BPMN IDs": "XFund_Send",
+            "Full wording": "Return funding approval decision"
+          }
+        }
+      ]
+    },
+    {
+      "id": "actor_finance",
+      "text": "Finance team",
+      "type": "istar.Actor",
+      "x": 3390,
+      "y": 2480,
+      "customProperties": {
+        "Full actor name": "Finance team",
+        "Scope": "Hospital"
+      },
+      "nodes": [
+        {
+          "id": "n_finance_goal",
+          "text": "Financial cases controlled",
+          "type": "istar.Goal",
+          "x": 3670,
+          "y": 2580,
+          "customProperties": {
+            "Source BPMN IDs": "SP06_Determine; SP06_RecordExemption; SP06_RequestApproval; SP06_RecordApproval; SP07_CalculateCharge; SP07_SendPaymentRequest; SP07_RecordTransaction; SP07_MarkInvestigation; SP07_Investigate; SP07_DecideRetry; SP07_RecordOverride; SP07_ReferFinance; SP07_ConfirmBooking; SP11_Determine; SP11_SendRefund; SP11_Record; SP11_RecordNone; SP12_ReferFinance; SP09_FinanceReview",
+            "Full wording": "Financial cases controlled"
+          }
+        },
+        {
+          "id": "n_finance_funding",
+          "text": "Determine funding and record approval",
+          "type": "istar.Task",
+          "x": 3420,
+          "y": 2730,
+          "customProperties": {
+            "Source BPMN IDs": "SP06_Determine; SP06_RecordExemption; SP06_RequestApproval; SP06_RecordApproval",
+            "Full wording": "Determine funding and record approval",
+            "Applicability": "Record exemption or insurer approval as applicable; these are alternative funding routes."
+          }
+        },
+        {
+          "id": "n_finance_payment",
+          "text": "Request payment and record result",
+          "type": "istar.Task",
+          "x": 3670,
+          "y": 2695,
+          "customProperties": {
+            "Source BPMN IDs": "SP07_CalculateCharge; SP07_SendPaymentRequest; SP07_RecordTransaction",
+            "Full wording": "Request payment and record result",
+            "Applicability": "Record transaction status, reference, date and amount. Never record card data."
+          }
+        },
+        {
+          "id": "n_finance_investigate",
+          "text": "Investigate ambiguous payment",
+          "type": "istar.Task",
+          "x": 3920,
+          "y": 2730,
+          "customProperties": {
+            "Source BPMN IDs": "SP07_MarkInvestigation; SP07_Investigate",
+            "Full wording": "Investigate ambiguous payment",
+            "Applicability": "No automatic duplicate payment request while transaction status is uncertain."
+          }
+        },
+        {
+          "id": "n_finance_resolve",
+          "text": "Retry payment or record exception",
+          "type": "istar.Task",
+          "x": 4170,
+          "y": 2730,
+          "customProperties": {
+            "Source BPMN IDs": "SP07_DecideRetry; SP07_RecordOverride; SP07_ReferFinance",
+            "Full wording": "Retry payment or record exception",
+            "Applicability": "Retry or record the authorised urgent clinical exception with reason; follow up outstanding finance."
+          }
+        },
+        {
+          "id": "n_finance_confirm",
+          "text": "Confirm payment-cleared booking",
+          "type": "istar.Task",
+          "x": 3420,
+          "y": 2870,
+          "customProperties": {
+            "Source BPMN IDs": "SP07_ConfirmBooking",
+            "Full wording": "Confirm payment-cleared booking",
+            "Applicability": "Normal payment-complete route; exception handling remains a separate capability."
+          }
+        },
+        {
+          "id": "n_finance_refund",
+          "text": "Decide and reconcile refund",
+          "type": "istar.Task",
+          "x": 3663,
+          "y": 2891,
+          "customProperties": {
+            "Source BPMN IDs": "SP11_Determine; SP11_SendRefund; SP11_Record; SP11_RecordNone",
+            "Full wording": "Decide and reconcile refund",
+            "Applicability": "Choose a full refund, a partial refund or no refund according to financial authority. No-refund decisions retain their reason."
+          }
+        },
+        {
+          "id": "n_finance_enquiry",
+          "text": "Respond to financial enquiry",
+          "type": "istar.Task",
+          "x": 3920,
+          "y": 2870,
+          "customProperties": {
+            "Source BPMN IDs": "SP12_ReferFinance",
+            "Full wording": "Respond to financial enquiry"
+          }
+        },
+        {
+          "id": "n_finance_change",
+          "text": "Review treatment-change finances",
+          "type": "istar.Task",
+          "x": 4170,
+          "y": 2870,
+          "customProperties": {
+            "Source BPMN IDs": "SP09_FinanceReview",
+            "Full wording": "Review treatment-change finances"
+          }
+        },
+        {
+          "id": "n_finance_quality",
+          "text": "Payment traceability",
+          "type": "istar.Quality",
+          "x": 3794,
+          "y": 2813,
+          "customProperties": {
+            "Source BPMN IDs": "SP07_RecordTransaction",
+            "Full wording": "Payment traceability"
+          }
+        }
+      ]
+    },
+    {
+      "id": "actor_psp",
+      "text": "Payment provider",
+      "type": "istar.Actor",
+      "x": 3390,
+      "y": 3260,
+      "customProperties": {
+        "Full actor name": "Payment provider",
+        "Scope": "External"
+      },
+      "nodes": [
+        {
+          "id": "n_psp_goal",
+          "text": "Secure transactions supported",
+          "type": "istar.Goal",
+          "x": 3572,
+          "y": 3341,
+          "customProperties": {
+            "Source BPMN IDs": "XPSP_Process; XPSP_SendStatus; XPSP_Refund; XPSP_SendRefund",
+            "Full wording": "Secure transactions supported"
+          }
+        },
+        {
+          "id": "n_psp_payment",
+          "text": "Process payment and return status",
+          "type": "istar.Task",
+          "x": 3704,
+          "y": 3453,
+          "customProperties": {
+            "Source BPMN IDs": "XPSP_Process; XPSP_SendStatus",
+            "Full wording": "Process payment and return status"
+          }
+        },
+        {
+          "id": "n_psp_refund",
+          "text": "Execute refund and return result",
+          "type": "istar.Task",
+          "x": 3444,
+          "y": 3519,
+          "customProperties": {
+            "Source BPMN IDs": "XPSP_Refund; XPSP_SendRefund",
+            "Full wording": "Execute refund and return result"
+          }
+        }
+      ]
+    },
+    {
+      "id": "actor_cnst",
+      "text": "CNS team",
+      "type": "istar.Actor",
+      "x": 110,
+      "y": 3260,
+      "customProperties": {
+        "Full actor name": "CNS team",
+        "Scope": "Hospital"
+      },
+      "nodes": [
+        {
+          "id": "n_cnst_goal",
+          "text": "Clinical enquiries supported",
+          "type": "istar.Goal",
+          "x": 390,
+          "y": 3360,
+          "customProperties": {
+            "Source BPMN IDs": "SP12_AssessPriority; SP12_FlagUrgent; SP12_ReferCNS",
+            "Full wording": "Clinical enquiries supported"
+          }
+        },
+        {
+          "id": "n_cnst_priority",
+          "text": "Assess clinical urgency",
+          "type": "istar.Task",
+          "x": 140,
+          "y": 3510,
+          "customProperties": {
+            "Source BPMN IDs": "SP12_AssessPriority; SP12_FlagUrgent",
+            "Full wording": "Assess clinical urgency"
+          }
+        },
+        {
+          "id": "n_cnst_respond",
+          "text": "Respond to clinical enquiry",
+          "type": "istar.Task",
+          "x": 390,
+          "y": 3510,
+          "customProperties": {
+            "Source BPMN IDs": "SP12_ReferCNS",
+            "Full wording": "Respond to clinical enquiry"
+          }
+        }
+      ]
+    },
+    {
+      "id": "actor_pathway",
+      "text": "Pathway coordinators",
+      "type": "istar.Actor",
+      "x": 110,
+      "y": 1700,
+      "customProperties": {
+        "Full actor name": "Pathway coordinators",
+        "Scope": "Hospital"
+      },
+      "nodes": [
+        {
+          "id": "n_pathway_goal",
+          "text": "Pathway oversight supported",
+          "type": "istar.Goal",
+          "x": 390,
+          "y": 1800,
+          "customProperties": {
+            "Source BPMN IDs": "SP15_Scan; SP13_Reminder; SP13_Timer7d; SP03_EscalateContact; SP14_Highlight; SP03B_Review; SP15_EscalateManager; SP15_EscalateHigher; SP15_Generate",
+            "Full wording": "Pathway oversight supported"
+          }
+        },
+        {
+          "id": "n_pathway_monitor",
+          "text": "Monitor outstanding pathway items",
+          "type": "istar.Task",
+          "x": 140,
+          "y": 1950,
+          "customProperties": {
+            "Source BPMN IDs": "SP15_Scan",
+            "Full wording": "Monitor outstanding pathway items"
+          }
+        },
+        {
+          "id": "n_pathway_letter",
+          "text": "Remind Consultant of overdue letter",
+          "type": "istar.Task",
+          "x": 870,
+          "y": 1821,
+          "customProperties": {
+            "Source BPMN IDs": "SP13_Reminder; SP13_Timer7d",
+            "Full wording": "Remind Consultant of overdue letter",
+            "Applicability": "Seven-day letter preparation timer is non-interrupting; reminders do not replace approval."
+          }
+        },
+        {
+          "id": "n_pathway_exceptions",
+          "text": "Review highlighted exceptions",
+          "type": "istar.Task",
+          "x": 640,
+          "y": 1950,
+          "customProperties": {
+            "Source BPMN IDs": "SP03_EscalateContact; SP14_Highlight; SP03B_Review",
+            "Full wording": "Review highlighted exceptions",
+            "Applicability": "Inferred receiving responsibility from tasks explicitly referring cases to the pathway team."
+          }
+        },
+        {
+          "id": "n_pathway_escalate",
+          "text": "Refer unresolved delays to management",
+          "type": "istar.Task",
+          "x": 425,
+          "y": 2012,
+          "customProperties": {
+            "Source BPMN IDs": "SP15_EscalateManager; SP15_EscalateHigher",
+            "Full wording": "Refer unresolved delays to management"
+          }
+        },
+        {
+          "id": "n_pathway_report",
+          "text": "Generate pathway management reports",
+          "type": "istar.Task",
+          "x": 140,
+          "y": 2090,
+          "customProperties": {
+            "Source BPMN IDs": "SP15_Generate",
+            "Full wording": "Generate pathway management reports"
+          }
+        }
+      ]
+    },
+    {
+      "id": "actor_adminmgmt",
+      "text": "Administrative management",
+      "type": "istar.Actor",
+      "x": 110,
+      "y": 2480,
+      "customProperties": {
+        "Full actor name": "Administrative management",
+        "Scope": "Hospital"
+      },
+      "nodes": [
+        {
+          "id": "n_adminmgmt_goal",
+          "text": "Operational governance supported",
+          "type": "istar.Goal",
+          "x": 390,
+          "y": 2580,
+          "customProperties": {
+            "Source BPMN IDs": "SP15_EscalateManager; SP15_EscalateHigher; SP16_VerifyAuth; SP16_ApplyAccess; SP16_RecordDowntime; SP16_Reconcile; SP16_Audit",
+            "Full wording": "Operational governance supported"
+          }
+        },
+        {
+          "id": "n_adminmgmt_escalation",
+          "text": "Resolve or escalate persistent delay",
+          "type": "istar.Task",
+          "x": 118,
+          "y": 2637,
+          "customProperties": {
+            "Source BPMN IDs": "SP15_EscalateManager; SP15_EscalateHigher",
+            "Full wording": "Resolve or escalate persistent delay"
+          }
+        },
+        {
+          "id": "n_adminmgmt_access",
+          "text": "Verify authority and apply access",
+          "type": "istar.Task",
+          "x": 390,
+          "y": 2730,
+          "customProperties": {
+            "Source BPMN IDs": "SP16_VerifyAuth; SP16_ApplyAccess",
+            "Full wording": "Verify authority and apply access"
+          }
+        },
+        {
+          "id": "n_adminmgmt_downtime",
+          "text": "Record downtime and reconcile records",
+          "type": "istar.Task",
+          "x": 640,
+          "y": 2730,
+          "customProperties": {
+            "Source BPMN IDs": "SP16_RecordDowntime; SP16_Reconcile",
+            "Full wording": "Record downtime and reconcile records"
+          }
+        },
+        {
+          "id": "n_adminmgmt_audit",
+          "text": "Write attributable audit record",
+          "type": "istar.Task",
+          "x": 890,
+          "y": 2730,
+          "customProperties": {
+            "Source BPMN IDs": "SP16_Audit",
+            "Full wording": "Write attributable audit record"
+          }
+        }
+      ]
+    }
+  ],
+  "orphans": [],
+  "dependencies": [
+    {
+      "id": "dep_documents",
+      "text": "Referral and supporting information",
+      "type": "istar.Resource",
+      "x": 130,
+      "y": 740,
+      "customProperties": {
+        "Source BPMN IDs": "SP01_CheckDocuments; XRef_Prepare",
+        "Full wording": "Referral and supporting information"
+      },
+      "source": "n_medsec_check",
+      "target": "n_refOrg_send"
+    },
+    {
+      "id": "dep_checked",
+      "text": "Checked referral documents",
+      "type": "istar.Resource",
+      "x": 1128,
+      "y": 976,
+      "customProperties": {
+        "Source BPMN IDs": "SP01_CheckDocuments; SP02_ClinicalReview",
+        "Full wording": "Checked referral documents"
+      },
+      "source": "n_consult_referral",
+      "target": "n_medsec_check"
+    },
+    {
+      "id": "dep_outcome",
+      "text": "Recorded referral outcome",
+      "type": "istar.Resource",
+      "x": 1090,
+      "y": 740,
+      "customProperties": {
+        "Source BPMN IDs": "SP02_NotifyRejected; SP02_NotifyRedirected; XRef_Record",
+        "Full wording": "Recorded referral outcome"
+      },
+      "source": "n_refOrg_outcome",
+      "target": "n_consult_referral"
+    },
+    {
+      "id": "dep_approved",
+      "text": "Approved clinic letter",
+      "type": "istar.Resource",
+      "x": 1057,
+      "y": 1297,
+      "customProperties": {
+        "Source BPMN IDs": "SP13_Approve; SP13_Distribute",
+        "Full wording": "Approved clinic letter"
+      },
+      "source": "n_medsec_distribute",
+      "target": "n_consult_letter"
+    },
+    {
+      "id": "dep_appointment",
+      "text": "Confirmed appointment details",
+      "type": "istar.Resource",
+      "x": 1825,
+      "y": 2286,
+      "customProperties": {
+        "Source BPMN IDs": "SP03_SendLetter; XPat_Attend",
+        "Full wording": "Confirmed appointment details"
+      },
+      "source": "n_patient_attend",
+      "target": "n_outpt_confirm"
+    },
+    {
+      "id": "dep_telephone",
+      "text": "Recorded telephone outcome",
+      "type": "istar.Resource",
+      "x": 1610,
+      "y": 3020,
+      "customProperties": {
+        "Source BPMN IDs": "SP03_PhoneContact; SP03_EscalateContact",
+        "Full wording": "Recorded telephone outcome"
+      },
+      "source": "n_outpt_contact",
+      "target": "n_callteam_phone"
+    },
+    {
+      "id": "dep_attendance",
+      "text": "Attend clinical appointment",
+      "type": "istar.Task",
+      "x": 2170,
+      "y": 1540,
+      "customProperties": {
+        "Source BPMN IDs": "XPat_Attend; SP04_Assess",
+        "Full wording": "Attend clinical appointment"
+      },
+      "source": "n_consult_assess",
+      "target": "n_patient_attend"
+    },
+    {
+      "id": "dep_consent",
+      "text": "Patient consent or refusal",
+      "type": "istar.Resource",
+      "x": 2450,
+      "y": 1540,
+      "customProperties": {
+        "Source BPMN IDs": "SP04_GW_Consent; SP04_RecordConsent; SP10_Record",
+        "Full wording": "Patient consent or refusal"
+      },
+      "source": "n_consult_consent",
+      "target": "n_patient_decision"
+    },
+    {
+      "id": "dep_request",
+      "text": "Authorised treatment request",
+      "type": "istar.Resource",
+      "x": 2170,
+      "y": 740,
+      "customProperties": {
+        "Source BPMN IDs": "SP04_CreateRequest; SP04_Validate",
+        "Full wording": "Authorised treatment request"
+      },
+      "source": "n_trtbook_validate",
+      "target": "n_consult_request"
+    },
+    {
+      "id": "dep_capacity",
+      "text": "Hospital service availability",
+      "type": "istar.Resource",
+      "x": 2810,
+      "y": 460,
+      "customProperties": {
+        "Source BPMN IDs": "SP05_BookInternal",
+        "Full wording": "Hospital service availability"
+      },
+      "source": "n_trtbook_internal",
+      "target": "n_trtsvc_capacity"
+    },
+    {
+      "id": "dep_bloods",
+      "text": "Pre-cycle blood test results",
+      "type": "istar.Resource",
+      "x": 3530,
+      "y": 740,
+      "customProperties": {
+        "Source BPMN IDs": "SP08_RequestBloods; SP08_Catch_Lab",
+        "Full wording": "Pre-cycle blood test results"
+      },
+      "source": "n_clinical_fitness",
+      "target": "n_trtsvc_lab"
+    },
+    {
+      "id": "dep_retrospective",
+      "text": "Retrospective safety authorisation",
+      "type": "istar.Resource",
+      "x": 2850,
+      "y": 1300,
+      "customProperties": {
+        "Source BPMN IDs": "SP09_ExecuteHold; SP09_Retrospective",
+        "Full wording": "Retrospective safety authorisation"
+      },
+      "source": "n_clinical_authorise",
+      "target": "n_consult_decision"
+    },
+    {
+      "id": "dep_funding",
+      "text": "Funding approval and limits",
+      "type": "istar.Resource",
+      "x": 3530,
+      "y": 2300,
+      "customProperties": {
+        "Source BPMN IDs": "SP06_RecordApproval; XFund_Send",
+        "Full wording": "Funding approval and limits"
+      },
+      "source": "n_finance_funding",
+      "target": "n_fundorg_approval"
+    },
+    {
+      "id": "dep_payment",
+      "text": "Payment status and reference",
+      "type": "istar.Resource",
+      "x": 4376,
+      "y": 3426,
+      "customProperties": {
+        "Source BPMN IDs": "SP07_Catch_Status; XPSP_SendStatus",
+        "Full wording": "Payment status and reference"
+      },
+      "source": "n_finance_payment",
+      "target": "n_psp_payment"
+    },
+    {
+      "id": "dep_investigation",
+      "text": "Verified transaction outcome",
+      "type": "istar.Resource",
+      "x": 4344,
+      "y": 3182,
+      "customProperties": {
+        "Source BPMN IDs": "SP07_Investigate; XPSP_SendStatus",
+        "Full wording": "Verified transaction outcome"
+      },
+      "source": "n_finance_investigate",
+      "target": "n_psp_payment"
+    },
+    {
+      "id": "dep_refund",
+      "text": "Refund execution result",
+      "type": "istar.Resource",
+      "x": 4173,
+      "y": 3709,
+      "customProperties": {
+        "Source BPMN IDs": "SP11_Catch_Result; XPSP_SendRefund",
+        "Full wording": "Refund execution result"
+      },
+      "source": "n_finance_refund",
+      "target": "n_psp_refund"
+    },
+    {
+      "id": "dep_cns",
+      "text": "Clinical assessment and response",
+      "type": "istar.Resource",
+      "x": 1728,
+      "y": 3984,
+      "customProperties": {
+        "Source BPMN IDs": "SP12_ReferCNS; SP12_AssessPriority",
+        "Full wording": "Clinical assessment and response"
+      },
+      "source": "n_callteam_clinical",
+      "target": "n_cnst_respond"
+    },
+    {
+      "id": "dep_financequery",
+      "text": "Authorised financial response",
+      "type": "istar.Resource",
+      "x": 3061,
+      "y": 3653,
+      "customProperties": {
+        "Source BPMN IDs": "SP12_ReferFinance; SP12_AnswerFin",
+        "Full wording": "Authorised financial response"
+      },
+      "source": "n_callteam_financial",
+      "target": "n_finance_enquiry"
+    },
+    {
+      "id": "dep_enquiry",
+      "text": "Enquiry recorded and routed",
+      "type": "istar.Goal",
+      "x": 1780,
+      "y": 3125,
+      "customProperties": {
+        "Source BPMN IDs": "XPat_Enquire; SP12_Record",
+        "Full wording": "Enquiry recorded and routed"
+      },
+      "source": "n_patient_enquire",
+      "target": "n_callteam_classify"
+    },
+    {
+      "id": "dep_followup",
+      "text": "Arrange instructed follow-up",
+      "type": "istar.Task",
+      "x": 1890,
+      "y": 1540,
+      "customProperties": {
+        "Source BPMN IDs": "SP13_NotifyFollowUp; SP14_Book",
+        "Full wording": "Arrange instructed follow-up"
+      },
+      "source": "n_consult_followup",
+      "target": "n_outpt_followup"
+    },
+    {
+      "id": "dep_letter",
+      "text": "Overdue letter completion status",
+      "type": "istar.Resource",
+      "x": 1090,
+      "y": 1540,
+      "customProperties": {
+        "Source BPMN IDs": "SP13_Reminder; SP13_Approve",
+        "Full wording": "Overdue letter completion status"
+      },
+      "source": "n_pathway_letter",
+      "target": "n_consult_letter"
+    },
+    {
+      "id": "dep_escalate",
+      "text": "Management escalation response",
+      "type": "istar.Resource",
+      "x": 530,
+      "y": 2300,
+      "customProperties": {
+        "Source BPMN IDs": "SP15_EscalateManager; SP15_EscalateHigher",
+        "Full wording": "Management escalation response"
+      },
+      "source": "n_pathway_escalate",
+      "target": "n_adminmgmt_escalation"
+    },
+    {
+      "id": "dep_cancel",
+      "text": "Clinically approved pathway response",
+      "type": "istar.Resource",
+      "x": 2922,
+      "y": 3469,
+      "customProperties": {
+        "Source BPMN IDs": "SP10_Decide; SP10_NotifyRebook",
+        "Full wording": "Clinically approved pathway response"
+      },
+      "source": "n_callteam_cancel",
+      "target": "n_consult_decision"
+    },
+    {
+      "id": "dep_financialchange",
+      "text": "Financial review outcome",
+      "type": "istar.Resource",
+      "x": 4397,
+      "y": 2138,
+      "customProperties": {
+        "Source BPMN IDs": "SP09_FinanceReview",
+        "Full wording": "Financial review outcome"
+      },
+      "source": "n_clinical_financial",
+      "target": "n_finance_change"
+    },
+    {
+      "id": "dep_exception",
+      "text": "Pathway exception review",
+      "type": "istar.Task",
+      "x": 1302,
+      "y": 2258,
+      "customProperties": {
+        "Source BPMN IDs": "SP03_EscalateContact; SP14_Highlight",
+        "Full wording": "Pathway exception review"
+      },
+      "source": "n_outpt_exception",
+      "target": "n_pathway_exceptions"
+    },
+    {
+      "id": "dep_change",
+      "text": "Handle appointment change request",
+      "type": "istar.Task",
+      "x": 2410,
+      "y": 2300,
+      "customProperties": {
+        "Source BPMN IDs": "XPat_SendChange; SP03B",
+        "Full wording": "Handle appointment change request"
+      },
+      "source": "n_patient_change",
+      "target": "n_outpt_change"
+    },
+    {
+      "id": "dep_cancellation",
+      "text": "Record and route cancellation",
+      "type": "istar.Task",
+      "x": 2290,
+      "y": 3100,
+      "customProperties": {
+        "Source BPMN IDs": "XPat_SendCancel; SP10_Record",
+        "Full wording": "Record and route cancellation"
+      },
+      "source": "n_patient_cancel",
+      "target": "n_callteam_cancel"
+    }
+  ],
+  "links": [
+    {
+      "id": "404c89a8-1682-498e-8b97-a6a8c5a3b410",
+      "type": "istar.DependencyLink",
+      "source": "dep_cancellation",
+      "target": "n_callteam_cancel"
+    },
+    {
+      "id": "3b9e9b93-4136-4076-8cb1-c0a6711c1e97",
+      "type": "istar.DependencyLink",
+      "source": "n_patient_cancel",
+      "target": "dep_cancellation"
+    },
+    {
+      "id": "62c497b9-7a62-4bf1-9db3-128a98fe786e",
+      "type": "istar.DependencyLink",
+      "source": "dep_change",
+      "target": "n_outpt_change"
+    },
+    {
+      "id": "b8c346d9-e08d-43d4-b9b3-2b847df801d5",
+      "type": "istar.DependencyLink",
+      "source": "n_patient_change",
+      "target": "dep_change"
+    },
+    {
+      "id": "0f5ea520-c262-45ba-89eb-7312837e5368",
+      "type": "istar.DependencyLink",
+      "source": "dep_exception",
+      "target": "n_pathway_exceptions"
+    },
+    {
+      "id": "66eb42a0-df3e-40c1-9e1b-4f1d96c66b7c",
+      "type": "istar.DependencyLink",
+      "source": "n_outpt_exception",
+      "target": "dep_exception"
+    },
+    {
+      "id": "eb37e52f-d501-4fbb-a798-c419f68545af",
+      "type": "istar.DependencyLink",
+      "source": "dep_financialchange",
+      "target": "n_finance_change"
+    },
+    {
+      "id": "74487411-209a-42ce-8826-4a822bba87bd",
+      "type": "istar.DependencyLink",
+      "source": "n_clinical_financial",
+      "target": "dep_financialchange"
+    },
+    {
+      "id": "9a6c9b66-eb8a-4c75-b431-3a76b4f8344f",
+      "type": "istar.DependencyLink",
+      "source": "dep_cancel",
+      "target": "n_consult_decision"
+    },
+    {
+      "id": "ed72c626-a000-44f4-8f95-afb99ad404cb",
+      "type": "istar.DependencyLink",
+      "source": "n_callteam_cancel",
+      "target": "dep_cancel"
+    },
+    {
+      "id": "12b71c7d-d184-4417-bb69-f9d42b223dc7",
+      "type": "istar.DependencyLink",
+      "source": "dep_escalate",
+      "target": "n_adminmgmt_escalation"
+    },
+    {
+      "id": "09b2bc17-eaaa-4060-b497-4b5951b1f072",
+      "type": "istar.DependencyLink",
+      "source": "n_pathway_escalate",
+      "target": "dep_escalate"
+    },
+    {
+      "id": "560abf59-561e-4dba-8ec1-fef7df546884",
+      "type": "istar.DependencyLink",
+      "source": "dep_letter",
+      "target": "n_consult_letter"
+    },
+    {
+      "id": "0979c01a-bcd6-47fd-a8fb-aaf523b3c6d2",
+      "type": "istar.DependencyLink",
+      "source": "n_pathway_letter",
+      "target": "dep_letter"
+    },
+    {
+      "id": "390d3f12-a2ba-423d-9ca8-81e225e1f8d7",
+      "type": "istar.DependencyLink",
+      "source": "dep_followup",
+      "target": "n_outpt_followup"
+    },
+    {
+      "id": "299d63f5-a945-41dc-ba90-2e27a5010876",
+      "type": "istar.DependencyLink",
+      "source": "n_consult_followup",
+      "target": "dep_followup"
+    },
+    {
+      "id": "0bc375a4-8f5e-4ce7-aca2-790f010a65dc",
+      "type": "istar.DependencyLink",
+      "source": "dep_enquiry",
+      "target": "n_callteam_classify"
+    },
+    {
+      "id": "828abf8a-b845-47e2-b19f-a7e01f280edd",
+      "type": "istar.DependencyLink",
+      "source": "n_patient_enquire",
+      "target": "dep_enquiry"
+    },
+    {
+      "id": "f8c7c1ec-82da-46f4-add2-e33440df0b79",
+      "type": "istar.DependencyLink",
+      "source": "dep_financequery",
+      "target": "n_finance_enquiry"
+    },
+    {
+      "id": "1b77651e-d9dc-4ef1-aeae-5918dec9cd61",
+      "type": "istar.DependencyLink",
+      "source": "n_callteam_financial",
+      "target": "dep_financequery"
+    },
+    {
+      "id": "2c49bbae-239e-4155-91cf-08ec1b7ebb6e",
+      "type": "istar.DependencyLink",
+      "source": "dep_cns",
+      "target": "n_cnst_respond"
+    },
+    {
+      "id": "06c39f52-aa37-47f7-8ee8-2b9dd64ee0a3",
+      "type": "istar.DependencyLink",
+      "source": "n_callteam_clinical",
+      "target": "dep_cns"
+    },
+    {
+      "id": "9b5e225f-c497-4be2-944a-baa399c466d6",
+      "type": "istar.DependencyLink",
+      "source": "dep_refund",
+      "target": "n_psp_refund"
+    },
+    {
+      "id": "34a4b3bd-1003-45c0-8b6f-022168ac2a0d",
+      "type": "istar.DependencyLink",
+      "source": "n_finance_refund",
+      "target": "dep_refund"
+    },
+    {
+      "id": "33d1a50a-81e7-4da3-9f94-21dd8e0ad497",
+      "type": "istar.DependencyLink",
+      "source": "dep_investigation",
+      "target": "n_psp_payment"
+    },
+    {
+      "id": "c6797c89-61bd-4269-8995-ce5069e5125d",
+      "type": "istar.DependencyLink",
+      "source": "n_finance_investigate",
+      "target": "dep_investigation"
+    },
+    {
+      "id": "2405082e-47e9-4ec5-a931-cb3ee299e6c2",
+      "type": "istar.DependencyLink",
+      "source": "dep_payment",
+      "target": "n_psp_payment"
+    },
+    {
+      "id": "59428fab-463b-4d8f-96ea-4f8c24fe91b2",
+      "type": "istar.DependencyLink",
+      "source": "n_finance_payment",
+      "target": "dep_payment"
+    },
+    {
+      "id": "2c7c743e-bedc-43d4-af6d-4e1bdd89ce48",
+      "type": "istar.DependencyLink",
+      "source": "dep_funding",
+      "target": "n_fundorg_approval"
+    },
+    {
+      "id": "97a0b323-be8f-4c31-8b70-e90b0391f40a",
+      "type": "istar.DependencyLink",
+      "source": "n_finance_funding",
+      "target": "dep_funding"
+    },
+    {
+      "id": "0a68125d-17a7-4fc3-968b-9ba98cccd8f6",
+      "type": "istar.DependencyLink",
+      "source": "dep_retrospective",
+      "target": "n_consult_decision"
+    },
+    {
+      "id": "95ccdefe-1765-44e8-aac4-54bd84529bbd",
+      "type": "istar.DependencyLink",
+      "source": "n_clinical_authorise",
+      "target": "dep_retrospective"
+    },
+    {
+      "id": "8711b860-d958-4116-821a-99431e049291",
+      "type": "istar.DependencyLink",
+      "source": "dep_bloods",
+      "target": "n_trtsvc_lab"
+    },
+    {
+      "id": "2b227b5d-ea7b-4046-81d6-615f08517788",
+      "type": "istar.DependencyLink",
+      "source": "n_clinical_fitness",
+      "target": "dep_bloods"
+    },
+    {
+      "id": "84e2fa65-a0ec-4ff8-a8d3-ff7e788cd51d",
+      "type": "istar.DependencyLink",
+      "source": "dep_capacity",
+      "target": "n_trtsvc_capacity"
+    },
+    {
+      "id": "4cee421f-4abb-48b5-89cf-6ade95ed96f1",
+      "type": "istar.DependencyLink",
+      "source": "n_trtbook_internal",
+      "target": "dep_capacity"
+    },
+    {
+      "id": "8be5efbd-1a77-45e3-aa1c-2bea3439d666",
+      "type": "istar.DependencyLink",
+      "source": "dep_request",
+      "target": "n_consult_request"
+    },
+    {
+      "id": "6c556903-eddc-43c9-8f5b-e782f1be37d2",
+      "type": "istar.DependencyLink",
+      "source": "n_trtbook_validate",
+      "target": "dep_request"
+    },
+    {
+      "id": "77ca6f61-3de0-41f7-9a4a-093a59732012",
+      "type": "istar.DependencyLink",
+      "source": "dep_consent",
+      "target": "n_patient_decision"
+    },
+    {
+      "id": "22f6532f-6320-4d32-bacb-223ca37d394b",
+      "type": "istar.DependencyLink",
+      "source": "n_consult_consent",
+      "target": "dep_consent"
+    },
+    {
+      "id": "b84ac949-e236-4376-ab18-7da0bc84176f",
+      "type": "istar.DependencyLink",
+      "source": "dep_attendance",
+      "target": "n_patient_attend"
+    },
+    {
+      "id": "5a5594f6-0b2b-4a64-a082-a359a65d9f1e",
+      "type": "istar.DependencyLink",
+      "source": "n_consult_assess",
+      "target": "dep_attendance"
+    },
+    {
+      "id": "f2e4a6b5-cbcb-4974-8ac3-1ecdb29bc382",
+      "type": "istar.DependencyLink",
+      "source": "dep_telephone",
+      "target": "n_callteam_phone"
+    },
+    {
+      "id": "0cb3dad7-c796-4031-a8f8-4c8a996fc47b",
+      "type": "istar.DependencyLink",
+      "source": "n_outpt_contact",
+      "target": "dep_telephone"
+    },
+    {
+      "id": "7ba5f260-22e9-4ff7-a61e-98b0a2c5979a",
+      "type": "istar.DependencyLink",
+      "source": "dep_appointment",
+      "target": "n_outpt_confirm"
+    },
+    {
+      "id": "29478e86-f343-40ec-bb2a-fd1a48dc4c96",
+      "type": "istar.DependencyLink",
+      "source": "n_patient_attend",
+      "target": "dep_appointment"
+    },
+    {
+      "id": "7f22f4b7-55b7-482a-aeb0-8557f5c0665c",
+      "type": "istar.DependencyLink",
+      "source": "dep_approved",
+      "target": "n_consult_letter"
+    },
+    {
+      "id": "2330d59a-4219-4cea-b8ba-612c198f834f",
+      "type": "istar.DependencyLink",
+      "source": "n_medsec_distribute",
+      "target": "dep_approved"
+    },
+    {
+      "id": "9dec8d23-203f-4fff-a980-5c1a139e092c",
+      "type": "istar.DependencyLink",
+      "source": "dep_outcome",
+      "target": "n_consult_referral"
+    },
+    {
+      "id": "2bd8e9ef-f951-47b8-aaf0-872ea00acf23",
+      "type": "istar.DependencyLink",
+      "source": "n_refOrg_outcome",
+      "target": "dep_outcome"
+    },
+    {
+      "id": "584c45dc-05f3-49c3-a39a-a976de8ff51a",
+      "type": "istar.DependencyLink",
+      "source": "dep_checked",
+      "target": "n_medsec_check"
+    },
+    {
+      "id": "684f4e44-0c1a-4191-93cd-6f4df21f018c",
+      "type": "istar.DependencyLink",
+      "source": "n_consult_referral",
+      "target": "dep_checked"
+    },
+    {
+      "id": "50b895b8-2ee3-4437-ad82-6b019074bbd3",
+      "type": "istar.DependencyLink",
+      "source": "dep_documents",
+      "target": "n_refOrg_send"
+    },
+    {
+      "id": "d2eb91ca-d71d-4f09-8b48-f4193f865574",
+      "type": "istar.DependencyLink",
+      "source": "n_medsec_check",
+      "target": "dep_documents"
+    },
+    {
+      "id": "4815d041-996e-4f0c-a7dc-fe1a1b57d4ac",
+      "type": "istar.AndRefinementLink",
+      "source": "n_refOrg_send",
+      "target": "n_refOrg_goal"
+    },
+    {
+      "id": "ada1cb75-5cd2-44c3-9e1e-4dcbc85bb226",
+      "type": "istar.AndRefinementLink",
+      "source": "n_refOrg_outcome",
+      "target": "n_refOrg_goal"
+    },
+    {
+      "id": "f9d1e76d-f8e2-4841-819a-bb6d197e48d4",
+      "type": "istar.AndRefinementLink",
+      "source": "n_medsec_check",
+      "target": "n_medsec_goal"
+    },
+    {
+      "id": "0d754c2f-6481-4812-96ff-ad69c8728b4e",
+      "type": "istar.AndRefinementLink",
+      "source": "n_medsec_missing",
+      "target": "n_medsec_goal"
+    },
+    {
+      "id": "9b2fa0d6-840d-4fdc-b9fe-cc95fa96baa0",
+      "type": "istar.AndRefinementLink",
+      "source": "n_medsec_distribute",
+      "target": "n_medsec_goal"
+    },
+    {
+      "id": "6c214a14-462b-49c6-b8e6-b8f5e70a8ea5",
+      "type": "istar.AndRefinementLink",
+      "source": "n_medsec_record",
+      "target": "n_medsec_goal"
+    },
+    {
+      "id": "44101bd9-ea8d-4ef2-8ed8-e7d8a8d38146",
+      "type": "istar.AndRefinementLink",
+      "source": "n_consult_referral",
+      "target": "n_consult_goal"
+    },
+    {
+      "id": "d3dc94f2-7bec-48b7-a186-42e11bd392df",
+      "type": "istar.AndRefinementLink",
+      "source": "n_consult_assess",
+      "target": "n_consult_goal"
+    },
+    {
+      "id": "08db5a9a-f28e-4f29-b157-e12e202132ed",
+      "type": "istar.AndRefinementLink",
+      "source": "n_consult_consent",
+      "target": "n_consult_goal"
+    },
+    {
+      "id": "c7119148-12e8-4571-9033-3d6226cef84e",
+      "type": "istar.AndRefinementLink",
+      "source": "n_consult_request",
+      "target": "n_consult_goal"
+    },
+    {
+      "id": "34cc0e2b-39bb-4812-a046-c97bf130ff66",
+      "type": "istar.AndRefinementLink",
+      "source": "n_consult_letter",
+      "target": "n_consult_goal"
+    },
+    {
+      "id": "99530430-7101-405b-82fa-5493bfcc8abe",
+      "type": "istar.AndRefinementLink",
+      "source": "n_consult_followup",
+      "target": "n_consult_goal"
+    },
+    {
+      "id": "70c0a9c2-7c8a-4e68-9212-e49b5cc0581d",
+      "type": "istar.AndRefinementLink",
+      "source": "n_consult_decision",
+      "target": "n_consult_goal"
+    },
+    {
+      "id": "90e8913a-4bc5-4b77-964d-58ece73c6a07",
+      "type": "istar.AndRefinementLink",
+      "source": "n_patient_attend",
+      "target": "n_patient_goal"
+    },
+    {
+      "id": "b403e007-24f5-4276-ab38-f0c378f7541a",
+      "type": "istar.AndRefinementLink",
+      "source": "n_patient_decision",
+      "target": "n_patient_goal"
+    },
+    {
+      "id": "7f6b4141-e168-4d25-a1d1-494fa2d56f8f",
+      "type": "istar.AndRefinementLink",
+      "source": "n_patient_change",
+      "target": "n_patient_goal"
+    },
+    {
+      "id": "39ec4b96-bdc5-4f48-bb89-c0ad9615006d",
+      "type": "istar.AndRefinementLink",
+      "source": "n_patient_cancel",
+      "target": "n_patient_goal"
+    },
+    {
+      "id": "a24ebd8c-7aee-4331-8db4-f86d79d55cd3",
+      "type": "istar.AndRefinementLink",
+      "source": "n_patient_enquire",
+      "target": "n_patient_goal"
+    },
+    {
+      "id": "2561d69a-f653-41c4-b5fa-6a2c368a02ac",
+      "type": "istar.AndRefinementLink",
+      "source": "n_outpt_slot",
+      "target": "n_outpt_goal"
+    },
+    {
+      "id": "35c5b4e0-102d-4f4a-bc69-9582090e18e8",
+      "type": "istar.AndRefinementLink",
+      "source": "n_outpt_confirm",
+      "target": "n_outpt_goal"
+    },
+    {
+      "id": "1ddaec7c-a5d7-4eaa-8233-cbb625332502",
+      "type": "istar.AndRefinementLink",
+      "source": "n_outpt_contact",
+      "target": "n_outpt_goal"
+    },
+    {
+      "id": "ad7f1ec3-88c7-4e8d-8dee-afc7ad03adf7",
+      "type": "istar.AndRefinementLink",
+      "source": "n_outpt_change",
+      "target": "n_outpt_goal"
+    },
+    {
+      "id": "c051dd8e-c5b1-471e-a192-6d6dc7ede5bd",
+      "type": "istar.AndRefinementLink",
+      "source": "n_outpt_followup",
+      "target": "n_outpt_goal"
+    },
+    {
+      "id": "ece5f006-c9c4-43c8-8c0b-0a1e29414f17",
+      "type": "istar.AndRefinementLink",
+      "source": "n_outpt_exception",
+      "target": "n_outpt_goal"
+    },
+    {
+      "id": "fce48554-2dd4-4f75-98f7-74400ffbb5b4",
+      "type": "istar.AndRefinementLink",
+      "source": "n_callteam_phone",
+      "target": "n_callteam_goal"
+    },
+    {
+      "id": "5a368e2b-cb11-4799-9e4f-2d450d7397e8",
+      "type": "istar.AndRefinementLink",
+      "source": "n_callteam_classify",
+      "target": "n_callteam_goal"
+    },
+    {
+      "id": "9cd56108-672f-4279-b294-a18193165a83",
+      "type": "istar.AndRefinementLink",
+      "source": "n_callteam_answer",
+      "target": "n_callteam_goal"
+    },
+    {
+      "id": "fbe7a22c-f1d4-4306-b5d5-ffd4bfa2a0ef",
+      "type": "istar.AndRefinementLink",
+      "source": "n_callteam_clinical",
+      "target": "n_callteam_goal"
+    },
+    {
+      "id": "34f6430c-0cb1-4ab2-be9d-94731b08ed5a",
+      "type": "istar.AndRefinementLink",
+      "source": "n_callteam_financial",
+      "target": "n_callteam_goal"
+    },
+    {
+      "id": "ed6e36cf-a1c7-45fd-923d-0cc941e0997e",
+      "type": "istar.AndRefinementLink",
+      "source": "n_callteam_cancel",
+      "target": "n_callteam_goal"
+    },
+    {
+      "id": "0c473331-ad37-43ec-af41-b0b9a5a34d6b",
+      "type": "istar.AndRefinementLink",
+      "source": "n_callteam_close",
+      "target": "n_callteam_goal"
+    },
+    {
+      "id": "1653ea6d-a21c-4e62-b4c4-f855e5ab4d4e",
+      "type": "istar.AndRefinementLink",
+      "source": "n_trtsvc_capacity",
+      "target": "n_trtsvc_goal"
+    },
+    {
+      "id": "cfbe221d-3b05-4fbb-8f80-3e87d9920b46",
+      "type": "istar.AndRefinementLink",
+      "source": "n_trtsvc_lab",
+      "target": "n_trtsvc_goal"
+    },
+    {
+      "id": "d8684a80-4177-4c87-bc67-9fb8ec9978fa",
+      "type": "istar.AndRefinementLink",
+      "source": "n_trtbook_validate",
+      "target": "n_trtbook_goal"
+    },
+    {
+      "id": "cde2496c-9ef5-4927-b418-187b12568076",
+      "type": "istar.OrRefinementLink",
+      "source": "n_trtbook_internal",
+      "target": "n_trtbook_resource"
+    },
+    {
+      "id": "be14b322-a718-4ad1-b393-2472a57109ad",
+      "type": "istar.OrRefinementLink",
+      "source": "n_trtbook_external",
+      "target": "n_trtbook_resource"
+    },
+    {
+      "id": "bf40c902-db0e-45b0-805b-7bedff49b0b6",
+      "type": "istar.AndRefinementLink",
+      "source": "n_trtbook_pending",
+      "target": "n_trtbook_goal"
+    },
+    {
+      "id": "35f8fd02-bc85-49f0-8a27-e246e49f1abd",
+      "type": "istar.AndRefinementLink",
+      "source": "n_clinical_fitness",
+      "target": "n_clinical_goal"
+    },
+    {
+      "id": "276a96b3-9273-42b0-9c08-006fbb1fce54",
+      "type": "istar.AndRefinementLink",
+      "source": "n_clinical_cycle",
+      "target": "n_clinical_goal"
+    },
+    {
+      "id": "c895278a-653c-4ba2-95da-49aa8f80278e",
+      "type": "istar.AndRefinementLink",
+      "source": "n_clinical_delay",
+      "target": "n_clinical_goal"
+    },
+    {
+      "id": "b16ee637-315b-45b3-98a1-9019e47fa84b",
+      "type": "istar.AndRefinementLink",
+      "source": "n_clinical_hold",
+      "target": "n_clinical_goal"
+    },
+    {
+      "id": "1bb1144f-57ed-4163-be74-8d861e5300cd",
+      "type": "istar.AndRefinementLink",
+      "source": "n_clinical_authorise",
+      "target": "n_clinical_goal"
+    },
+    {
+      "id": "0e601e9a-67b0-4e65-8458-d0bce5c233b2",
+      "type": "istar.AndRefinementLink",
+      "source": "n_clinical_change",
+      "target": "n_clinical_goal"
+    },
+    {
+      "id": "8cf97693-875a-4ef5-ae6f-e42d1894385a",
+      "type": "istar.AndRefinementLink",
+      "source": "n_clinical_financial",
+      "target": "n_clinical_goal"
+    },
+    {
+      "id": "bc5cbbce-584e-441c-a42a-473e032efbb0",
+      "type": "istar.AndRefinementLink",
+      "source": "n_clinical_review",
+      "target": "n_clinical_goal"
+    },
+    {
+      "id": "3400c966-a262-40ba-b3cd-eaaa44489742",
+      "type": "istar.AndRefinementLink",
+      "source": "n_fundorg_assess",
+      "target": "n_fundorg_goal"
+    },
+    {
+      "id": "4ba36ba1-dea9-4593-afb5-a64a00d00413",
+      "type": "istar.AndRefinementLink",
+      "source": "n_fundorg_approval",
+      "target": "n_fundorg_goal"
+    },
+    {
+      "id": "43c5186c-a9eb-4bec-a7be-ef53db849667",
+      "type": "istar.AndRefinementLink",
+      "source": "n_finance_funding",
+      "target": "n_finance_goal"
+    },
+    {
+      "id": "7dc3c9b6-0676-4853-81a6-8f13043d7286",
+      "type": "istar.AndRefinementLink",
+      "source": "n_finance_payment",
+      "target": "n_finance_goal"
+    },
+    {
+      "id": "25de4a3b-fecb-49c8-829e-1c8e5e5c2ede",
+      "type": "istar.AndRefinementLink",
+      "source": "n_finance_investigate",
+      "target": "n_finance_goal"
+    },
+    {
+      "id": "dad4c0b9-dc04-4dc4-8f2c-e64b405298db",
+      "type": "istar.AndRefinementLink",
+      "source": "n_finance_resolve",
+      "target": "n_finance_goal"
+    },
+    {
+      "id": "7d753dc4-1585-4708-a84d-d769857b320f",
+      "type": "istar.AndRefinementLink",
+      "source": "n_finance_confirm",
+      "target": "n_finance_goal"
+    },
+    {
+      "id": "a36979bc-8915-4fa0-968c-8d6df0b169cd",
+      "type": "istar.AndRefinementLink",
+      "source": "n_finance_refund",
+      "target": "n_finance_goal"
+    },
+    {
+      "id": "6487d1e0-d45c-44db-aa81-8edd1b6047bc",
+      "type": "istar.AndRefinementLink",
+      "source": "n_finance_enquiry",
+      "target": "n_finance_goal"
+    },
+    {
+      "id": "2c175e59-5cd3-4a93-abfe-c3ae090dc350",
+      "type": "istar.AndRefinementLink",
+      "source": "n_finance_change",
+      "target": "n_finance_goal"
+    },
+    {
+      "id": "aacb4aa5-b029-40e6-83ec-8ad762405920",
+      "type": "istar.AndRefinementLink",
+      "source": "n_psp_payment",
+      "target": "n_psp_goal"
+    },
+    {
+      "id": "ca98753c-3229-4025-9988-75aabbe83748",
+      "type": "istar.AndRefinementLink",
+      "source": "n_psp_refund",
+      "target": "n_psp_goal"
+    },
+    {
+      "id": "bd0b157d-b854-4ffe-83fe-5166c9589d9d",
+      "type": "istar.AndRefinementLink",
+      "source": "n_cnst_priority",
+      "target": "n_cnst_goal"
+    },
+    {
+      "id": "bf4ec801-57a0-428b-aa08-7283dd2de9f9",
+      "type": "istar.AndRefinementLink",
+      "source": "n_cnst_respond",
+      "target": "n_cnst_goal"
+    },
+    {
+      "id": "c4c360d7-5349-4bc8-a690-a00b5c3c3e8c",
+      "type": "istar.AndRefinementLink",
+      "source": "n_pathway_monitor",
+      "target": "n_pathway_goal"
+    },
+    {
+      "id": "50497e87-ccb3-43be-8bb6-079e3989b38a",
+      "type": "istar.AndRefinementLink",
+      "source": "n_pathway_letter",
+      "target": "n_pathway_goal"
+    },
+    {
+      "id": "691ea6ab-0c7c-4154-8d1e-8517fd2ebb20",
+      "type": "istar.AndRefinementLink",
+      "source": "n_pathway_exceptions",
+      "target": "n_pathway_goal"
+    },
+    {
+      "id": "317b337e-58d9-4d9a-923d-56d7cf2e8f9e",
+      "type": "istar.AndRefinementLink",
+      "source": "n_pathway_escalate",
+      "target": "n_pathway_goal"
+    },
+    {
+      "id": "31bc1dcc-b513-42a5-b9a5-f33df9f87359",
+      "type": "istar.AndRefinementLink",
+      "source": "n_pathway_report",
+      "target": "n_pathway_goal"
+    },
+    {
+      "id": "a6a15c09-4b00-4db5-b9cb-ac070bf3700e",
+      "type": "istar.AndRefinementLink",
+      "source": "n_adminmgmt_escalation",
+      "target": "n_adminmgmt_goal"
+    },
+    {
+      "id": "fffa9ac7-cc7d-4f72-b999-6fb14c4c046d",
+      "type": "istar.AndRefinementLink",
+      "source": "n_adminmgmt_access",
+      "target": "n_adminmgmt_goal"
+    },
+    {
+      "id": "54c48a64-4eb2-4438-acc7-7ce210db325a",
+      "type": "istar.AndRefinementLink",
+      "source": "n_adminmgmt_downtime",
+      "target": "n_adminmgmt_goal"
+    },
+    {
+      "id": "a5b3e255-e001-40f3-9aa7-17dfd7910374",
+      "type": "istar.AndRefinementLink",
+      "source": "n_adminmgmt_audit",
+      "target": "n_adminmgmt_goal"
+    },
+    {
+      "id": "c8a3f567-1062-4f53-b062-b75343c025cc",
+      "type": "istar.AndRefinementLink",
+      "source": "n_trtbook_resource",
+      "target": "n_trtbook_goal"
+    },
+    {
+      "id": "d527c870-3a78-4424-adb2-a589f403fca5",
+      "type": "istar.ContributionLink",
+      "source": "n_clinical_hold",
+      "target": "n_clinical_quality",
+      "label": "help"
+    },
+    {
+      "id": "e6bd0af1-9ea9-4a38-a9b3-7e2875d8e2fd",
+      "type": "istar.ContributionLink",
+      "source": "n_finance_payment",
+      "target": "n_finance_quality",
+      "label": "help"
+    },
+    {
+      "id": "d254ab3c-d5af-47cf-94bc-42643bf02cde",
+      "type": "istar.AndRefinementLink",
+      "source": "n_callteam_answer",
+      "target": "n_callteam_goal"
+    },
+    {
+      "id": "0c19ddcb-7c31-48fe-97da-03cd41f38c9b",
+      "type": "istar.AndRefinementLink",
+      "source": "n_callteam_close",
+      "target": "n_callteam_goal"
+    }
+  ],
+  "display": {
+    "actor_refOrg": {
+      "backgroundColor": "#afd5b8"
+    },
+    "n_refOrg_goal": {
+      "backgroundColor": "#cfe8d3",
+      "width": 190,
+      "height": 62
+    },
+    "n_refOrg_send": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_refOrg_outcome": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "actor_medsec": {
+      "backgroundColor": "#afd5b8"
+    },
+    "n_medsec_goal": {
+      "backgroundColor": "#cfe8d3",
+      "width": 190,
+      "height": 62
+    },
+    "n_medsec_check": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_medsec_missing": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_medsec_distribute": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_medsec_record": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "actor_consult": {
+      "backgroundColor": "#afd5b8"
+    },
+    "n_consult_goal": {
+      "backgroundColor": "#cfe8d3",
+      "width": 190,
+      "height": 62
+    },
+    "n_consult_referral": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_consult_assess": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_consult_consent": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_consult_request": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_consult_letter": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_consult_followup": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_consult_decision": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "actor_patient": {
+      "backgroundColor": "#afd5b8"
+    },
+    "n_patient_goal": {
+      "backgroundColor": "#cfe8d3",
+      "width": 190,
+      "height": 62
+    },
+    "n_patient_attend": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_patient_decision": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_patient_change": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_patient_cancel": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_patient_enquire": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "actor_outpt": {
+      "backgroundColor": "#afd5b8"
+    },
+    "n_outpt_goal": {
+      "backgroundColor": "#cfe8d3",
+      "width": 190,
+      "height": 62
+    },
+    "n_outpt_slot": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_outpt_confirm": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_outpt_contact": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_outpt_change": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_outpt_followup": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_outpt_exception": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "actor_callteam": {
+      "backgroundColor": "#afd5b8"
+    },
+    "n_callteam_goal": {
+      "backgroundColor": "#cfe8d3",
+      "width": 190,
+      "height": 62
+    },
+    "n_callteam_phone": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_callteam_classify": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_callteam_answer": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_callteam_clinical": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_callteam_financial": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_callteam_cancel": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_callteam_close": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "actor_trtsvc": {
+      "backgroundColor": "#afd5b8"
+    },
+    "n_trtsvc_goal": {
+      "backgroundColor": "#cfe8d3",
+      "width": 190,
+      "height": 62
+    },
+    "n_trtsvc_capacity": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_trtsvc_lab": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "actor_trtbook": {
+      "backgroundColor": "#afd5b8"
+    },
+    "n_trtbook_goal": {
+      "backgroundColor": "#cfe8d3",
+      "width": 190,
+      "height": 62
+    },
+    "n_trtbook_validate": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_trtbook_internal": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_trtbook_external": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_trtbook_pending": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_trtbook_resource": {
+      "backgroundColor": "#cfe8d3",
+      "width": 190,
+      "height": 62
+    },
+    "actor_clinical": {
+      "backgroundColor": "#afd5b8"
+    },
+    "n_clinical_goal": {
+      "backgroundColor": "#cfe8d3",
+      "width": 190,
+      "height": 62
+    },
+    "n_clinical_fitness": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_clinical_cycle": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_clinical_delay": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_clinical_hold": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_clinical_authorise": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_clinical_change": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_clinical_financial": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_clinical_review": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_clinical_quality": {
+      "backgroundColor": "#bfe1c8",
+      "width": 190,
+      "height": 62
+    },
+    "actor_fundorg": {
+      "backgroundColor": "#afd5b8"
+    },
+    "n_fundorg_goal": {
+      "backgroundColor": "#cfe8d3",
+      "width": 190,
+      "height": 62
+    },
+    "n_fundorg_assess": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_fundorg_approval": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "actor_finance": {
+      "backgroundColor": "#afd5b8"
+    },
+    "n_finance_goal": {
+      "backgroundColor": "#cfe8d3",
+      "width": 190,
+      "height": 62
+    },
+    "n_finance_funding": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_finance_payment": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_finance_investigate": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_finance_resolve": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_finance_confirm": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_finance_refund": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_finance_enquiry": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_finance_change": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_finance_quality": {
+      "backgroundColor": "#bfe1c8",
+      "width": 190,
+      "height": 62
+    },
+    "actor_psp": {
+      "backgroundColor": "#afd5b8"
+    },
+    "n_psp_goal": {
+      "backgroundColor": "#cfe8d3",
+      "width": 190,
+      "height": 62
+    },
+    "n_psp_payment": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_psp_refund": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "actor_cnst": {
+      "backgroundColor": "#afd5b8"
+    },
+    "n_cnst_goal": {
+      "backgroundColor": "#cfe8d3",
+      "width": 190,
+      "height": 62
+    },
+    "n_cnst_priority": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_cnst_respond": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "actor_pathway": {
+      "backgroundColor": "#afd5b8"
+    },
+    "n_pathway_goal": {
+      "backgroundColor": "#cfe8d3",
+      "width": 190,
+      "height": 62
+    },
+    "n_pathway_monitor": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_pathway_letter": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_pathway_exceptions": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_pathway_escalate": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_pathway_report": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "actor_adminmgmt": {
+      "backgroundColor": "#afd5b8"
+    },
+    "n_adminmgmt_goal": {
+      "backgroundColor": "#cfe8d3",
+      "width": 190,
+      "height": 62
+    },
+    "n_adminmgmt_escalation": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_adminmgmt_access": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_adminmgmt_downtime": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "n_adminmgmt_audit": {
+      "backgroundColor": "#e1f0df",
+      "width": 190,
+      "height": 62
+    },
+    "dep_documents": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_checked": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_outcome": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_approved": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_appointment": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_telephone": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_attendance": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_consent": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_request": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_capacity": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_bloods": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_retrospective": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_funding": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_payment": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_investigation": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_refund": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_cns": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_financequery": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_enquiry": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_followup": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_letter": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_escalate": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_cancel": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_financialchange": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_exception": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_change": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "dep_cancellation": {
+      "backgroundColor": "#d6ead7",
+      "width": 190,
+      "height": 62
+    },
+    "404c89a8-1682-498e-8b97-a6a8c5a3b410": {
+      "vertices": [
+        {
+          "x": 2740,
+          "y": 3516
+        }
+      ]
+    },
+    "eb37e52f-d501-4fbb-a798-c419f68545af": {
+      "vertices": [
+        {
+          "x": 4427,
+          "y": 2593
+        },
+        {
+          "x": 4362,
+          "y": 2848
+        }
+      ]
+    },
+    "9a6c9b66-eb8a-4c75-b431-3a76b4f8344f": {
+      "vertices": [
+        {
+          "x": 3097,
+          "y": 2607
+        },
+        {
+          "x": 2724,
+          "y": 1625
+        }
+      ]
+    },
+    "390d3f12-a2ba-423d-9ca8-81e225e1f8d7": {
+      "vertices": [
+        {
+          "x": 1613,
+          "y": 1706
+        }
+      ]
+    },
+    "f8c7c1ec-82da-46f4-add2-e33440df0b79": {
+      "vertices": [
+        {
+          "x": 3336,
+          "y": 3197
+        },
+        {
+          "x": 3527,
+          "y": 3061
+        },
+        {
+          "x": 3929,
+          "y": 2926
+        }
+      ]
+    },
+    "1b77651e-d9dc-4ef1-aeae-5918dec9cd61": {
+      "vertices": [
+        {
+          "x": 2642,
+          "y": 3779
+        }
+      ]
+    },
+    "9b5e225f-c497-4be2-944a-baa399c466d6": {
+      "vertices": [
+        {
+          "x": 3659,
+          "y": 3586
+        }
+      ]
+    },
+    "34a4b3bd-1003-45c0-8b6f-022168ac2a0d": {
+      "vertices": [
+        {
+          "x": 4021,
+          "y": 3320
+        }
+      ]
+    },
+    "c6797c89-61bd-4269-8995-ce5069e5125d": {
+      "vertices": [
+        {
+          "x": 4114,
+          "y": 2888
+        }
+      ]
+    },
+    "59428fab-463b-4d8f-96ea-4f8c24fe91b2": {
+      "vertices": [
+        {
+          "x": 3976,
+          "y": 3187
+        },
+        {
+          "x": 4002,
+          "y": 3211
+        },
+        {
+          "x": 4041,
+          "y": 3216
+        },
+        {
+          "x": 4006,
+          "y": 3205
+        },
+        {
+          "x": 4276,
+          "y": 3308
+        }
+      ]
+    },
+    "97a0b323-be8f-4c31-8b70-e90b0391f40a": {
+      "vertices": [
+        {
+          "x": 3481,
+          "y": 2515
+        }
+      ]
+    },
+    "4cee421f-4abb-48b5-89cf-6ade95ed96f1": {
+      "vertices": [
+        {
+          "x": 2592,
+          "y": 645
+        }
+      ]
+    },
+    "6c556903-eddc-43c9-8f5b-e782f1be37d2": {
+      "vertices": [
+        {
+          "x": 2066,
+          "y": 639
+        }
+      ]
+    },
+    "77ca6f61-3de0-41f7-9a4a-093a59732012": {
+      "vertices": [
+        {
+          "x": 2662,
+          "y": 1661
+        },
+        {
+          "x": 2728,
+          "y": 2338
+        }
+      ]
+    },
+    "22f6532f-6320-4d32-bacb-223ca37d394b": {
+      "vertices": [
+        {
+          "x": 2531,
+          "y": 1370
+        },
+        {
+          "x": 2533,
+          "y": 1388
+        }
+      ]
+    },
+    "b84ac949-e236-4376-ab18-7da0bc84176f": {
+      "vertices": [
+        {
+          "x": 1762,
+          "y": 1823
+        },
+        {
+          "x": 1650,
+          "y": 2122
+        },
+        {
+          "x": 1710,
+          "y": 2566
+        },
+        {
+          "x": 1780,
+          "y": 2766
+        },
+        {
+          "x": 1794,
+          "y": 2766
+        }
+      ]
+    },
+    "5a5594f6-0b2b-4a64-a082-a359a65d9f1e": {
+      "vertices": [
+        {
+          "x": 2255,
+          "y": 1390
+        }
+      ]
+    },
+    "f2e4a6b5-cbcb-4974-8ac3-1ecdb29bc382": {
+      "vertices": [
+        {
+          "x": 1652,
+          "y": 3460
+        },
+        {
+          "x": 1776,
+          "y": 3520
+        }
+      ]
+    },
+    "0cb3dad7-c796-4031-a8f8-4c8a996fc47b": {
+      "vertices": [
+        {
+          "x": 2069,
+          "y": 2391
+        },
+        {
+          "x": 1875,
+          "y": 2549
+        },
+        {
+          "x": 1787,
+          "y": 2716
+        }
+      ]
+    },
+    "584c45dc-05f3-49c3-a39a-a976de8ff51a": {
+      "vertices": [
+        {
+          "x": 407,
+          "y": 991
+        }
+      ]
+    },
+    "684f4e44-0c1a-4191-93cd-6f4df21f018c": {
+      "vertices": [
+        {
+          "x": 1780,
+          "y": 1179
+        }
+      ]
+    },
+    "ada1cb75-5cd2-44c3-9e1e-4dcbc85bb226": {
+      "vertices": [
+        {
+          "x": 485,
+          "y": 383.5
+        },
+        {
+          "x": 485,
+          "y": 346
+        },
+        {
+          "x": 485,
+          "y": 308.5
+        }
+      ]
+    },
+    "0d754c2f-6481-4812-96ff-ad69c8728b4e": {
+      "vertices": [
+        {
+          "x": 485,
+          "y": 1163.5
+        },
+        {
+          "x": 485,
+          "y": 1126
+        },
+        {
+          "x": 485,
+          "y": 1088.5
+        }
+      ]
+    },
+    "44101bd9-ea8d-4ef2-8ed8-e7d8a8d38146": {
+      "vertices": [
+        {
+          "x": 2006,
+          "y": 1032
+        }
+      ]
+    },
+    "d3dc94f2-7bec-48b7-a186-42e11bd392df": {
+      "vertices": [
+        {
+          "x": 2125,
+          "y": 1164.5
+        },
+        {
+          "x": 2125,
+          "y": 1127
+        },
+        {
+          "x": 2125,
+          "y": 1089.5
+        }
+      ]
+    },
+    "34cc0e2b-39bb-4812-a046-c97bf130ff66": {
+      "vertices": [
+        {
+          "x": 2072,
+          "y": 1086
+        }
+      ]
+    },
+    "99530430-7101-405b-82fa-5493bfcc8abe": {
+      "vertices": [
+        {
+          "x": 2002,
+          "y": 1205
+        },
+        {
+          "x": 2111,
+          "y": 1089
+        }
+      ]
+    },
+    "b403e007-24f5-4276-ab38-f0c378f7541a": {
+      "vertices": [
+        {
+          "x": 2125,
+          "y": 2723.5
+        },
+        {
+          "x": 2125,
+          "y": 2686
+        },
+        {
+          "x": 2125,
+          "y": 2648.5
+        }
+      ]
+    },
+    "39ec4b96-bdc5-4f48-bb89-c0ad9615006d": {
+      "vertices": [
+        {
+          "x": 2528,
+          "y": 2723
+        }
+      ]
+    },
+    "1ddaec7c-a5d7-4eaa-8233-cbb625332502": {
+      "vertices": [
+        {
+          "x": 2223,
+          "y": 1858
+        }
+      ]
+    },
+    "ad7f1ec3-88c7-4e8d-8dee-afc7ad03adf7": {
+      "vertices": [
+        {
+          "x": 2234,
+          "y": 1832
+        }
+      ]
+    },
+    "c051dd8e-c5b1-471e-a192-6d6dc7ede5bd": {
+      "vertices": [
+        {
+          "x": 1779,
+          "y": 2106
+        },
+        {
+          "x": 1767,
+          "y": 1833
+        }
+      ]
+    },
+    "ece5f006-c9c4-43c8-8c0b-0a1e29414f17": {
+      "vertices": [
+        {
+          "x": 2249,
+          "y": 1979
+        }
+      ]
+    },
+    "fce48554-2dd4-4f75-98f7-74400ffbb5b4": {
+      "vertices": [
+        {
+          "x": 2023,
+          "y": 3394
+        }
+      ]
+    },
+    "9cd56108-672f-4279-b294-a18193165a83": {
+      "vertices": [
+        {
+          "x": 2234,
+          "y": 3401
+        },
+        {
+          "x": 2229,
+          "y": 3415
+        },
+        {
+          "x": 2261,
+          "y": 3374
+        },
+        {
+          "x": 2236,
+          "y": 3371
+        },
+        {
+          "x": 2225,
+          "y": 3389
+        }
+      ]
+    },
+    "fbe7a22c-f1d4-4306-b5d5-ffd4bfa2a0ef": {
+      "vertices": [
+        {
+          "x": 2313,
+          "y": 3443
+        }
+      ]
+    },
+    "ed6e36cf-a1c7-45fd-923d-0cc941e0997e": {
+      "vertices": [
+        {
+          "x": 2520,
+          "y": 3685
+        },
+        {
+          "x": 2311,
+          "y": 3575
+        }
+      ]
+    },
+    "0c473331-ad37-43ec-af41-b0b9a5a34d6b": {
+      "vertices": [
+        {
+          "x": 2285,
+          "y": 3643
+        },
+        {
+          "x": 2237,
+          "y": 3560
+        }
+      ]
+    },
+    "bf40c902-db0e-45b0-805b-7bedff49b0b6": {
+      "vertices": [
+        {
+          "x": 2234,
+          "y": 287
+        }
+      ]
+    },
+    "276a96b3-9273-42b0-9c08-006fbb1fce54": {
+      "vertices": [
+        {
+          "x": 3765,
+          "y": 1163.5
+        },
+        {
+          "x": 3765,
+          "y": 1126
+        },
+        {
+          "x": 3765,
+          "y": 1088.5
+        }
+      ]
+    },
+    "c895278a-653c-4ba2-95da-49aa8f80278e": {
+      "vertices": [
+        {
+          "x": 3861,
+          "y": 1080
+        }
+      ]
+    },
+    "b16ee637-315b-45b3-98a1-9019e47fa84b": {
+      "vertices": [
+        {
+          "x": 4239,
+          "y": 1166
+        },
+        {
+          "x": 4238,
+          "y": 1068
+        }
+      ]
+    },
+    "0e601e9a-67b0-4e65-8458-d0bce5c233b2": {
+      "vertices": [
+        {
+          "x": 3881,
+          "y": 1200
+        }
+      ]
+    },
+    "8cf97693-875a-4ef5-ae6f-e42d1894385a": {
+      "vertices": [
+        {
+          "x": 3818,
+          "y": 1086
+        }
+      ]
+    },
+    "bc5cbbce-584e-441c-a42a-473e032efbb0": {
+      "vertices": [
+        {
+          "x": 4069,
+          "y": 1120
+        }
+      ]
+    },
+    "43c5186c-a9eb-4bec-a7be-ef53db849667": {
+      "vertices": [
+        {
+          "x": 3662,
+          "y": 2614
+        }
+      ]
+    },
+    "dad4c0b9-dc04-4dc4-8f2c-e64b405298db": {
+      "vertices": [
+        {
+          "x": 4265,
+          "y": 2611
+        }
+      ]
+    },
+    "7d753dc4-1585-4708-a84d-d769857b320f": {
+      "vertices": [
+        {
+          "x": 3564,
+          "y": 2867
+        },
+        {
+          "x": 3681,
+          "y": 2648
+        }
+      ]
+    },
+    "a36979bc-8915-4fa0-968c-8d6df0b169cd": {
+      "vertices": [
+        {
+          "x": 3639,
+          "y": 2769
+        }
+      ]
+    },
+    "2c175e59-5cd3-4a93-abfe-c3ae090dc350": {
+      "vertices": [
+        {
+          "x": 4068,
+          "y": 2684
+        }
+      ]
+    },
+    "50497e87-ccb3-43be-8bb6-079e3989b38a": {
+      "vertices": [
+        {
+          "x": 700,
+          "y": 1835
+        }
+      ]
+    },
+    "317b337e-58d9-4d9a-923d-56d7cf2e8f9e": {
+      "vertices": [
+        {
+          "x": 518,
+          "y": 1948
+        },
+        {
+          "x": 515,
+          "y": 1880
+        }
+      ]
+    },
+    "fffa9ac7-cc7d-4f72-b999-6fb14c4c046d": {
+      "vertices": [
+        {
+          "x": 485,
+          "y": 2723.5
+        },
+        {
+          "x": 485,
+          "y": 2686
+        },
+        {
+          "x": 485,
+          "y": 2648.5
+        }
+      ]
+    },
+    "d527c870-3a78-4424-adb2-a589f403fca5": {
+      "vertices": [
+        {
+          "x": 4428,
+          "y": 1271
+        }
+      ]
+    }
+  },
+  "tool": "pistar.2.1.0",
+  "istar": "2.0",
+  "saveDate": "Tue, 20 Oct 2026 06:10:21 GMT",
+  "diagram": {
+    "width": 4950,
+    "height": 4100,
+    "name": "Hospital VERSION2 - Integrated SD and SR",
+    "customProperties": {
+      "Source file": "hospital-patient-pathway.bpmn in version2",
+      "Source SHA256": "847c8fe493a90da7f47f35369e989bd1dc9d773137d35ccfbdf798d6f43c6147",
+      "Scope": "P01-P08 and event branches P03B, P09-P16; strategic service capabilities, not sequence flow.",
+      "Reading": "Depender task -> dependum -> provider task. AND means required capabilities, not all branches executing in one case. HELP means positive contribution, not a guarantee.",
+      "Abstraction": "Scheduling and correspondence remain external in BPMN. This strategic view hides their implementation actors; hospital tasks coordinate those services. Tracking is part of pathway monitoring; access, downtime and management escalation belong to Administrative Management.",
+      "External actors": "Patient; Referring organisation; Funding organisation; Payment provider.",
+      "Business boundary revision": "Clinical support services are hospital-owned under the revised business scope. VERSION2 BPMN still represents the laboratory and external treatment participant as external. This strategic model deliberately changes that boundary; executable BPMN remains unchanged. Internal service tasks are abstractions, not additional executable BPMN tasks.",
+      "Layout": "One green integrated model; all dependencies end on tasks; no actor endpoint or custom renderer required."
+    }
+  }
+}

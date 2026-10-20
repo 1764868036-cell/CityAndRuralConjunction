@@ -1,0 +1,7 @@
+workspace:
+  id: cb91bd4f-6c40-4581-83a8-297ede553701
+cloudResources:
+  collections:
+    ../postman/collections/HPAS SP05 External Availability: 3ed54501-67ea-4f44-8082-48fff9e59c72
+  mocks:
+    ../postman/mocks/sp05-availability/config.yaml: 01a153f4-69dd-704c-963f-ee9c8a5fd1bc

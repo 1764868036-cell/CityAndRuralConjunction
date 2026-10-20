@@ -1,0 +1,11 @@
+{
+  "taskKey": "2251799813778820",
+  "processInstanceKey": "2251799813778791",
+  "processDefinitionKey": "2251799813777682",
+  "processDefinitionVersion": 4,
+  "elementId": "SP01_CheckDocuments",
+  "hasIncident": false,
+  "evidence": "tasklist-first-task.png",
+  "mode": "real browser startup form submission; first task rendered",
+  "cleanup": "only this synthetic browser-started instance cancelled"
+}

@@ -1,0 +1,138 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------< io.camunda.demo:hpas-redesigned-workers >---------------
+[INFO] Building hpas-redesigned-workers 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ hpas-redesigned-workers ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ hpas-redesigned-workers ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ hpas-redesigned-workers ---
+[INFO] Copying 1 resource from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ hpas-redesigned-workers ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ hpas-redesigned-workers ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running io.camunda.demo.hpas.Version2AcceptanceIT
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.5)
+
+2026-10-20T14:51:03.513+08:00  INFO 9756 --- [           main] i.c.demo.hpas.Version2AcceptanceIT       : Starting Version2AcceptanceIT using Java 22.0.2 with PID 9756 (started by ryukkari in D:\桌面\26.9-26.12\demo\advanced_info_sys\HospitalPatientPathway-redesign\version2\java)
+2026-10-20T14:51:03.524+08:00  INFO 9756 --- [           main] i.c.demo.hpas.Version2AcceptanceIT       : No active profile set, falling back to 1 default profile: "default"
+2026-10-20T14:51:03.576+08:00  WARN 9756 --- [           main] s.p.CamundaClientPropertiesPostProcessor : No 'camunda.client.auth.method' detected, will be set to 'none'
+2026-10-20T14:51:05.408+08:00  INFO 9756 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-20T14:51:05.633+08:00  INFO 9756 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:hpas-redesign-test user=SA
+2026-10-20T14:51:05.634+08:00  INFO 9756 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-20T14:51:05.871+08:00  INFO 9756 --- [           main] i.c.demo.hpas.Version2AcceptanceIT       : Started Version2AcceptanceIT in 3.35 seconds (process running for 5.322)
+2026-10-20T14:51:06.460+08:00  INFO 9756 --- [           main] .p.t.i.r.CamundaProcessTestRemoteRuntime : Connecting to remote runtime. [Camunda REST: http://127.0.0.1:8180, Camunda gRPC: http://127.0.0.1:27500, Camunda Monitoring: http://127.0.0.1:19600, Connectors REST: http://0.0.0.0:8085]
+2026-10-20T14:51:06.678+08:00  INFO 9756 --- [aitility-thread] .p.t.i.r.CamundaProcessTestRemoteRuntime : Remote Camunda runtime connected. [version: 8.9.0]
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (C:\Users\ryukkari\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.8\byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+2026-10-20T14:51:33.849+08:00  INFO 9756 --- [           main] .t.a.CamundaProcessTestExecutionListener : Process test results:
+=====================
+
+Process instance: 2251799813685401 [process-id: 'Process_HPAS', state: active]
+
+Active elements:
+- 'Top_Catch_Referral' [name: 'Receive referral from referring organisation']
+- 'SP13' [name: 'P13 Clinic letters']
+- 'SP13_PrepareScope' [name: 'Letter preparation (7-day SLA)']
+- 'SP13_Draft' [name: 'Prepare clinic letter (clinical content)']
+
+Variables:
+- 'SP13_Reminder_actor': "TEST synthetic acceptance input"
+- 'patientId': "TEST-PATIENT"
+- 'referralId': "TEST-AT-30b20b8b-7703-4e12-84f8-f8c95d1d821f"
+- 'reminderNotes': "TEST synthetic acceptance input"
+- 'fundingRoute': "hospital"
+- 'consentGiven': true
+- 'moreCycles': false
+- 'requestValid': true
+- 'urgentReferral': false
+- 'appointmentPaid': false
+- 'withinTwoWeeks': false
+- 'resourceType': "internal"
+
+Active incidents:
+<None>
+
+Active message subscriptions:
+- 'SP03B_Start' [message-name: 'HPAS: Appointment change requested', correlation-key: 'TEST-AT-30b20b8b-7703-4e12-84f8-f8c95d1d821f']
+- 'SP09_Start' [message-name: 'HPAS: Treatment change requested', correlation-key: 'TEST-AT-30b20b8b-7703-4e12-84f8-f8c95d1d821f']
+- 'SP10_Start' [message-name: 'HPAS: Cancellation reported', correlation-key: 'TEST-AT-30b20b8b-7703-4e12-84f8-f8c95d1d821f']
+- 'SP11_Start' [message-name: 'HPAS: Refund case opened', correlation-key: 'TEST-AT-30b20b8b-7703-4e12-84f8-f8c95d1d821f']
+- 'SP12_Start' [message-name: 'HPAS: Patient enquiry received', correlation-key: 'TEST-AT-30b20b8b-7703-4e12-84f8-f8c95d1d821f']
+- 'SP14_Start' [message-name: 'HPAS: Follow-up instruction authorised', correlation-key: 'TEST-AT-30b20b8b-7703-4e12-84f8-f8c95d1d821f']
+- 'SP15_Start' [message-name: 'HPAS: Monitoring run due', correlation-key: 'TEST-AT-30b20b8b-7703-4e12-84f8-f8c95d1d821f']
+- 'SP16_Start' [message-name: 'HPAS: Access or interruption event', correlation-key: 'TEST-AT-30b20b8b-7703-4e12-84f8-f8c95d1d821f']
+- 'Top_Catch_Referral' [message-name: 'HPAS: Referral received', correlation-key: 'TEST-AT-30b20b8b-7703-4e12-84f8-f8c95d1d821f']
+=====================
+
+2026-10-20T14:51:34.723+08:00  INFO 9756 --- [           main] .t.a.CamundaProcessTestExecutionListener : Process coverage: io.camunda.demo.hpas.Version2AcceptanceIT 
+========================
+- Process_HPAS: 13%
+
+ Coverage report: file://D:\桌面\26.9-26.12\demo\advanced_info_sys\HospitalPatientPathway-redesign\version2\java\target\coverage-report/report.html
+
+[ERROR] Tests run: 3, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 33.06 s <<< FAILURE! -- in io.camunda.demo.hpas.Version2AcceptanceIT
+[ERROR] io.camunda.demo.hpas.Version2AcceptanceIT.at14_originalTimerReminder -- Time elapsed: 16.69 s <<< FAILURE!
+java.lang.AssertionError: Expected to complete user task [elementId: SP13_Reminder, processInstanceKey: 2251799813685401] but no user task is available.
+	at io.camunda.process.test.impl.assertions.util.AwaitilityBehavior.untilAsserted(AwaitilityBehavior.java:66)
+	at io.camunda.process.test.api.CamundaAssertAwaitBehavior.untilAsserted(CamundaAssertAwaitBehavior.java:50)
+	at io.camunda.process.test.impl.extension.CamundaProcessTestContextImpl.awaitUserTask(CamundaProcessTestContextImpl.java:711)
+	at io.camunda.process.test.impl.extension.CamundaProcessTestContextImpl.completeUserTask(CamundaProcessTestContextImpl.java:457)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at io.camunda.process.test.impl.proxy.AbstractInvocationHandler.handleInvocation(AbstractInvocationHandler.java:90)
+	at io.camunda.process.test.impl.proxy.AbstractInvocationHandler.invoke(AbstractInvocationHandler.java:69)
+	at jdk.proxy2/jdk.proxy2.$Proxy97.completeUserTask(Unknown Source)
+	at io.camunda.demo.hpas.Version2AcceptanceIT.complete(Version2AcceptanceIT.java:573)
+	at io.camunda.demo.hpas.Version2AcceptanceIT.at14_originalTimerReminder(Version2AcceptanceIT.java:508)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   Version2AcceptanceIT.at14_originalTimerReminder:508->complete:573 Expected to complete user task [elementId: SP13_Reminder, processInstanceKey: 2251799813685401] but no user task is available.
+[INFO] 
+[ERROR] Tests run: 3, Failures: 1, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  37.234 s
+[INFO] Finished at: 2026-10-20T14:51:35+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.5:test (default-test) on project hpas-redesigned-workers: There are test failures.
+[ERROR] 
+[ERROR] See D:\桌面\26.9-26.12\demo\advanced_info_sys\HospitalPatientPathway-redesign\version2\java\target\surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

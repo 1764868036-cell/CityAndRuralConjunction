@@ -2,7 +2,7 @@
   "capturedAt": "2026-10-16",
   "sourceModel": "hospital-patient-pathway.bpmn",
   "sourceSHA256": "4c391978f89067756487f09bb8677b05c4bbaad1cc7d1135f22c1f885efd161c",
-  "testedSHA256": "138e5a33c0925b54180bbe739e15235a192b9eccd791ca363a6dd604cebf2cdb",
+  "testedSHA256": "4955996919b6f5f96724ddff6a175047e608a9693829e52923362f9679ed12a9",
   "normalizations": {
     "removedEmptyDiagramIds": [
       "TidyDiagram_P03B",
@@ -55,5 +55,14 @@
     "hpas_sp16_recorddowntime.form": "fd06ad4b3ad1f5f33689cb628bab3f7d6e11e7ffe5add5a08eece84ff13186a3",
     "hpas_sp16_verifyauth.form": "2b44475cfdb4186137b0f5332f02f0f06774fef57081b51ab632d9763826adab"
   },
-  "note": "Source is concurrently edited. Frozen snapshot preserves executable BPMN; only empty DI diagrams are removed."
+  "note": "Frozen baseline with empty DI normalization; subsequent targeted changes are recorded in patches. sourceSHA256 identifies the original capture; testedSHA256 identifies the current test input.",
+  "patches": [
+    {
+      "appliedAt": "2026-10-20T07:11:11.893759+00:00",
+      "elementId": "SP13_Timer7d",
+      "change": "timeDuration P7D -> timeCycle R/P7D; non-interrupting scope unchanged",
+      "previousTestedSHA256": "3823f75d44712dc9ac4e99986ffae6f9daa0dc304bbe51ccdd6c1c4136721f69",
+      "canonicalSHA256": "1ff02738c66becdcf6fbf847ad4c9aba2cbb884a3f0b454334359693939eca77"
+    }
+  ]
 }

@@ -1,0 +1,14 @@
+{
+  "pid": 38496,
+  "replacedPids": [
+    38764,
+    18640
+  ],
+  "jar": "D:\\\u684c\u9762\\26.9-26.12\\demo\\advanced_info_sys\\HospitalPatientPathway-redesign\\version2\\java\\target\\hpas-redesigned-workers-1.0.0.jar",
+  "jarSha256": "A0EAB57C9BC12B9D43CEABEDF46BA14F63AF9AE44699E8250F8D5B3AF1045CF1",
+  "rest": "http://127.0.0.1:8080",
+  "grpc": "http://127.0.0.1:26500",
+  "database": "D:/\u684c\u9762/26.9-26.12/demo/advanced_info_sys/HospitalPatientPathway-redesign/version2/java/data/hpas-redesign",
+  "startedAt": "2026-10-20T18:56:11.4393258+08:00",
+  "javaPid": 30624
+}

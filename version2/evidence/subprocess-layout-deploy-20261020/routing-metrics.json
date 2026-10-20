@@ -1,0 +1,126 @@
+{
+  "before": {
+    "SP13_PrepareScope": {
+      "crossings": 0,
+      "bends": 10,
+      "throughNodes": 0,
+      "manhattanLength": 1842
+    },
+    "SP03B": {
+      "crossings": 6,
+      "bends": 44,
+      "throughNodes": 0,
+      "manhattanLength": 6747
+    },
+    "SP09": {
+      "crossings": 38,
+      "bends": 46,
+      "throughNodes": 0,
+      "manhattanLength": 11053
+    },
+    "SP10": {
+      "crossings": 17,
+      "bends": 38,
+      "throughNodes": 0,
+      "manhattanLength": 8011
+    },
+    "SP11": {
+      "crossings": 6,
+      "bends": 36,
+      "throughNodes": 0,
+      "manhattanLength": 4930
+    },
+    "SP12": {
+      "crossings": 9,
+      "bends": 42,
+      "throughNodes": 0,
+      "manhattanLength": 7604
+    },
+    "SP13": {
+      "crossings": 18,
+      "bends": 26,
+      "throughNodes": 0,
+      "manhattanLength": 7236
+    },
+    "SP14": {
+      "crossings": 5,
+      "bends": 32,
+      "throughNodes": 0,
+      "manhattanLength": 6588
+    },
+    "SP15": {
+      "crossings": 3,
+      "bends": 22,
+      "throughNodes": 0,
+      "manhattanLength": 4473
+    },
+    "SP16": {
+      "crossings": 8,
+      "bends": 34,
+      "throughNodes": 0,
+      "manhattanLength": 5661
+    }
+  },
+  "after": {
+    "SP13_PrepareScope": {
+      "crossings": 0,
+      "bends": 8,
+      "throughNodes": 0,
+      "manhattanLength": 823
+    },
+    "SP03B": {
+      "crossings": 0,
+      "bends": 34,
+      "throughNodes": 0,
+      "manhattanLength": 5823
+    },
+    "SP09": {
+      "crossings": 3,
+      "bends": 36,
+      "throughNodes": 0,
+      "manhattanLength": 9651
+    },
+    "SP10": {
+      "crossings": 0,
+      "bends": 24,
+      "throughNodes": 0,
+      "manhattanLength": 8207
+    },
+    "SP11": {
+      "crossings": 0,
+      "bends": 24,
+      "throughNodes": 0,
+      "manhattanLength": 5040
+    },
+    "SP12": {
+      "crossings": 2,
+      "bends": 36,
+      "throughNodes": 0,
+      "manhattanLength": 9729
+    },
+    "SP13": {
+      "crossings": 0,
+      "bends": 26,
+      "throughNodes": 0,
+      "manhattanLength": 7601
+    },
+    "SP14": {
+      "crossings": 3,
+      "bends": 26,
+      "throughNodes": 0,
+      "manhattanLength": 4013
+    },
+    "SP15": {
+      "crossings": 0,
+      "bends": 16,
+      "throughNodes": 0,
+      "manhattanLength": 3253
+    },
+    "SP16": {
+      "crossings": 0,
+      "bends": 22,
+      "throughNodes": 0,
+      "manhattanLength": 2406
+    }
+  }
+}

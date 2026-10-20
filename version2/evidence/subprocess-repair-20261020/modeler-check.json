@@ -1,0 +1,57 @@
+{
+  "sourceSha256": "9da1f9eb8409b36f038bf85d02aaa1af22d2e5a27087aa99e88c95c9740bbd71",
+  "importWarnings": [],
+  "diagrams": [
+    {
+      "diagram": "TidyDiagram_SP13_PrepareScope",
+      "warnings": [],
+      "laneCount": 1
+    },
+    {
+      "diagram": "BPMNDiagram_SP03B",
+      "warnings": [],
+      "laneCount": 1
+    },
+    {
+      "diagram": "BPMNDiagram_SP09",
+      "warnings": [],
+      "laneCount": 3
+    },
+    {
+      "diagram": "BPMNDiagram_SP10",
+      "warnings": [],
+      "laneCount": 4
+    },
+    {
+      "diagram": "BPMNDiagram_SP11",
+      "warnings": [],
+      "laneCount": 1
+    },
+    {
+      "diagram": "BPMNDiagram_SP12",
+      "warnings": [],
+      "laneCount": 3
+    },
+    {
+      "diagram": "BPMNDiagram_SP13",
+      "warnings": [],
+      "laneCount": 4
+    },
+    {
+      "diagram": "BPMNDiagram_SP14",
+      "warnings": [],
+      "laneCount": 2
+    },
+    {
+      "diagram": "BPMNDiagram_SP15",
+      "warnings": [],
+      "laneCount": 2
+    },
+    {
+      "diagram": "BPMNDiagram_SP16",
+      "warnings": [],
+      "laneCount": 1
+    }
+  ],
+  "reimportWarnings": []
+}

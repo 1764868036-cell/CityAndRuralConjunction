@@ -1,0 +1,53 @@
+{
+  "definitionKey": "2251799813777682",
+  "runId": "e2046193",
+  "sourceSha256": "04f392005d6278e9044ec5550b2bd038b765588fe5e530da1ecdf90f46fdd525",
+  "mode": "real 8080 engine and Java workers; synthetic API form submissions",
+  "cases": [
+    {
+      "case": "real-slot-reply-date-worker-and-reschedule",
+      "instanceKey": "2251799813778098",
+      "passed": true,
+      "completedElements": [
+        "SP03B_ValidateSlot",
+        "SP03B_Rebook",
+        "SP03B_End"
+      ]
+    },
+    {
+      "case": "real-transfer-instruction-worker",
+      "instanceKey": "2251799813778252",
+      "passed": true,
+      "completedElements": [
+        "SP11_Transfer",
+        "SP11_End"
+      ]
+    },
+    {
+      "case": "real-finance-refusal-before-apply",
+      "instanceKey": "2251799813778318",
+      "passed": true,
+      "completedElements": [
+        "SP09_ValidateFormal",
+        "SP09_End_Rejected"
+      ]
+    },
+    {
+      "case": "real-restoration-correlation-and-reconcile",
+      "instanceKey": "2251799813778397",
+      "passed": true,
+      "completedElements": [
+        "SP16_WaitRestored",
+        "SP16_Reconcile",
+        "SP16_End"
+      ]
+    }
+  ],
+  "cleanup": [
+    "2251799813778098",
+    "2251799813778252",
+    "2251799813778318",
+    "2251799813778397"
+  ],
+  "passed": true
+}

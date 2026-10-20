@@ -141,9 +141,20 @@ public class HpasJobExecutor {
           publish("HPAS: Treatment change requested", referralId,
               Map.of("changeSource", "clinical-review"));
       case "hpas-sp03b-search-slot" ->
-          reply("HPAS: Scheduling result", referralId,
-              Map.of("slotAcceptable", bool(input, "simulatedSlotAcceptable", true)));
+          subprocessSlot(job, input, output, "SP03B");
+      case "hpas-sp03b-validate-slot" -> {
+        LocalDate date = LocalDate.parse(required(input, "appointmentDate"));
+        LocalDate deadline = LocalDate.parse(required(input, "requestedReviewBy"));
+        output.put("slotAcceptable", bool(input, "slotAcceptable", false) && !date.isAfter(deadline)
+            && !date.isBefore(LocalDate.now()));
+        output.put("withinTwoWeeks", !date.isAfter(LocalDate.now().plusDays(14)));
+      }
       case "hpas-sp03b-apply-reschedule" -> {
+        if (!bool(input, "identityVerified", false)) throw new IllegalStateException("Identity verification required");
+        if (LocalDate.parse(required(input, "appointmentDate")).isAfter(
+            LocalDate.parse(required(input, "requestedReviewBy")))) {
+          throw new IllegalStateException("Offered appointment exceeds authorised review deadline");
+        }
         output.put("appointmentId", text(input, "appointmentId", "APT-" + referralId));
         output.put("appointmentChanged", true);
       }
@@ -155,26 +166,54 @@ public class HpasJobExecutor {
         if (!bool(input, "formallyAuthorised", false)) {
           throw new IllegalStateException("Treatment change lacks clinical authorisation");
         }
+        if (bool(input, "financialImpact", false) && !bool(input, "financialReviewApproved", false)) {
+          throw new IllegalStateException("Financial recheck must approve the change before implementation");
+        }
         output.put("treatmentChangeApplied", true);
       }
       case "hpas-sp09-notify-plan" ->
-          publish("HPAS: Treatment plan updated", referralId, Map.of("planUpdated", true));
+          publishSubprocess(job, "HPAS: Treatment plan updated", referralId, Map.of("planUpdated", true));
       case "hpas-notify-refund-case" ->
-          publish("HPAS: Refund case opened", referralId, Map.of("refundCaseOpen", true));
+          publishSubprocess(job, "HPAS: Refund case opened", referralId,
+              Map.of("refundCaseOpen", true, "adjustmentCaseId", "ADJ-" + job.getKey(),
+                  "sourceAppointmentId", text(input, "appointmentId", "")));
       case "hpas-sp10-notify-rebook" ->
-          publish("HPAS: Appointment change requested", referralId,
+          publishSubprocess(job, "HPAS: Appointment change requested", referralId,
               Map.of("changeKind", "reschedule"));
-      case "hpas-sp10-notify-referrer" -> output.put("referrerNotified", true);
-      case "hpas-sp11-send-refund" -> {
-        if (!bool(input, "refundDue", false) || !has(input, "financeApprover")) {
-          throw new IllegalStateException("Finance approval required before refund");
-        }
-        output.put("refundRequestId", text(input, "refundRequestId", "REFUND-" + referralId));
-        reply("HPAS: Refund result", referralId,
-            Map.of("refundStatus", "completed", "refundReference", "RF-" + referralId));
+      case "hpas-sp10-notify-referrer" -> {
+        required(input, "responseReason");
+        publishSubprocess(job, "HPAS: Pathway closure authorised", referralId,
+            Map.of("sp03Outcome", "closed", "pathwayClosureReason", required(input, "responseReason")));
+        output.put("referrerNotified", true);
       }
-      case "hpas-sp11-record-refund" -> output.put("refundRecorded", true);
-      case "hpas-sp11-record-no-refund" -> output.put("refundRecorded", false);
+      case "hpas-sp11-send-refund" -> {
+        validateAdjustment(input, false);
+        String requestId = "REFUND-" + job.getKey();
+        output.put("refundRequestId", requestId);
+        if (simulate) publishSubprocess(job, "HPAS: Refund result", requestId,
+            Map.of("refundStatus", text(input, "simulatedRefundStatus", "completed"),
+                "refundReference", "RF-" + job.getKey()));
+      }
+      case "hpas-sp11-transfer" -> {
+        validateAdjustment(input, true);
+        required(input, "transferDestination");
+        // Record a transfer instruction in the existing job audit, without issuing a PSP refund.
+        // The demo has no real accounting transfer adapter; do not claim funds have moved.
+        output.put("transferRequestId", "TRANSFER-" + job.getKey());
+        output.put("transferDestination", required(input, "transferDestination"));
+        output.put("transferAmount", input.get("refundAmount"));
+        output.put("transferStatus", "instruction-recorded");
+      }
+      case "hpas-sp11-record-refund" -> {
+        if (!"completed".equals(text(input, "refundStatus", ""))) {
+          throw new IllegalStateException("Only a completed refund can be recorded as completed");
+        }
+        output.put("refundRecorded", true);
+      }
+      case "hpas-sp11-record-no-refund" -> {
+        output.put("refundRecorded", false);
+        output.put("adjustmentOutcome", bool(input, "refundDue", false) ? "not-authorised-or-invalid" : "none");
+      }
       case "hpas-sp12-flag-urgent" -> {
         if (!bool(input, "urgentConcern", false)) {
           throw new IllegalStateException("Only CNS-assessed urgent concerns are highlighted");
@@ -190,16 +229,28 @@ public class HpasJobExecutor {
       }
       case "hpas-sp13-record-dates" -> output.put("letterAuditRecordedAt", Instant.now().toString());
       case "hpas-sp13-notify-follow-up" ->
-          publish("HPAS: Follow-up instruction authorised", referralId,
+          publishSubprocess(job, "HPAS: Follow-up instruction authorised", referralId,
               Map.of("followUpInstructed", true));
       case "hpas-sp14-search-slot" ->
-          reply("HPAS: Scheduling result", referralId,
-              Map.of("inRequestedPeriod", bool(input, "simulatedInRequestedPeriod", true)));
-      case "hpas-sp14-book-follow-up" -> output.put("followUpAppointmentId",
-          text(input, "followUpAppointmentId", "FUP-" + referralId));
+          subprocessSlot(job, input, output, "SP14");
+      case "hpas-sp14-book-follow-up" -> {
+        if (!bool(input, "inRequestedPeriod", false) && !bool(input, "followUpExceptionAuthorised", false)) {
+          throw new IllegalStateException("An out-of-period follow-up requires explicit authorisation");
+        }
+        output.put("followUpAppointmentId", "FUP-" + job.getElementInstanceKey());
+      }
       case "hpas-sp14-inform-patient" -> output.put("followUpNotificationSent", true);
-      case "hpas-sp15-scan-outstanding" -> output.put("letterOverdueMonths",
-          input.getOrDefault("letterOverdueMonths", 0));
+      case "hpas-sp15-scan-outstanding" -> {
+        var open = database.clinicLetters().findByReferralId(referralId).stream()
+            .filter(letter -> !"complete".equals(letter.status()) && letter.sentOn() == null).toList();
+        long months = open.stream().filter(letter -> letter.createdOn() != null)
+            .mapToLong(letter -> java.time.temporal.ChronoUnit.MONTHS.between(letter.createdOn(), LocalDateTime.now()))
+            .max().orElse(0);
+        output.put("monitoringOpenLetters", open.size());
+        output.put("letterOverdueMonths", simulate && input.get("simulatedLetterOverdueMonths") instanceof Number
+            ? input.get("simulatedLetterOverdueMonths") : Math.max(0, months));
+        output.put("monitoringSource", "clinic_letter referral records");
+      }
       case "hpas-sp15-generate-reports" -> output.put("reportGeneratedAt", Instant.now().toString());
       case "hpas-sp16-apply-access" -> output.put("accessDecisionRecorded",
           bool(input, "accessAuthorised", false) ? "approved" : "denied");
@@ -224,6 +275,41 @@ public class HpasJobExecutor {
 
   private void reply(String name, String referralId, Map<String, Object> variables) {
     if (simulate) publish(name, referralId, variables);
+  }
+
+  private static void validateAdjustment(Map<String, Object> input, boolean transfer) {
+    String scope = required(input, "refundScope");
+    if (!bool(input, "refundDue", false) || !bool(input, "refundAuthorised", false)
+        || !has(input, "financeApprover")) throw new IllegalStateException("Explicit Finance authorisation required");
+    if (transfer ? !"transfer".equals(scope) : !("full".equals(scope) || "partial".equals(scope))) {
+      throw new IllegalStateException("Refund and transfer are separate operations");
+    }
+    if (!(input.get("refundAmount") instanceof Number amount)
+        || !Double.isFinite(amount.doubleValue()) || amount.doubleValue() <= 0) {
+      throw new IllegalStateException("A positive authorised adjustment amount is required");
+    }
+  }
+
+  private void subprocessSlot(ActivatedJob job, Map<String, Object> input, Map<String, Object> output, String branch) {
+    String requestId = branch + "-SLOT-" + job.getKey();
+    output.put("schedulingRequestId", requestId);
+    if (simulate) {
+      String date = text(input, "simulatedAppointmentDate", required(input, "requestedReviewBy"));
+      LocalDate offered = LocalDate.parse(date);
+      LocalDate deadline = LocalDate.parse(required(input, "requestedReviewBy"));
+      boolean valid = !offered.isAfter(deadline) && !offered.isBefore(LocalDate.now());
+      String field = "SP03B".equals(branch) ? "slotAcceptable" : "inRequestedPeriod";
+      boolean result = valid && bool(input, "SP03B".equals(branch) ? "simulatedSlotAcceptable" : "simulatedInRequestedPeriod", true);
+      publishSubprocess(job, "HPAS: " + branch + " scheduling result", requestId,
+          Map.of(field, result, "appointmentDate", date));
+    }
+  }
+
+  /** Stable across retries of the same job, distinct for each new branch invocation. */
+  private void publishSubprocess(ActivatedJob job, String name, String key, Map<String, Object> variables) {
+    client.newPublishMessageCommand().messageName(name).correlationKey(key)
+        .messageId("HPAS-SUB:" + job.getKey() + ":" + name)
+        .timeToLive(TTL).variables(variables).send().join();
   }
 
   private void publish(String name, String referralId, Map<String, Object> variables) {

@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="StrategicModelDefinitions" targetNamespace="https://example.org/hpas/strategic-process" exporter="Camunda Modeler" exporterVersion="5.46.1">
+  <bpmn:documentation>Compact strategic happy-path model derived from the version2 operational model and i* evidence. It is a discussion and improvement model and is not an executable deployment artifact. i* source SHA-256: 9b9779d84230a15d40a4ce215cd2e7f1bec2fbb6de85d24baabf363dff92d64b. Operational BPMN SHA-256: 2cc554007a17b395b6c201584cc1dc2ac71c11c0462c4398dc425d25aeae8c6f.</bpmn:documentation>
+  <bpmn:collaboration id="SM_Collaboration">
+    <bpmn:participant id="SM_Participant_HospitalPathway" name="Hospital Patient Pathway (customer: Patient)" processRef="SM_Process_HospitalPathway" />
+    <bpmn:textAnnotation id="SM_Note_Customer">
+      <bpmn:documentation>Customer identity and referral trigger are drawn from the operational collaboration.</bpmn:documentation>
+      <bpmn:text>Customer: Patient. The referring organisation initiates the pathway.</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="SM_Note_KPI">
+      <bpmn:documentation>The course recommends KPIs with explicit characteristics. No target value was supplied, so none is invented.</bpmn:documentation>
+      <bpmn:text>Candidate KPI: elapsed time from referral receipt to outcome communication. Target not set in source evidence.</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="SM_Assoc_Customer" associationDirection="None" sourceRef="SM_Note_Customer" targetRef="SM_Start_Referral" />
+  </bpmn:collaboration>
+  <bpmn:process id="SM_Process_HospitalPathway" name="Hospital Patient Pathway - Strategic Process" isExecutable="false">
+    <bpmn:documentation>Single-pool strategic process. It shows the desired route from referral to communicated outcome. Operational exceptions, technical connector steps and repeated treatment cycles are omitted from the main view or grouped within collapsed subprocesses.</bpmn:documentation>
+    <bpmn:laneSet id="SM_LaneSet_HospitalPathway">
+      <bpmn:lane id="Lane_Pathway" name="Pathway Coordination">
+        <bpmn:flowNodeRef>SM_Communicate_Outcome</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>SM_End_Outcome</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Clinical" name="Clinical Team">
+        <bpmn:flowNodeRef>SM_Deliver_Treatment</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_OutpatientBookings" name="Outpatient Bookings">
+        <bpmn:flowNodeRef>SM_Arrange_Appointment</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Finance" name="Finance Team">
+        <bpmn:flowNodeRef>SM_Confirm_Funding</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_TreatmentBookings" name="Treatment Bookings">
+        <bpmn:flowNodeRef>SM_Confirm_Resources</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Consultants" name="Consultants">
+        <bpmn:flowNodeRef>SM_Review_Referral</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>SM_Assess_Patient</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Secretaries" name="Medical Secretaries">
+        <bpmn:flowNodeRef>SM_Check_Referral</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="SM_Start_Referral" name="Referral received">
+      <bpmn:outgoing>SM_Flow_01</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="SM_Check_Referral" name="Check referral and prepare clinical review">
+      <bpmn:documentation>Accountable role: Medical Secretaries
+Source BPMN IDs: SP01_CheckDocuments</bpmn:documentation>
+      <bpmn:incoming>SM_Flow_01</bpmn:incoming>
+      <bpmn:outgoing>SM_Flow_02</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="SM_Review_Referral" name="Review referral and accept case">
+      <bpmn:documentation>Accountable role: Consultants
+Source BPMN IDs: SP02_ClinicalReview</bpmn:documentation>
+      <bpmn:incoming>SM_Flow_02</bpmn:incoming>
+      <bpmn:outgoing>SM_Flow_03</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="SM_Assess_Patient" name="Assess patient and agree treatment plan">
+      <bpmn:documentation>Accountable role: Consultants
+Source BPMN IDs: SP04_Assess, SP04_RecordConsent, SP04_CreateRequest</bpmn:documentation>
+      <bpmn:incoming>SM_Flow_03</bpmn:incoming>
+      <bpmn:outgoing>SM_Flow_04</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="SM_Confirm_Resources" name="Confirm treatment resources">
+      <bpmn:documentation>Accountable role: Treatment Bookings
+Source BPMN IDs: SP05_BookInternal, SP05_RequestAvailability</bpmn:documentation>
+      <bpmn:incoming>SM_Flow_04</bpmn:incoming>
+      <bpmn:outgoing>SM_Flow_05</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="SM_Arrange_Appointment" name="Arrange appointment and notify patient">
+      <bpmn:documentation>Accountable role: Outpatient Bookings
+Source BPMN IDs: SP03_RequestSlot, SP03_ConfirmBooking, SP03_SendLetter</bpmn:documentation>
+      <bpmn:incoming>SM_Flow_06</bpmn:incoming>
+      <bpmn:outgoing>SM_Flow_07</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="SM_Communicate_Outcome" name="Communicate outcome and follow-up plan">
+      <bpmn:documentation>Accountable role: Pathway Coordination
+Source BPMN IDs: SP13_Draft, SP13_Approve, SP13_Distribute, SP13_RecordDates, SP14_Inform</bpmn:documentation>
+      <bpmn:incoming>SM_Flow_08</bpmn:incoming>
+      <bpmn:outgoing>SM_Flow_09</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="SM_End_Outcome" name="Outcome communicated">
+      <bpmn:incoming>SM_Flow_09</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:dataObjectReference id="SM_Data_Referral" name="Referral and supporting information" dataObjectRef="SM_Data_Referral_Object" />
+    <bpmn:dataObject id="SM_Data_Referral_Object" name="Referral and supporting information" />
+    <bpmn:dataObjectReference id="SM_Data_Readiness" name="Funding and booking readiness" dataObjectRef="SM_Data_Readiness_Object" />
+    <bpmn:dataObject id="SM_Data_Readiness_Object" name="Funding and booking readiness" />
+    <bpmn:dataObjectReference id="SM_Data_Outcome" name="Treatment outcome and follow-up plan" dataObjectRef="SM_Data_Outcome_Object" />
+    <bpmn:dataObject id="SM_Data_Outcome_Object" name="Treatment outcome and follow-up plan" />
+    <bpmn:dataObjectReference id="SM_Data_TreatmentPlan" name="Agreed treatment plan" dataObjectRef="SM_Data_TreatmentPlan_Object" />
+    <bpmn:dataObject id="SM_Data_TreatmentPlan_Object" name="Agreed treatment plan" />
+    <bpmn:subProcess id="SM_Confirm_Funding" name="Confirm funding and payment readiness">
+      <bpmn:documentation>Grouped strategic activities. Source BPMN IDs: SP06_Determine, SP07_CalculateCharge, SP07_SendPaymentRequest, SP07_RecordTransaction, SP07_ConfirmBooking</bpmn:documentation>
+      <bpmn:incoming>SM_Flow_05</bpmn:incoming>
+      <bpmn:outgoing>SM_Flow_06</bpmn:outgoing>
+      <bpmn:startEvent id="SM_Confirm_Funding_Start" name="Work begins">
+        <bpmn:outgoing>SM_Confirm_Funding_Flow_01</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:userTask id="SM_Confirm_Funding_Task_1" name="Confirm available treatment resource">
+        <bpmn:documentation>Accountable role: Finance Team and Treatment Bookings
+Source BPMN IDs: SP05_BookInternal, SP05_RequestAvailability</bpmn:documentation>
+        <bpmn:incoming>SM_Confirm_Funding_Flow_01</bpmn:incoming>
+        <bpmn:outgoing>SM_Confirm_Funding_Flow_02</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:userTask id="SM_Confirm_Funding_Task_2" name="Determine funding and applicable charge">
+        <bpmn:documentation>Accountable role: Finance Team and Treatment Bookings
+Source BPMN IDs: SP06_Determine, SP07_CalculateCharge</bpmn:documentation>
+        <bpmn:incoming>SM_Confirm_Funding_Flow_02</bpmn:incoming>
+        <bpmn:outgoing>SM_Confirm_Funding_Flow_03</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:userTask id="SM_Confirm_Funding_Task_3" name="Confirm payment and release booking">
+        <bpmn:documentation>Accountable role: Finance Team and Treatment Bookings
+Source BPMN IDs: SP07_SendPaymentRequest, SP07_RecordTransaction, SP07_ConfirmBooking</bpmn:documentation>
+        <bpmn:incoming>SM_Confirm_Funding_Flow_03</bpmn:incoming>
+        <bpmn:outgoing>SM_Confirm_Funding_Flow_04</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:endEvent id="SM_Confirm_Funding_End" name="Work complete">
+        <bpmn:incoming>SM_Confirm_Funding_Flow_04</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="SM_Confirm_Funding_Flow_01" sourceRef="SM_Confirm_Funding_Start" targetRef="SM_Confirm_Funding_Task_1" />
+      <bpmn:sequenceFlow id="SM_Confirm_Funding_Flow_02" sourceRef="SM_Confirm_Funding_Task_1" targetRef="SM_Confirm_Funding_Task_2" />
+      <bpmn:sequenceFlow id="SM_Confirm_Funding_Flow_03" sourceRef="SM_Confirm_Funding_Task_2" targetRef="SM_Confirm_Funding_Task_3" />
+      <bpmn:sequenceFlow id="SM_Confirm_Funding_Flow_04" sourceRef="SM_Confirm_Funding_Task_3" targetRef="SM_Confirm_Funding_End" />
+    </bpmn:subProcess>
+    <bpmn:subProcess id="SM_Deliver_Treatment" name="Deliver treatment and review response">
+      <bpmn:documentation>Grouped strategic activities. Source BPMN IDs: SP08_RequestBloods, SP08_Review, SP08_Administer</bpmn:documentation>
+      <bpmn:incoming>SM_Flow_07</bpmn:incoming>
+      <bpmn:outgoing>SM_Flow_08</bpmn:outgoing>
+      <bpmn:startEvent id="SM_Deliver_Treatment_Start" name="Work begins">
+        <bpmn:outgoing>SM_Deliver_Treatment_Flow_01</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:userTask id="SM_Deliver_Treatment_Task_1" name="Confirm treatment readiness">
+        <bpmn:documentation>Accountable role: Clinical Team
+Source BPMN IDs: SP08_RequestBloods, SP08_Review</bpmn:documentation>
+        <bpmn:incoming>SM_Deliver_Treatment_Flow_01</bpmn:incoming>
+        <bpmn:outgoing>SM_Deliver_Treatment_Flow_02</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:userTask id="SM_Deliver_Treatment_Task_2" name="Deliver scheduled treatment">
+        <bpmn:documentation>Accountable role: Clinical Team
+Source BPMN IDs: SP08_Administer</bpmn:documentation>
+        <bpmn:incoming>SM_Deliver_Treatment_Flow_02</bpmn:incoming>
+        <bpmn:outgoing>SM_Deliver_Treatment_Flow_03</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:userTask id="SM_Deliver_Treatment_Task_3" name="Review response and next step">
+        <bpmn:documentation>Accountable role: Clinical Team
+Source BPMN IDs: SP08_Review, SP08_GW_More</bpmn:documentation>
+        <bpmn:incoming>SM_Deliver_Treatment_Flow_03</bpmn:incoming>
+        <bpmn:outgoing>SM_Deliver_Treatment_Flow_04</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:endEvent id="SM_Deliver_Treatment_End" name="Work complete">
+        <bpmn:incoming>SM_Deliver_Treatment_Flow_04</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="SM_Deliver_Treatment_Flow_01" sourceRef="SM_Deliver_Treatment_Start" targetRef="SM_Deliver_Treatment_Task_1" />
+      <bpmn:sequenceFlow id="SM_Deliver_Treatment_Flow_02" sourceRef="SM_Deliver_Treatment_Task_1" targetRef="SM_Deliver_Treatment_Task_2" />
+      <bpmn:sequenceFlow id="SM_Deliver_Treatment_Flow_03" sourceRef="SM_Deliver_Treatment_Task_2" targetRef="SM_Deliver_Treatment_Task_3" />
+      <bpmn:sequenceFlow id="SM_Deliver_Treatment_Flow_04" sourceRef="SM_Deliver_Treatment_Task_3" targetRef="SM_Deliver_Treatment_End" />
+    </bpmn:subProcess>
+    <bpmn:sequenceFlow id="SM_Flow_01" sourceRef="SM_Start_Referral" targetRef="SM_Check_Referral" />
+    <bpmn:sequenceFlow id="SM_Flow_02" sourceRef="SM_Check_Referral" targetRef="SM_Review_Referral" />
+    <bpmn:sequenceFlow id="SM_Flow_03" sourceRef="SM_Review_Referral" targetRef="SM_Assess_Patient" />
+    <bpmn:sequenceFlow id="SM_Flow_04" sourceRef="SM_Assess_Patient" targetRef="SM_Confirm_Resources" />
+    <bpmn:sequenceFlow id="SM_Flow_05" sourceRef="SM_Confirm_Resources" targetRef="SM_Confirm_Funding" />
+    <bpmn:sequenceFlow id="SM_Flow_06" sourceRef="SM_Confirm_Funding" targetRef="SM_Arrange_Appointment" />
+    <bpmn:sequenceFlow id="SM_Flow_07" sourceRef="SM_Arrange_Appointment" targetRef="SM_Deliver_Treatment" />
+    <bpmn:sequenceFlow id="SM_Flow_08" sourceRef="SM_Deliver_Treatment" targetRef="SM_Communicate_Outcome" />
+    <bpmn:sequenceFlow id="SM_Flow_09" sourceRef="SM_Communicate_Outcome" targetRef="SM_End_Outcome" />
+    <bpmn:association id="SM_Assoc_Data_01" associationDirection="One" sourceRef="SM_Data_Referral" targetRef="SM_Check_Referral" />
+    <bpmn:association id="SM_Assoc_Data_02" associationDirection="One" sourceRef="SM_Assess_Patient" targetRef="SM_Data_TreatmentPlan" />
+    <bpmn:association id="SM_Assoc_Data_02_Input" associationDirection="One" sourceRef="SM_Data_TreatmentPlan" targetRef="SM_Confirm_Resources" />
+    <bpmn:association id="SM_Assoc_Data_03_Input" associationDirection="One" sourceRef="SM_Data_Readiness" targetRef="SM_Arrange_Appointment" />
+    <bpmn:association id="SM_Assoc_Data_04_Input" associationDirection="One" sourceRef="SM_Data_Outcome" targetRef="SM_Communicate_Outcome" />
+    <bpmn:association id="SM_Assoc_Data_03" associationDirection="One" sourceRef="SM_Confirm_Funding" targetRef="SM_Data_Readiness" />
+    <bpmn:association id="SM_Assoc_Data_04" associationDirection="One" sourceRef="SM_Deliver_Treatment" targetRef="SM_Data_Outcome" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="SM_Main_Diagram" name="Strategic happy path">
+    <bpmndi:BPMNPlane id="SM_Main_Plane" bpmnElement="SM_Collaboration">
+      <bpmndi:BPMNShape id="SM_Participant_HospitalPathway_di" bpmnElement="SM_Participant_HospitalPathway" isHorizontal="true">
+        <dc:Bounds x="160" y="190" width="2500" height="1092" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Pathway_di" bpmnElement="Lane_Pathway" isHorizontal="true">
+        <dc:Bounds x="390" y="1126" width="2270" height="156" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Clinical_di" bpmnElement="Lane_Clinical" isHorizontal="true">
+        <dc:Bounds x="390" y="970" width="2270" height="156" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_OutpatientBookings_di" bpmnElement="Lane_OutpatientBookings" isHorizontal="true">
+        <dc:Bounds x="390" y="814" width="2270" height="156" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Finance_di" bpmnElement="Lane_Finance" isHorizontal="true">
+        <dc:Bounds x="390" y="658" width="2270" height="156" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_TreatmentBookings_di" bpmnElement="Lane_TreatmentBookings" isHorizontal="true">
+        <dc:Bounds x="390" y="502" width="2270" height="156" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Consultants_di" bpmnElement="Lane_Consultants" isHorizontal="true">
+        <dc:Bounds x="390" y="346" width="2270" height="156" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Secretaries_di" bpmnElement="Lane_Secretaries" isHorizontal="true">
+        <dc:Bounds x="390" y="190" width="2270" height="156" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Start_Referral_di" bpmnElement="SM_Start_Referral">
+        <dc:Bounds x="310" y="250" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="286" y="286" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Check_Referral_di" bpmnElement="SM_Check_Referral">
+        <dc:Bounds x="420" y="236" width="190" height="64" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Review_Referral_di" bpmnElement="SM_Review_Referral">
+        <dc:Bounds x="650" y="392" width="190" height="64" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Assess_Patient_di" bpmnElement="SM_Assess_Patient">
+        <dc:Bounds x="890" y="392" width="190" height="64" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Confirm_Resources_di" bpmnElement="SM_Confirm_Resources">
+        <dc:Bounds x="1130" y="548" width="190" height="64" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Arrange_Appointment_di" bpmnElement="SM_Arrange_Appointment">
+        <dc:Bounds x="1610" y="860" width="190" height="64" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Communicate_Outcome_di" bpmnElement="SM_Communicate_Outcome">
+        <dc:Bounds x="2090" y="1172" width="190" height="64" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_End_Outcome_di" bpmnElement="SM_End_Outcome">
+        <dc:Bounds x="2330" y="1186" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2312" y="1222" width="72" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Data_Referral_di" bpmnElement="SM_Data_Referral">
+        <dc:Bounds x="432" y="320" width="170" height="34" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="487" y="354" width="61" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Data_Readiness_di" bpmnElement="SM_Data_Readiness">
+        <dc:Bounds x="1382" y="792" width="170" height="34" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1422" y="826" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Data_Outcome_di" bpmnElement="SM_Data_Outcome">
+        <dc:Bounds x="1862" y="1104" width="170" height="34" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1913" y="1138" width="68" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Data_TreatmentPlan_di" bpmnElement="SM_Data_TreatmentPlan">
+        <dc:Bounds x="885" y="463" width="170" height="34" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="920" y="463" width="85" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Confirm_Funding_di" bpmnElement="SM_Confirm_Funding" isExpanded="false">
+        <dc:Bounds x="1370" y="700" width="205" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Deliver_Treatment_di" bpmnElement="SM_Deliver_Treatment" isExpanded="false">
+        <dc:Bounds x="1850" y="1012" width="205" height="72" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SM_Assoc_Data_01_di" bpmnElement="SM_Assoc_Data_01">
+        <di:waypoint x="517" y="320" />
+        <di:waypoint x="517" y="310" />
+        <di:waypoint x="515" y="310" />
+        <di:waypoint x="515" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Assoc_Data_03_di" bpmnElement="SM_Assoc_Data_03">
+        <di:waypoint x="1472.5" y="772" />
+        <di:waypoint x="1472.5" y="782" />
+        <di:waypoint x="1467" y="782" />
+        <di:waypoint x="1467" y="792" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Assoc_Data_03_Input_di" bpmnElement="SM_Assoc_Data_03_Input">
+        <di:waypoint x="1552" y="809" />
+        <di:waypoint x="1581" y="809" />
+        <di:waypoint x="1581" y="892" />
+        <di:waypoint x="1610" y="892" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Assoc_Data_04_di" bpmnElement="SM_Assoc_Data_04">
+        <di:waypoint x="1952.5" y="1084" />
+        <di:waypoint x="1952.5" y="1094" />
+        <di:waypoint x="1947" y="1094" />
+        <di:waypoint x="1947" y="1104" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Assoc_Data_04_Input_di" bpmnElement="SM_Assoc_Data_04_Input">
+        <di:waypoint x="2032" y="1121" />
+        <di:waypoint x="2061" y="1121" />
+        <di:waypoint x="2061" y="1204" />
+        <di:waypoint x="2090" y="1204" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Assoc_Data_02_di" bpmnElement="SM_Assoc_Data_02">
+        <di:waypoint x="985" y="456" />
+        <di:waypoint x="985" y="466" />
+        <di:waypoint x="987" y="466" />
+        <di:waypoint x="985" y="463" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Assoc_Data_02_Input_di" bpmnElement="SM_Assoc_Data_02_Input">
+        <di:waypoint x="970" y="497" />
+        <di:waypoint x="970" y="580" />
+        <di:waypoint x="1130" y="580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Flow_01_di" bpmnElement="SM_Flow_01">
+        <di:waypoint x="346" y="268" />
+        <di:waypoint x="383" y="268" />
+        <di:waypoint x="383" y="268" />
+        <di:waypoint x="420" y="268" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Flow_02_di" bpmnElement="SM_Flow_02">
+        <di:waypoint x="610" y="268" />
+        <di:waypoint x="630" y="268" />
+        <di:waypoint x="630" y="424" />
+        <di:waypoint x="650" y="424" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Flow_03_di" bpmnElement="SM_Flow_03">
+        <di:waypoint x="840" y="424" />
+        <di:waypoint x="865" y="424" />
+        <di:waypoint x="865" y="424" />
+        <di:waypoint x="890" y="424" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Flow_04_di" bpmnElement="SM_Flow_04">
+        <di:waypoint x="1080" y="424" />
+        <di:waypoint x="1105" y="424" />
+        <di:waypoint x="1105" y="580" />
+        <di:waypoint x="1130" y="580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Flow_05_di" bpmnElement="SM_Flow_05">
+        <di:waypoint x="1320" y="580" />
+        <di:waypoint x="1345" y="580" />
+        <di:waypoint x="1345" y="736" />
+        <di:waypoint x="1370" y="736" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Flow_06_di" bpmnElement="SM_Flow_06">
+        <di:waypoint x="1575" y="736" />
+        <di:waypoint x="1592.5" y="736" />
+        <di:waypoint x="1592.5" y="892" />
+        <di:waypoint x="1610" y="892" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Flow_07_di" bpmnElement="SM_Flow_07">
+        <di:waypoint x="1800" y="892" />
+        <di:waypoint x="1825" y="892" />
+        <di:waypoint x="1825" y="1048" />
+        <di:waypoint x="1850" y="1048" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Flow_08_di" bpmnElement="SM_Flow_08">
+        <di:waypoint x="2055" y="1048" />
+        <di:waypoint x="2072.5" y="1048" />
+        <di:waypoint x="2072.5" y="1204" />
+        <di:waypoint x="2090" y="1204" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Flow_09_di" bpmnElement="SM_Flow_09">
+        <di:waypoint x="2280" y="1204" />
+        <di:waypoint x="2305" y="1204" />
+        <di:waypoint x="2305" y="1204" />
+        <di:waypoint x="2330" y="1204" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Assoc_Customer_di" bpmnElement="SM_Assoc_Customer">
+        <di:waypoint x="720" y="111" />
+        <di:waypoint x="515" y="111" />
+        <di:waypoint x="515" y="268" />
+        <di:waypoint x="310" y="268" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="SM_Note_Customer_di" bpmnElement="SM_Note_Customer">
+        <dc:Bounds x="180" y="85" width="540" height="52" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Note_KPI_di" bpmnElement="SM_Note_KPI">
+        <dc:Bounds x="1570" y="85" width="1050" height="52" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+  <bpmndi:BPMNDiagram id="SM_Confirm_Funding_Diagram" name="Confirm funding and payment readiness details">
+    <bpmndi:BPMNPlane id="SM_Confirm_Funding_Plane" bpmnElement="SM_Confirm_Funding">
+      <bpmndi:BPMNShape id="SM_Confirm_Funding_Start_di" bpmnElement="SM_Confirm_Funding_Start">
+        <dc:Bounds x="100" y="170" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Confirm_Funding_Task_1_di" bpmnElement="SM_Confirm_Funding_Task_1">
+        <dc:Bounds x="260" y="155" width="235" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Confirm_Funding_Task_2_di" bpmnElement="SM_Confirm_Funding_Task_2">
+        <dc:Bounds x="560" y="155" width="235" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Confirm_Funding_Task_3_di" bpmnElement="SM_Confirm_Funding_Task_3">
+        <dc:Bounds x="860" y="155" width="235" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Confirm_Funding_End_di" bpmnElement="SM_Confirm_Funding_End">
+        <dc:Bounds x="1160" y="170" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SM_Confirm_Funding_Flow_01_di" bpmnElement="SM_Confirm_Funding_Flow_01">
+        <di:waypoint x="136" y="188" />
+        <di:waypoint x="198" y="188" />
+        <di:waypoint x="198" y="188" />
+        <di:waypoint x="260" y="188" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Confirm_Funding_Flow_02_di" bpmnElement="SM_Confirm_Funding_Flow_02">
+        <di:waypoint x="495" y="188" />
+        <di:waypoint x="527.5" y="188" />
+        <di:waypoint x="527.5" y="188" />
+        <di:waypoint x="560" y="188" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Confirm_Funding_Flow_03_di" bpmnElement="SM_Confirm_Funding_Flow_03">
+        <di:waypoint x="795" y="188" />
+        <di:waypoint x="827.5" y="188" />
+        <di:waypoint x="827.5" y="188" />
+        <di:waypoint x="860" y="188" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Confirm_Funding_Flow_04_di" bpmnElement="SM_Confirm_Funding_Flow_04">
+        <di:waypoint x="1095" y="188" />
+        <di:waypoint x="1127.5" y="188" />
+        <di:waypoint x="1127.5" y="188" />
+        <di:waypoint x="1160" y="188" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+  <bpmndi:BPMNDiagram id="SM_Deliver_Treatment_Diagram" name="Deliver treatment and review response details">
+    <bpmndi:BPMNPlane id="SM_Deliver_Treatment_Plane" bpmnElement="SM_Deliver_Treatment">
+      <bpmndi:BPMNShape id="SM_Deliver_Treatment_Start_di" bpmnElement="SM_Deliver_Treatment_Start">
+        <dc:Bounds x="100" y="170" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Deliver_Treatment_Task_1_di" bpmnElement="SM_Deliver_Treatment_Task_1">
+        <dc:Bounds x="260" y="155" width="235" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Deliver_Treatment_Task_2_di" bpmnElement="SM_Deliver_Treatment_Task_2">
+        <dc:Bounds x="560" y="155" width="235" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Deliver_Treatment_Task_3_di" bpmnElement="SM_Deliver_Treatment_Task_3">
+        <dc:Bounds x="860" y="155" width="235" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SM_Deliver_Treatment_End_di" bpmnElement="SM_Deliver_Treatment_End">
+        <dc:Bounds x="1160" y="170" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SM_Deliver_Treatment_Flow_01_di" bpmnElement="SM_Deliver_Treatment_Flow_01">
+        <di:waypoint x="136" y="188" />
+        <di:waypoint x="198" y="188" />
+        <di:waypoint x="198" y="188" />
+        <di:waypoint x="260" y="188" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Deliver_Treatment_Flow_02_di" bpmnElement="SM_Deliver_Treatment_Flow_02">
+        <di:waypoint x="495" y="188" />
+        <di:waypoint x="527.5" y="188" />
+        <di:waypoint x="527.5" y="188" />
+        <di:waypoint x="560" y="188" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Deliver_Treatment_Flow_03_di" bpmnElement="SM_Deliver_Treatment_Flow_03">
+        <di:waypoint x="795" y="188" />
+        <di:waypoint x="827.5" y="188" />
+        <di:waypoint x="827.5" y="188" />
+        <di:waypoint x="860" y="188" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SM_Deliver_Treatment_Flow_04_di" bpmnElement="SM_Deliver_Treatment_Flow_04">
+        <di:waypoint x="1095" y="188" />
+        <di:waypoint x="1127.5" y="188" />
+        <di:waypoint x="1127.5" y="188" />
+        <di:waypoint x="1160" y="188" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

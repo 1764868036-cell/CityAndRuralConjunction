@@ -1,0 +1,79 @@
+{
+  "id": "hpas_start_referral",
+  "type": "default",
+  "schemaVersion": 19,
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.46.1"
+  },
+  "components": [
+    {
+      "type": "text",
+      "id": "start_heading",
+      "text": "# Open a referral case"
+    },
+    {
+      "type": "textfield",
+      "id": "start_referralId",
+      "key": "referralId",
+      "label": "Referral ID",
+      "validate": {
+        "required": true,
+        "maxLength": 160,
+        "pattern": ".*\\S.*"
+      },
+      "layout": {
+        "row": "row_referralId",
+        "columns": null
+      }
+    },
+    {
+      "type": "textfield",
+      "id": "start_patientId",
+      "key": "patientId",
+      "label": "Patient ID",
+      "validate": {
+        "required": true,
+        "maxLength": 160,
+        "pattern": ".*\\S.*"
+      },
+      "layout": {
+        "row": "row_patientId",
+        "columns": null
+      }
+    },
+    {
+      "type": "textfield",
+      "id": "start_intakeStaffId",
+      "key": "intakeStaffId",
+      "label": "Responsible staff ID",
+      "validate": {
+        "required": true,
+        "maxLength": 160,
+        "pattern": ".*\\S.*"
+      },
+      "layout": {
+        "row": "row_intakeStaffId",
+        "columns": null
+      }
+    },
+    {
+      "type": "checkbox",
+      "id": "start_referralReceived",
+      "key": "referralReceived",
+      "label": "Referral already received - start document checks now",
+      "defaultValue": true,
+      "layout": {
+        "row": "row_received",
+        "columns": null
+      }
+    },
+    {
+      "type": "text",
+      "id": "start_help",
+      "text": "Use a unique referral ID. Keep the checkbox selected to create the first Tasklist task immediately. Uncheck it only when waiting for a referring-organisation message."
+    }
+  ]
+}

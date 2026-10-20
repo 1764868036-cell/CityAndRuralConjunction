@@ -1,0 +1,90 @@
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (C:\Users\ryukkari\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.8\byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+[ERROR] Tests run: 7, Failures: 7, Errors: 0, Skipped: 0, Time elapsed: 1.770 s <<< FAILURE! -- in io.camunda.demo.hpas.SubprocessWorkerTest
+[ERROR] io.camunda.demo.hpas.SubprocessWorkerTest.transferHasIndependentResultAndRequiresDestination -- Time elapsed: 0.227 s <<< FAILURE!
+java.lang.AssertionError: 
+
+Expecting actual throwable to be an instance of:
+  java.lang.IllegalStateException
+but was:
+  java.lang.IllegalArgumentException: Unimplemented BPMN job type: hpas-sp11-transfer
+	at io.camunda.demo.hpas.HpasJobExecutor.execute(HpasJobExecutor.java:209)
+	at io.camunda.demo.hpas.SubprocessWorkerTest.lambda$transferHasIndependentResultAndRequiresDestination$3(SubprocessWorkerTest.java:38)
+	at org.assertj.core.api.ThrowableAssert.catchThrowable(ThrowableAssert.java:66)
+	...(85 remaining lines not displayed - this can be changed with Assertions.setMaxStackTraceElementsDisplayed)
+	at io.camunda.demo.hpas.SubprocessWorkerTest.transferHasIndependentResultAndRequiresDestination(SubprocessWorkerTest.java:40)
+
+[ERROR] io.camunda.demo.hpas.SubprocessWorkerTest.explicitRefundRefusalCannotBeOverriddenByApproverName -- Time elapsed: 0.085 s <<< FAILURE!
+java.lang.AssertionError: 
+
+Expecting code to raise a throwable.
+	at io.camunda.demo.hpas.SubprocessWorkerTest.explicitRefundRefusalCannotBeOverriddenByApproverName(SubprocessWorkerTest.java:23)
+
+[ERROR] io.camunda.demo.hpas.SubprocessWorkerTest.transferNeverUsesRefundWorker -- Time elapsed: 0.006 s <<< FAILURE!
+java.lang.AssertionError: 
+
+Expecting code to raise a throwable.
+	at io.camunda.demo.hpas.SubprocessWorkerTest.transferNeverUsesRefundWorker(SubprocessWorkerTest.java:28)
+
+[ERROR] io.camunda.demo.hpas.SubprocessWorkerTest.financeRefusalPreventsFinanciallyAffectedChange -- Time elapsed: 0.006 s <<< FAILURE!
+java.lang.AssertionError: 
+
+Expecting code to raise a throwable.
+	at io.camunda.demo.hpas.SubprocessWorkerTest.financeRefusalPreventsFinanciallyAffectedChange(SubprocessWorkerTest.java:51)
+
+[ERROR] io.camunda.demo.hpas.SubprocessWorkerTest.failedRefundMustNotBeRecordedAsCompleted -- Time elapsed: 0.004 s <<< FAILURE!
+java.lang.AssertionError: 
+
+Expecting code to raise a throwable.
+	at io.camunda.demo.hpas.SubprocessWorkerTest.failedRefundMustNotBeRecordedAsCompleted(SubprocessWorkerTest.java:47)
+
+[ERROR] io.camunda.demo.hpas.SubprocessWorkerTest.zeroAmountCannotBeRefunded -- Time elapsed: 0.004 s <<< FAILURE!
+java.lang.AssertionError: 
+
+Expecting code to raise a throwable.
+	at io.camunda.demo.hpas.SubprocessWorkerTest.zeroAmountCannotBeRefunded(SubprocessWorkerTest.java:33)
+
+[ERROR] io.camunda.demo.hpas.SubprocessWorkerTest.rescheduleRequiresIdentityAndDeadline -- Time elapsed: 0.004 s <<< FAILURE!
+java.lang.AssertionError: 
+
+Expecting code to raise a throwable.
+	at io.camunda.demo.hpas.SubprocessWorkerTest.rescheduleRequiresIdentityAndDeadline(SubprocessWorkerTest.java:56)
+
+[ERROR] Failures: 
+[ERROR]   SubprocessWorkerTest.explicitRefundRefusalCannotBeOverriddenByApproverName:23 
+Expecting code to raise a throwable.
+[ERROR]   SubprocessWorkerTest.failedRefundMustNotBeRecordedAsCompleted:47 
+Expecting code to raise a throwable.
+[ERROR]   SubprocessWorkerTest.financeRefusalPreventsFinanciallyAffectedChange:51 
+Expecting code to raise a throwable.
+[ERROR]   SubprocessWorkerTest.rescheduleRequiresIdentityAndDeadline:56 
+Expecting code to raise a throwable.
+[ERROR]   SubprocessWorkerTest.transferHasIndependentResultAndRequiresDestination:40 
+Expecting actual throwable to be an instance of:
+  java.lang.IllegalStateException
+but was:
+  java.lang.IllegalArgumentException: Unimplemented BPMN job type: hpas-sp11-transfer
+	at io.camunda.demo.hpas.HpasJobExecutor.execute(HpasJobExecutor.java:209)
+	at io.camunda.demo.hpas.SubprocessWorkerTest.lambda$transferHasIndependentResultAndRequiresDestination$3(SubprocessWorkerTest.java:38)
+	at org.assertj.core.api.ThrowableAssert.catchThrowable(ThrowableAssert.java:66)
+	...(85 remaining lines not displayed - this can be changed with Assertions.setMaxStackTraceElementsDisplayed)
+[ERROR]   SubprocessWorkerTest.transferNeverUsesRefundWorker:28 
+Expecting code to raise a throwable.
+[ERROR]   SubprocessWorkerTest.zeroAmountCannotBeRefunded:33 
+Expecting code to raise a throwable.
+[ERROR] Tests run: 7, Failures: 7, Errors: 0, Skipped: 0
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.5:test (default-test) on project hpas-redesigned-workers: There are test failures.
+[ERROR] 
+[ERROR] See D:\桌面\26.9-26.12\demo\advanced_info_sys\HospitalPatientPathway-redesign\version2\java\target\surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

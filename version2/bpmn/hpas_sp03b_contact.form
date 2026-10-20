@@ -1,0 +1,63 @@
+{
+  "type": "default",
+  "id": "hpas_sp03b_contact",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "SP03B_Contact_heading",
+      "type": "text",
+      "text": "# Contact patient about near-term change"
+    },
+    {
+      "id": "SP03B_Contact_field_0",
+      "type": "select",
+      "key": "contactOutcome",
+      "label": "Telephone contact outcome",
+      "layout": {
+        "row": "SP03B_Contact_row_0",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "values": [
+        {
+          "label": "Reached",
+          "value": "reached"
+        },
+        {
+          "label": "Unable to reach; escalated to coordinator",
+          "value": "escalated"
+        }
+      ]
+    },
+    {
+      "id": "SP03B_Contact_field_1",
+      "type": "textarea",
+      "key": "contactNotes",
+      "label": "Contact attempts and outcome",
+      "layout": {
+        "row": "SP03B_Contact_row_1",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "id": "SP03B_Contact_actor",
+      "type": "textfield",
+      "key": "SP03B_Contact_actor",
+      "label": "Responsible staff ID",
+      "validate": {
+        "required": true
+      },
+      "layout": {
+        "row": "SP03B_Contact_actor_row",
+        "columns": null
+      }
+    }
+  ]
+}

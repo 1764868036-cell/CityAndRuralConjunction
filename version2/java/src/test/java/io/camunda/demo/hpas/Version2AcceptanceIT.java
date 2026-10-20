@@ -44,9 +44,9 @@ import org.w3c.dom.Element;
 @SpringBootTest(classes = Version2AcceptanceIT.TestApplication.class, properties = {
     "camunda.process-test.runtime-mode=remote",
     "camunda.process-test.remote.client.enabled=true",
-    "camunda.process-test.remote.client.grpc-address=${acceptance.grpc:http://127.0.0.1:26500}",
-    "camunda.process-test.remote.client.rest-address=${acceptance.rest:http://127.0.0.1:8080}",
-    "camunda.process-test.remote.camunda-monitoring-api-address=http://127.0.0.1:9600",
+    "camunda.process-test.remote.client.grpc-address=${acceptance.grpc:http://127.0.0.1:27500}",
+    "camunda.process-test.remote.client.rest-address=${acceptance.rest:http://127.0.0.1:8180}",
+    "camunda.process-test.remote.camunda-monitoring-api-address=${acceptance.monitoring:http://127.0.0.1:19600}",
     "camunda.process-test.remote.client.deployment.enabled=false"})
 @CamundaSpringProcessTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -202,8 +202,10 @@ class Version2AcceptanceIT {
     @Test @DisplayName("AT-07 — unavailable external service remains pending until availability is restored")
     void at07_serviceUnavailable() {
         long pi = start("SP05_RequestAvailability", Map.of("resourceType", "external"));
+        assertThat(byKey(pi)).isWaitingForMessage("HPAS: External availability result", referrals.get(pi));
         publish(pi, "External availability result", Map.of("externalAvailable", false));
         assertThat(byKey(pi)).hasActiveElements("SP05_Catch_Released").hasNotActivatedElements("SP05_BookExternal", "SP08_Administer");
+        assertThat(byKey(pi)).isWaitingForMessage("HPAS: External slot released", referrals.get(pi));
         publish(pi, "External slot released", Map.of("externalAvailable", true));
         assertThat(byKey(pi)).hasCompletedElements("SP05_BookExternal").hasActiveElements("SP08_Catch_Lab");
         assertNoIncident(pi);

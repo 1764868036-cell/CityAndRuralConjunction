@@ -1,0 +1,82 @@
+[
+  {
+    "scope": "SP13_PrepareScope",
+    "lanes": 1,
+    "width": 340,
+    "height": 875,
+    "edges": 5,
+    "returnEdges": 1
+  },
+  {
+    "scope": "SP03B",
+    "lanes": 1,
+    "width": 640,
+    "height": 2035,
+    "edges": 17,
+    "returnEdges": 0
+  },
+  {
+    "scope": "SP09",
+    "lanes": 3,
+    "width": 1320,
+    "height": 2180,
+    "edges": 19,
+    "returnEdges": 0
+  },
+  {
+    "scope": "SP10",
+    "lanes": 4,
+    "width": 1660,
+    "height": 1310,
+    "edges": 12,
+    "returnEdges": 0
+  },
+  {
+    "scope": "SP11",
+    "lanes": 1,
+    "width": 940,
+    "height": 1310,
+    "edges": 12,
+    "returnEdges": 1
+  },
+  {
+    "scope": "SP12",
+    "lanes": 3,
+    "width": 1620,
+    "height": 1455,
+    "edges": 18,
+    "returnEdges": 0
+  },
+  {
+    "scope": "SP13",
+    "lanes": 4,
+    "width": 1360,
+    "height": 1455,
+    "edges": 12,
+    "returnEdges": 1
+  },
+  {
+    "scope": "SP14",
+    "lanes": 2,
+    "width": 680,
+    "height": 1600,
+    "edges": 13,
+    "returnEdges": 2
+  },
+  {
+    "scope": "SP15",
+    "lanes": 2,
+    "width": 980,
+    "height": 1020,
+    "edges": 8,
+    "returnEdges": 0
+  },
+  {
+    "scope": "SP16",
+    "lanes": 1,
+    "width": 640,
+    "height": 1165,
+    "edges": 11,
+    "returnEdges": 0
+  }
+]

@@ -1,0 +1,27 @@
+{
+  "model": "hospital-patient-pathway.bpmn",
+  "sha256": "eb63b4bfc930d1ee7196a9409a295b1143b354ab11226705c7d89b329005f551",
+  "templateId": "io.camunda.connectors.HttpJson.v2",
+  "templateVersion": 13,
+  "templateEngines": {
+    "camunda": "^8.9"
+  },
+  "configuredInputsRecognizedByTemplate": [
+    "authentication.type",
+    "connectionTimeoutInSeconds",
+    "followRedirects",
+    "headers",
+    "method",
+    "queryParameters",
+    "readTimeoutInSeconds",
+    "storeResponse",
+    "url"
+  ],
+  "roundtripEngine": "bpmn-js 18.6.3 Modeler in headless Chrome",
+  "importWarnings": [],
+  "reimportWarnings": [],
+  "messageFlowsBefore": 34,
+  "messageFlowsAfter": 34,
+  "missingMessageFlowDiAfterRoundtrip": 0,
+  "note": "Local editor import/save/reimport verification; no live Connector deployment performed."
+}

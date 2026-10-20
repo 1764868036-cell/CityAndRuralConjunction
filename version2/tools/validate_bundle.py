@@ -10,7 +10,9 @@ N = {"b": "http://www.omg.org/spec/BPMN/20100524/MODEL",
      "d": "http://www.omg.org/spec/BPMN/20100524/DI",
      "c": "http://www.omg.org/spec/DD/20100524/DC",
      "z": "http://camunda.org/schema/zeebe/1.0"}
-r = ET.parse(str(ROOT / "hospital-patient-pathway.bpmn"))
+BUNDLE = ROOT / "bpmn" if (ROOT / "bpmn/hospital-patient-pathway.bpmn").exists() else ROOT
+FORMS = BUNDLE if BUNDLE.name == "bpmn" else ROOT / "forms"
+r = ET.parse(str(BUNDLE / "hospital-patient-pathway.bpmn"))
 errors = []
 
 
@@ -64,7 +66,7 @@ for sp in branches:
     for child in sp.xpath('.//*[@id]', namespaces=N):
         cid = child.get("id")
         # Nested subprocesses can own their own valid drill-down plane.
-        scope = child.getparent()
+        scope = next((a for a in child.iterancestors() if ET.QName(a).localname == 'subProcess'), sp)
         if (scope is not sp and scope.get('id') in planes
                 and ET.QName(child).localname not in {'laneSet', 'extensionElements'}):
             nested_plane = planes[scope.get('id')]
@@ -95,7 +97,7 @@ for t in tasks:
     form_id = t.xpath('./b:extensionElements/z:formDefinition/@formId', namespaces=N)
     check(len(form_id) == 1 and form_id[0] == f"hpas_{tid.lower()}", f"{tid} form reference")
     if form_id:
-        path = ROOT / "forms" / f"{form_id[0]}.form"
+        path = FORMS / f"{form_id[0]}.form"
         check(path.exists(), f"missing form {path.name}")
         if path.exists():
             form = json.loads(path.read_text(encoding="utf-8"))
@@ -118,8 +120,8 @@ for p in r.xpath('//b:participant[@processRef!="Process_HPAS"]', namespaces=N):
           f"{p.get('name')} lacks visible request-response simulation")
 
 for fid in ("hpas_sp12_assesspriority", "hpas_sp07_decideretry"):
-    check((ROOT / "forms" / f"{fid}.form").exists(), f"missing critical decision form {fid}")
-for path in (ROOT / "forms").glob("*.form"):
+    check((FORMS / f"{fid}.form").exists(), f"missing critical decision form {fid}")
+for path in FORMS.glob("*.form"):
     data = path.read_text(encoding="utf-8").lower()
     check("cardnumber" not in data and "cardcvv" not in data,
           f"card details in {path.name}")

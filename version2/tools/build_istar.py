@@ -1,8 +1,8 @@
-"""Build the native piStar VERSION2 model using only Python's standard library.
+"""Build the BPMN-aligned VERSION2 i* strategic model using Python's standard library.
 
 Run from any directory: python version2/tools/build_istar.py
 Goals describe required service capabilities, not mandatory steps in one case.
-External scheduling/correspondence implementation actors are intentionally hidden.
+Every BPMN collaboration participant is represented at the strategic boundary.
 """
 import collections
 import hashlib
@@ -19,16 +19,16 @@ OUT = ROOT / 'istar'
 OUT.mkdir(exist_ok=True)
 M = {'actors': [], 'orphans': [], 'dependencies': [], 'links': [], 'display': {},
      'tool': 'pistar.2.1.0', 'istar': '2.0',
-     'diagram': {'width': 4950, 'height': 4100, 'name': 'Hospital VERSION2 - Integrated SD and SR',
+     'diagram': {'width': 4950, 'height': 4880, 'name': 'Hospital VERSION2 - BPMN-Aligned Integrated SD and SR',
      'customProperties': {
          'Source file': 'hospital-patient-pathway.bpmn in version2',
          'Source SHA256': hashlib.sha256(BPMN.read_bytes()).hexdigest(),
-         'Scope': 'P01-P08 and event branches P03B, P09-P16; strategic service capabilities, not sequence flow.',
+         'Scope': 'P01-P08 and event branches P03B, P09-P16; all eight BPMN participants represented; strategic capabilities, not sequence flow.',
          'Reading': 'Depender task -> dependum -> provider task. AND means required capabilities, not all branches executing in one case. HELP means positive contribution, not a guarantee.',
-         'Abstraction': 'Scheduling and correspondence remain external in BPMN. This strategic view hides their implementation actors; hospital tasks coordinate those services. Tracking is part of pathway monitoring; access, downtime and management escalation belong to Administrative Management.',
-         'External actors': 'Patient; Referring organisation; Funding organisation; Payment provider.',
-         'Business boundary revision': 'Clinical support services are hospital-owned under the revised business scope. VERSION2 BPMN still represents the laboratory and external treatment participant as external. This strategic model deliberately changes that boundary; executable BPMN remains unchanged. Internal service tasks are abstractions, not additional executable BPMN tasks.',
-         'Layout': 'One green integrated model; all dependencies end on tasks; no actor endpoint or custom renderer required.'}}}
+         'Abstraction': 'The strategic actor boundary follows the BPMN collaboration: Patient, Referring organisation, External Scheduling Service, External Correspondence Service, Payment Service Provider, Insurer / Funding Organisation, and External Treatment / Laboratory / Imaging Service are external. Provider capabilities are abstracted from their BPMN participant tasks and message exchanges. Tracking, access, downtime and management escalation remain hospital responsibilities.',
+         'External actors': 'Patient; Referring organisation; External Scheduling Service; External Correspondence Service; Payment Service Provider; Insurer / Funding Organisation; External Treatment / Laboratory / Imaging Service.',
+         'Business boundary': 'The Hospital Patient Administration System is the only hospital participant. Its internal lanes are represented as hospital actors. The external laboratory, treatment, scheduling, correspondence, funding and payment providers remain outside the hospital boundary. SP05 availability is requested by the HTTP JSON connector; provider work is an intentional strategic abstraction traced to the connector and external service tasks.',
+         'Layout': 'One green integrated model; all seven external actors are visible; all dependencies end on specific tasks; editable elements use native piStar types and the SVG is generated from this source.'}}}
 COLORS = {'Goal': '#cfe8d3', 'Task': '#e1f0df', 'Resource': '#edf5df', 'Quality': '#bfe1c8'}
 A, N, owner = {}, {}, {}
 
@@ -91,13 +91,21 @@ actor('callteam', 'Call handling', 'Patient contact supported', [
     ('financial', 'Answer or refer financial query', 'SP12_AnswerFin; SP12_GW_Info; SP12_ReferFinance', 'Task', 'Answer only from authorised information; otherwise obtain Finance response.'),
     ('cancel', 'Record cancellation and route response', 'SP10_Record; SP10_NotifyRebook; SP10_NotifyReferrer'),
     ('close', 'Record handling and resolution', 'SP12_Close')])
-actor('trtsvc', 'Clinical support services', 'Hospital clinical support available', [
-    ('capacity', 'Report hospital service availability', 'SP05_BookInternal', 'Task', 'Internal support responsibility inferred from hospital resource booking under the revised business scope. The external capacity interaction remains a separate implementation detail.'),
-    ('lab', 'Perform test and return lab result', 'SP08_RequestBloods; SP08_Catch_Lab', 'Task', 'Hospital laboratory responsibility under the revised business scope. The current BPMN routes this interaction to an external laboratory; source IDs trace the interaction, not an unchanged provider boundary.')])
+actor('extTreat', 'External diagnostics and treatment provider', 'External service capacity and results provided', [
+    ('availability', 'Return external resource availability', 'SP05_RequestAvailability; XExt_Check; XExt_SendAvail', 'Task', 'The BPMN HTTP JSON connector requests availability; this provider task abstracts the external response. The old message catch is absent from the current process.'),
+    ('released', 'Notify released external slot', 'XExt_SendReleased'),
+    ('lab', 'Perform test and return result', 'XExt_Test; XExt_SendLab', 'Task', 'External laboratory responsibility follows the BPMN participant and message flows.')], True)
+A['extTreat']['customProperties']['Full actor name'] = 'External Treatment / Laboratory / Imaging Service'
+actor('scheduler', 'External Scheduling Service', 'Appointment capacity coordinated', [
+    ('search', 'Search appointment slots', 'XSched_Search'),
+    ('return', 'Return proposed appointment slots', 'XSched_SendResult')], True)
+actor('corr', 'External Correspondence Service', 'Correspondence dispatched and acknowledged', [
+    ('dispatch', 'Prepare and despatch correspondence', 'XCorr_Prepare'),
+    ('ack', 'Acknowledge clinic letter dispatch', 'XCorr_Ack')], True)
 actor('trtbook', 'Treatment bookings', 'Treatment resources coordinated', [
     ('validate', 'Accept validated booking request', 'SP04_Validate; SP05_GW_Resource', 'Task', 'Booking intake uses the Consultants lane validation result; it does not take clinical authorisation ownership.'),
     ('internal', 'Book hospital facility', 'SP05_BookInternal', 'Task', 'Internal resource route only.'),
-    ('external', 'Coordinate external availability', 'SP05_RequestAvailability; SP05_Catch_Availability; SP05_BookExternal', 'Task', 'External resource route only; creates a provisional booking.'),
+    ('external', 'Coordinate external availability', 'SP05_RequestAvailability; SP05_BookExternal', 'Task', 'External resource route only; the HTTP JSON connector returns availability and a successful check creates a provisional booking.'),
     ('pending', 'Keep pending and prevent duplicates', 'SP05_NotifyPending; SP05_Catch_Released', 'Task', 'When external capacity is unavailable; resume after slot release.')])
 actor('clinical', 'Clinical team', 'Treatment safety supported', [
     ('fitness', 'Obtain bloods and assess fitness', 'SP08_RequestBloods; SP08_Catch_Lab; SP08_Review'),
@@ -119,7 +127,8 @@ actor('finance', 'Finance team', 'Financial cases controlled', [
     ('confirm', 'Confirm payment-cleared booking', 'SP07_ConfirmBooking', 'Task', 'Normal payment-complete route; exception handling remains a separate capability.'),
     ('refund', 'Decide and reconcile refund', 'SP11_Determine; SP11_SendRefund; SP11_Record; SP11_RecordNone', 'Task', 'Choose a full refund, a partial refund or no refund according to financial authority. No-refund decisions retain their reason.'),
     ('enquiry', 'Respond to financial enquiry', 'SP12_ReferFinance'),
-    ('change', 'Review treatment-change finances', 'SP09_FinanceReview')])
+    ('change', 'Review treatment-change finances', 'SP09_FinanceReview'),
+    ('notice', 'Request payment issue notice', 'SP07_NotifyIssue')])
 actor('psp', 'Payment provider', 'Secure transactions supported', [
     ('payment', 'Process payment and return status', 'XPSP_Process; XPSP_SendStatus'),
     ('refund', 'Execute refund and return result', 'XPSP_Refund; XPSP_SendRefund')], True)
@@ -138,6 +147,20 @@ actor('adminmgmt', 'Administrative management', 'Operational governance supporte
     ('downtime', 'Record downtime and reconcile records', 'SP16_RecordDowntime; SP16_Reconcile'),
     ('audit', 'Write attributable audit record', 'SP16_Audit')])
 
+# Make the actor boundary traceable to the eight BPMN collaboration participants.
+participant_ids = {
+    'refOrg': 'Participant_Referrer', 'medsec': 'Participant_Hospital',
+    'consult': 'Participant_Hospital', 'patient': 'Participant_Patient',
+    'outpt': 'Participant_Hospital', 'callteam': 'Participant_Hospital',
+    'extTreat': 'Participant_ExtTreat', 'trtbook': 'Participant_Hospital',
+    'clinical': 'Participant_Hospital', 'fundorg': 'Participant_Funder',
+    'finance': 'Participant_Hospital', 'psp': 'Participant_PSP',
+    'cnst': 'Participant_Hospital', 'pathway': 'Participant_Hospital',
+    'adminmgmt': 'Participant_Hospital', 'scheduler': 'Participant_Scheduling',
+    'corr': 'Participant_Correspondence'}
+for key, participant_id in participant_ids.items():
+    A[key]['customProperties']['BPMN participant ID'] = participant_id
+
 def dep(key, label, s, t, refs, typ='Resource'):
     i = 'dep_' + key
     s, t = 'n_' + s, 'n_' + t
@@ -155,8 +178,15 @@ dep('telephone', 'Recorded telephone outcome', 'outpt_contact', 'callteam_phone'
 dep('attendance', 'Attend clinical appointment', 'consult_assess', 'patient_attend', 'XPat_Attend; SP04_Assess', 'Task')
 dep('consent', 'Patient consent or refusal', 'consult_consent', 'patient_decision', 'SP04_GW_Consent; SP04_RecordConsent; SP10_Record')
 dep('request', 'Authorised treatment request', 'trtbook_validate', 'consult_request', 'SP04_CreateRequest; SP04_Validate')
-dep('capacity', 'Hospital service availability', 'trtbook_internal', 'trtsvc_capacity', 'SP05_BookInternal')
-dep('bloods', 'Pre-cycle blood test results', 'clinical_fitness', 'trtsvc_lab', 'SP08_RequestBloods; SP08_Catch_Lab')
+dep('availability', 'External resource availability', 'trtbook_external', 'extTreat_availability', 'SP05_RequestAvailability; XExt_Check; XExt_SendAvail; SP05_BookExternal')
+dep('bloods', 'Pre-cycle blood test results', 'clinical_fitness', 'extTreat_lab', 'SP08_RequestBloods; XExt_Test; XExt_SendLab; SP08_Catch_Lab')
+dep('appointmentSlots', 'Proposed appointment slots', 'outpt_slot', 'scheduler_return', 'SP03_RequestSlot; SP03_Catch_Slot; XSched_Search; XSched_SendResult')
+dep('changeSlots', 'Appointment change slot', 'outpt_change', 'scheduler_return', 'SP03B_RequestSlot; SP03B_Catch_Result; XSched_Search; XSched_SendResult')
+dep('followupSlots', 'Follow-up appointment slot', 'outpt_followup', 'scheduler_return', 'SP14_RequestSlot; SP14_Catch_Result; XSched_Search; XSched_SendResult')
+dep('appointmentDispatch', 'Appointment correspondence dispatch', 'outpt_confirm', 'corr_dispatch', 'SP03_SendLetter; SP03B_Notify; SP14_Inform; XCorr_Prepare')
+dep('clinicDispatch', 'Clinic letter dispatch', 'medsec_distribute', 'corr_dispatch', 'SP13_Distribute; XCorr_Prepare')
+dep('dispatchAck', 'Clinic letter dispatch acknowledgement', 'medsec_record', 'corr_ack', 'SP13_RecordDates; XCorr_Ack')
+dep('paymentNotice', 'Payment issue notice', 'finance_notice', 'corr_dispatch', 'SP07_NotifyIssue; XCorr_Prepare')
 dep('retrospective', 'Retrospective safety authorisation', 'clinical_authorise', 'consult_decision', 'SP09_ExecuteHold; SP09_Retrospective')
 dep('funding', 'Funding approval and limits', 'finance_funding', 'fundorg_approval', 'SP06_RecordApproval; XFund_Send')
 dep('payment', 'Payment status and reference', 'finance_payment', 'psp_payment', 'SP07_Catch_Status; XPSP_SendStatus')
@@ -192,7 +222,7 @@ for a, text, child, refs in [('clinical', 'Patient safety', 'hold', 'SP09_Execut
 # Fixed seed graph placement keeps strongly related actors near each other.
 keys = list(A)
 edges = [(owner[d['source']][6:], owner[d['target']][6:]) for d in M['dependencies']]
-slots = [(110 + col * 1640, 140 + row * 780) for row in range(5) for col in range(3)]
+slots = [(110 + col * 1640, 140 + row * 780) for row in range(6) for col in range(3)]
 rng = random.Random(22)
 def score(order):
     p = {k: slots[j] for j, k in enumerate(order)}
@@ -219,6 +249,8 @@ A = {a['id']:a for a in M['actors']}
 
 # Validate source mappings and the native iStar dependency restrictions.
 bids={e.get('id') for e in ET.parse(BPMN).iter() if e.get('id')}
+participant_refs={e.get('id') for e in ET.parse(BPMN).iter() if e.tag.endswith('participant')}
+assert set(participant_ids.values()) == participant_refs, 'Actor boundary must cover each BPMN participant'
 for e in [*N.values(), *M['dependencies']]:
     for ref in e['customProperties']['Source BPMN IDs'].split('; '): assert ref in bids, ref
 refined={l['target'] for l in M['links'] if 'Refinement' in l['type'] or 'Contribution' in l['type']}
@@ -242,7 +274,7 @@ B={a['id']:(a['x']-20,a['y']-30,max(n['x']+200 for n in a['nodes']),max(n['y']+7
 reserved=[expand(b,32) for b in B.values()]
 for d in sorted(M['dependencies'],key=lambda d:math.dist((N[d['source']]['x'],N[d['source']]['y']),(N[d['target']]['x'],N[d['target']]['y']))):
  s,t=N[d['source']],N[d['target']];sx,sy=s['x']+95,s['y']+31;tx,ty=t['x']+95,t['y']+31;mx,my=(sx+tx)/2,(sy+ty)/2;best=None
- for y in range(140,3990,40):
+ for y in range(140,4790,40):
   for x in range(50,4720,40):
    b=expand((x,y,x+190,y+62),30)
    if any(overlap(b,r) for r in reserved):continue
@@ -261,7 +293,7 @@ def simplify(pts):
   out.append(p)
  return out
 def route(start,end,obs):
- xs=sorted({20,4930,start[0],end[0],*[v for b in obs for v in (b[0]-20,b[2]+20)]});ys=sorted({100,4050,start[1],end[1],*[v for b in obs for v in (b[1]-20,b[3]+20)]})
+ xs=sorted({20,4930,start[0],end[0],*[v for b in obs for v in (b[0]-20,b[2]+20)]});ys=sorted({100,4830,start[1],end[1],*[v for b in obs for v in (b[1]-20,b[3]+20)]})
  xi={x:i for i,x in enumerate(xs)};yi={y:i for i,y in enumerate(ys)};s=(xi[start[0]],yi[start[1]]);e=(xi[end[0]],yi[end[1]]);q=[(0,0,*s,-1)];costs={(*s,-1):0};prev={};cache={};last=None
  def cost(a,b):
   key=tuple(sorted((a,b)))
@@ -320,6 +352,6 @@ for l in M['links']:
  M['display'][l['id']]={'vertices':[{'x':round(x,2),'y':round(y,2)} for x,y in dense]}
 
 (ROOT/'goalModel.txt').write_text(json.dumps(M,ensure_ascii=False,indent=2),encoding='utf8')
-report={'actors':len(A),'externalActors':sum(a['customProperties']['Scope']=='External' for a in A.values()),'intentionalElements':len(N),'dependencies':len(M['dependencies']),'taskEndpoints':len(M['dependencies'])*2,'actorEndpoints':0,'allSourceIdsExist':True,'noRefinedDepender':True,'noMixedRefinements':True,'noSingletonAND':True,'explicitResourceAlternatives':True,'safetyHoldIndependentOfRetrospectiveAuthorisation':True,'slashFreeLabels':True,'sourceSha256':M['diagram']['customProperties']['Source SHA256']}
+report={'actors':len(A),'externalActors':sum(a['customProperties']['Scope']=='External' for a in A.values()),'bpmnParticipants':len(participant_refs),'bpmnParticipantsMapped':True,'intentionalElements':len(N),'dependencies':len(M['dependencies']),'taskEndpoints':len(M['dependencies'])*2,'actorEndpoints':0,'allSourceIdsExist':True,'noRefinedDepender':True,'noMixedRefinements':True,'noSingletonAND':True,'explicitResourceAlternatives':True,'safetyHoldIndependentOfRetrospectiveAuthorisation':True,'slashFreeLabels':True,'sourceSha256':M['diagram']['customProperties']['Source SHA256']}
 (OUT/'model-validation.json').write_text(json.dumps(report,indent=2),encoding='utf8')
 print(json.dumps(report))

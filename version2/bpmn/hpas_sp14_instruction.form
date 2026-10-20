@@ -1,0 +1,55 @@
+{
+  "type": "default",
+  "id": "hpas_sp14_instruction",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "SP14_Instruction_heading",
+      "type": "text",
+      "text": "# Record follow-up instruction"
+    },
+    {
+      "id": "SP14_Instruction_field_0",
+      "type": "datetime",
+      "key": "requestedReviewBy",
+      "label": "Latest acceptable follow-up date (YYYY-MM-DD)",
+      "layout": {
+        "row": "SP14_Instruction_row_0",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "subtype": "date",
+      "dateLabel": "Latest acceptable date"
+    },
+    {
+      "id": "SP14_Instruction_field_1",
+      "type": "textfield",
+      "key": "followUpClinician",
+      "label": "Authorising clinician",
+      "layout": {
+        "row": "SP14_Instruction_row_1",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "id": "SP14_Instruction_actor",
+      "type": "textfield",
+      "key": "SP14_Instruction_actor",
+      "label": "Responsible staff ID",
+      "validate": {
+        "required": true
+      },
+      "layout": {
+        "row": "SP14_Instruction_actor_row",
+        "columns": null
+      }
+    }
+  ]
+}

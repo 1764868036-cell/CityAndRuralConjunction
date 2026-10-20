@@ -1,0 +1,67 @@
+{
+  "run": "4eaabacaa4",
+  "baseUrl": "http://127.0.0.1:8180/v2",
+  "sourceSha256": "9da1f9eb8409b36f038bf85d02aaa1af22d2e5a27087aa99e88c95c9740bbd71",
+  "testDefinitionKey": "2251799813687136",
+  "mode": "real engine, API synthetic tasks, controlled jobs; no browser/real upstream claim",
+  "cases": [
+    {
+      "name": "finance-refusal",
+      "passed": true
+    },
+    {
+      "name": "finance-approval-before-apply",
+      "passed": true
+    },
+    {
+      "name": "letter-revision-and-approval",
+      "passed": true
+    },
+    {
+      "name": "transfer-not-refund",
+      "passed": true
+    },
+    {
+      "name": "unauthorised-refund",
+      "passed": true
+    },
+    {
+      "name": "failed-refund-reviewed",
+      "passed": true
+    },
+    {
+      "name": "restoration-correlation",
+      "passed": true
+    },
+    {
+      "name": "access-denied",
+      "passed": true
+    },
+    {
+      "name": "financial-enquiry",
+      "passed": true
+    },
+    {
+      "name": "parallel-scheduling-isolation",
+      "passed": true
+    },
+    {
+      "name": "followup-retry",
+      "passed": true
+    }
+  ],
+  "testInstances": [
+    "2251799813687179",
+    "2251799813687254",
+    "2251799813687329",
+    "2251799813687420",
+    "2251799813687475",
+    "2251799813687531",
+    "2251799813687599",
+    "2251799813687662",
+    "2251799813687718",
+    "2251799813687781",
+    "2251799813687888"
+  ],
+  "passed": true
+}

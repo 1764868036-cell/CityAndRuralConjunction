@@ -1,0 +1,86 @@
+{
+  "type": "default",
+  "id": "hpas_sp09_assess",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "schemaVersion": 19,
+  "components": [
+    {
+      "id": "SP09_Assess_heading",
+      "type": "text",
+      "text": "# Assess treatment change"
+    },
+    {
+      "id": "SP09_Assess_field_0",
+      "type": "checkbox",
+      "key": "urgentChange",
+      "label": "Urgent safety postponement required",
+      "layout": {
+        "row": "SP09_Assess_row_0",
+        "columns": null
+      },
+      "defaultValue": false
+    },
+    {
+      "id": "SP09_Assess_field_1",
+      "type": "checkbox",
+      "key": "formallyAuthorised",
+      "label": "Formal clinical authorisation granted",
+      "layout": {
+        "row": "SP09_Assess_row_1",
+        "columns": null
+      },
+      "defaultValue": false
+    },
+    {
+      "id": "SP09_Assess_field_2",
+      "type": "textfield",
+      "key": "authorisingClinician",
+      "label": "Authorising clinician",
+      "layout": {
+        "row": "SP09_Assess_row_2",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "id": "SP09_Assess_field_3",
+      "type": "checkbox",
+      "key": "financialImpact",
+      "label": "Affects charges, funding or payment",
+      "layout": {
+        "row": "SP09_Assess_row_3",
+        "columns": null
+      },
+      "defaultValue": false
+    },
+    {
+      "id": "SP09_Assess_field_4",
+      "type": "textarea",
+      "key": "changeReason",
+      "label": "Clinical decision and requested change",
+      "layout": {
+        "row": "SP09_Assess_row_4",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "id": "SP09_Assess_actor",
+      "type": "textfield",
+      "key": "SP09_Assess_actor",
+      "label": "Responsible staff ID",
+      "validate": {
+        "required": true
+      },
+      "layout": {
+        "row": "SP09_Assess_actor_row",
+        "columns": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "page": {
+    "totalItems": 3,
+    "hasMoreTotalItems": false,
+    "startCursor": "WzMsMjI1MTc5OTgxMzY5MjU4M10=",
+    "endCursor": "WzEsMjI1MTc5OTgxMzY4OTY0MV0="
+  },
+  "items": [
+    {
+      "name": "Hospital Patient Administration System",
+      "resourceName": "hospital-patient-pathway.bpmn",
+      "version": 3,
+      "versionTag": null,
+      "processDefinitionId": "Process_HPAS",
+      "tenantId": "<default>",
+      "processDefinitionKey": "2251799813692583",
+      "hasStartForm": true
+    },
+    {
+      "name": "Hospital Patient Administration System",
+      "resourceName": "hospital-patient-pathway.bpmn",
+      "version": 2,
+      "versionTag": null,
+      "processDefinitionId": "Process_HPAS",
+      "tenantId": "<default>",
+      "processDefinitionKey": "2251799813690532",
+      "hasStartForm": true
+    },
+    {
+      "name": "Hospital Patient Administration System",
+      "resourceName": "hospital-patient-pathway.bpmn",
+      "version": 1,
+      "versionTag": null,
+      "processDefinitionId": "Process_HPAS",
+      "tenantId": "<default>",
+      "processDefinitionKey": "2251799813689641",
+      "hasStartForm": false
+    }
+  ]
+}

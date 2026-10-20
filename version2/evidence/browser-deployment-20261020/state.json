@@ -1,0 +1,16 @@
+{
+  "process": {
+    "processDefinitionId": "Process_HPAS",
+    "processDefinitionVersion": 1,
+    "resourceName": "hospital-patient-pathway.bpmn",
+    "tenantId": "<default>",
+    "processDefinitionKey": "2251799813689641"
+  },
+  "instances": {
+    "main": {
+      "key": "2251799813690353",
+      "referralId": "TEST-BROWSER-20261020-164231"
+    }
+  },
+  "modelSha256": "e8d9b6eb3738369b98a047b3b6636a50b6ea0c9e2505e9bf6bec7c70f7ab3fa5"
+}

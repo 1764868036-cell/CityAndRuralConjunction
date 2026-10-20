@@ -1,0 +1,10 @@
+{
+  "protectedContentUnchanged": true,
+  "mainWorkerCasesUnchanged": true,
+  "mainFormsExcludedFromRepairSet": true,
+  "protectedSha256": "35274c4039171e374bc13f3f6ecafc1678d51d4574399be5c9ba749c6bf3b3ff",
+  "mainSequenceFlowsBefore": 110,
+  "mainSequenceFlowsAfter": 110,
+  "beforeSha256": "f89e159af2d8cfd65506c9f89878bd4ecadf237a99580f4061603c5eb9af0c7f",
+  "afterSha256": "04f392005d6278e9044ec5550b2bd038b765588fe5e530da1ecdf90f46fdd525"
+}

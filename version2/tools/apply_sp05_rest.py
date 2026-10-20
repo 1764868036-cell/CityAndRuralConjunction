@@ -9,7 +9,7 @@ Z = 'http://camunda.org/schema/zeebe/1.0'
 N = {'b': B, 'z': Z}
 
 
-def apply(path=ROOT / 'hospital-patient-pathway.bpmn'):
+def apply(path=ROOT / 'bpmn/hospital-patient-pathway.bpmn'):
     tree = ET.parse(str(path))
     root = tree.getroot()
     task = root.xpath('//b:*[@id="SP05_RequestAvailability"]', namespaces=N)[0]
@@ -60,6 +60,8 @@ def apply(path=ROOT / 'hospital-patient-pathway.bpmn'):
     xml = ET.tostring(tree, encoding='unicode', pretty_print=True)
     xml = re.sub(r'(?<!\s)/>', ' />', xml)
     path.write_text('<?xml version="1.0" encoding="UTF-8"?>\n' + xml, encoding='utf-8')
+    from fix_modeler_compatibility import apply as fix_modeler_compatibility
+    fix_modeler_compatibility(path)
 
 
 if __name__ == '__main__':

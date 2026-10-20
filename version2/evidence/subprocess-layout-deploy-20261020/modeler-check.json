@@ -1,0 +1,47 @@
+{
+  "sha256": "04f392005d6278e9044ec5550b2bd038b765588fe5e530da1ecdf90f46fdd525",
+  "importWarnings": [],
+  "pages": [
+    {
+      "diagram": "TidyDiagram_SP13_PrepareScope",
+      "warnings": []
+    },
+    {
+      "diagram": "BPMNDiagram_SP03B",
+      "warnings": []
+    },
+    {
+      "diagram": "BPMNDiagram_SP09",
+      "warnings": []
+    },
+    {
+      "diagram": "BPMNDiagram_SP10",
+      "warnings": []
+    },
+    {
+      "diagram": "BPMNDiagram_SP11",
+      "warnings": []
+    },
+    {
+      "diagram": "BPMNDiagram_SP12",
+      "warnings": []
+    },
+    {
+      "diagram": "BPMNDiagram_SP13",
+      "warnings": []
+    },
+    {
+      "diagram": "BPMNDiagram_SP14",
+      "warnings": []
+    },
+    {
+      "diagram": "BPMNDiagram_SP15",
+      "warnings": []
+    },
+    {
+      "diagram": "BPMNDiagram_SP16",
+      "warnings": []
+    }
+  ],
+  "reimportWarnings": []
+}
