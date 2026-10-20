@@ -5,7 +5,8 @@ This repository contains two related Camunda 8 process applications for a hospit
 ## Start here
 
 - [Project guide in Chinese](README.zh-CN.md)
-- [Project understanding and reading guide](learn.md)
+- [Project understanding and reading guide](docs/PROJECT_GUIDE.zh-CN.md)
+- [Repository structure and file locations](docs/REPOSITORY_STRUCTURE.zh-CN.md)
 - [Version 1 application](version1/README.md)
 - [Version 2 redesign](version2/README.md) · [V2 Chinese guide](version2/README.zh-CN.md)
 - [V1/V2 test comparison](version2/TEST_COMPARISON_VERSION1_VERSION2.zh-CN.md)
@@ -25,7 +26,7 @@ The canonical V2 BPMN is `version2/hospital-patient-pathway.bpmn`. It expands P0
 
 ## Architecture and tests
 
-Both applications use BPMN for orchestration, Camunda Forms for human tasks, and Java job workers for automated steps and simulated external responses. V2 also uses a Camunda REST Connector for the external availability request. See [learn.md](learn.md) for how these pieces connect and for the important correlation, deployment, and test boundaries.
+Both applications use BPMN for orchestration, Camunda Forms for human tasks, and Java job workers for automated steps and simulated external responses. V2 also uses a Camunda REST Connector for the external availability request. See the [project guide](docs/PROJECT_GUIDE.zh-CN.md) for how these pieces connect and for the important correlation, deployment, and test boundaries.
 
 Useful checks (run from the repository root):
 
@@ -50,11 +51,10 @@ The current canonical model and the isolated candidate have different Worker/mod
 ## Repository map
 
 ```text
-version1/   integrated baseline: BPMN, forms, Java workers, guides and evidence
-version2/   standalone redesign: BPMN, forms, Java workers, tools, Postman and tests
-deliverables/ original acceptance test plan
-evidence/   V1 test and runtime evidence
-java/       legacy duplicate/source archive; use version1/java or version2/java
+version1/             integrated baseline: BPMN, forms, Java workers and evidence
+version2/             redesign: BPMN, forms, Java workers, Postman and tests
+docs/                 project guide, directory map, case study and course materials
+archive/legacy-root/  earlier root models, forms, deliverables, tools and evidence
 ```
 
-The root `java/` directory is retained as a legacy duplicate/archive. For current work, use the Java project inside the version being changed.
+Use `version1/java/` or `version2/java/` for Java work. Historical root files are preserved in [the archive](archive/legacy-root/ARCHIVE.md); they are not the current deployment source.

@@ -12,7 +12,7 @@
 | 组件 | 检查方式 | 命令 |
 | --- | --- | --- |
 | 集群 | gRPC 26500 / REST 8080 在听 | `netstat -ano \| findstr "26500 8080"` |
-| 模型 + 15 个 form | 部署返回 200 | 见 [`README.zh-CN.md`](README.zh-CN.md) 的部署命令 |
+| 模型 + 15 个 form | 部署返回 200 | 见 [`README.zh-CN.md`](../../README.zh-CN.md) 的部署命令 |
 | worker 应用（演示必须） | 进程在跑 | `jps -l \| findstr HospitalPathway` |
 
 两个界面：**Tasklist** <http://localhost:8080/tasklist>（人工任务）、**Operate** <http://localhost:8080/operate>（看实例、incident、当前停在哪个元素）。

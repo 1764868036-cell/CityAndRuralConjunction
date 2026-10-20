@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """Semantic self-check for hpas.v1.bpmn (structure-level, deploy-oriented)."""
 import sys
+from pathlib import Path
 import xml.etree.ElementTree as ET
 
 B = "http://www.omg.org/spec/BPMN/20100524/MODEL"
@@ -11,7 +12,7 @@ DC = "http://www.omg.org/spec/DD/20100524/DC"
 DINS = "http://www.omg.org/spec/DD/20100524/DI"
 
 Q = lambda ns, t: "{%s}%s" % (ns, t)
-SRC = sys.argv[1] if len(sys.argv) > 1 else "hpas.v1.bpmn"
+SRC = sys.argv[1] if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent / "hpas.v1.bpmn"
 tree = ET.parse(SRC)
 root = tree.getroot()
 

@@ -10,7 +10,7 @@ The model adapts the VERSION2 BPMN to the revised hospital boundary: 15 actors, 
 
 ## Postman
 
-[`postman/`](postman/README.md) provides **36 Version 2 requests**, a local environment and bilingual guides, covering all 22 messages received by `Process_HPAS`. Import both JSON files, create an instance, publish `HPAS: Referral received`, then complete the referral form in Tasklist. Deploy only the main BPMN and the 37 forms; the nine event subprocesses run inside active instances.
+[`postman/`](postman/README.zh-CN.md) contains the SP05 external-availability collection and local Mock configuration. Follow that guide to import `SP05.postman_collection.json` and exercise available, unavailable and upstream-error responses. Deploy the main BPMN and the 37 forms together; the nine event subprocesses run inside active instances.
 
 ## Project files and checks
 
